@@ -1,0 +1,158 @@
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(120deg, #fff, #fff5ff);
+        color: #333;
+    }
+
+
+    .content-wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 20%;
+        min-width: 15em;
+        /* Aproximadamente 240px en la mayoría de navegadores */
+        padding: 1.2em;
+        /* 20px en la mayoría de navegadores */
+        background: linear-gradient(120deg, #fff, #f0fcff);
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 0.9em;
+        /* 15px en la mayoría de navegadores */
+        position: sticky;
+        top: 0;
+        bottom: 0;
+    }
+
+    .avatar-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1.25em;
+        /* 20px en la mayoría de navegadores */
+    }
+
+    .avatar-box img {
+        width: 6.25em;
+        /* 100px en la mayoría de navegadores */
+        height: 6.25em;
+        /* 100px en la mayoría de navegadores */
+        border-radius: 50%;
+        border: 0.3125em solid #fff;
+        /* 5px en la mayoría de navegadores */
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    }
+
+    .info-content {
+        text-align: center;
+    }
+
+    .name {
+        font-size: 1.5em;
+        font-weight: 600;
+        margin: 0.6em 0 0.3em;
+        /* 10px 0 5px en la mayoría de navegadores */
+    }
+
+    .title {
+        font-size: 1em;
+        color: #666;
+    }
+
+    hr {
+        margin: 1.25em 0;
+        /* 20px en la mayoría de navegadores */
+        border-top: 1px solid #ccc;
+    }
+
+    .card {
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 1em;
+        padding: 0.625em;
+        margin-bottom: 1em;
+    }
+
+    .contact-link {
+        color: #333;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-box {
+        width: 2.5em;
+        height: 2.5em;
+        background-color: #ffffff;
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.6em;
+    }
+
+    .icon-box ion-icon {
+        font-size: 1.5em;
+    }
+
+    .contacts-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.9em;
+    }
+
+    .contact-link {
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .social-list {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+        margin-top: 1.25em;
+    }
+
+    .social-item {
+        margin: 0 0.625em;
+    }
+
+    .social-link {
+        color: #333;
+        text-decoration: none;
+        font-size: 1.2em;
+    }
+
+    .main-content {
+        margin-top: 0px;
+        margin-left: 10px;
+        padding: 10px;
+
+
+    }
+
+    .main-content .card {
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 0.9em;
+        padding: 1.25em;
+        background-color: #ffffff;
+        margin-left: 0;
+    }
+
+    /* Efecto hover */
+    .sidebar .links .card:hover {
+        background-color: #f0f8ff;
+        /* Cambia el color de fondo al pasar el mouse */
+        transform: translateY(-2px);
+        /* Levanta ligeramente el elemento */
+        box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.15);
+        /* Aumenta la sombra */
+    }
