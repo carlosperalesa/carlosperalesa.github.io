@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0,8">
+    <link rel="stylesheet" href="style.css">
+    <title>Página Personal</title>
+</head>
+
+<body>
+    <!-- body -->
+    <div class="content-wrapper">
+        <!-- sidebar -->
+        <aside class="sidebar">
+            <!-- avatar -->
+            <div class="avatar">
+                <div class="avatar-box">
+                    <img src="/avatar.jpg" alt="Carlos Perales A.">
+                </div>
+                <div class="info-content">
+                    <h1 class="name">Carlos Perales A.</h1>
+                    <p class="title">Web Developer</p>
+                </div>
+                <hr>
+            </div>
+            <!-- links -->
+            <div class="links">
+                <div class="card">
+                    <a href="#" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="code-slash"></ion-icon>
+                        </div>
+                        Sobre mí
+                    </a>
+                </div>
+                <div class="card">
+                    <a href="#" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="school-outline"></ion-icon>
+                        </div>
+                        Educación
+                    </a>
+                </div>
+                <div class="card">
+                    <a href="#" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="folder-outline"></ion-icon>
+                        </div>
+                        Proyectos
+                    </a>
+                </div>
+                <div class="card">
+                    <a href="#" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="logo-codepen"></ion-icon>
+                        </div>
+                        Lenguajes
+                    </a>
+                </div>
+            </div>
+            <!-- contacto -->
+            <div class="contacto">
+                <!-- contactos -->
+                <ul class="contacts-list">
+                    <li class="contact-item">
+                        <div class="icon-box">
+                            <ion-icon name="mail-outline"></ion-icon>
+                        </div>
+                        <a href="mailto:carlosperalesa@gmail.com" class="contact-link">carlosperalesa@gmail.com</a>
+                    </li>
+                    <li class="contact-item">
+                        <div class="icon-box">
+                            <ion-icon name="phone-portrait-outline"></ion-icon>
+                        </div>
+                        <a href="tel:+56962798030" class="contact-link">+56962798030</a>
+                    </li>
+                    <li class="contact-item">
+                        <div class="icon-box">
+                            <ion-icon name="location-outline"></ion-icon>
+                        </div>
+                        <a href="https://maps.google.com/?q=Santiago+de+Chile" target="_blank"
+                            class="contact-link">Santiago
+                            de Chile</a>
+                    </li>
+                </ul>
+                <!-- social -->
+                <ul class="social-list">
+                    <li class="social-item">
+                        <a href="#" class="social-link">
+                            <ion-icon name="logo-facebook"></ion-icon>
+                        </a>
+                    </li>
+                    <li class="social-item">
+                        <a href="#" class="social-link">
+                            <ion-icon name="logo-twitter"></ion-icon>
+                        </a>
+                    </li>
+                    <li class="social-item">
+                        <a href="#" class="social-link">
+                            <ion-icon name="logo-instagram"></ion-icon>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <!-- main -->
+        <div class="main-content">
+            <div class="card">
+                about
+            </div>
+            <div class="card">
+                educacion
+            </div>
+            <div class="card" id="lenguajes">
+                <h2>Lenguajes</h2>
+                <p>Desarrollo Full Stack</p>
+
+                <div class="d-flex flex-wrap justify-content-center">
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="d-flex align-items-center">
+                            <img src="/img/lenguajes/html5.svg" alt="HTML5" width="40" height="40" class="me-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">HTML5</h5>
+                                <p class="card-text">Lenguaje de marcado para estructurar contenido web.</p>
+                            </div>
+                        </div>
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="d-flex align-items-center">
+                            <img src="/img/lenguajes/css3.svg" alt="CSS3" width="40" height="40" class="me-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">CSS3</h5>
+                                <p class="card-text">Lenguaje de estilos para dar formato y apariencia a sitios web.</p>
+                            </div>
+                        </div>
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="d-flex align-items-center">
+                            <img src="/img/lenguajes/bootstrap.svg" alt="Bootstrap" width="40" height="40" class="me-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">Bootstrap</h5>
+                                <p class="card-text">Framework CSS para desarrollo web rápido y responsivo.</p>
+                            </div>
+                        </div>
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="d-flex align-items-center">
+                            <img src="/img/lenguajes/django.svg" alt="Django" width="40" height="40" class="me-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">Django</h5>
+                                <p class="card-text">Framework Python de alto nivel para desarrollo web.</p>
+                            </div>
+                        </div>
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="d-flex align-items-center">
+                            <img src="/img/lenguajes/python.svg" alt="Python" width="40" height="40" class="me-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">Python</h5>
+                                <p class="card-text">Lenguaje de programación versátil y potente.</p>
+                            </div>
+                        </div>
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="d-flex align-items-center">
+                            <img src="/img/lenguajes/js.svg" alt="JavaScript" width="40" height="40" class="me-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">JavaScript</h5>
+                                <p class="card-text">Lenguaje de programación para añadir interactividad a sitios web.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="d-flex align-items-center">
+                            <img src="/img/lenguajes/postgresql.svg" alt="PostgreSQL" width="40" height="40"
+                                class="me-3">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">PostgreSQL</h5>
+                                <p class="card-text">Sistema de gestión de bases de datos relacional de código abierto.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                proyectos
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.js"></script>
+</body>
+
+</html>
+
+css
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(120deg, #fff, #fff5ff);
+        color: #333;
+    }
+
+
+    .content-wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 20%;
+        min-width: 15em;
+        /* Aproximadamente 240px en la mayoría de navegadores */
+        padding: 1.2em;
+        /* 20px en la mayoría de navegadores */
+        background: linear-gradient(120deg, #fff, #f0fcff);
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 0.9em;
+        /* 15px en la mayoría de navegadores */
+        position: sticky;
+        top: 0;
+        bottom: 0;
+    }
+
+    .avatar-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1.25em;
+        /* 20px en la mayoría de navegadores */
+    }
+
+    .avatar-box img {
+        width: 6.25em;
+        /* 100px en la mayoría de navegadores */
+        height: 6.25em;
+        /* 100px en la mayoría de navegadores */
+        border-radius: 50%;
+        border: 0.3125em solid #fff;
+        /* 5px en la mayoría de navegadores */
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    }
+
+    .info-content {
+        text-align: center;
+    }
+
+    .name {
+        font-size: 1.5em;
+        font-weight: 600;
+        margin: 0.6em 0 0.3em;
+        /* 10px 0 5px en la mayoría de navegadores */
+    }
+
+    .title {
+        font-size: 1em;
+        color: #666;
+    }
+
+    hr {
+        margin: 1.25em 0;
+        /* 20px en la mayoría de navegadores */
+        border-top: 1px solid #ccc;
+    }
+
+    .card {
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 1em;
+        padding: 0.625em;
+        margin-bottom: 1em;
+    }
+
+    .contact-link {
+        color: #333;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-box {
+        width: 2.5em;
+        height: 2.5em;
+        background-color: #ffffff;
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.6em;
+    }
+
+    .icon-box ion-icon {
+        font-size: 1.5em;
+    }
+
+    .contacts-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.9em;
+    }
+
+    .contact-link {
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .social-list {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+        margin-top: 1.25em;
+    }
+
+    .social-item {
+        margin: 0 0.625em;
+    }
+
+    .social-link {
+        color: #333;
+        text-decoration: none;
+        font-size: 1.2em;
+    }
+
+    .main-content {
+        margin-top: 0px;
+        margin-left: 10px;
+        padding: 10px;
+        flex: 1;
+        /* El contenido principal ocupa el espacio restante */
+        padding: 20px;
+        display: flex;
+        /* Activamos flexbox para .main-content */
+        flex-direction: column;
+        /* Apilamos los elementos verticalmente */
+    }
+
+    .main-content .card {
+        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        border-radius: 0.9em;
+        padding: 1.25em;
+        background-color: #ffffff;
+        margin-left: 0;
+        flex: 1;
+        /* Hacemos que cada tarjeta ocupe el espacio disponible */
+        margin-bottom: 16px;
+        /* Espacio entre las tarjetas */
+    }
+
+    .card .d-flex {
+        min-height: 100%;
+        /* Hace que el contenido interno ocupe al menos el 100% de la altura de la tarjeta */
+        flex-direction: column;
+        /* Alinea los elementos en columna (verticalmente) */
+        justify-content: space-between;
+        /* Distribuye el espacio verticalmente entre los elementos */
+    }
+
+    .card .progress {
+        margin-top: auto;
+        /* Empuja la barra de progreso hacia abajo */
+    }
+
+    /* Efecto hover */
+    .sidebar .links .card:hover {
+        background-color: #f0f8ff;
+        /* Cambia el color de fondo al pasar el mouse */
+        transform: translateY(-2px);
+        /* Levanta ligeramente el elemento */
+        box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.15);
+        /* Aumenta la sombra */
+    }

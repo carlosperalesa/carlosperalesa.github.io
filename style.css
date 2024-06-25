@@ -1,158 +1,239 @@
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(120deg, #fff, #fff5ff);
-        color: #333;
-    }
+/* Estilo general del cuerpo */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #fff, #fff5ff);
+    color: #333;
+}
 
+/* Contenedor principal */
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+}
 
-    .content-wrapper {
-        display: flex;
-        flex-direction: row;
-    }
+/* Sidebar */
+.sidebar {
+    width: 20%;
+    min-width: 15em;
+    /* Aproximadamente 240px en la mayoría de navegadores */
+    padding: 1.2em;
+    /* 20px en la mayoría de navegadores */
+    background: linear-gradient(120deg, #fff, #f0fcff);
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 0.9em;
+    /* 15px en la mayoría de navegadores */
+    position: sticky;
+    top: 0;
+    bottom: 0;
+}
 
-    .sidebar {
-        width: 20%;
-        min-width: 15em;
-        /* Aproximadamente 240px en la mayoría de navegadores */
-        padding: 1.2em;
-        /* 20px en la mayoría de navegadores */
-        background: linear-gradient(120deg, #fff, #f0fcff);
-        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-        border-radius: 0.9em;
-        /* 15px en la mayoría de navegadores */
-        position: sticky;
-        top: 0;
-        bottom: 0;
-    }
+/* Hover sobre el contenido del sidebar .sidebar:hover {
+    background: linear-gradient(120deg, #f0fcff, #fff);
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.1);
+} */
 
-    .avatar-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 1.25em;
-        /* 20px en la mayoría de navegadores */
-    }
+/* Caja de avatar */
+.avatar-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.25em;
+    /* 20px en la mayoría de navegadores */
+}
 
-    .avatar-box img {
-        width: 6.25em;
-        /* 100px en la mayoría de navegadores */
-        height: 6.25em;
-        /* 100px en la mayoría de navegadores */
-        border-radius: 50%;
-        border: 0.3125em solid #fff;
-        /* 5px en la mayoría de navegadores */
-        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-    }
+/* Imagen del avatar */
+.avatar-box img {
+    width: 6.25em;
+    /* 100px en la mayoría de navegadores */
+    height: 6.25em;
+    /* 100px en la mayoría de navegadores */
+    border-radius: 50%;
+    border: 0.3125em solid #fff;
+    /* 5px en la mayoría de navegadores */
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+}
 
-    .info-content {
-        text-align: center;
-    }
+/* Contenido de la información */
+.info-content {
+    text-align: center;
+}
 
-    .name {
-        font-size: 1.5em;
-        font-weight: 600;
-        margin: 0.6em 0 0.3em;
-        /* 10px 0 5px en la mayoría de navegadores */
-    }
+/* Nombre */
+.name {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 0.6em 0 0.3em;
+    /* 10px 0 5px en la mayoría de navegadores */
+}
 
-    .title {
-        font-size: 1em;
-        color: #666;
-    }
+/* Título */
+.title {
+    font-size: 1em;
+    color: #666;
+}
 
-    hr {
-        margin: 1.25em 0;
-        /* 20px en la mayoría de navegadores */
-        border-top: 1px solid #ccc;
-    }
+/* Línea horizontal */
+hr {
+    margin: 1.25em 0;
+    /* 20px en la mayoría de navegadores */
+    border-top: 1px solid #ccc;
+}
 
-    .card {
-        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-        border-radius: 1em;
-        padding: 0.625em;
-        margin-bottom: 1em;
-    }
+/* Tarjetas generales */
+.card {
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 1em;
+    padding: 0.625em;
+    margin-bottom: 1em;
+}
 
-    .contact-link {
-        color: #333;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-    }
+/* Hover sobre los enlaces del sidebar */
+.links .card:hover {
+    background: linear-gradient(120deg, #f0fcff, #fff);
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+    /* Ajusta la sombra según sea necesario */
+}
 
-    .icon-box {
-        width: 2.5em;
-        height: 2.5em;
-        background-color: #ffffff;
-        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 0.6em;
-    }
+/* Estilo de los enlaces de contacto */
+.contact-link {
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
 
-    .icon-box ion-icon {
-        font-size: 1.5em;
-    }
+/* Caja de iconos */
+.icon-box {
+    width: 2.5em;
+    height: 2.5em;
+    background-color: #ffffff;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.6em;
+}
 
-    .contacts-list {
-        list-style: none;
-        padding: 0;
-    }
+/* Iconos dentro de la caja de iconos */
+.icon-box ion-icon {
+    font-size: 1.5em;
+}
 
-    .contact-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.9em;
-    }
+/* Lista de contactos */
+.contacts-list {
+    list-style: none;
+    padding: 0;
+}
 
-    .contact-link {
-        color: #333;
-        text-decoration: none;
-        font-weight: 500;
-    }
+/* Elementos de la lista de contactos */
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.9em;
+}
 
-    .social-list {
-        display: flex;
-        justify-content: center;
-        list-style: none;
-        padding: 0;
-        margin-top: 1.25em;
-    }
+/* Enlaces de contacto */
+.contact-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
 
-    .social-item {
-        margin: 0 0.625em;
-    }
+/* Lista de redes sociales */
+.social-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.25em;
+}
 
-    .social-link {
-        color: #333;
-        text-decoration: none;
-        font-size: 1.2em;
-    }
+/* Elementos de la lista de redes sociales */
+.social-item {
+    margin: 0 0.625em;
+}
 
-    .main-content {
-        margin-top: 0px;
-        margin-left: 10px;
-        padding: 10px;
+/* Enlaces de redes sociales */
+.social-link {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2em;
+}
 
+/* Contenido principal */
+.main-content {
+    margin-top: 0px;
+    margin-left: 10px;
+    padding: 0px, 10px, 10px, 10px;
+    flex: 1;
+    /* El contenido principal ocupa el espacio restante */
+    display: flex;
+    /* Activamos flexbox para .main-content */
+    flex-wrap: wrap;
+    /* Permite que los elementos se envuelvan en varias filas */
+    flex-direction: column;
+    /* Las tarjetas generales en vertical */
+}
 
-    }
+/* Tarjetas dentro del contenido principal */
+.main-content .card {
+    width: 100%;
+    /* Ajusta el ancho de las tarjetas del main-content */
+    margin: 0;
+    /* Espaciado entre tarjetas */
+    display: block;
+    /* Las tarjetas generales en block */
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 0.9em;
+    padding: 0.625em;
+}
 
-    .main-content .card {
-        box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-        border-radius: 0.9em;
-        padding: 1.25em;
-        background-color: #ffffff;
-        margin-left: 0;
-    }
+/* Estilo específico para las tarjetas de lenguajes */
+.language-card {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    /* Las tarjetas de lenguajes en horizontal */
+}
 
-    /* Efecto hover */
-    .sidebar .links .card:hover {
-        background-color: #f0f8ff;
-        /* Cambia el color de fondo al pasar el mouse */
-        transform: translateY(-2px);
-        /* Levanta ligeramente el elemento */
-        box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.15);
-        /* Aumenta la sombra */
-    }
+/* Imagen dentro de las tarjetas de lenguajes */
+.language-card img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+/* Título de las tarjetas de lenguajes */
+.language-card .card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Texto de las tarjetas de lenguajes */
+.language-card .card-text {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Barra de progreso dentro de las tarjetas de lenguajes */
+.language-card .progress {
+    width: 100%;
+    height: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+/* Barra de progreso llena dentro de las tarjetas de lenguajes */
+.language-card .progress-bar {
+    width: 100%;
+    height: 100%;
+    background-color: #007bff;
+}
