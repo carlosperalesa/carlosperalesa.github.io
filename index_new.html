@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- ionioncons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- Título -->
+    <title>Carlos Perales Ayala</title>
+
+    <style>
+        body {
+            display: flex;
+            /* background-color: #151515; */
+            background-image: url('img/bg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            /* height: 100vh; */
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+        }
+
+        .card {
+            margin: 5% 10% 5% 10%;
+            padding: 20px;
+            border-radius: 4px;
+            /* box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); */
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            font-weight: 100;
+        }
+
+        .card-top {
+            margin: 5% 10% 5% 10%;
+            padding: 20px;
+            border-radius: 4px;
+            /* box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); */
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            font-weight: 100;
+        }
+
+        .language-card {
+            margin: 5% 10% 5% 10%;
+            width: 90%;
+            padding: 20px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            font-weight: 100;
+        }
+
+
+
+        .avatar-box {
+            padding: 20px;
+        }
+
+        .avatar-box img {
+            width: 130px;
+            border-radius: 50%;
+        }
+
+        .info-content {
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: 200;
+        }
+
+        .contacto {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-link {
+            text-decoration: none;
+            color: #333;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .icon-box {
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-box ion-icon {
+            color: #333;
+        }
+
+        .language-card img {
+            filter: grayscale(80%);
+        }
+
+        .language-icon {
+            color: #333;
+        }
+
+        .progress-bar {
+            background-color: #212121;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="container">
+        <div id="top" class="card card-top">
+            <div class="avatar-box">
+                <img src="/avatar.jpg" alt="Carlos Perales A.">
+            </div>
+            <div class="info-content">
+                <h1 class="name">Carlos Perales A.</h1>
+                <p class="title">Web Developer</p>
+                <hr>
+                <div class="contacto">
+                    <a href="tel:+56962798030" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="phone-portrait-outline"></ion-icon>
+                        </div>
+                    </a>
+                    <a href="mailto:carlosperalesa@gmail.com" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="mail-outline"></ion-icon>
+                        </div>
+                    </a>
+                    <a href="https://maps.google.com/?q=Santiago+de+Chile" target="_blank" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="location-outline"></ion-icon>
+                        </div>
+                    </a>
+                    <a href="https://github.com/carlosperalesa/" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="logo-github"></ion-icon>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/in/carlos-perales-973b3422b/" class="contact-link">
+                        <div class="icon-box">
+                            <ion-icon name="logo-linkedin"></ion-icon>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="top" class="card">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat consequatur soluta fugiat, ducimus
+                placeat unde odio saepe accusamus impedit temporibus vero, molestiae, earum labore veniam fuga illo!
+                Laudantium, quam exercitationem!</p>
+        </div>
+
+
+        <div id="Lenguajes" class="card">
+            <h3 class="text-start">Lenguajes</h3>
+            <div class="language-card">
+                <img src="/img/lenguajes/html5.svg" alt="HTML5" width="40" height="40">
+                <div>
+                    <h5 class="card-title">HTML5</h5>
+                    <div class="progress">
+                        <div class="progress-bar .progress-bar-animated" style="width: 90%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="language-card">
+                <img class="language-icon" src="/img/lenguajes/css3.svg" alt="CSS3" width="40" height="40">
+                <div>
+                    <h5 class="card-title">CSS3</h5>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 80%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="language-card">
+                <img class="language-icon" src="/img/lenguajes/bootstrap.svg" alt="Bootstrap" width="40" height="40">
+                <div>
+                    <h5 class="card-title">Bootstrap</h5>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 90%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="language-card">
+                <img class="language-icon" src="/img/lenguajes/django.svg" alt="Django" width="40" height="40">
+                <div>
+                    <h5 class="card-title">Django</h5>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 70%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="language-card">
+                <img class="language-icon" src="/img/lenguajes/js.svg" alt="JavaScript" width="40" height="40">
+                <div>
+                    <h5 class="card-title">JavaScript</h5>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 70%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="language-card">
+                <img class="language-icon" src="/img/lenguajes/python.svg" alt="Python" width="40" height="40">
+                <div>
+                    <h5 class="card-title">Python</h5>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="language-card">
+                <img class="language-icon" src="/img/lenguajes/postgresql.svg" alt="PostgreSQL" width="40" height="40">
+                <div>
+                    <h5 class="card-title">PostgreSQL</h5>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 50%;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

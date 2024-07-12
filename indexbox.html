@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="stylebox.css">
+</head>
+
+<body>
+    <div class="container">
+        <main class="always-great-grid" id="grid">
+            <div class="box" style="view-transition-name: b0"></div>
+            <div class="box" style="view-transition-name: b1"></div>
+            <div class="box" style="view-transition-name: b2"></div>
+            <div class="box" style="view-transition-name: b3"></div>
+            <div class="box" style="view-transition-name: b4"></div>
+            <!-- 
+            view transition names are inline so 
+            they stay attached to the element, 
+            as opposed to using :nth-child() 
+            which means each elements name shifts 
+            when a box is added/removed 
+          -->
+        </main>
+    </div>
+    <script>function addBox() {
+            if (grid.children.length >= 12) return;
+
+            const box = document.createElement('div');
+            box.classList.add('box');
+            box.style = `view-transition-name: b${grid.children.length}`;
+
+            document.startViewTransition ?
+                document.startViewTransition(() => grid.appendChild(box)) :
+                grid.appendChild(box);
+        }
+
+        function removeBox() {
+            if (grid.children.length <= 1) return;
+
+            const box = grid.querySelector(':scope > :last-child');
+
+            document.startViewTransition ?
+                document.startViewTransition(() => grid.removeChild(box)) :
+                grid.removeChild(box);
+        }</script>
+    <footer>
+        <button onclick="addBox()">Add a box</button>
+        <button onclick="removeBox()" type="reset">Remove a box</button>
+    </footer>
+</body>
+
+</html>
