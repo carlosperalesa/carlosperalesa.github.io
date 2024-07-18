@@ -241,7 +241,35 @@
         </div>
     </section>
 
-    <style>
+
+
+
+    <section name="content">
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <div class="card p-4">
+                <h2 class="text-lg font-semibold mb-2">Contenido del Div</h2>
+
+                <label for="tipoContenido">Tipo de contenido:</label>
+                <select id="tipoContenido" class="border rounded w-full p-2 mb-2">
+                    <option value="" selected>Ninguno</option>
+                    <option value="video">Video</option>
+                </select>
+
+                <div id="opcionesContenido" class="mt-4"></div>
+            </div>
+
+            <div class="card p-4" id="tarjetaCodigoContenido">
+                <h2 class="text-lg font-semibold mb-2">Código HTML Generado (Contenido)</h2>
+                <pre id="codigoGeneradoContenido"></pre>
+                <div class="card-footer flex items-center justify-end">
+                    <span id="mensajeCopiadoContenido" class="mr-2 hidden">Código copiado!</span>
+                    <ion-icon name="copy" id="btnCopiarContenido" class="text-2xl cursor-pointer"></ion-icon>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <style>
         .en-construccion {
             background-color: black;
             color: yellow;
@@ -285,36 +313,13 @@
             }
         }
     </style>
+
     <div class="en-construccion">
         <div class="barra"></div>
         <p>EN CONSTRUCCIÓN</p>
-    </div>
-
-
-    <!-- <section name="content">
-        <div class="grid grid-cols-2 gap-4 mt-8">
-            <div class="card p-4">
-                <h2 class="text-lg font-semibold mb-2">Contenido del Div</h2>
-
-                <label for="tipoContenido">Tipo de contenido:</label>
-                <select id="tipoContenido" class="border rounded w-full p-2 mb-2">
-                    <option value="" selected>Ninguno</option>
-                    <option value="video">Video</option>
-                </select>
-
-                <div id="opcionesContenido" class="mt-4"></div>
-            </div>
-
-            <div class="card p-4" id="tarjetaCodigoContenido">
-                <h2 class="text-lg font-semibold mb-2">Código HTML Generado (Contenido)</h2>
-                <pre id="codigoGeneradoContenido"></pre>
-                <div class="card-footer flex items-center justify-end">
-                    <span id="mensajeCopiadoContenido" class="mr-2 hidden">Código copiado!</span>
-                    <ion-icon name="copy" id="btnCopiarContenido" class="text-2xl cursor-pointer"></ion-icon>
-                </div>
-            </div>
-        </div>
-    </section> -->
+    </div> 
+    
+    -->
 
     <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
     <script src="./js/script1.js"></script>

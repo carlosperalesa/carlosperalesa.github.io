@@ -1,14 +1,27 @@
+html {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 /* Estilo general del cuerpo */
 body {
+    width: 100%;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(120deg, #fff, #fff5ff);
+    background: linear-gradient(120deg, #fff, #ffc0ff);
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 /* Contenedor principal */
 .content-wrapper {
     display: flex;
     flex-direction: row;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Sidebar */
@@ -18,7 +31,7 @@ body {
     /* Aproximadamente 240px en la mayoría de navegadores */
     padding: 1.2em;
     /* 20px en la mayoría de navegadores */
-    background: linear-gradient(120deg, #fff, #f0fcff);
+    background: linear-gradient(120deg, #fff, #79e4ff);
     box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
     border-radius: 0.9em;
     /* 15px en la mayoría de navegadores */
@@ -85,12 +98,16 @@ hr {
     border-radius: 1em;
     padding: 0.625em;
     margin-bottom: 1em;
+    backdrop-filter: blur(5px);
+
 }
 
 /* Hover sobre los enlaces del sidebar */
 .links .card:hover {
     background: linear-gradient(120deg, #f0fcff, #fff);
     box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+
     /* Ajusta la sombra según sea necesario */
 }
 
@@ -165,7 +182,7 @@ hr {
 .main-content {
     margin-top: 0px;
     margin-left: 10px;
-    padding: 0px, 10px, 10px, 10px;
+    padding: 0;
     flex: 1;
     /* El contenido principal ocupa el espacio restante */
     display: flex;
@@ -174,6 +191,7 @@ hr {
     /* Permite que los elementos se envuelvan en varias filas */
     flex-direction: column;
     /* Las tarjetas generales en vertical */
+    flex-grow: 1;
 }
 
 /* Tarjetas dentro del contenido principal */
@@ -184,9 +202,10 @@ hr {
     /* Espaciado entre tarjetas */
     display: block;
     /* Las tarjetas generales en block */
+
     box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
     border-radius: 0.9em;
-    padding: 0.625em;
+    margin-bottom: 20px;
 }
 
 /* Estilo específico para las tarjetas de lenguajes */
@@ -199,6 +218,8 @@ hr {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex-direction: row;
     /* Las tarjetas de lenguajes en horizontal */
+    backdrop-filter: blur(5px);
+
 }
 
 /* Imagen dentro de las tarjetas de lenguajes */
