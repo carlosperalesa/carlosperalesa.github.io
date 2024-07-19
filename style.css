@@ -40,11 +40,6 @@ body {
     bottom: 0;
 }
 
-/* Hover sobre el contenido del sidebar .sidebar:hover {
-    background: linear-gradient(120deg, #f0fcff, #fff);
-    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.1);
-} */
-
 /* Caja de avatar */
 .avatar-box {
     display: flex;
@@ -137,6 +132,7 @@ hr {
     font-size: 1.5em;
 }
 
+
 /* Lista de contactos */
 .contacts-list {
     list-style: none;
@@ -170,6 +166,7 @@ hr {
 .social-item {
     margin: 0 0.625em;
 }
+
 
 /* Enlaces de redes sociales */
 .social-link {
@@ -207,6 +204,42 @@ hr {
     box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
     border-radius: 0.9em;
     margin-bottom: 20px;
+}
+
+.iframe {
+    aspect-ratio: 16/9;
+}
+
+/* Contenedor de imágenes */
+.cert-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que las imágenes se envuelvan en varias filas */
+    justify-content: center;
+    /* Centra las imágenes horizontalmente */
+}
+
+/* Cajas de imágenes */
+.cert-box {
+    width: 18em;
+    /* Ajusta el ancho según tus necesidades */
+    height: 14em;
+    /* Ajusta la altura según tus necesidades */
+    margin: 0.5em;
+    /* Agrega un margen entre las imágenes */
+    border: 0.3125em solid #fff;
+    /* Borde blanco como el avatar */
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    overflow: hidden;
+    /* Evita que las imágenes se desborden */
+}
+
+.cert-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Ajusta la imagen para cubrir el contenedor */
 }
 
 /* Estilo específico para las tarjetas de lenguajes */
@@ -284,5 +317,10 @@ hr {
         margin-top: 20px;
         margin-left: 0;
         /* Agrega un margen superior para separar del sidebar */
+    }
+
+    .cert-container {
+        flex-direction: column;
+        /* Apila las imágenes verticalmente */
     }
 }
