@@ -236,8 +236,8 @@ hr {
 }
 
 .cert-box img {
-    width: 18em;
-    height: 14em;
+    width: 400px;
+    height: 300px;
     object-fit: cover;
     /* Ajusta la imagen para cubrir el contenedor */
 }
