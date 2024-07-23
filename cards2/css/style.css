@@ -129,16 +129,21 @@ html {
 }
 
 @media (max-width: 768px) {
+
+    /* The affected lines are within the media query */
     .container {
         flex-direction: column;
+        /* Change to column for vertical layout */
     }
 
     .sidebar {
+        order: 1;
         width: 100%;
-        order: 2;
+        /* Move sidebar to the top in the flex order */
     }
 
     .main-content {
-        order: 1;
+        order: 2;
+        /* Allow main content to grow */
     }
 }
