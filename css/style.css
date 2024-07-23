@@ -1,0 +1,343 @@
+html {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo general del cuerpo */
+body {
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+
+}
+
+/* Sidebar */
+.sidebar {
+    width: 20%;
+    min-width: 15em;
+    /* Aproximadamente 240px en la mayoría de navegadores */
+    padding: 1.2em;
+    /* 20px en la mayoría de navegadores */
+    background: linear-gradient(120deg, #fff, #c0f2ff);
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 0.9em;
+    /* 15px en la mayoría de navegadores */
+    position: sticky;
+    top: 0;
+    bottom: 0;
+}
+
+/* Caja de avatar */
+.avatar-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.25em;
+    /* 20px en la mayoría de navegadores */
+}
+
+/* Imagen del avatar */
+.avatar-box img {
+    width: 6.25em;
+    /* 100px en la mayoría de navegadores */
+    height: 6.25em;
+    /* 100px en la mayoría de navegadores */
+    border-radius: 50%;
+    border: 0.3125em solid #fff;
+    /* 5px en la mayoría de navegadores */
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+}
+
+/* Contenido de la información */
+.info-content {
+    text-align: center;
+}
+
+/* Nombre */
+.name {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 0.6em 0 0.3em;
+    /* 10px 0 5px en la mayoría de navegadores */
+}
+
+/* Título */
+.title {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Línea horizontal */
+hr {
+    margin: 1.25em 0;
+    /* 20px en la mayoría de navegadores */
+    border-top: 1px solid #ccc;
+}
+
+/* Tarjetas generales */
+.card {
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 1em;
+    padding: 0.625em;
+    margin-bottom: 1em;
+    backdrop-filter: blur(5px);
+
+}
+
+/* Hover sobre los enlaces del sidebar */
+.links .card:hover {
+    background: linear-gradient(120deg, #f0fcff, #fff);
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+
+    /* Ajusta la sombra según sea necesario */
+}
+
+/* Estilo de los enlaces de contacto */
+.contact-link {
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+/* Caja de iconos */
+.icon-box {
+    width: 2.5em;
+    height: 2.5em;
+    background-color: #ffffff;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.6em;
+}
+
+/* Iconos dentro de la caja de iconos */
+.icon-box ion-icon {
+    font-size: 1.5em;
+}
+
+
+/* Lista de contactos */
+.contacts-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* Elementos de la lista de contactos */
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.9em;
+}
+
+/* Enlaces de contacto */
+.contact-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Lista de redes sociales */
+.social-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.25em;
+}
+
+/* Elementos de la lista de redes sociales */
+.social-item {
+    margin: 0 0.625em;
+}
+
+
+/* Enlaces de redes sociales */
+.social-link {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+/* Contenido principal */
+.main-content {
+    margin-top: 0px;
+    margin-left: 10px;
+    padding: 0;
+    flex: 1;
+    /* El contenido principal ocupa el espacio restante */
+    display: flex;
+    /* Activamos flexbox para .main-content */
+    flex-wrap: wrap;
+    /* Permite que los elementos se envuelvan en varias filas */
+    flex-direction: column;
+    /* Las tarjetas generales en vertical */
+    flex-grow: 1;
+    background: linear-gradient(120deg, #fff, #ffd8ff);
+}
+
+/* Tarjetas dentro del contenido principal */
+.main-content .card {
+    width: 100%;
+    /* Ajusta el ancho de las tarjetas del main-content */
+    margin: 0;
+    /* Espaciado entre tarjetas */
+    display: block;
+    /* Las tarjetas generales en block */
+
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    border-radius: 0.9em;
+    margin-bottom: 20px;
+}
+
+.iframe {
+    aspect-ratio: 16/9;
+}
+
+/* Contenedor de imágenes */
+.cert-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que las imágenes se envuelvan en varias filas */
+    justify-content: center;
+    /* Centra las imágenes horizontalmente */
+}
+
+/* Cajas de imágenes */
+.cert-box {
+    width: 18em;
+    /* Ajusta el ancho según tus necesidades */
+    height: 14em;
+    /* Ajusta la altura según tus necesidades */
+    margin: 0.5em;
+    /* Agrega un margen entre las imágenes */
+    border: 0.3125em solid #fff;
+    /* Borde blanco como el avatar */
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    overflow: hidden;
+    /* Evita que las imágenes se desborden */
+}
+
+.cert-box img {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    /* Ajusta la imagen para cubrir el contenedor */
+}
+
+/* Estilo específico para las tarjetas de lenguajes */
+.language-card {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    /* Las tarjetas de lenguajes en horizontal */
+    backdrop-filter: blur(5px);
+
+}
+
+/* Imagen dentro de las tarjetas de lenguajes */
+.language-card img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+/* Título de las tarjetas de lenguajes */
+.language-card .card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Texto de las tarjetas de lenguajes */
+.language-card .card-text {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Barra de progreso dentro de las tarjetas de lenguajes */
+.language-card .progress {
+    width: 100%;
+    height: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+/* Barra de progreso llena dentro de las tarjetas de lenguajes */
+.language-card .progress-bar {
+    width: 100%;
+    height: 100%;
+    background-color: #007bff;
+}
+
+@media (max-width: 768px) {
+
+    /* Ajusta el valor según el punto de quiebre deseado */
+    .content-wrapper {
+        flex-direction: column;
+        /* Cambia la dirección a vertical */
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 20px;
+        /* El sidebar ocupa todo el ancho */
+        min-width: auto;
+        /* Elimina el ancho mínimo */
+        position: static;
+        /* Quita la posición fija */
+    }
+
+    .main-content {
+        width: 100%;
+        min-width: 20px;
+        margin-top: 20px;
+        margin-left: 0;
+        /* Agrega un margen superior para separar del sidebar */
+    }
+
+    .cert-container {
+        flex-direction: column;
+        /* Apila las imágenes verticalmente */
+    }
+
+    .main-content .section-card {
+        display: none;
+        /* Oculta todas las tarjetas por defecto */
+    }
+
+    .main-content .section-card:first-child {
+        display: block;
+        /* Muestra la primera tarjeta por defecto */
+    }
+
+    .main-content .card {
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
