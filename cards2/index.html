@@ -27,7 +27,7 @@
                 <ul>
                     <li>
                         <div>
-                            <a href="#sobre-mi">
+                            <a class="card" href="#sobre-mi">
                                 <div class="icon-box">
                                     <ion-icon name="code-slash"></ion-icon>
                                     Sobre mí
@@ -37,7 +37,7 @@
                     </li>
                     <li>
                         <div>
-                            <a href="#experiencia-laboral">
+                            <a class="card" href="#experiencia-laboral">
                                 <div class="icon-box">
                                     <ion-icon name="briefcase-outline"></ion-icon>
                                     Experiencia Laboral
@@ -47,7 +47,7 @@
                     </li>
                     <li>
                         <div>
-                            <a href="#formacion-academica">
+                            <a class="card" href="#formacion-academica">
                                 <div class="icon-box">
                                     <ion-icon name="school-outline"></ion-icon>
                                     Formación Académica
@@ -56,7 +56,7 @@
                         </div>
                     </li>
                     <li>
-                        <div><a href="#habilidades">
+                        <div><a class="card" href="#habilidades">
                                 <div class="icon-box">
                                     <ion-icon name="star-outline"></ion-icon>
                                     Habilidades
@@ -65,7 +65,7 @@
                         </div>
                     </li>
                     <li>
-                        <div><a href="#idiomas">
+                        <div><a class="card" href="#idiomas">
                                 <div class="icon-box">
                                     <ion-icon name="language-outline"></ion-icon>
                                     Idiomas
@@ -74,19 +74,22 @@
                         </div>
                     </li>
                 </ul>
-            </nav>
+                <div class="contacto card">
+                    <li><a href="mailto:carlosperalesa@gmail.com"><ion-icon
+                                name="mail-outline"></ion-icon>carlosperalesa@gmail.com</a></li>
+                    <li><a href="tel:+56962798030"><ion-icon name="phone-portrait-outline"></ion-icon>+569 62798030</a>
+                    </li>
+                    <li><a href="https://maps.google.com/?q=Santiago+de+Chile" target="_blank"><ion-icon
+                                name="location-outline"></ion-icon>Santiago de Chile</a></li>
 
-            <div class="contacto">
-                <a href="mailto:carlosperalesa@gmail.com">carlosperalesa@gmail.com</a>
-                <a href="tel:+56962798030">+56962798030</a>
-                <a href="https://maps.google.com/?q=Santiago+de+Chile" target="_blank">Santiago de Chile</a>
-                <div class="social-links">
-                    <a href="https://github.com/carlosperalesa/" target="_blank"><ion-icon
-                            name="logo-github"></ion-icon></a>
-                    <a href="https://www.linkedin.com/in/carlos-perales-973b3422b/" target="_blank"><ion-icon
-                            name="logo-linkedin"></ion-icon></a>
+                    <div class="social-links">
+                        <a href="https://github.com/carlosperalesa/" target="_blank"><ion-icon
+                                name="logo-github"></ion-icon></a>
+                        <a href="https://www.linkedin.com/in/carlos-perales-973b3422b/" target="_blank"><ion-icon
+                                name="logo-linkedin"></ion-icon></a>
+                    </div>
                 </div>
-            </div>
+            </nav>
         </aside>
         <main class="main-content">
             <section id="sobre-mi" class="card">
@@ -120,16 +123,28 @@
             </section>
             <section id="formacion-academica" class="card">
                 <h2>Formación Académica</h2>
-                <h3>Universitaria</h3>
-                <p>Universidad Central de Chile: Derecho (congelado)(2009 - 2014)</p>
-                <h3>Media</h3>
-                <p>Liceo Manuel Arriarán Barros, Salesianos: Enseñanza Media (Egresado 2002)</p>
                 <h3>Certificaciones</h3>
                 <ul>
                     <li>Universidad Tecnológica Nacional (UTN.BA): Full-Stack Developer (2023)</li>
                     <li>Desafío Latam: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
                     <li>Sence: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
                 </ul>
+                <div class="cert-container">
+                    <div class="cert-box">
+                        <a href="https://desafiosdev.s3.amazonaws.com/uploads/certification/image/239/aprobacion-final-td8-g2-m9-desarrollo-de-aplicaciones-full-stack-python-trainee-v2-0-desarrollo-de-empleabilidad-en-la-industria-digital-ele030805068149-72(2).png"
+                            target="_blank">
+                            <img src="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
+                                alt="Imagen 2">
+                        </a>
+                    </div>
+                    <div class="cert-box">
+                        <img src=" ./img/cert/Certificado Curso FullStack Incluyeme.png" alt="Imagen 1">
+                    </div>
+                </div>
+                <h3>Universitaria</h3>
+                <p>Universidad Central de Chile: Derecho (congelado)(2009 - 2014)</p>
+                <h3>Media</h3>
+                <p>Liceo Manuel Arriarán Barros, Salesianos: Enseñanza Media (Egresado 2002)</p>
             </section>
             <section id="habilidades" class="card">
                 <h2>Habilidades</h2>
@@ -156,37 +171,54 @@
                     <div class="language-item">
                         <img src="./img/lenguajes/html5.svg" alt="HTML5">
                         <h3>HTML5</h3>
-                        <div class="progress-bar" style="width: 90%;"></div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 90%;"></div>
+                        </div>
                     </div>
                     <div class="language-item">
                         <img src="./img/lenguajes/css3.svg" alt="CSS3">
                         <h3>CSS3</h3>
-                        <div class="progress-bar" style="width: 80%;"></div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 80%;"></div>
+                        </div>
                     </div>
                     <div class="language-item">
                         <img src="./img/lenguajes/js.svg" alt="JavaScript">
                         <h3>JavaScript</h3>
-                        <div class="progress-bar" style="width: 70%;"></div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 70%;"></div>
+                        </div>
+
                     </div>
                     <div class="language-item">
                         <img src="./img/lenguajes/python.svg" alt="Python">
                         <h3>Python</h3>
-                        <div class="progress-bar" style="width: 85%;"></div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 85%;"></div>
+                        </div>
                     </div>
+
                     <div class="language-item">
                         <img src="./img/lenguajes/django.svg" alt="Django">
                         <h3>Django</h3>
-                        <div class="progress-bar" style="width: 70%;"></div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 70%;"></div>
+                        </div>
                     </div>
+
                     <div class="language-item">
                         <img src="./img/lenguajes/sqlite.svg" alt="SQLite">
                         <h3>SQLite</h3>
-                        <div class="progress-bar" style="width: 75%;"></div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 75%;"></div>
+                        </div>
                     </div>
                 </div>
-            </section>
-            <a href="#top">top</a>
-        </main>
+    </div>
+    </section>
+    <a href="#top" class="back-to-top"><ion-icon name="arrow-up-outline"></ion-icon></a>
+
+    </main>
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.js"></script>
