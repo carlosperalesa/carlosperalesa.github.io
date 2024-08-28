@@ -198,9 +198,9 @@ html {
 }
 
 .back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+    position: sticky;
+    bottom: 10px;
+    left: 90%;
     width: 50px;
     height: 50px;
     background-color: #0067b8;
@@ -230,8 +230,13 @@ html {
 
 @media (max-width: 768px) {
 
-    /* The affected lines are within the media query */
+    * {
+        margin: 0;
+        border: 0;
+    }
+
     .container {
+        width: 100%;
         flex-direction: column;
         /* Change to column for vertical layout */
         align-items: center;

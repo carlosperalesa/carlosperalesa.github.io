@@ -1,0 +1,54 @@
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://kit.fontawesome.com/334a740400.js" crossorigin="anonymous"></script>
+<style>
+  #content {
+    width: 100%;
+    /* Ancho adaptable */
+  }
+
+  .viewport-tablet {
+    max-width: 768px;
+    /* Ancho máximo para tablet */
+  }
+
+  .viewport-mobile {
+    max-width: 480px;
+    /* Ancho máximo para móvil */
+  }
+</style>
+
+<div class="viewport-buttons  d-flex justify-content-center align-items-center" style="background-color: white;">
+  <button data-viewport="desktop"><i class="fas fa-desktop"></i></button>
+  <button data-viewport="tablet"><i class="fas fa-tablet-alt"></i></button>
+  <button data-viewport="mobile"><i class="fas fa-mobile-alt"></i></button>
+</div>
+<div id="content" class="viewport-desktop d-flex justify-content-center align-items-center">
+
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.viewport-buttons button');
+  const content = document.getElementById('content');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const viewport = button.dataset.viewport;
+      content.className = `viewport-${viewport}`;
+    });
+  });
+</script>
+
+
+{% comment %}
+
+------------incluir al incio de la página-----------
+
+{% with active_viewport='desktop' %}
+{% include 'viewport.html' %}
+{% endwith %}
+
+------------incluir al final de la página-----------
+
+
+{% endcomment %}
