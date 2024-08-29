@@ -3,46 +3,341 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opiniones</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" /> -->
+
+    <title>Carlos Perales A. - Desarrollador Web</title>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="container mx-auto text-center p-5">
-        <h1 class="text-4xl font-bold mb-20 ">¡Hola! Dame tus opiniones!</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<body>
+    <div class="container">
 
-            <a href="./cards1/index.html"
-                class="block bg-white p-6 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:shadow-2xl">
-                <iframe src="./cards1/index.html" class="w-full h-48 rounded-md mb-4" frameborder="0"></iframe>
-                <h2 class="text-2xl font-semibold mb-4">cards1</h2>
-                <p class="text-gray-700">CLICK AQUI</p>
-            </a>
+        <aside class="sidebar" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="100">
+            <div class="avatar-box">
+                <img src="./img/avatar.jpg" alt="Carlos Perales A.">
+                <h1>Carlos Perales A.</h1>
+                <p>Web Developer</p>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <div>
+                            <a class="card" href="#sobre-mi">
+                                <div class="icon-box">
+                                    <ion-icon name="code-slash"></ion-icon>
+                                    Sobre mí
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a class="card" href="#experiencia-laboral">
+                                <div class="icon-box">
+                                    <ion-icon name="briefcase-outline"></ion-icon>
+                                    Experiencia Laboral
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a class="card" href="#formacion-academica">
+                                <div class="icon-box">
+                                    <ion-icon name="school-outline"></ion-icon>
+                                    Formación Académica
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div><a class="card" href="#habilidades">
+                                <div class="icon-box">
+                                    <ion-icon name="star-outline"></ion-icon>
+                                    Habilidades
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div><a class="card" href="#idiomas">
+                                <div class="icon-box">
+                                    <ion-icon name="language-outline"></ion-icon>
+                                    Idiomas
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div><a class="card" href="#lenguajes">
+                                <div class="icon-box">
+                                    <ion-icon name="build-outline"></ion-icon>
+                                    Lenguajes y Tecnologías
+                                </div>
+                            </a>
+                        </div>
+                    </li>
 
-            <a href="./cards2/index.html"
-                class="block bg-white p-6 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:shadow-2xl">
-                <iframe src="./cards2/index.html" class="w-full h-48 rounded-md mb-4" frameborder="0"></iframe>
-                <h2 class="text-2xl font-semibold mb-4">cards2</h2>
-                <p class="text-gray-700">CLICK AQUI</p>
-            </a>
+                </ul>
+                <div class="contacto card">
+                    <li><a href="mailto:carlosperalesa@gmail.com"><ion-icon
+                                name="mail-outline"></ion-icon>carlosperalesa@gmail.com</a></li>
+                    <li><a href="tel:+56962798030"><ion-icon name="phone-portrait-outline"></ion-icon>+569
+                            62798030</a>
+                    </li>
+                    <li><a href="https://maps.google.com/?q=Santiago+de+Chile" target="_blank"><ion-icon
+                                name="location-outline"></ion-icon>Santiago de Chile</a></li>
 
-            <a href="./dark/index.html"
-                class="block bg-white p-6 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:shadow-2xl">
-                <iframe src="./dark/index.html" class="w-full h-48 rounded-md mb-4" frameborder="0"></iframe>
-                <h2 class="text-2xl font-semibold mb-4">dark</h2>
-                <p class="text-gray-700">CLICK AQUI</p>
-            </a>
+                    <div class="social-links">
+                        <a href="https://wa.me/56962798030"><ion-icon name="logo-whatsapp"></ion-icon></a>
+                        <a href="https://github.com/carlosperalesa/" target="_blank"><ion-icon
+                                name="logo-github"></ion-icon></a>
+                        <a href="https://www.linkedin.com/in/carlos-perales-973b3422b/" target="_blank"><ion-icon
+                                name="logo-linkedin"></ion-icon></a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
 
-            <a href="./constructor/index.html"
-                class="block bg-white p-6 rounded-lg shadow-lg transition transform hover:-translate-y-1 hover:shadow-2xl">
-                <iframe src="/constructor/index.html" class="w-full h-48 rounded-md mb-4" frameborder="0"></iframe>
-                <h2 class="text-2xl font-semibold mb-4">constructor</h2>
-                <p class="text-gray-700">CLICK AQUI</p>
-            </a>
+        <main class="main-content">
+            <section id="sobre-mi" class="card" data-aos="fade-left" data-aos-duration="1500" data-aos-delay="100">
+                <h2>Sobre mí</h2>
+                <p>Apasionado desarrollador web full-stack con 11 años de experiencia en el área de telecomunicaciones y
+                    ventas. Experiencia en atención al cliente, soporte técnico, ventas y gestión de equipos. Busco
+                    aplicar mis habilidades técnicas y comerciales en un entorno desafiante y orientado al crecimiento.
+                </p>
+            </section>
+            <section id="experiencia-laboral" class="card" data-aos="fade-left" data-aos-duration="1500"
+                data-aos-delay="100">
+                <h2>Experiencia Laboral</h2>
+                <div class="job">
+                    <h3>T-Sales, Telecomunicaciones</h3>
+                    <p>Backoffice servicio móvil movistar (sep. 2022 - nov. 2022)</p>
+                    <p>Respuesta a requerimientos del área de ventas, ingreso de negocios, revisión de documentos,
+                        categorización de riesgo, manejo de excepciones y confección de reportes de ventas.</p>
+                </div>
+                <div class="job">
+                    <h3>Xinerlink, Telecomunicaciones</h3>
+                    <p>Ejecutivo comercial empresas claro (nov. 2021 - feb. 2022)</p>
+                    <p>Búsqueda de nuevos clientes, presentación de productos móviles a empresas PYME, coordinación con
+                        áreas de despacho y logística, sucursales, áreas técnicas y de postventa. Seguimiento de
+                        funcionamiento de productos.</p>
+                </div>
+                <div class="job">
+                    <h3>Entel Call Center, Telecomunicaciones</h3>
+                    <p>Ejecutivo de ventas para entel (ene. 2018 - ene. 2021)</p>
+                    <p>Ejecutivo de Laboratorio de ventas, venta de servicios hogar y móviles, pruebas de
+                        procedimientos, servicios y promociones para su implementación en áreas de fuerza de venta.</p>
+                </div>
+            </section>
+            <section id="formacion-academica" class="card" data-aos="fade-left" data-aos-duration="1500"
+                data-aos-delay="100">
+                <h2>Formación Académica</h2>
+                <h3>Certificaciones</h3>
+                <ul>
+                    <li>Universidad Tecnológica Nacional (UTN.BA): Full-Stack Developer (2023)</li>
+                    <li>Desafío Latam: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
+                    <li>SENCE: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
+                    <li>Talento Digital: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
+                </ul>
+                <div class="cert-container">
+                    <div class="cert-box">
+                        <a href="./img/cert/Certificado Curso FullStack Incluyeme.png" target="_blank">
+                            <img src="./img/cert/Certificado Curso FullStack Incluyeme.png" alt="Imagen 1"
+                                loading="lazy">
+                        </a>
+                    </div>
 
+                    <div class="cert-box">
+                        <a href="https://desafiosdev.s3.amazonaws.com/uploads/certification/image/239/aprobacion-final-td8-g2-m9-desarrollo-de-aplicaciones-full-stack-python-trainee-v2-0-desarrollo-de-empleabilidad-en-la-industria-digital-ele030805068149-72(2).png"
+                            target="_blank">
+                            <img src="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
+                                alt="Imagen 2" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="cert-box">
+                        <a href="https://www.acreditta.com/credential/58ff72cd-990f-424a-ae47-7bb266f5eae6"
+                            target="_blank">
+                            <img src="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
+                                alt="Imagen 1" loading="lazy">
+                        </a>
+                    </div>
+                    <div class="cert-box">
+                        <a href="./img/cert/CertificadoSENCE.pdf" target="_blank">
+                            <img src="./img/cert/CertificadoSENCE.png" alt="Imagen 1" loading="lazy">
+                        </a>
+                    </div>
+
+                </div>
+                <h3>Universitaria</h3>
+                <p>Universidad Central de Chile: Derecho (congelado)(2009 - 2014)</p>
+                <h3>Media</h3>
+                <p>Liceo Manuel Arriarán Barros, Salesianos: Enseñanza Media (Egresado 2002)</p>
+            </section>
+            <section id="habilidades" class="card" data-aos="fade-left" data-aos-duration="1500" data-aos-delay="100">
+                <h2>Habilidades</h2>
+                <ul>
+                    <li>Comunicación efectiva</li>
+                    <li>Creatividad</li>
+                    <li>Adaptabilidad</li>
+                    <li>Habilidad para analizar problemas</li>
+                    <li>Proactividad</li>
+                    <li>Atención al detalle</li>
+                    <li>Asertividad</li>
+                </ul>
+            </section>
+            <section id="idiomas" class="card" data-aos="fade-left" data-aos-duration="1500" data-aos-delay="100">
+                <h2>Idiomas</h2>
+                <ul>
+                    <li>Inglés - Nivel alto</li>
+                    <li>Español - Nativo</li>
+                </ul>
+            </section>
+            <section id="lenguajes" class="card" data-aos="fade-left" data-aos-duration="1500" data-aos-delay="100">
+                <h2>Lenguajes y Tecnologías</h2>
+                <div class="language-grid">
+                    <div class="language-card">
+                        <h3>Frontend</h3>
+                        <div class="language-items">
+                            <div class="language-item">
+                                <img src="./img/lenguajes/html5.svg" alt="HTML5">
+                                <div class="language-info">
+                                    <h4>HTML5</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar html" style="width: 90%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="language-item">
+                                <img src="./img/lenguajes/css3.svg" alt="CSS3">
+                                <div class="language-info">
+                                    <h4>CSS3</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar css" style="width: 80%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="language-item">
+                                <img src="./img/lenguajes/js.svg" alt="JavaScript">
+                                <div class="language-info">
+                                    <h4>JavaScript</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar js" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="language-item">
+                                <img src="./img/lenguajes/wordpress.svg" alt="WordPress">
+                                <div class="language-info">
+                                    <h4>WordPress</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar wordpress" style="width: 90%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="language-card">
+                        <h3>Backend</h3>
+                        <div class="language-items">
+                            <div class="language-item">
+                                <img src="./img/lenguajes/python.svg" alt="Python">
+                                <div class="language-info">
+                                    <h4>Python</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar python" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="language-item">
+                                <img src="./img/lenguajes/django.svg" alt="Django">
+                                <div class="language-info">
+                                    <h4>Django</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar django" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="language-card">
+                        <h3>Databases</h3>
+                        <div class="language-items">
+                            <div class="language-item">
+                                <img src="./img/lenguajes/postgresql.svg" alt="PostgreSQL">
+                                <div class="language-info">
+                                    <h4>PostgreSQL</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar postgresql" style="width: 60%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="language-item">
+                                <img src="./img/lenguajes/sqlite.svg" alt="SQLite">
+                                <div class="language-info">
+                                    <h4>SQLite</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar sqlite" style="width: 80%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="language-card">
+                        <h3>Version Control</h3>
+                        <div class="language-items">
+                            <div class="language-item">
+                                <img src="./img/lenguajes/git.svg" alt="Git">
+                                <div class="language-info">
+                                    <h4>Git</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar git" style="width: 75%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="language-item">
+                                <img src="./img/lenguajes/github.svg" alt="GitHub">
+                                <div class="language-info">
+                                    <h4>GitHub</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar github" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div class="button-container">
+            <button id="main-button" class="main-button">
+                <ion-icon name="add-outline"></ion-icon>
+            </button>
+            <button id="scroll-top-button" class="secondary-button">
+                <ion-icon name="arrow-up-outline"></ion-icon>
+            </button>
+            <button id="theme-toggle-button" class="secondary-button">
+                <ion-icon name="moon-outline"></ion-icon>
+            </button>
         </div>
+
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.js"></script>
+    <script src="./js/theme.js"></script>
+
 </body>
 
 </html>
+
+<!-- los iconos se sacaron de https://iconos8.es/ -->
