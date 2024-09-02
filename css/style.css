@@ -255,6 +255,10 @@ html {
     background-color: #1598d5;
 }
 
+.progress-bar.mysql {
+    background-color: #71b5d4;
+}
+
 .progress-bar.git {
     background-color: #F05032;
 }
@@ -300,6 +304,14 @@ html {
     transition: opacity 0.3s, transform 0.3s;
 }
 
+.whatsapp-button {
+    background-color: #25D366;
+}
+
+.phone-button {
+    background-color: #0067b8;
+}
+
 .main-button:hover,
 .secondary-button:hover {
     transform: scale(1.1);
@@ -310,7 +322,7 @@ html {
     background-color: #004a90;
 }
 
-.main-button.active+.secondary-button {
+.main-button.active~.secondary-button {
     opacity: 1;
     transform: scale(1);
 }
@@ -363,6 +375,10 @@ body.dark-mode .main-content {
 
 body.dark-mode .language-card {
     background-color: #1e1e1e;
+}
+
+body.dark-mode .phone-button {
+    background-color: #4da3ff;
 }
 
 @media (max-width: 768px) {
