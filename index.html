@@ -100,7 +100,7 @@
                         <a href="https://wa.me/56962798030"><ion-icon name="logo-whatsapp"></ion-icon></a>
                         <a href="https://github.com/carlosperalesa/" target="_blank"><ion-icon
                                 name="logo-github"></ion-icon></a>
-                        <a href="https://www.linkedin.com/in/carlos-perales-973b3422b/" target="_blank"><ion-icon
+                        <a href="www.linkedin.com/in/carlosperalesa" target="_blank"><ion-icon
                                 name="logo-linkedin"></ion-icon></a>
                     </div>
                 </div>
@@ -290,6 +290,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="language-item">
+                                <img src="./img/lenguajes/mysql.svg" alt="MySql">
+                                <div class="language-info">
+                                    <h4>MySql</h4>
+                                    <div class="progress-container">
+                                        <div class="progress-bar MySql" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="language-card">
@@ -334,7 +343,51 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.js"></script>
-    <script src="./js/theme.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainButton = document.getElementById('main-button');
+            const scrollTopButton = document.getElementById('scroll-top-button');
+            const themeToggleButton = document.getElementById('theme-toggle-button');
+            const body = document.body;
+
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                mainButton.classList.toggle('active', isMenuOpen);
+                scrollTopButton.style.opacity = isMenuOpen ? '1' : '0';
+                scrollTopButton.style.transform = isMenuOpen ? 'scale(1)' : 'scale(0)';
+                themeToggleButton.style.opacity = isMenuOpen ? '1' : '0';
+                themeToggleButton.style.transform = isMenuOpen ? 'scale(1)' : 'scale(0)';
+            }
+
+            function scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                toggleMenu(); // Cierra el menú después de hacer scroll
+            }
+
+            function toggleTheme() {
+                body.classList.toggle('dark-mode');
+                const isDarkMode = body.classList.contains('dark-mode');
+                themeToggleButton.innerHTML = isDarkMode
+                    ? '<ion-icon name="sunny-outline"></ion-icon>'
+                    : '<ion-icon name="moon-outline"></ion-icon>';
+            }
+
+            mainButton.addEventListener('click', toggleMenu);
+            scrollTopButton.addEventListener('click', scrollToTop);
+            themeToggleButton.addEventListener('click', toggleTheme);
+
+            document.addEventListener('click', function (event) {
+                if (!event.target.closest('.button-container') && isMenuOpen) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
 
 </body>
 
