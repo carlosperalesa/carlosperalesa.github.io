@@ -262,7 +262,7 @@ html {
 }
 
 .progress-bar.python {
-    background-color: #3776AB;
+    background-color: #fcc40f;
 }
 
 .progress-bar.django {
@@ -277,8 +277,8 @@ html {
     background-color: #1598d5;
 }
 
-.progress-bar.mysql {
-    background-color: #71b5d4;
+.progress-bar.MySql {
+    background-color: #ebb420;
 }
 
 .progress-bar.git {
@@ -428,4 +428,52 @@ body.dark-mode .phone-button {
     .main-content {
         order: 2;
     }
+
+    .project-card {
+        padding-top: 15px;
+    }
+
+    .job {
+        padding-top: 15px;
+    }
+
+    #formacion-academica h2 {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    #formacion-academica h3 {
+        padding-top: 15px;
+    }
+
+    #formacion-academica li {
+        padding-top: 15px;
+    }
+
+    #habilidades h2 {
+        padding-bottom: 15px;
+    }
+
+    #habilidades li {
+        padding-top: 15px;
+    }
+
+    #idiomas h2 {
+        padding-bottom: 15px;
+    }
+
+    #idiomas li {
+        padding-top: 15px;
+    }
+
+    #lenguajes h2 {
+        padding-bottom: 15px;
+    }
+
+    .language-grid {
+        padding-top: 15px;
+    }
+
+
+
 }
