@@ -1,3 +1,4 @@
+/* General */
 body,
 html {
     margin: 0;
@@ -7,10 +8,14 @@ html {
     color: #333;
 }
 
+/* Container */
+
 .container {
     display: flex;
     min-height: 100vh;
 }
+
+/* Sidebar */
 
 .sidebar {
     width: 280px;
@@ -104,6 +109,8 @@ html {
     color: #0067b8;
 }
 
+/* Contenedor Principal */
+
 .main-content {
     flex: 1;
     padding: 20px;
@@ -153,12 +160,6 @@ html {
     text-decoration: none;
 }
 
-@media (max-width: 768px) {
-    .project-card {
-        flex: 0 1 100%;
-    }
-}
-
 .cert-container {
     display: flex;
     flex-wrap: wrap;
@@ -202,6 +203,7 @@ html {
 .language-card h3 {
     color: #0067b8;
     margin-bottom: 15px;
+    margin-top: 0px;
     font-size: 1.2em;
 }
 
@@ -245,6 +247,7 @@ html {
 }
 
 /* Colores específicos para cada barra de progreso */
+
 .progress-bar.html {
     background-color: #f3653e;
 }
@@ -288,6 +291,8 @@ html {
 .progress-bar.github {
     background-color: #ac31e9;
 }
+
+/* Boton principal */
 
 .button-container {
     position: fixed;
@@ -350,6 +355,7 @@ html {
 }
 
 /* Estilos para el modo oscuro */
+
 body.dark-mode {
     background-color: #121212;
     color: #e0e0e0;
@@ -403,6 +409,8 @@ body.dark-mode .phone-button {
     background-color: #4da3ff;
 }
 
+/* Media Query */
+
 @media (max-width: 768px) {
     * {
         margin: 0;
@@ -430,6 +438,7 @@ body.dark-mode .phone-button {
     }
 
     .project-card {
+        flex: 0 1 100%;
         padding-top: 15px;
     }
 
@@ -472,7 +481,4 @@ body.dark-mode .phone-button {
     .language-grid {
         padding-top: 15px;
     }
-
-
-
 }
