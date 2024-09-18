@@ -13,6 +13,8 @@
         crossorigin="anonymous"></script>
     <!-- google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- lightbox -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
@@ -132,17 +134,26 @@
         </aside>
         <!-- container -->
         <main class="main-content">
-            <section id="sobre-mi" class="card">
-                <h2>Sobre mí</h2>
-                <p>Apasionado desarrollador web full-stack con 11 años de experiencia en el área de telecomunicaciones y
-                    ventas. Experiencia en atención al cliente, soporte técnico, ventas y gestión de equipos. Busco
-                    aplicar mis habilidades técnicas y comerciales en un entorno desafiante y orientado al crecimiento.
-                </p>
+            <section id="sobre-mi" class="card collapsible-section">
+                <h2 class="section-header">Sobre mí <span class="arrow" role="button" tabindex="0"
+                        aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </span></h2>
+                <div class="section-content">
+                    <p>Apasionado desarrollador web full-stack con 11 años de experiencia en el área de
+                        telecomunicaciones y
+                        ventas. Experiencia en atención al cliente, soporte técnico, ventas y gestión de equipos. Busco
+                        aplicar mis habilidades técnicas y comerciales en un entorno desafiante y orientado al
+                        crecimiento.
+                    </p>
+                </div>
             </section>
-            <section id="proyectos-activos" class="card" data-aos="fade-left" data-aos-duration="1500"
-                data-aos-delay="100">
-                <h2>Proyectos Activos</h2>
-                <div class="project-container">
+            <section id="proyectos-activos" class="card collapsible-section">
+                <h2 class="section-header">Proyectos Activos <span class="arrow" role="button" tabindex="0"
+                        aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </span></h2>
+                <div class="project-container section-content">
                     <div class="project-card">
                         <a href="/Other/Hootiehoo/index.html" target="_blank">
                             <div style="display: flex; align-items: center;">
@@ -163,212 +174,236 @@
                     </div>
                 </div>
             </section>
-            <section id="formacion-academica" class="card">
-                <h2>Formación Académica</h2>
-                <h3>Certificaciones</h3>
-                <ul>
-                    <li>Universidad Tecnológica Nacional (UTN.BA): Full-Stack Developer (2023)</li>
-                    <li>Desafío Latam: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
-                    <li>SENCE: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
-                    <li>Talento Digital: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
-                </ul>
-                <div class="cert-container">
-                    <div class="cert-box">
-                        <a href="./img/cert/Certificado Curso FullStack Incluyeme.png" data-lightbox="certificados"
-                            data-title="Certificado Curso FullStack Incluyeme">
-                            <img src="./img/cert/Certificado Curso FullStack Incluyeme.png"
-                                alt="Certificado Curso FullStack Incluyeme" loading="lazy">
-                        </a>
-                    </div>
+            <section id="formacion-academica" class="card collapsible-section">
+                <h2 class="section-header">Formación Académica <span class="arrow" role="button" tabindex="0"
+                        aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </span></h2>
+                <div class="section-content">
+                    <h3>Certificaciones</h3>
+                    <ul>
+                        <li>Universidad Tecnológica Nacional (UTN.BA): Full-Stack Developer (2023)</li>
+                        <li>Desafío Latam: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
+                        <li>SENCE: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
+                        <li>Talento Digital: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
+                    </ul>
+                    <div class="cert-container">
+                        <div class="cert-box">
+                            <a href="./img/cert/Certificado Curso FullStack Incluyeme.png" data-lightbox="certificados"
+                                data-title="Certificado Curso FullStack Incluyeme">
+                                <img src="./img/cert/Certificado Curso FullStack Incluyeme.png"
+                                    alt="Certificado Curso FullStack Incluyeme" loading="lazy">
+                            </a>
+                        </div>
 
-                    <div class="cert-box">
-                        <a href="https://desafiosdev.s3.amazonaws.com/uploads/certification/image/239/aprobacion-final-td8-g2-m9-desarrollo-de-aplicaciones-full-stack-python-trainee-v2-0-desarrollo-de-empleabilidad-en-la-industria-digital-ele030805068149-72(2).png"
-                            data-lightbox="certificados"
-                            data-title="Certificado Desarrollo de aplicaciones full stack python trainee">
-                            <img src="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
-                                alt="Certificado Desarrollo de aplicaciones full stack python trainee" loading="lazy">
-                        </a>
-                    </div>
+                        <div class="cert-box">
+                            <a href="https://desafiosdev.s3.amazonaws.com/uploads/certification/image/239/aprobacion-final-td8-g2-m9-desarrollo-de-aplicaciones-full-stack-python-trainee-v2-0-desarrollo-de-empleabilidad-en-la-industria-digital-ele030805068149-72(2).png"
+                                data-lightbox="certificados"
+                                data-title="Certificado Desarrollo de aplicaciones full stack python trainee">
+                                <img src="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
+                                    alt="Certificado Desarrollo de aplicaciones full stack python trainee"
+                                    loading="lazy">
+                            </a>
+                        </div>
 
-                    <div class="cert-box">
-                        <a href="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
-                            data-lightbox="certificados"
-                            data-title="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE">
-                            <img src="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
-                                alt="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE" loading="lazy">
-                        </a>
-                    </div>
+                        <div class="cert-box">
+                            <a href="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
+                                data-lightbox="certificados"
+                                data-title="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE">
+                                <img src="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
+                                    alt="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE" loading="lazy">
+                            </a>
+                        </div>
 
-                    <div class="cert-box">
-                        <a href="./img/cert/CertificadoSENCE.png" data-lightbox="certificados"
-                            data-title="Certificado SENCE">
-                            <img src="./img/cert/CertificadoSENCE.png" alt="Certificado SENCE" loading="lazy">
-                        </a>
+                        <div class="cert-box">
+                            <a href="./img/cert/CertificadoSENCE.png" data-lightbox="certificados"
+                                data-title="Certificado SENCE">
+                                <img src="./img/cert/CertificadoSENCE.png" alt="Certificado SENCE" loading="lazy">
+                            </a>
+                        </div>
+                    </div>
+                    <h3>Universitaria</h3>
+                    <p>Universidad Central de Chile: Derecho (congelado)(2009 - 2014)</p>
+                    <h3>Media</h3>
+                    <p>Liceo Manuel Arriarán Barros, Salesianos: Enseñanza Media (Egresado 2002)</p>
+                </div>
+            </section>
+            <section id="experiencia-laboral" class="card collapsible-section">
+                <h2 class="section-header">Experiencia Laboral <span class="arrow" role="button" tabindex="0"
+                        aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </span></h2>
+                <div class="section-content">
+                    <div class="job">
+                        <h3>T-Sales, Telecomunicaciones</h3>
+                        <p>Backoffice servicio móvil movistar (sep. 2022 - nov. 2022)</p>
+                        <p>Respuesta a requerimientos del área de ventas, ingreso de negocios, revisión de documentos,
+                            categorización de riesgo, manejo de excepciones y confección de reportes de ventas.</p>
+                    </div>
+                    <div class="job">
+                        <h3>Xinerlink, Telecomunicaciones</h3>
+                        <p>Ejecutivo comercial empresas claro (nov. 2021 - feb. 2022)</p>
+                        <p>Búsqueda de nuevos clientes, presentación de productos móviles a empresas PYME, coordinación
+                            con
+                            áreas de despacho y logística, sucursales, áreas técnicas y de postventa. Seguimiento de
+                            funcionamiento de productos.</p>
+                    </div>
+                    <div class="job">
+                        <h3>Entel Call Center, Telecomunicaciones</h3>
+                        <p>Ejecutivo de ventas para entel (ene. 2018 - ene. 2021)</p>
+                        <p>Ejecutivo de Laboratorio de ventas, venta de servicios hogar y móviles, pruebas de
+                            procedimientos, servicios y promociones para su implementación en áreas de fuerza de venta.
+                        </p>
                     </div>
                 </div>
-                <h3>Universitaria</h3>
-                <p>Universidad Central de Chile: Derecho (congelado)(2009 - 2014)</p>
-                <h3>Media</h3>
-                <p>Liceo Manuel Arriarán Barros, Salesianos: Enseñanza Media (Egresado 2002)</p>
             </section>
-            <section id="experiencia-laboral" class="card">
-                <h2>Experiencia Laboral</h2>
-                <div class="job">
-                    <h3>T-Sales, Telecomunicaciones</h3>
-                    <p>Backoffice servicio móvil movistar (sep. 2022 - nov. 2022)</p>
-                    <p>Respuesta a requerimientos del área de ventas, ingreso de negocios, revisión de documentos,
-                        categorización de riesgo, manejo de excepciones y confección de reportes de ventas.</p>
-                </div>
-                <div class="job">
-                    <h3>Xinerlink, Telecomunicaciones</h3>
-                    <p>Ejecutivo comercial empresas claro (nov. 2021 - feb. 2022)</p>
-                    <p>Búsqueda de nuevos clientes, presentación de productos móviles a empresas PYME, coordinación con
-                        áreas de despacho y logística, sucursales, áreas técnicas y de postventa. Seguimiento de
-                        funcionamiento de productos.</p>
-                </div>
-                <div class="job">
-                    <h3>Entel Call Center, Telecomunicaciones</h3>
-                    <p>Ejecutivo de ventas para entel (ene. 2018 - ene. 2021)</p>
-                    <p>Ejecutivo de Laboratorio de ventas, venta de servicios hogar y móviles, pruebas de
-                        procedimientos, servicios y promociones para su implementación en áreas de fuerza de venta.</p>
+            <section id="habilidades" class="card collapsible-section">
+                <h2 class="section-header">Habilidades <span class="arrow" role="button" tabindex="0"
+                        aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </span></h2>
+                <div class="section-content">
+                    <ul>
+                        <li>Comunicación efectiva</li>
+                        <li>Creatividad</li>
+                        <li>Adaptabilidad</li>
+                        <li>Habilidad para analizar problemas</li>
+                        <li>Proactividad</li>
+                        <li>Atención al detalle</li>
+                        <li>Asertividad</li>
+                    </ul>
                 </div>
             </section>
-            <section id="habilidades" class="card">
-                <h2>Habilidades</h2>
-                <ul>
-                    <li>Comunicación efectiva</li>
-                    <li>Creatividad</li>
-                    <li>Adaptabilidad</li>
-                    <li>Habilidad para analizar problemas</li>
-                    <li>Proactividad</li>
-                    <li>Atención al detalle</li>
-                    <li>Asertividad</li>
-                </ul>
+            <section id="idiomas" class="card collapsible-section">
+                <h2 class="section-header">Idiomas <span class="arrow" role="button" tabindex="0" aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </span></h2>
+                <div class="section-content">
+                    <ul>
+                        <li>Inglés - Nivel alto - Conversacional</li>
+                        <li>Español - Nativo</li>
+                    </ul>
+                </div>
             </section>
-            <section id="idiomas" class="card">
-                <h2>Idiomas</h2>
-                <ul>
-                    <li>Inglés - Nivel alto</li>
-                    <li>Español - Nativo</li>
-                </ul>
-            </section>
-            <section id="lenguajes" class="card">
-                <h2>Lenguajes y Tecnologías</h2>
-                <div class="language-grid">
-                    <div class="language-card">
-                        <h3>Frontend</h3>
-                        <div class="language-items">
-                            <div class="language-item">
-                                <img src="./img/lenguajes/html5.svg" alt="HTML5">
-                                <div class="language-info">
-                                    <h4>HTML5</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar html" style="width: 90%;"></div>
+            <section id="lenguajes" class="card collapsible-section">
+                <h2 class="section-header">Lenguajes y Tecnologías<span class="arrow">&#9662;</span></h2>
+                <div class="section-content">
+                    <div class="language-grid">
+                        <div class="language-card">
+                            <h3>Frontend</h3>
+                            <div class="language-items">
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/html5.svg" alt="HTML5">
+                                    <div class="language-info">
+                                        <h4>HTML5</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar html" style="width: 90%;"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="language-item">
-                                <img src="./img/lenguajes/css3.svg" alt="CSS3">
-                                <div class="language-info">
-                                    <h4>CSS3</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar css" style="width: 80%;"></div>
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/css3.svg" alt="CSS3">
+                                    <div class="language-info">
+                                        <h4>CSS3</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar css" style="width: 80%;"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="language-item">
-                                <img src="./img/lenguajes/js.svg" alt="JavaScript">
-                                <div class="language-info">
-                                    <h4>JavaScript</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar js" style="width: 70%;"></div>
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/js.svg" alt="JavaScript">
+                                    <div class="language-info">
+                                        <h4>JavaScript</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar js" style="width: 70%;"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="language-item">
-                                <img src="./img/lenguajes/wordpress.svg" alt="WordPress">
-                                <div class="language-info">
-                                    <h4>WordPress</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar wordpress" style="width: 90%;"></div>
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/wordpress.svg" alt="WordPress">
+                                    <div class="language-info">
+                                        <h4>WordPress</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar wordpress" style="width: 90%;"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="language-card">
-                        <h3>Backend</h3>
-                        <div class="language-items">
-                            <div class="language-item">
-                                <img src="./img/lenguajes/python.svg" alt="Python">
-                                <div class="language-info">
-                                    <h4>Python</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar python" style="width: 85%;"></div>
+                        <div class="language-card">
+                            <h3>Backend</h3>
+                            <div class="language-items">
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/python.svg" alt="Python">
+                                    <div class="language-info">
+                                        <h4>Python</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar python" style="width: 85%;"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="language-item">
-                                <img src="./img/lenguajes/django.svg" alt="Django">
-                                <div class="language-info">
-                                    <h4>Django</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar django" style="width: 70%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="language-card">
-                        <h3>Databases</h3>
-                        <div class="language-items">
-                            <div class="language-item">
-                                <img src="./img/lenguajes/postgresql.svg" alt="PostgreSQL">
-                                <div class="language-info">
-                                    <h4>PostgreSQL</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar postgresql" style="width: 60%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="language-item">
-                                <img src="./img/lenguajes/sqlite.svg" alt="SQLite">
-                                <div class="language-info">
-                                    <h4>SQLite</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar sqlite" style="width: 80%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="language-item">
-                                <img src="./img/lenguajes/mysql.svg" alt="MySql">
-                                <div class="language-info">
-                                    <h4>MySql</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar MySql" style="width: 85%;"></div>
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/django.svg" alt="Django">
+                                    <div class="language-info">
+                                        <h4>Django</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar django" style="width: 70%;"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="language-card">
-                        <h3>Version Control</h3>
-                        <div class="language-items">
-                            <div class="language-item">
-                                <img src="./img/lenguajes/git.svg" alt="Git">
-                                <div class="language-info">
-                                    <h4>Git</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar git" style="width: 75%;"></div>
+                        <div class="language-card">
+                            <h3>Databases</h3>
+                            <div class="language-items">
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/postgresql.svg" alt="PostgreSQL">
+                                    <div class="language-info">
+                                        <h4>PostgreSQL</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar postgresql" style="width: 60%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/sqlite.svg" alt="SQLite">
+                                    <div class="language-info">
+                                        <h4>SQLite</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar sqlite" style="width: 80%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/mysql.svg" alt="MySql">
+                                    <div class="language-info">
+                                        <h4>MySql</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar MySql" style="width: 85%;"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="language-item">
-                                <img src="./img/lenguajes/github.svg" alt="GitHub">
-                                <div class="language-info">
-                                    <h4>GitHub</h4>
-                                    <div class="progress-container">
-                                        <div class="progress-bar github" style="width: 85%;"></div>
+                        </div>
+                        <div class="language-card">
+                            <h3>Version Control</h3>
+                            <div class="language-items">
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/git.svg" alt="Git">
+                                    <div class="language-info">
+                                        <h4>Git</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar git" style="width: 75%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="language-item">
+                                    <img src="./img/lenguajes/github.svg" alt="GitHub">
+                                    <div class="language-info">
+                                        <h4>GitHub</h4>
+                                        <div class="progress-container">
+                                            <div class="progress-bar github" style="width: 85%;"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -437,7 +472,17 @@
                     scrollTopButton.style.display = 'none';
                 }
             });
-        });</script>
+            // Secciones colapsables
+            const collapsibleSections = document.querySelectorAll('.collapsible-section');
+
+            collapsibleSections.forEach(section => {
+                const header = section.querySelector('.section-header');
+                header.addEventListener('click', () => {
+                    section.classList.toggle('collapsed');
+                });
+            });
+        });
+    </script>
 
 </body>
 

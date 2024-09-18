@@ -249,11 +249,11 @@ html {
 /* Colores específicos para cada barra de progreso */
 
 .progress-bar.html {
-    background-color: #f3653e;
+    background-color: #ed3d3b;
 }
 
 .progress-bar.css {
-    background-color: #45a0e1;
+    background-color: #1e8bcd;
 }
 
 .progress-bar.js {
@@ -265,11 +265,11 @@ html {
 }
 
 .progress-bar.python {
-    background-color: #fcc40f;
+    background-color: #fb983b;
 }
 
 .progress-bar.django {
-    background-color: #18da42;
+    background-color: #18ab50;
 }
 
 .progress-bar.postgresql {
@@ -277,11 +277,11 @@ html {
 }
 
 .progress-bar.sqlite {
-    background-color: #1598d5;
+    background-color: #1e8bcd;
 }
 
 .progress-bar.MySql {
-    background-color: #ebb420;
+    background-color: #F7DF1E;
 }
 
 .progress-bar.git {
@@ -289,7 +289,37 @@ html {
 }
 
 .progress-bar.github {
-    background-color: #ac31e9;
+    background-color: #a846b2;
+}
+
+/* colapsable */
+.section-header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    color: #605e5c;
+    /* Color gris similar al de la imagen */
+    font-size: 16px;
+    transition: transform 0.1s linear;
+}
+
+.collapsible-section.collapsed .arrow {
+    transform: rotate(180deg);
+}
+
+.section-content {
+    max-height: 1000px;
+    /* Ajusta este valor según sea necesario */
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.collapsible-section.collapsed .section-content {
+    max-height: 0;
 }
 
 /* Boton principal */
