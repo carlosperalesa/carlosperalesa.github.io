@@ -120,7 +120,7 @@ html {
 .card {
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-bottom: 20px;
 }
@@ -196,7 +196,7 @@ html {
 .language-card {
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
@@ -292,7 +292,43 @@ html {
     background-color: #a846b2;
 }
 
+/* tests psicologicos */
+
+.tests-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tests-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.tests-card h3 {
+    color: #0067b8;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    font-size: 1.2em;
+}
+
+.tests-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tests-item {
+    display: flex;
+    align-items: center;
+    padding-bottom: 13px;
+}
+
+
 /* colapsable */
+
 .section-header {
     cursor: pointer;
     display: flex;
@@ -302,7 +338,6 @@ html {
 
 .arrow {
     color: #605e5c;
-    /* Color gris similar al de la imagen */
     font-size: 16px;
     transition: transform 0.1s linear;
 }
@@ -312,8 +347,7 @@ html {
 }
 
 .section-content {
-    max-height: 1000px;
-    /* Ajusta este valor según sea necesario */
+    /* max-height: 1200px; */
     overflow: hidden;
     transition: max-height 0.3s ease;
 }
