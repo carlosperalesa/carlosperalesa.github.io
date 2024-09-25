@@ -160,32 +160,101 @@ html {
     text-decoration: none;
 }
 
+/* certificados */
+
 .cert-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 10px 0 20px 0;
-}
-
-.cert-box {
-    width: 18em;
-    height: 14em;
-    margin: 0.5em;
-    border: 0.3125em solid #fff;
-    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+
 }
 
-.cert-box:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 103, 184, 0.3);
+.dg-container {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    perspective: 1200px;
+    padding: 0;
+    /* Adds depth for 3D effect */
 }
 
-.cert-box img {
-    width: 400px;
-    height: 300px;
+.dg-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    /* Ensures 3D transforms are preserved */
+}
+
+.dg-wrapper a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    position: absolute;
+    top: 45%;
+    /* Ajusta la posicion vertical de las imagenes */
+    left: 50%;
+    width: 350px;
+    /* Ancho de imagen */
+    height: 225px;
+    /* Alto de imagen */
+    margin-top: -112.5px;
+    /* Mitad del alto para el centrado */
+    margin-left: -175px;
+    /* Mitad del ancho para el centrado */
+    opacity: 0;
+    visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.dg-wrapper a img {
+    width: 350px;
+    /* Set a fixed width */
+    height: 230px;
+    /* Set a fixed height */
     object-fit: cover;
+    /* Ensures the image fills the area without distortion */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 }
+
+.dg-center {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateZ(200px) rotateY(0deg) !important;
+    /* Brings the center card forward */
+}
+
+.dg-left {
+    transform: translateX(-300px) translateZ(-200px) rotateY(45deg);
+    /* Position to the left and tilt */
+    opacity: 1;
+    visibility: visible;
+}
+
+.dg-right {
+    transform: translateX(300px) translateZ(-200px) rotateY(-45deg);
+    /* Position to the right and tilt */
+    opacity: 1;
+    visibility: visible;
+}
+
+.dg-outleft,
+.dg-outright {
+    transform: translateZ(-400px);
+    /* Cards that are out of view */
+    opacity: 0;
+    visibility: hidden;
+}
+
+.dg-transition {
+    transition: all 0.6s ease-in-out;
+}
+
+
+/* Lenguajes */
 
 .language-grid {
     display: flex;

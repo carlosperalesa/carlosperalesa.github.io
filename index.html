@@ -26,7 +26,10 @@
     <link rel="alternate icon" type="image/png" href="/img/favicon.png">
     <!-- Favicon para dispositivos Apple -->
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <title>Carlos Perales A. - Desarrollador Web</title>
 
 </head>
@@ -196,38 +199,24 @@
                         <li>SENCE: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
                         <li>Talento Digital: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
                     </ul>
-                    <div class="cert-container">
-                        <div class="cert-box">
-                            <a href="./img/cert/Certificado Curso FullStack Incluyeme.png" data-lightbox="certificados"
-                                data-title="Certificado Curso FullStack Incluyeme">
-                                <img src="./img/cert/Certificado Curso FullStack Incluyeme.png"
-                                    alt="Certificado Curso FullStack Incluyeme" loading="lazy">
+                    <div class="cert-container dg-container">
+                        <div class="dg-wrapper">
+                            <a href="#"><img src="./img/cert/Certificado Curso FullStack Incluyeme.png"
+                                    alt="Certificado Curso FullStack Incluyeme">
+                                <div>Certificado Curso FullStack Incluyeme</div>
                             </a>
-                        </div>
-
-                        <div class="cert-box">
-                            <a href="https://desafiosdev.s3.amazonaws.com/uploads/certification/image/239/aprobacion-final-td8-g2-m9-desarrollo-de-aplicaciones-full-stack-python-trainee-v2-0-desarrollo-de-empleabilidad-en-la-industria-digital-ele030805068149-72(2).png"
-                                data-lightbox="certificados"
-                                data-title="Certificado Desarrollo de aplicaciones full stack python trainee">
-                                <img src="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
-                                    alt="Certificado Desarrollo de aplicaciones full stack python trainee"
-                                    loading="lazy">
+                            <a href="#"><img
+                                    src="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
+                                    alt="Certificado Desarrollo de aplicaciones full stack python trainee">
+                                <div>Certificado Desarrollo de aplicaciones full stack python trainee</div>
                             </a>
-                        </div>
-
-                        <div class="cert-box">
-                            <a href="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
-                                data-lightbox="certificados"
-                                data-title="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE">
-                                <img src="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
-                                    alt="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE" loading="lazy">
+                            <a href="#"><img
+                                    src="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
+                                    alt="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE">
+                                <div>Bootcamp Desarrollo Aplicaciones full stack python trainee</div>
                             </a>
-                        </div>
-
-                        <div class="cert-box">
-                            <a href="./img/cert/CertificadoSENCE.png" data-lightbox="certificados"
-                                data-title="Certificado SENCE">
-                                <img src="./img/cert/CertificadoSENCE.png" alt="Certificado SENCE" loading="lazy">
+                            <a href="#"><img src="./img/cert/CertificadoSENCE.png" alt="Certificado SENCE">
+                                <div>Certificado SENCE</div>
                             </a>
                         </div>
                     </div>
@@ -568,6 +557,19 @@
             });
         });
     </script>
+
+    <script type="text/javascript">
+        // Inicializa la galería
+        $(function () {
+            $('.cert-container').gallery({
+                autoplay: true,
+                interval: 4000  // Time between transitions (adjust as needed)
+            });
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="js/jquery.gallery.js"></script>
+    <script src="js/modernizr.custom.53451.js"></script>
 
 </body>
 

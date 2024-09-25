@@ -322,14 +322,61 @@
     -->
 
     <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
-    <script src="./js/script1.js"></script>
-    <script src="./js/script2.js"></script>
-    <script src="./js/script3.1.js"></script>
-    <script src="./js/script3.2.js"></script>
-    <script src="./js/script3.3.js"></script>
-    <script src="./js/script4.0.js"></script>
-    <script type="module" src="./js/script4.1.js"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputTitulo = document.getElementById('inputTitulo');
+            const listaElementos = document.getElementById('listaElementos');
+            const codigoGenerado = document.getElementById('codigoGenerado');
+            const btnCopiar = document.getElementById('btnCopiar');
+            const mensajeCopiado = document.getElementById('mensajeCopiado');
+            const btnAgregarElemento = document.getElementById('btnAgregarElemento');
+
+            // Función para actualizar el código generado
+            function actualizarCodigo() {
+                const titulo = inputTitulo.value;
+                const elementos = Array.from(listaElementos.children).map(li => li.textContent).join('\n');
+                codigoGenerado.textContent = `<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="${titulo}">
+</head>
+<body>
+    <h1>${titulo}</h1>
+    <ul>
+        ${elementos}
+    </ul>
+</body>
+</html>`;
+            }
+
+            // Evento para copiar el código
+            btnCopiar.addEventListener('click', () => {
+                navigator.clipboard.writeText(codigoGenerado.textContent).then(() => {
+                    mensajeCopiado.classList.remove('hidden');
+                    setTimeout(() => {
+                        mensajeCopiado.classList.add('hidden');
+                    }, 2000);
+                });
+            });
+
+            // Evento para agregar elementos a la lista
+            btnAgregarElemento.addEventListener('click', () => {
+                const nuevoElemento = prompt("Ingresa el nuevo elemento:");
+                if (nuevoElemento) {
+                    const li = document.createElement('li');
+                    li.textContent = nuevoElemento;
+                    listaElementos.appendChild(li);
+                    actualizarCodigo();
+                }
+            });
+
+            // Actualizar el código al cambiar el título
+            inputTitulo.addEventListener('input', actualizarCodigo);
+        });
+    </script>
 
 </body>
 
