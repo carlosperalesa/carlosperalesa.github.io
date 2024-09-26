@@ -253,6 +253,53 @@ html {
     transition: all 0.6s ease-in-out;
 }
 
+.dg-prev,
+.dg-next {
+    background-color: rgba(0, 123, 255, 0.7);
+    /* Color de fondo con transparencia */
+    color: white;
+    /* Color del texto */
+    border: none;
+    /* Sin borde */
+    width: 40px;
+    /* Ancho del botón */
+    height: 40px;
+    /* Alto del botón */
+    border-radius: 50%;
+    /* Hace que el botón sea circular */
+    cursor: pointer;
+    /* Cambia el cursor al pasar el mouse */
+    position: absolute;
+    /* Posiciona los botones de forma absoluta */
+    top: 50%;
+    /* Centra verticalmente */
+    transform: translateY(-50%);
+    /* Ajusta el centrado */
+    display: flex;
+    /* Para centrar el ícono */
+    align-items: center;
+    /* Centra verticalmente el ícono */
+    justify-content: center;
+    /* Centra horizontalmente el ícono */
+    z-index: 10;
+    /* Asegura que los botones estén por encima de las imágenes */
+}
+
+.dg-prev {
+    left: 10px;
+    /* Posición a la izquierda */
+}
+
+.dg-next {
+    right: 10px;
+    /* Posición a la derecha */
+}
+
+.dg-prev:hover,
+.dg-next:hover {
+    background-color: rgba(0, 105, 217, 0.9);
+    /* Color de fondo al pasar el mouse */
+}
 
 /* Lenguajes */
 

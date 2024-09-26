@@ -219,12 +219,13 @@
                                 <div>Certificado SENCE</div>
                             </a>
                         </div>
+                        <button class="dg-prev"><i class="fas fa-chevron-left"></i></button>
+                        <button class="dg-next"><i class="fas fa-chevron-right"></i></button </div>
                     </div>
                     <h3>Universitaria</h3>
                     <p>Universidad Central de Chile: Derecho (congelado)(2009 - 2014)</p>
                     <h3>Media</h3>
                     <p>Liceo Manuel Arriarán Barros, Salesianos: Enseñanza Media (Egresado 2002)</p>
-                </div>
             </section>
             <section id="experiencia-laboral" class="card collapsible-section">
                 <h2 class="section-header">Experiencia Laboral <span class="arrow" role="button" tabindex="0"
@@ -562,8 +563,17 @@
         // Inicializa la galería
         $(function () {
             $('.cert-container').gallery({
-                autoplay: true,
-                interval: 4000  // Time between transitions (adjust as needed)
+                autoplay: false, // Desactiva el modo automático
+                interval: 4000  // Este valor ya no será utilizado
+            });
+
+            // Manejo de eventos para los botones
+            $('.dg-prev').on('click', function () {
+                $('.cert-container').data('gallery')._navigate('prev');
+            });
+
+            $('.dg-next').on('click', function () {
+                $('.cert-container').data('gallery')._navigate('next');
             });
         });
     </script>
