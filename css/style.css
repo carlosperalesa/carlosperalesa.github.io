@@ -144,20 +144,108 @@ html {
     padding-bottom: 5px;
 }
 
+/* Proyectos */
+
 .project-container {
     display: flex;
     justify-content: left;
     flex-wrap: wrap;
+    gap: 20px;
+    /* Espacio entre las tarjetas */
 }
 
 .project-card {
-    margin-bottom: 20px;
-    padding-right: 20px;
+    width: 200px;
+    /* Ancho de la tarjeta */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    overflow: hidden;
+    /* Para que la imagen no sobresalga */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Sombra de la tarjeta */
+    perspective: 1000px;
+    /* Para el efecto 3D */
 }
 
-.project-card a {
+.card-inner {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    /* Preserva el 3D */
+    transform: rotateY(0deg);
+    /* Asegúrate de que inicie en 0 */
+}
+
+.project-card:hover {
+    transform: rotateY(180deg);
+    /* Rota el contenedor de la tarjeta */
+}
+
+.project-card:hover .card-inner {
+    transform: rotateY(180deg);
+    /* Rota la tarjeta al hacer hover */
+}
+
+.card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    /* Altura fija para el cuerpo de la tarjeta */
+}
+
+.card-body img {
+    width: 200px;
+    /* Ancho de la imagen */
+    height: auto;
+    /* Altura automática */
+    object-fit: cover;
+    /* Asegura que la imagen cubra el área */
+}
+
+.card-footer {
+    padding: 10px;
+    text-align: center;
+    /* Centra el texto en el pie de la tarjeta */
+}
+
+.project-card h3 {
     color: #0067b8;
+    /* Hereda el color del texto, sin cambio de color */
     text-decoration: none;
+    /* Elimina el subrayado */
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    /* Oculta la parte trasera cuando no está visible */
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    /* Rota la parte trasera */
+    display: flex;
+    /* Usar flexbox para centrar la imagen */
+    justify-content: center;
+    /* Centra horizontalmente */
+    align-items: center;
+    /* Centra verticalmente */
+}
+
+.card-back img {
+    width: 100%;
+    /* Ancho completo */
+    height: 100%;
+    /* Altura completa */
+    object-fit: cover;
+    /* Asegura que la imagen cubra el área sin distorsionarse */
+    transform: scaleX(-1);
 }
 
 /* certificados */
