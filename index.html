@@ -166,41 +166,36 @@
                         <i class="fas fa-chevron-down"></i>
                     </span></h2>
                 <div class="project-container section-content">
-                    <a href="https://hootiehoo.cl/" target="_blank">
-
-                        <div class="project-card">
-                            <div class="card-inner">
-                                <div class="card-front">
-                                    <div class="card-body">
-                                        <img src="/Other/Hootiehoo/2.png" alt="HootieHoo Logo" class="project-logo">
-                                    </div>
-                                    <div class="card-footer">
-                                        <h3>HootieHoo</h3>
-                                    </div>
+                    <div class="project-card" onclick="toggleCard(this, 'https://hootiehoo.cl/')">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-body">
+                                    <img src="/Other/Hootiehoo/2.png" alt="HootieHoo Logo" class="project-logo">
                                 </div>
-                                <div class="card-back">
-                                    <img src="img/cards/hh_screenshot.jpg" alt="HootieHoo Back" class="back-image">
+                                <div class="card-footer">
+                                    <h3>HootieHoo</h3>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                    <a href="https://ghivs.com/v2/" target="_blank">
-                        <div class="project-card">
-                            <div class="card-inner">
-                                <div class="card-front">
-                                    <div class="card-body">
-                                        <img src="/img/Ghivs.svg" alt="Ghivs Logo" class="project-logo">
-                                    </div>
-                                    <div class="card-footer">
-                                        <h3>Ghivs</h3>
-                                    </div>
-                                </div>
-                                <div class="card-back">
-                                    <img src="img/cards/ghivs_screenshot.jpg" alt="Ghivs Back" class="back-image">
-                                </div>
+                            <div class="card-back">
+                                <img src="img/cards/hh_screenshot.jpg" alt="HootieHoo Back" class="back-image">
                             </div>
                         </div>
-                    </a>
+                    </div>
+                    <div class="project-card" onclick="toggleCard(this, 'https://ghivs.com/v2/')">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-body">
+                                    <img src="/img/Ghivs.svg" alt="Ghivs Logo" class="project-logo">
+                                </div>
+                                <div class="card-footer">
+                                    <h3>Ghivs</h3>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img src="img/cards/ghivs_screenshot.jpg" alt="Ghivs Back" class="back-image">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             <section id="formacion-academica" class="card collapsible-section">
@@ -575,7 +570,17 @@
             });
         });
     </script>
-
+    <script>
+        function toggleCard(card, url) {
+            if (!card.classList.contains('active')) {
+                // Si la tarjeta no está activa, la volteamos
+                card.classList.add('active');
+            } else {
+                // Si la tarjeta ya está activa, redirigimos al enlace
+                window.open(url, '_blank');
+            }
+        }
+    </script>
     <script type="text/javascript">
         // Inicializa la galería
         $(function () {
