@@ -396,7 +396,7 @@ html {
 .language-card {
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
+    /* box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px; */
     padding: 20px;
 }
 
@@ -503,7 +503,7 @@ html {
 .tests-card {
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
+    /* box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px; */
     padding: 20px;
 }
 
