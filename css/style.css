@@ -164,7 +164,14 @@ html {
     /* Sombra de la tarjeta */
     perspective: 1000px;
     /* Para el efecto 3D */
-    padding: 5px
+    padding: 5px;
+    transition: transform 0.3s;
+    /* Añadir transición para suavizar el efecto */
+}
+
+.project-card:hover {
+    transform: scale(1.04);
+    /* Aumentar el tamaño al 102% */
 }
 
 .card-inner {
