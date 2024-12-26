@@ -1,0 +1,357 @@
+:root {
+    /* Google Material Colors */
+    --google-blue: #4285F4;
+    --google-green: #34A853;
+    --google-yellow: #FBBC05;
+    --google-red: #EA4335;
+
+    /* Material You Color Palette */
+    --md-sys-color-primary: #4285F4;
+    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-primary-container: #D6E3FF;
+    --md-sys-color-on-primary-container: #001A41;
+
+    --md-sys-color-secondary: #34A853;
+    --md-sys-color-on-secondary: #FFFFFF;
+    --md-sys-color-secondary-container: #C7F0BD;
+    --md-sys-color-on-secondary-container: #002203;
+
+    --md-sys-color-tertiary: #EA4335;
+    --md-sys-color-on-tertiary: #FFFFFF;
+    --md-sys-color-tertiary-container: #FFDAD4;
+    --md-sys-color-on-tertiary-container: #410001;
+
+    --md-sys-color-surface: #FFFBFE;
+    --md-sys-color-on-surface: #1C1B1F;
+    --md-sys-color-surface-variant: #E7E0EC;
+    --md-sys-color-on-surface-variant: #49454F;
+
+    --md-sys-color-background: #FFFBFE;
+    --md-sys-color-on-background: #1C1B1F;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: #F1F3F4;
+    color: var(--md-sys-color-on-background);
+    line-height: 1.6;
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* Icon Styling */
+.icon-box {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 20px;
+    margin: 4px;
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.icon-box:hover {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+/* Avatar and Contact Section */
+.avatar-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    background-color: var(--google-blue);
+    color: white;
+    text-align: center;
+}
+
+.avatar-box img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contacto {
+    background-color: var(--md-sys-color-secondary-container);
+    padding: 16px;
+    text-align: center;
+    border-radius: 12px;
+    margin: 16px 0;
+}
+
+/* Certificates Section */
+.cert-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.cert-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.cert-container img:hover {
+    transform: scale(1.05);
+}
+
+.cert-container>div {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Language and Skills Section */
+.language-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.language-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.language-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.language-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.language-item img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 8px;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #E0E0E0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 8px;
+    transition: width 0.5s ease;
+}
+
+.progress-bar.html {
+    background-color: var(--google-red);
+}
+
+.progress-bar.css {
+    background-color: var(--google-blue);
+}
+
+.progress-bar.js {
+    background-color: var(--google-yellow);
+}
+
+.progress-bar.wordpress {
+    background-color: var(--google-green);
+}
+
+.progress-bar.python {
+    background-color: var(--google-blue);
+}
+
+.progress-bar.django {
+    background-color: var(--google-green);
+}
+
+.progress-bar.postgresql {
+    background-color: var(--google-red);
+}
+
+.progress-bar.sqlite {
+    background-color: var(--google-blue);
+}
+
+.progress-bar.MySql {
+    background-color: var(--google-yellow);
+}
+
+.progress-bar.git {
+    background-color: var(--google-red);
+}
+
+.progress-bar.github {
+    background-color: var(--google-blue);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .cert-container,
+    .language-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Section Styling */
+.section {
+    background-color: white;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: var(--md-sys-color-primary);
+    color: white;
+    cursor: pointer;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.section-content {
+    padding: 16px;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.social-links a {
+    color: var(--md-sys-color-primary);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.2);
+}
+
+/* Floating Button Container */
+.button-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Main Floating Action Button */
+.floating-action-button {
+    width: 56px;
+    height: 56px;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    margin-bottom: 16px;
+}
+
+.floating-action-button:hover {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    transform: scale(1.1);
+}
+
+/* Secondary Buttons */
+.secondary-button {
+    width: 40px;
+    height: 40px;
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.secondary-button.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.secondary-button:hover {
+    background-color: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    --md-sys-color-primary: #8AB4F8;
+    --md-sys-color-on-primary: #003258;
+    --md-sys-color-primary-container: #004D7A;
+    --md-sys-color-on-primary-container: #D1E4FF;
+
+    --md-sys-color-secondary: #7FDFA0;
+    --md-sys-color-on-secondary: #003910;
+    --md-sys-color-secondary-container: #005319;
+    --md-sys-color-on-secondary-container: #9AF6BA;
+
+    --md-sys-color-tertiary: #F9BD7A;
+    --md-sys-color-on-tertiary: #4A2B00;
+    --md-sys-color-tertiary-container: #683F00;
+    --md-sys-color-on-tertiary-container: #FFDDB0;
+
+    --md-sys-color-surface: #1C1B1F;
+    --md-sys-color-on-surface: #E6E1E5;
+    --md-sys-color-surface-variant: #49454F;
+    --md-sys-color-on-surface-variant: #CAC4D0;
+
+    --md-sys-color-background: #1C1B1F;
+    --md-sys-color-on-background: #E6E1E5;
+
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+}
