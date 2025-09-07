@@ -4,17 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página con Tarjeta</title>
-    <link rel="stylesheet" href="../src/styles/main.css">
+    <title>Pokédex</title>
+    <meta name="description" content="Pokédex con búsqueda y carga infinita usando PokeAPI.">
+    <link rel="stylesheet" href="src/styles/main.css">
 </head>
 
 <body>
     <div id="pokemon-container"></div>
     <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Buscar Pokémon...">
-        <button id="search-button">Buscar</button>
+        <label for="search-input" class="sr-only">Buscar Pokémon</label>
+        <input type="search" id="search-input" placeholder="Buscar Pokémon..." aria-label="Buscar Pokémon">
+        <button id="search-button" aria-label="Ejecutar búsqueda">Buscar</button>
     </div>
-    <script src="../src/scripts/app.js"></script>
+    <script src="src/scripts/app.js"></script>
 </body>
 
 </html>

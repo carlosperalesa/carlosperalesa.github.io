@@ -1,28 +1,42 @@
-# Proyecto de Página Web
+# Pokédex (PokeAPI)
 
-Este proyecto es una simple página web que utiliza HTML y CSS para crear un diseño limpio y moderno. A continuación se detalla la estructura del proyecto y cómo configurarlo.
+Pequeña Pokédex con búsqueda en vivo y carga infinita usando PokeAPI. Implementa grid responsive, lazy-loading de imágenes, caché de especies y mejoras de accesibilidad.
 
 ## Estructura del Proyecto
 
 ```
-web-page-project
+pokedex
+├── index.html             # Página principal
 ├── src
-│   ├── index.html        # Página principal de la web
 │   ├── styles
-│   │   └── main.css      # Archivo CSS con estilos
-├── README.md             # Documentación del proyecto
+│   │   └── main.css       # Estilos
+│   ├── scripts
+│   │   └── app.js         # Lógica de la Pokédex
+│   └── img
+│       └── gradient.svg   # Fondo
+└── README.md
 ```
 
 ## Archivos
 
-- **src/index.html**: Este archivo contiene la estructura básica de HTML y enlaza el archivo CSS para aplicar el estilo.
-- **src/styles/main.css**: Este archivo contiene el CSS proporcionado, que define el estilo general de la página, incluyendo el fondo, las tarjetas de inicio de sesión y los estilos para los encabezados.
+- **index.html**: Estructura HTML con mejoras de accesibilidad y rutas correctas.
+- **src/styles/main.css**: Estilos, grid responsive y hover sin saltos; spinner de carga.
+- **src/scripts/app.js**: Carga en paralelo con `Promise.all`, `IntersectionObserver`, debounce del input, DOM seguro, caché de especies (memoria y `localStorage`).
 
 ## Cómo Configurar y Ejecutar
 
 1. Clona este repositorio en tu máquina local.
 2. Navega a la carpeta del proyecto.
-3. Abre el archivo `src/index.html` en tu navegador para ver la página web en acción.
+3. Abre `index.html` en tu navegador.
+   - Requiere conexión a Internet para consultar PokeAPI.
+
+## Notas de rendimiento
+- Las especies se cachean en memoria y `localStorage` con clave `species_<id>`.
+- Las imágenes usan `loading="lazy"`.
+
+## Posibles mejoras
+- Cachear sprites en `Cache Storage` (Service Worker) para uso offline.
+- Pretraducción de tipos al español.
 
 ## Contribuciones
 
