@@ -38,6 +38,27 @@ pokedex
 - Cachear sprites en `Cache Storage` (Service Worker) para uso offline.
 - Pretraducción de tipos al español.
 
+## Descargar base de datos local (JSON + imágenes)
+
+Requisitos: Node 18+.
+
+Estructura creada:
+```
+src/DB/
+├── pokemon/      # JSON por id (datos de /pokemon/:id)
+├── species/      # JSON por id (datos de /pokemon-species/:id)
+└── cache/        # Imágenes oficiales por id (official-artwork)
+```
+
+Comandos:
+```
+# Todo el catálogo
+node src/scripts/fetch_db.js
+
+# Rango específico (ej: 1..151) y control de concurrencia
+node src/scripts/fetch_db.js --from=1 --to=151 --concurrency=12
+```
+
 ## Contribuciones
 
 Las contribuciones son bienvenidas. Si deseas mejorar este proyecto, siéntete libre de hacer un fork y enviar un pull request.
