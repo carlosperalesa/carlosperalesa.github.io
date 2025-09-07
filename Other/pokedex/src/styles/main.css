@@ -134,7 +134,7 @@ body {
 /* Barra de búsqueda fija inferior */
 .search-bar {
   position: fixed;
-  bottom: 1rem;
+  bottom: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
   width: 40%;

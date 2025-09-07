@@ -4,7 +4,8 @@ html {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f0f0f0;
+    background: url('../img/gradient.svg') no-repeat center center fixed;
+    background-size: cover;
     color: #333;
 }
 
@@ -63,8 +64,9 @@ html {
     box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
     border-left: 3px solid transparent;
 }
-.sidebar nav ul li a:hover {
-}
+
+.sidebar nav ul li a:hover {}
+
 .sidebar nav ul li a:hover {
     background-color: #f0f0f0;
     border-left: 3px solid #0067b8;
