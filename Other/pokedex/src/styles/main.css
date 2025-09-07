@@ -1,0 +1,77 @@
+/* Fondo general */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: url('../img/gradient.svg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor de las tarjetas */
+#pokemon-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* 5 tarjetas por fila */
+  gap: 1.5rem;
+  /* Espaciado entre tarjetas */
+  width: 90%;
+  max-width: 1400px;
+  margin: 2rem auto;
+  /* Espaciado superior e inferior */
+}
+
+/* Tarjetas de Pokémon */
+.card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 100px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Altura ajustada */
+}
+
+.card:hover {
+  transform: scale(1.2);
+  z-index: 2;
+}
+
+/* Imagen del Pokémon */
+.card img {
+  width: 70px;
+  /* Tamaño ajustado */
+  height: 70px;
+  object-fit: contain;
+  margin-right: 1rem;
+  margin-left: 0.5rem;
+  /* Espaciado a la izquierda */
+}
+
+/* Contenedor de información */
+.card div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  /* Ocupa el espacio restante */
+}
+
+/* Estilo del texto dentro de las tarjetas */
+.card h1 {
+  font-size: 1.2rem;
+  /* Tamaño ajustado */
+  font-weight: 600;
+  color: #2b2b2b;
+  margin: 0;
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+  margin: 0.25rem 0 0;
+}
