@@ -61,17 +61,66 @@ body {
 }
 
 /* Estilo del texto dentro de las tarjetas */
-.card h1 {
+.card h2 {
   font-size: 1.2rem;
   /* Tamaño ajustado */
-  font-weight: 600;
+  font-weight: 500;
   color: #2b2b2b;
   margin: 0;
 }
 
-.card h2 {
+.card h1 {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #555;
-  margin: 0.25rem 0 0;
+  margin: 0;
+}
+
+/* Barra de búsqueda fija */
+.search-bar {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 800px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  /* Sombra más visible */
+  border-radius: 25px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.search-bar input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background: none;
+  padding: 0.5rem;
+  border-radius: 25px 0 0 25px;
+  /* Bordes redondeados solo a la izquierda */
+}
+
+.search-bar button {
+  border: none;
+  outline: none;
+  background-color: #f3f3f3;
+  color: #333;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0.5rem 1rem;
+  border-radius: 0 25px 25px 0;
+  /* Bordes redondeados solo a la derecha */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #e0e0e0;
 }
