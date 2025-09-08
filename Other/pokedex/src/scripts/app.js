@@ -3,7 +3,7 @@ const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 
 let offset = 0;
-const limit = 20;
+const limit = 100;
 let isLoading = false;
 
 const speciesCache = new Map();
@@ -123,20 +123,30 @@ async function fetchPokemonSpecies(id) {
         speciesCache.set(id, parsed);
         return parsed;
     }
-
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-    if (!response.ok) throw new Error('Error al obtener especie');
-    const data = await response.json();
-
-    // Guardar solo lo necesario para no saturar storage
-    const minimal = { id, names: data.names };
-    speciesCache.set(id, minimal);
     try {
-        localStorage.setItem(localKey, JSON.stringify(minimal));
-    } catch (_) {
-        // Storage lleno o no disponible; continuar sin bloquear
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+        if (!response.ok) throw new Error(`Error al obtener especie ${id}`);
+        const data = await response.json();
+        // Guardamos solo lo necesario para no saturar el localStorage
+        const minimal = {
+            id,
+            names: data.names,
+            genera: data.genera,
+            evolution_chain: data.evolution_chain,
+            flavor_text_entries: data.flavor_text_entries
+        };
+        speciesCache.set(id, minimal);
+        try {
+            localStorage.setItem(localKey, JSON.stringify(minimal));
+        } catch (_) { }
+        return minimal;
+    } catch (error) {
+        console.error(error);
+        // Retornamos datos por defecto para evitar romper la app
+        const fallback = { id, names: [{ language: { name: 'es' }, name: `#${id}` }] };
+        speciesCache.set(id, fallback);
+        return fallback;
     }
-    return minimal;
 }
 
 function buildCard(pokemon, spanishName) {
@@ -169,7 +179,7 @@ function buildCard(pokemon, spanishName) {
 function createModalBase() {
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
-
+    overlay.style.zIndex = '9999'; // Asegura que el modal quede sobre la barra de búsqueda
     const modal = document.createElement('div');
     modal.className = 'modal';
 
