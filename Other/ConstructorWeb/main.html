@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Constructor Web</title>
+  <link rel='stylesheet' href='styles.css'>
+</head>
+<body>
+  <div class='barra-superior'>
+    <button id='crear-proyecto'>📁 Nuevo</button>
+    <button id='abrir-proyecto'>📂 Abrir</button>
+    <button id='borrar-proyecto'>🗑️ Borrar</button>
+    <button onclick='cambiarVista()'>🔄 Vista</button>
+    <button onclick='toggleGrid()'>🧱 Grid</button>
+    <button onclick='activarModoPrueba()'>🧪 Prueba</button>
+    <button onclick='salirModoPrueba()'>↩️ Salir</button>
+    <button title='color'>🎨 Color</button>
+    <button title='galeria'>🖼️ Galería</button>
+  </div>
+
+  <div class='barra-div-principal'></div>
+  <div class='barra-div-secundario'></div>
+  <div class='modo-prueba' style='display:none;'>Modo prueba activo</div>
+
+  <script type='module' src='estado.js'></script>
+  <script type='module' src='utils.js'></script>
+  <script type='module' src='color.js'></script>
+  <script type='module' src='galeria.js'></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+/* Estilos globales para el constructor */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f4f4f4;
+    padding: 10px;
+}
+
+.barra-superior button {
+    margin: 0 5px;
+}
+
+.barra-div-principal,
+.barra-div-secundario {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.barra-div-principal input,
+.barra-div-secundario input,
+.barra-div-principal select,
+.barra-div-secundario select {
+    margin: 0 5px;
+}
+
+.main-div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 300px;
+}
