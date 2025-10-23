@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: url('/Other/pokedex/src/img/gradient.svg') no-repeat center center fixed;
+  background: url('/src/img/gradient.svg') no-repeat center center fixed;
   background-size: cover;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -97,6 +97,7 @@ body {
   flex-direction: column;
   justify-content: center;
   flex: 1;
+  
   /* Ocupa el espacio restante */
 }
 
@@ -123,7 +124,8 @@ body {
   left: 0;
   right: 0;
   width: 100%;
-  background-color: #ffffff;
+background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.24);
   padding: 0.5rem 1rem;
   z-index: 9;
@@ -139,9 +141,7 @@ body {
   transform: translateX(-50%);
   width: 40%;
   max-width: 1000px;
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 16px;
@@ -226,7 +226,7 @@ body {
   font-size: 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
