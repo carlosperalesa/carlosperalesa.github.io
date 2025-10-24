@@ -15,9 +15,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <!-- font-awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- lightbox -->
+    <!-- jQuery (cargado una sola vez) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- lightbox (sin jQuery incluido) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <!-- Slick carousel -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <!-- css -->
     <link rel="stylesheet" href="./css/style.css">
     <!-- <link rel="stylesheet" href="./css/google.css"> -->
@@ -27,13 +33,129 @@
     <link rel="alternate icon" type="image/png" href="/img/favicon.png">
     <!-- Favicon para dispositivos Apple -->
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <title>Carlos Perales A. - Desarrollador Web</title>
     <meta name="description"
         content="Portafolio digital de Carlos Perales A., desarrollador web full-stack con experiencia en telecomunicaciones y ventas.">
+    
+    <!-- Open Graph meta tags para redes sociales -->
+    <meta property="og:title" content="Carlos Perales A. - Desarrollador Web Full Stack">
+    <meta property="og:description" content="Portafolio digital de Carlos Perales A., desarrollador web full-stack con experiencia en telecomunicaciones y ventas.">
+    <meta property="og:image" content="https://carlosperalesa.github.io/img/avatar.jpg">
+    <meta property="og:url" content="https://carlosperalesa.github.io">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Carlos Perales A. - Desarrollador Web Full Stack">
+    <meta name="twitter:description" content="Portafolio digital de Carlos Perales A., desarrollador web full-stack con experiencia en telecomunicaciones y ventas.">
+    <meta name="twitter:image" content="https://carlosperalesa.github.io/img/avatar.jpg">
+
+    <!-- Schema.org Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Carlos Perales A.",
+      "alternateName": "Carlos Perales",
+      "jobTitle": "Desarrollador Web Full Stack",
+      "description": "Desarrollador web en formación con experiencia en telecomunicaciones, especializado en Python, Django, JavaScript y WordPress",
+      "url": "https://carlosperalesa.github.io",
+      "image": "https://carlosperalesa.github.io/img/avatar.jpg",
+      "email": "carlosperalesa@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CL"
+      },
+      "sameAs": [
+        "https://github.com/carlosperalesa",
+        "https://linkedin.com/in/carlosperalesa"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Freelance"
+      },
+      "alumniOf": [
+        {
+          "@type": "EducationalOrganization",
+          "name": "Instituto Profesional INACAP"
+        },
+        {
+          "@type": "EducationalOrganization",
+          "name": "Universidad Central de Chile"
+        }
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Full-Stack Developer",
+          "credentialCategory": "certificate",
+          "dateCreated": "2023",
+          "issuedBy": {
+            "@type": "Organization",
+            "name": "Universidad Tecnológica Nacional (UTN.BA)"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Desarrollo de aplicaciones Full Stack PYTHON",
+          "credentialCategory": "certificate",
+          "dateCreated": "2024",
+          "educationalLevel": "462 horas",
+          "issuedBy": {
+            "@type": "Organization",
+            "name": "Desafío Latam"
+          }
+        }
+      ],
+      "knowsAbout": [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "Python",
+        "Django",
+        "PostgreSQL",
+        "SQLite",
+        "MySQL",
+        "Git",
+        "GitHub",
+        "WordPress",
+        "Desarrollo Web Full Stack",
+        "Frontend Development",
+        "Backend Development"
+      ],
+      "knowsLanguage": [
+        {
+          "@type": "Language",
+          "name": "Español",
+          "alternateName": "es"
+        },
+        {
+          "@type": "Language",
+          "name": "Inglés",
+          "alternateName": "en"
+        }
+      ],
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Desarrollador Web",
+        "occupationLocation": {
+          "@type": "Country",
+          "name": "Chile"
+        },
+        "skills": [
+          "Python",
+          "Django",
+          "JavaScript",
+          "HTML",
+          "CSS",
+          "PostgreSQL",
+          "Git",
+          "WordPress"
+        ]
+      }
+    }
+    </script>
 
 </head>
 
@@ -151,12 +273,12 @@
         </aside>
         <!-- container -->
         <main class="main-content">
-            <section id="sobre-mi" class="card collapsible-section">
+            <section id="sobre-mi" class="card collapsible-section animate-fade-in">
                 <h2 class="section-header">Sobre mí <span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false">
+                        aria-expanded="false" aria-controls="sobre-mi-content" aria-label="Expandir o colapsar sección Sobre mí">
                         <i class="fas fa-chevron-down"></i>
                     </span></h2>
-                <div class="section-content">
+                <div id="sobre-mi-content" class="section-content" aria-hidden="true">
                     <p>Soy un desarrollador web en formación con experiencia en telecomunicaciones y atención al
                         cliente. He trabajado en áreas de ventas, soporte y gestión de equipos, lo que me ha permitido
                         desarrollar buenas habilidades de comunicación y resolución de problemas. Actualmente estudio
@@ -166,61 +288,59 @@
                     </p>
                 </div>
             </section>
-            <section id="proyectos-activos" class="card collapsible-section">
+            <section id="proyectos-activos" class="card collapsible-section animate-fade-in">
                 <h2 class="section-header">Proyectos Activos <span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false">
+                        aria-expanded="false" aria-controls="proyectos-activos-content" aria-label="Expandir o colapsar sección Proyectos Activos">
                         <i class="fas fa-chevron-down"></i>
                     </span></h2>
-                <div class="project-container section-content">
-                    <div class="project-card" onclick="toggleCard(this, '/Other/Hootiehoo/index.html')">
+                <div id="proyectos-activos-content" class="project-container section-content" aria-hidden="true">
+                    <div class="project-card animate-slide-left stagger-1" onclick="toggleCard(this, '/Other/Hootiehoo/index.html')">
                         <div class="card-inner">
                             <div class="card-front">
                                 <div class="card-body">
-                                    <img src="/Other/Hootiehoo/2.png" alt="HootieHoo Logo" class="project-logo">
+                                    <img src="/img/cards/hh.png" alt="HootieHoo Logo" class="project-logo" loading="lazy">
                                 </div>
                                 <div class="card-footer">
-                                    <a href="/Other/Hootiehoo/index.html">
-                                        <h3>HootieHoo</h3>
-                                    </a>
+                                    <h3>HootieHoo</h3>
                                 </div>
                             </div>
                             <div class="card-back">
-                                <img src="img/cards/hh_screenshot.jpg" alt="HootieHoo Back" class="back-image">
+                                <img src="img/cards/hh_screenshot.jpg" alt="HootieHoo Back" class="back-image" loading="lazy">
                             </div>
                         </div>
                     </div>
-                    <div class="project-card" onclick="toggleCard(this, 'https://ghivs.com/v2/')">
+                    <div class="project-card animate-slide-left stagger-2" onclick="toggleCard(this, 'https://ghivs.com/v2/')">
                         <div class="card-inner">
                             <div class="card-front">
                                 <div class="card-body">
-                                    <img src="/img/Ghivs.svg" alt="Ghivs Logo" class="project-logo">
+                                    <img src="/img/cards/Ghivs.svg" alt="Ghivs Logo" class="project-logo" loading="lazy">
                                 </div>
                                 <div class="card-footer">
                                     <h3>Ghivs</h3>
                                 </div>
                             </div>
                             <div class="card-back">
-                                <img src="img/cards/ghivs_screenshot.jpg" alt="Ghivs Back" class="back-image">
+                                <img src="img/cards/ghivs_screenshot.jpg" alt="Ghivs Back" class="back-image" loading="lazy">
                             </div>
                         </div>
                     </div>
-                    <div class="project-card" onclick="toggleCard(this, '/Other/Pokedex/index.html')"">
+                    <div class="project-card animate-slide-left stagger-3" onclick="toggleCard(this, '/Other/Pokedex/index.html')"">
                         <div class=" card-inner">
                         <div class="card-front">
                             <div class="card-body">
                                 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
-                                    alt="Pokemones" class="project-logo">
+                                    alt="Pokemones" class="project-logo" loading="lazy">
                             </div>
                             <div class="card-footer">
                                 <h3>Pokemones</h3>
                             </div>
                         </div>
                         <div class="card-back">
-                            <img src="img/cards/pokemones_screenshot.jpg" alt="Pokemones Back" class="back-image">
+                            <img src="img/cards/pm_screenshot.jpg" alt="Pokemones Back" class="back-image" loading="lazy">
                         </div>
                     </div>
                 </div>
-                <div class="project-card" onclick="toggleCard(this, '/Other/experiments/index.html')">
+                <div class="project-card animate-slide-left stagger-4" onclick="toggleCard(this, '/Other/experiments/index.html')">
                     <div class="card-inner">
                         <div class="card-front">
                             <div class="card-body">
@@ -235,14 +355,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="project-card animate-slide-left stagger-5" onclick="toggleCard(this, 'https://lastripleschile.cl/')">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-body">
+                                <img src="/img/cards/tn_logo.png" alt="Las Triples Chile Logo" class="project-logo" loading="lazy">
+                            </div>
+                            <div class="card-footer">
+                                <h3>Las Triples Chile</h3>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <img src="img/cards/tn_screenshot.jpg" alt="Las Triples Chile Screenshot" class="back-image" loading="lazy">
+                        </div>
+                    </div>
+                </div>
     </div>
     </section>
-    <section id="formacion-academica" class="card collapsible-section">
+    <section id="formacion-academica" class="card collapsible-section animate-fade-in">
         <h2 class="section-header">Formación Académica <span class="arrow" role="button" tabindex="0"
-                aria-expanded="false">
+                aria-expanded="false" aria-controls="formacion-academica-content" aria-label="Expandir o colapsar sección Formación Académica">
                 <i class="fas fa-chevron-down"></i>
             </span></h2>
-        <div class="section-content">
+        <div id="formacion-academica-content" class="section-content" aria-hidden="true">
             <h3>Certificaciones</h3>
             <ul>
                 <li>Universidad Tecnológica Nacional (UTN.BA): Full-Stack Developer (2023)</li>
@@ -250,55 +385,55 @@
                 <li>SENCE: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
                 <li>Talento Digital: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
             </ul>
-            <div class="cert-container dg-container">
+            <div class="cert-container dg-container animate-scale-up">
                 <div class="dg-wrapper">
                     <a href="./img/cert/Certificado Curso FullStack Incluyeme.png" target="_blank">
                         <img src="./img/cert/Certificado Curso FullStack Incluyeme.png"
-                            alt="Certificado Curso FullStack Incluyeme">
+                            alt="Certificado Curso FullStack Incluyeme" loading="lazy">
                         <div>Certificado Curso FullStack Incluyeme</div>
                     </a>
                     <a href="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
                         target="_blank">
                         <img src="./img/cert/Certificado Desarrollo de aplicaciones full stack python trainee.png"
-                            alt="Certificado Desarrollo de aplicaciones full stack python trainee">
+                            alt="Certificado Desarrollo de aplicaciones full stack python trainee" loading="lazy">
                         <div>Certificado Desarrollo de aplicaciones full stack python trainee</div>
                     </a>
                     <a href="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png" target="_blank">
                         <img src="./img/cert/BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE.png"
-                            alt="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE">
+                            alt="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE" loading="lazy">
                         <div>Bootcamp Desarrollo Aplicaciones full stack python trainee</div>
                     </a>
                     <a href="./img/cert/CertificadoSENCE.png" target="_blank">
-                        <img src="./img/cert/CertificadoSENCE.png" alt="Certificado SENCE">
+                        <img src="./img/cert/CertificadoSENCE.png" alt="Certificado SENCE" loading="lazy">
                         <div>Certificado SENCE</div>
                     </a>
                     <a href="./img/cert/Certificado Curso Sensibilización a la Discapacidad Konecta Chile.pdf"
                         target="_blank">
                         <img src="./img/cert/Certificado Curso Sensibilización a la Discapacidad Konecta Chile.pdf"
-                            alt="Certificado Curso Sensibilización a la Discapacidad Konecta Chile">
+                            alt="Certificado Curso Sensibilización a la Discapacidad Konecta Chile" loading="lazy">
                         <div>Certificado Curso Sensibilización a la Discapacidad Konecta Chile</div>
                     </a>
                     <a href="./img/cert/Certificado Didactik curso - Autenticación de Dos Factores (2FA).pdf"
                         target="_blank">
                         <img src="./img/cert/Certificado Didactik curso - Autenticación de Dos Factores (2FA).pdf"
-                            alt="Certificado Didactik curso - Autenticación de Dos Factores (2FA)">
+                            alt="Certificado Didactik curso - Autenticación de Dos Factores (2FA)" loading="lazy">
                         <div>Certificado Didactik curso - Autenticación de Dos Factores (2FA)</div>
                     </a>
                     <a href="./img/cert/Certificado Didactik curso - CIBERSEGURIDAD Y ACCESO SEGURO.pdf"
                         target="_blank">
                         <img src="./img/cert/Certificado Didactik curso - CIBERSEGURIDAD Y ACCESO SEGURO.pdf"
-                            alt="Certificado Didactik curso - CIBERSEGURIDAD Y ACCESO SEGURO">
+                            alt="Certificado Didactik curso - CIBERSEGURIDAD Y ACCESO SEGURO" loading="lazy">
                         <div>Certificado Didactik curso - CIBERSEGURIDAD Y ACCESO SEGURO</div>
                     </a>
                     <a href="./img/cert/Certificado Didactik curso - SEGURIDAD INFORMÁTICA.pdf" target="_blank">
                         <img src="./img/cert/Certificado Didactik curso - SEGURIDAD INFORMÁTICA.pdf"
-                            alt="Certificado Didactik curso - SEGURIDAD INFORMÁTICA">
+                            alt="Certificado Didactik curso - SEGURIDAD INFORMÁTICA" loading="lazy">
                         <div>Certificado Didactik curso - SEGURIDAD INFORMÁTICA</div>
                     </a>
                     <a href="./img/cert/Certificado Evaluación de Certificación Venta Remota Móvil VTR.pdf"
                         target="_blank">
                         <img src="./img/cert/Certificado Evaluación de Certificación Venta Remota Móvil VTR.pdf"
-                            alt="Certificado Evaluación de Certificación Venta Remota Móvil VTR">
+                            alt="Certificado Evaluación de Certificación Venta Remota Móvil VTR" loading="lazy">
                         <div>Certificado Evaluación de Certificación Venta Remota Móvil VTR</div>
                     </a>
                 </div>
@@ -316,12 +451,12 @@
             <p><strong>Colegio El Salvador</strong>, Barnabitas, San Vicente de Tagua Tagua (egresado 1998)</p>
         </div>
     </section>
-    <section id="experiencia-laboral" class="card collapsible-section">
+    <section id="experiencia-laboral" class="card collapsible-section animate-fade-in">
         <h2 class="section-header">Experiencia Laboral <span class="arrow" role="button" tabindex="0"
-                aria-expanded="false">
+                aria-expanded="false" aria-controls="experiencia-laboral-content" aria-label="Expandir o colapsar sección Experiencia Laboral">
                 <i class="fas fa-chevron-down"></i>
             </span></h2>
-        <div class="section-content">
+        <div id="experiencia-laboral-content" class="section-content" aria-hidden="true">
             <div class="job">
                 <h3>S3 Group, Seguros</h3>
                 <p>Ejecutivo de ventas <strong>Santander Zurich</strong> (oct. 2024 - nov. 2024)</p>
@@ -351,11 +486,11 @@
             </div><br>
         </div>
     </section>
-    <section id="habilidades" class="card collapsible-section">
-        <h2 class="section-header">Habilidades <span class="arrow" role="button" tabindex="0" aria-expanded="false">
+    <section id="habilidades" class="card collapsible-section animate-fade-in">
+        <h2 class="section-header">Habilidades <span class="arrow" role="button" tabindex="0" aria-expanded="false" aria-controls="habilidades-content" aria-label="Expandir o colapsar sección Habilidades">
                 <i class="fas fa-chevron-down"></i>
             </span></h2>
-        <div class="section-content">
+        <div id="habilidades-content" class="section-content" aria-hidden="true">
             <ul>
                 <li>Comunicación efectiva</li>
                 <li>Creatividad</li>
@@ -367,29 +502,29 @@
             </ul>
         </div>
     </section>
-    <section id="idiomas" class="card collapsible-section">
-        <h2 class="section-header">Idiomas <span class="arrow" role="button" tabindex="0" aria-expanded="false">
+    <section id="idiomas" class="card collapsible-section animate-fade-in">
+        <h2 class="section-header">Idiomas <span class="arrow" role="button" tabindex="0" aria-expanded="false" aria-controls="idiomas-content" aria-label="Expandir o colapsar sección Idiomas">
                 <i class="fas fa-chevron-down"></i>
             </span></h2>
-        <div class="section-content">
+        <div id="idiomas-content" class="section-content" aria-hidden="true">
             <ul>
                 <li>Inglés - Nivel alto - Conversacional</li>
                 <li>Español - Nativo</li>
             </ul>
         </div>
     </section>
-    <section id="lenguajes" class="card collapsible-section">
+    <section id="lenguajes" class="card collapsible-section animate-fade-in">
         <h2 class="section-header">Lenguajes y Tecnologías<span class="arrow" role="button" tabindex="0"
-                aria-expanded="false">
+                aria-expanded="false" aria-controls="lenguajes-content" aria-label="Expandir o colapsar sección Lenguajes y Tecnologías">
                 <i class="fas fa-chevron-down"></i>
             </span></h2>
-        <div class="section-content">
+        <div id="lenguajes-content" class="section-content" aria-hidden="true">
             <div class="language-grid">
-                <div class="language-card">
+                <div class="language-card animate-scale-up">
                     <h3>Frontend</h3>
                     <div class="language-items">
                         <div class="language-item">
-                            <img src="./img/lenguajes/html5.svg" alt="HTML5">
+                            <img src="./img/lenguajes/html5.svg" alt="HTML5" loading="lazy">
                             <div class="language-info">
                                 <h4>HTML5</h4>
                                 <div class="progress-container">
@@ -398,7 +533,7 @@
                             </div>
                         </div>
                         <div class="language-item">
-                            <img src="./img/lenguajes/css3.svg" alt="CSS3">
+                            <img src="./img/lenguajes/css3.svg" alt="CSS3" loading="lazy">
                             <div class="language-info">
                                 <h4>CSS3</h4>
                                 <div class="progress-container">
@@ -407,7 +542,7 @@
                             </div>
                         </div>
                         <div class="language-item">
-                            <img src="./img/lenguajes/js.svg" alt="JavaScript">
+                            <img src="./img/lenguajes/js.svg" alt="JavaScript" loading="lazy">
                             <div class="language-info">
                                 <h4>JavaScript</h4>
                                 <div class="progress-container">
@@ -416,7 +551,7 @@
                             </div>
                         </div>
                         <div class="language-item">
-                            <img src="./img/lenguajes/wordpress.svg" alt="WordPress">
+                            <img src="./img/lenguajes/wordpress.svg" alt="WordPress" loading="lazy">
                             <div class="language-info">
                                 <h4>WordPress</h4>
                                 <div class="progress-container">
@@ -426,11 +561,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="language-card">
+                <div class="language-card animate-scale-up stagger-1">
                     <h3>Backend</h3>
                     <div class="language-items">
                         <div class="language-item">
-                            <img src="./img/lenguajes/python.svg" alt="Python">
+                            <img src="./img/lenguajes/python.svg" alt="Python" loading="lazy">
                             <div class="language-info">
                                 <h4>Python</h4>
                                 <div class="progress-container">
@@ -439,7 +574,7 @@
                             </div>
                         </div>
                         <div class="language-item">
-                            <img src="./img/lenguajes/django.svg" alt="Django">
+                            <img src="./img/lenguajes/django.svg" alt="Django" loading="lazy">
                             <div class="language-info">
                                 <h4>Django</h4>
                                 <div class="progress-container">
@@ -449,11 +584,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="language-card">
+                <div class="language-card animate-scale-up stagger-2">
                     <h3>Databases</h3>
                     <div class="language-items">
                         <div class="language-item">
-                            <img src="./img/lenguajes/postgresql.svg" alt="PostgreSQL">
+                            <img src="./img/lenguajes/postgresql.svg" alt="PostgreSQL" loading="lazy">
                             <div class="language-info">
                                 <h4>PostgreSQL</h4>
                                 <div class="progress-container">
@@ -462,7 +597,7 @@
                             </div>
                         </div>
                         <div class="language-item">
-                            <img src="./img/lenguajes/sqlite.svg" alt="SQLite">
+                            <img src="./img/lenguajes/sqlite.svg" alt="SQLite" loading="lazy">
                             <div class="language-info">
                                 <h4>SQLite</h4>
                                 <div class="progress-container">
@@ -471,7 +606,7 @@
                             </div>
                         </div>
                         <div class="language-item">
-                            <img src="./img/lenguajes/mysql.svg" alt="MySql">
+                            <img src="./img/lenguajes/mysql.svg" alt="MySql" loading="lazy">
                             <div class="language-info">
                                 <h4>MySql</h4>
                                 <div class="progress-container">
@@ -481,11 +616,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="language-card">
+                <div class="language-card animate-scale-up stagger-3">
                     <h3>Version Control</h3>
                     <div class="language-items">
                         <div class="language-item">
-                            <img src="./img/lenguajes/git.svg" alt="Git">
+                            <img src="./img/lenguajes/git.svg" alt="Git" loading="lazy">
                             <div class="language-info">
                                 <h4>Git</h4>
                                 <div class="progress-container">
@@ -494,7 +629,7 @@
                             </div>
                         </div>
                         <div class="language-item">
-                            <img src="./img/lenguajes/github.svg" alt="GitHub">
+                            <img src="./img/lenguajes/github.svg" alt="GitHub" loading="lazy">
                             <div class="language-info">
                                 <h4>GitHub</h4>
                                 <div class="progress-container">
@@ -509,10 +644,10 @@
     </section>
     <section id="tests-psicologicos" class="card collapsible-section">
         <h2 class="section-header">Tests Psicológicos <span class="arrow" role="button" tabindex="0"
-                aria-expanded="false">
+                aria-expanded="false" aria-controls="tests-psicologicos-content" aria-label="Expandir o colapsar sección Tests Psicológicos">
                 <i class="fas fa-chevron-down"></i>
             </span></h2>
-        <div class="section-content">
+        <div id="tests-psicologicos-content" class="section-content" aria-hidden="true">
             <div class="tests-grid">
                 <div class="tests-card">
                     <a href="https://perfilesdisc.es/" target="_blank">
@@ -622,89 +757,15 @@
     </div>
     </div>
 
+    <!-- Ionicons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const mainButton = document.getElementById('mainButton');
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const scrollTopButton = document.getElementById('scrollTopButton');
-
-            // Función para alternar la visibilidad de los botones secundarios
-            mainButton.addEventListener('click', () => {
-                mainButton.classList.toggle('active');
-                const secondaryButtons = document.querySelectorAll('.secondary-button');
-                secondaryButtons.forEach(button => {
-                    button.style.opacity = mainButton.classList.contains('active') ? '1' : '0';
-                    button.style.transform = mainButton.classList.contains('active') ? 'scale(1)' : 'scale(0)';
-                });
-            });
-
-            // Función para alternar el modo oscuro
-            darkModeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode');
-                const icon = darkModeToggle.querySelector('ion-icon');
-                icon.setAttribute('name', document.body.classList.contains('dark-mode') ? 'sunny-outline' : 'moon-outline');
-            });
-
-            // Función para desplazarse hacia arriba
-            scrollTopButton.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-
-            // Ocultar el botón de desplazamiento hacia arriba cuando se está en la parte superior
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 100) {
-                    scrollTopButton.style.display = 'flex';
-                } else {
-                    scrollTopButton.style.display = 'none';
-                }
-            });
-            // Secciones colapsables
-            const collapsibleSections = document.querySelectorAll('.collapsible-section');
-
-            collapsibleSections.forEach(section => {
-                const header = section.querySelector('.section-header');
-                header.addEventListener('click', () => {
-                    section.classList.toggle('collapsed');
-                });
-            });
-        });
-    </script>
-    <script>
-        function toggleCard(card, url) {
-            if (!card.classList.contains('active')) {
-                // Si la tarjeta no está activa, la volteamos
-                card.classList.add('active');
-            } else {
-                // Si la tarjeta ya está activa, redirigimos al enlace
-                window.open(url, '_blank');
-            }
-        }
-    </script>
-    <script type="text/javascript">
-        // Inicializa la galería
-        $(function () {
-            $('.cert-container').gallery({
-                autoplay: false, // Desactiva el modo automático
-                interval: 4000  // Este valor ya no será utilizado
-            });
-
-            // Manejo de eventos para los botones
-            $('.dg-prev').on('click', function () {
-                $('.cert-container').data('gallery')._navigate('prev');
-            });
-
-            $('.dg-next').on('click', function () {
-                $('.cert-container').data('gallery')._navigate('next');
-            });
-        });
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    
+    <!-- Scripts externos del portafolio -->
     <script src="js/jquery.gallery.js"></script>
     <script src="js/modernizr.custom.53451.js"></script>
+    
+    <!-- Script principal -->
+    <script src="js/script.js"></script>
 
 </body>
 
