@@ -634,22 +634,27 @@ body.dark-mode {
 }
 
 body.dark-mode .card {
-    background-color: #1e1e1e;
-    box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
-}
-
-body.dark-mode .sidebar {
-    background-color: #1e1e1e;
-    box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
-}
-
-body.dark-mode .sidebar nav ul li a {
-    background-color: #1e1e1e;
+    background-color: #2c2c2c;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 8px 0px, rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
+    border: 1px solid #3a3a3a;
     color: #e0e0e0;
 }
 
-body.dark-mode .sidebar nav ul li a:hover {
+body.dark-mode .sidebar {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+body.dark-mode .sidebar nav ul li a {
     background-color: #2c2c2c;
+    color: #e0e0e0;
+    border: 1px solid #3a3a3a;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+}
+
+body.dark-mode .sidebar nav ul li a:hover {
+    background-color: #3a3a3a;
+    border-left-color: #4da3ff;
 }
 
 body.dark-mode .card h2 {
@@ -658,7 +663,9 @@ body.dark-mode .card h2 {
 }
 
 body.dark-mode .contacto {
-    background-color: #1e1e1e;
+    background-color: #2c2c2c;
+    border: 1px solid #3a3a3a;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
 }
 
 body.dark-mode .contacto a {
@@ -666,15 +673,17 @@ body.dark-mode .contacto a {
 }
 
 body.dark-mode .progress-container {
-    background-color: #4a4a4a;
+    background-color: #3a3a3a;
 }
 
 body.dark-mode .main-content {
-    background-color: #1e1e1e;
+    background-color: transparent;
 }
 
 body.dark-mode .language-card {
-    background-color: #1e1e1e;
+    background-color: #2c2c2c;
+    border: 1px solid #3a3a3a;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
 }
 
 body.dark-mode .phone-button {
@@ -682,11 +691,187 @@ body.dark-mode .phone-button {
 }
 
 body.dark-mode .tests-card {
-    background-color: #1e1e1e;
+    background-color: #2c2c2c;
+    border: 1px solid #3a3a3a;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
 }
 
 body.dark-mode .tests-card h3 {
     color: #4da3ff;
+}
+
+/* Estilos de tarjetas de proyectos en modo oscuro */
+
+body.dark-mode .project-card {
+    background-color: #2c2c2c;
+    border: 1px solid #3a3a3a;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 6px 0px, rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
+}
+
+body.dark-mode .project-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.6) 0px 4px 12px 0px, rgba(77, 163, 255, 0.3) 0px 0px 8px 0px;
+}
+
+body.dark-mode .card-front,
+body.dark-mode .card-back {
+    background-color: #2c2c2c;
+}
+
+body.dark-mode .card-footer {
+    background-color: #252525;
+    color: #e0e0e0;
+    border-top: 1px solid #3a3a3a;
+}
+
+body.dark-mode .project-card h3 {
+    color: #4da3ff;
+}
+
+body.dark-mode .card-body {
+    background-color: #252525;
+}
+
+body.dark-mode .progress-container {
+    background-color: #3a3a3a;
+}
+
+body.dark-mode .language-item {
+    border-bottom: 1px solid #3a3a3a;
+}
+
+body.dark-mode .language-info h4 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .dg-prev,
+body.dark-mode .dg-next {
+    background-color: rgba(77, 163, 255, 0.7);
+}
+
+body.dark-mode .dg-prev:hover,
+body.dark-mode .dg-next:hover {
+    background-color: rgba(77, 163, 255, 0.9);
+}
+
+body.dark-mode .dg-wrapper a {
+    background-color: #2c2c2c;
+    border: 1px solid #3a3a3a;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px 0px;
+}
+
+body.dark-mode .dg-wrapper a:hover {
+    border-color: #4da3ff;
+    box-shadow: rgba(77, 163, 255, 0.2) 0px 0px 8px 0px;
+}
+
+body.dark-mode .dg-wrapper a div {
+    background-color: rgba(37, 37, 37, 0.95);
+    color: #e0e0e0;
+}
+
+body.dark-mode .avatar-box h1,
+body.dark-mode .avatar-box p {
+    color: #e0e0e0;
+}
+
+body.dark-mode .icon-box {
+    color: #e0e0e0;
+}
+
+body.dark-mode .section-header {
+    color: #e0e0e0;
+}
+
+body.dark-mode .arrow i {
+    color: #4da3ff;
+}
+
+body.dark-mode p,
+body.dark-mode li,
+body.dark-mode h3,
+body.dark-mode h4 {
+    color: #e0e0e0;
+}
+
+body.dark-mode a {
+    color: #4da3ff;
+}
+
+body.dark-mode .job {
+    border-left-color: #4da3ff;
+}
+
+body.dark-mode .tests-card ul {
+    color: #e0e0e0;
+}
+
+body.dark-mode .tests-card p {
+    color: #e0e0e0;
+}
+
+body.dark-mode .tests-card strong {
+    color: #4da3ff;
+}
+
+/* Asegurar que todos los elementos dentro de .card sean visibles */
+body.dark-mode .card p,
+body.dark-mode .card li,
+body.dark-mode .card h3,
+body.dark-mode .card h4,
+body.dark-mode .card ul,
+body.dark-mode .card ol,
+body.dark-mode .card div {
+    color: #e0e0e0;
+}
+
+body.dark-mode .card strong {
+    color: #4da3ff;
+}
+
+body.dark-mode .cert-container,
+body.dark-mode .dg-container {
+    background-color: transparent;
+}
+
+body.dark-mode .social-links a {
+    color: #4da3ff;
+}
+
+body.dark-mode .social-links a:hover {
+    color: #6cb5ff;
+}
+
+body.dark-mode .main-button {
+    background-color: #4da3ff;
+}
+
+body.dark-mode .secondary-button {
+    background-color: #4da3ff;
+}
+
+body.dark-mode .whatsapp-button {
+    background-color: #25D366;
+}
+
+body.dark-mode .main-button:hover,
+body.dark-mode .secondary-button:hover {
+    background-color: #3d8fd9;
+}
+
+body.dark-mode .main-button.active {
+    background-color: #3d8fd9;
+}
+
+body.dark-mode #scrollTopButton:hover {
+    background-color: #3d8fd9;
+}
+
+body.dark-mode #darkModeToggle {
+    background-color: #4da3ff;
+}
+
+body.dark-mode #darkModeToggle:hover {
+    background-color: #3d8fd9;
 }
 
 /* Media Query */
