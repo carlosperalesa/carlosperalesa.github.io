@@ -430,6 +430,95 @@
             const emojis = ["🎄", "🎅", "🎁", "⭐", "🎉", "⛄", "🕯️", "🦃", "🍾", "🥂", "🎂", "🎈", "🎲", "🎯", "🎨", "🎭", "🎪", "🎫", "🎮", "🕹️", "🎰", "🎱", "🎳"];
             const picker = getEl('emojiPicker');
 
+            // --- SUPABASE CONFIG ---
+            const SB_URL = 'https://wmuqrvxnwzywkijgoaik.supabase.co';
+            // Note: exposing anon key is standard for Supabase client-side apps if RLS is set correctly
+            const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdXFydnhud3p5d2tpamdvYWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MzAzNzYsImV4cCI6MjA4MjAwNjM3Nn0.Kql89OScgmA4zYCS6Xa85Kh3FpbmcF-hLNPj2H_vQxk';
+            const supabase = window.supabase.createClient(SB_URL, SB_KEY);
+
+            // --- GUEST MODE ---
+            window.addEventListener('load', async () => {
+                const params = new URLSearchParams(window.location.search);
+                const drawId = params.get('id');
+                const user = params.get('u');
+                if (drawId && user) {
+                    enterGuestMode(drawId, user);
+                }
+            });
+
+            async function enterGuestMode(drawId, user) {
+                // Hide main app, show loading
+                document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
+                getEl('mainHeader').style.display = 'none';
+
+                // Create loading View if not exists
+                let loading = getEl('loadingSection');
+                if (!loading) {
+                    loading = document.createElement('div');
+                    loading.id = 'loadingSection';
+                    loading.style.textAlign = 'center';
+                    loading.style.padding = '2rem';
+                    loading.innerHTML = '<h2>🎁 Cargando sorteo...</h2><p>Buscando tu regalo...</p>';
+                    getEl('step1').parentNode.insertBefore(loading, getEl('step1'));
+                }
+                loading.style.display = 'block';
+
+                // Create Reveal View if not exists
+                let reveal = getEl('revealSection');
+                if (!reveal) {
+                    reveal = document.createElement('div');
+                    reveal.id = 'revealSection';
+                    reveal.style.display = 'none';
+                    reveal.innerHTML = `
+                    <div class="reveal-card">
+                        <h2>Hola <span id="guestName">...</span> 👋</h2>
+                        <p>En el sorteo <strong id="guestEvent">...</strong></p>
+                        <p style="margin-top: 2rem;">Tu Amigo Secreto es:</p>
+                        <div class="reveal-name" id="secretName" onclick="this.classList.toggle('visible')">
+                            ?????
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">(Haz clic o pasa el mouse para ver)</p>
+                    </div>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="index.html" style="color: var(--text-muted); text-decoration: none;">Crear mi propio sorteo</a>
+                    </div>
+                `;
+                    getEl('step1').parentNode.insertBefore(reveal, getEl('step1'));
+                }
+
+                try {
+                    // Fetch Data
+                    const { data, error } = await supabase
+                        .from('draws')
+                        .select('*')
+                        .eq('id', drawId)
+                        .single();
+
+                    if (error || !data) throw error;
+
+                    // Find result
+                    const result = data.data.pairs.find(p => p.giver.name === user);
+
+                    if (!result) {
+                        alert('No encontré tu nombre en este sorteo. Verifica el link.');
+                        window.location.href = window.location.pathname.split('?')[0];
+                        return;
+                    }
+
+                    // Show Result
+                    loading.style.display = 'none';
+                    reveal.style.display = 'block';
+                    getEl('guestName').innerText = result.giver.name;
+                    getEl('guestEvent').innerText = data.event_name;
+                    getEl('secretName').innerText = result.receiver.name;
+
+                } catch (err) {
+                    console.error(err);
+                    alert('No se pudo cargar el sorteo. Puede que no exista.');
+                    window.location.href = window.location.pathname.split('?')[0];
+                }
+            }
+
             // Initialize picker
             emojis.forEach(emoji => {
                 const span = document.createElement('span');
@@ -572,21 +661,54 @@
 
                 // Set default template if empty
                 const textArea = getEl('msgTemplate');
-                if (!textArea.value.trim()) {
-                    textArea.value = `¡Hola {nombre}! 👋\n\nEn el sorteo "{evento}" te tocó regalarle a:\n👉 *{amigo}* 🎁\n\n¡Shhh! Es secreto 🤫`;
+                if (!textArea.value.trim() || textArea.value.includes('te tocó regalarle a')) {
+                    // Force update to new secret template
+                    textArea.value = `¡Hola {nombre}! 👋\n\nYa está listo el Amigo Secreto "{evento}" 🎁.\n\nMira a quién te tocó regalarle aquí:\n👉 {link}\n\n¡Shhh! Es secreto 🤫`;
                 }
             }
 
             // --- LOGIC: RAFFLE ---
-            function runRaffle() {
-                const success = solveSecretSanta(state.participants, state.exclusions);
-                if (!success) {
+            // --- LOGIC: RAFFLE ---
+            async function runRaffle() {
+                const btn = document.querySelector('#step3 .btn-success');
+                const originalText = btn.innerText;
+                btn.innerText = '⏳ Guardando...';
+                btn.disabled = true;
+
+                // local solve
+                const successPairs = solveSecretSanta(state.participants, state.exclusions);
+                if (!successPairs) {
                     alert('❌ No fue posible generar un sorteo válido con estas exclusiones. Intenta reducir las restricciones.');
+                    btn.innerText = originalText;
+                    btn.disabled = false;
                     return;
                 }
 
-                renderResults(success);
-                goToStep(4);
+                try {
+                    // Save to Supabase
+                    const payload = {
+                        event_name: state.eventName,
+                        pairs: successPairs
+                    };
+
+                    const { data, error } = await supabase
+                        .from('draws')
+                        .insert([{ event_name: state.eventName, data: payload }])
+                        .select();
+
+                    if (error) throw error;
+
+                    const drawId = data[0].id;
+                    renderResults(successPairs, drawId);
+                    goToStep(4);
+
+                } catch (err) {
+                    console.error("Supabase Error:", err);
+                    alert('Error al guardar el sorteo en la nube. Revisa tu conexión.');
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
             }
 
             // Backtracking Algorithm
@@ -651,31 +773,40 @@
             }
 
             // --- STEP 4: RESULTS ---
-            function renderResults(pairs) {
+            function renderResults(pairs, drawId) {
                 getEl('finalEventName').innerText = state.eventName;
                 const container = getEl('resultsContainer');
                 container.innerHTML = '';
 
+                // Construct Base URL (handles local file vs domain)
+                // If local file, it will be file:///..., which won't work for others, but OK for testing.
+                const baseUrl = window.location.href.split('?')[0];
+
                 pairs.forEach(pair => {
-                    // Get content from textarea (or default fallback)
                     let template = getEl('msgTemplate').value;
+
+                    // Generate Secret Link
+                    // encodeURIComponent ensures emojis/spaces in Name don't break the URL
+                    const secretLink = `${baseUrl}?id=${drawId}&u=${encodeURIComponent(pair.giver.name)}`;
 
                     // Replace variables
                     let msg = template
                         .replace(/{nombre}/g, pair.giver.name)
-                        .replace(/{amigo}/g, pair.receiver.name)
-                        .replace(/{evento}/g, state.eventName);
+                        .replace(/{evento}/g, state.eventName)
+                        .replace(/{link}/g, secretLink)
+                        .replace(/{amigo}/g, pair.receiver.name); // Still supported if they want to spoil
 
+                    // WhatsApp URL encoding
                     const url = `https://wa.me/${pair.giver.phone}?text=${encodeURIComponent(msg)}`;
 
                     container.innerHTML += `
-                <div class="list-item">
-                    <span>Para: <strong>${pair.giver.name}</strong></span>
-                    <a href="${url}" target="_blank" class="whatsapp-btn">
-                         Enviar WhatsApp 📤
-                    </a>
-                </div>
-            `;
+                    <div class="list-item">
+                        <span>Para: <strong>${pair.giver.name}</strong></span>
+                        <a href="${url}" target="_blank" class="whatsapp-btn">
+                             Enviar Link 📤
+                        </a>
+                    </div>
+                `;
                 });
             }
 
