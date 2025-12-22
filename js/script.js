@@ -113,50 +113,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
-    // ============================================
-    // INTERSECTION OBSERVER - Animaciones al hacer scroll
-    // ============================================
-    
-    // Configuración del observer
-    const observerOptions = {
-        threshold: 0.1,  // Trigger cuando 10% sea visible
-        rootMargin: '0px 0px -50px 0px'  // Offset para activar antes
-    };
-
-    // Callback cuando elementos entran en viewport
-    const observerCallback = (entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                
-                // Para barras de progreso, animar el width
-                if (entry.target.classList.contains('progress-bar')) {
-                    const width = entry.target.style.width;
-                    entry.target.style.setProperty('--progress-width', width);
-                }
-            }
-        });
-    };
-
-    // Crear el observer
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    // Observar todos los elementos con clases de animación
-    const animatedElements = document.querySelectorAll(
-        '.animate-fade-in, .animate-slide-left, .animate-slide-right, .animate-slide-up, .animate-scale-up'
-    );
-    
-    animatedElements.forEach(el => observer.observe(el));
-
-    // Observar barras de progreso
-    const progressBars = document.querySelectorAll('.progress-bar');
-    progressBars.forEach(bar => {
-        const width = bar.style.width;
-        bar.style.setProperty('--progress-width', width);
-        observer.observe(bar);
-    });
-
-});
+}); // Cierre del DOMContentLoaded principal
 
 // ============================================
 // TARJETAS DE PROYECTOS - Flip cards interactivas

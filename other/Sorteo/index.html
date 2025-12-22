@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo Amigo Secreto 🎁</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4338ca;
+            --secondary: #ec4899;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: -webkit-linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--border);
+            transition: background-color 0.3s;
+        }
+
+        .step-dot.active {
+            background-color: var(--primary);
+        }
+
+        .step-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .step-section.active {
+            display: block;
+        }
+
+        /* Inputs & Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s;
+            margin-top: 1rem;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Lists */
+        .list-group {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            border-radius: 0.25rem;
+        }
+
+        .list-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .delete-icon {
+            color: var(--danger);
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0.25rem;
+        }
+
+        /* Exclusions */
+        .exclusion-form {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Results */
+        .message-preview {
+            background: #dcfce7;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--success);
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .final-message {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Falling Emojis Background */
+        #emoji-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .falling-emoji {
+            position: absolute;
+            top: -50px;
+            font-size: 2rem;
+            animation: fall linear forwards;
+            opacity: 0.9;
+            /* 🟢 CAMBIAR AQUI TRANSPARENCIA (0.0 a 1.0) */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
+        }
+
+        /* Revealed Card */
+        .reveal-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+            filter: blur(8px);
+            transition: filter 0.5s;
+            cursor: pointer;
+        }
+
+        .reveal-name:hover,
+        .reveal-name.visible {
+            filter: blur(0);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <body>
+        <div id="emoji-bg"></div>
+
+        <div class="container">
+            <header>
+                <h1 id="headerTitle">Amigo Secreto 🎁</h1>
+                <div class="step-indicator">
+                    <div class="step-dot active" id="dot1"></div>
+                    <div class="step-dot" id="dot2"></div>
+                    <div class="step-dot" id="dot3"></div>
+                    <div class="step-dot" id="dot4"></div>
+                </div>
+            </header>
+
+            <!-- STEP 1: SETUP -->
+            <div id="step1" class="step-section active">
+                <h2>🥳 Configuración</h2>
+                <div class="form-group">
+                    <label>Nombre del Sorteo</label>
+                    <div style="position: relative;">
+                        <input type="text" id="eventName" placeholder="Ej: Navidad Familia 2024"
+                            style="padding-right: 3rem;">
+                        <button type="button" class="emoji-btn" onclick="toggleEmojiPicker()"
+                            style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0;">😀</button>
+
+                        <!-- Emoji Picker -->
+                        <div id="emojiPicker"
+                            style="display: none; position: absolute; z-index: 100; top: 100%; right: 0; background: white; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 0.5rem; padding: 0.5rem; width: 250px; flex-wrap: wrap; gap: 0.25rem;">
+                            <!-- Emojis injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="padding-top: 1rem; border-top: 1px solid var(--border);">
+                    <h3>Agregar Participantes</h3>
+                    <div class="row">
+                        <input type="text" id="pName" placeholder="Nombre" style="flex: 1;">
+                        <input type="tel" id="pPhone" placeholder="Teléfono" style="flex: 1;">
+                    </div>
+                    <button class="btn btn-secondary" onclick="addParticipant()">+ Agregar</button>
+                </div>
+
+                <ul class="list-group" id="participantsList">
+                    <li style="text-align:center; color: var(--text-muted); padding: 1rem;">No hay participantes aún
+                    </li>
+                </ul>
+
+                <button class="btn btn-primary" onclick="goToStep(2)">Siguiente: Exclusiones 👉</button>
+            </div>
+
+            <!-- STEP 2: EXCLUSIONS -->
+            <div id="step2" class="step-section">
+                <h2>🚫 Exclusiones</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Define quién NO puede regalarle a quién
+                    (opcional).
+                </p>
+
+                <div class="exclusion-form">
+                    <label>Regla de Exclusión:</label>
+                    <div class="row" style="align-items: center; margin-bottom: 0.5rem;">
+                        <select id="excFrom"></select>
+                        <span>no regala a</span>
+                        <select id="excTo"></select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="addExclusion()" style="margin-top:0.5rem;">Agregar
+                        Regla</button>
+                </div>
+
+                <ul class="list-group" id="exclusionsList"></ul>
+
+                <div class="row">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">👈 Atrás</button>
+                    <button class="btn btn-primary" onclick="goToStep(3)">Siguiente: Confirmar 👉</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: CONFIRMATION -->
+            <div id="step3" class="step-section">
+                <h2>✅ Confirmación</h2>
+                <p>Verifica que los datos sean correctos antes de enviar.</p>
+
+                <div
+                    style="background: #fff; border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+                    <h3>Participantes (<span id="countConfirm">0</span>)</h3>
+                    <ul id="reviewList" style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;"></ul>
+                </div>
+
+                <h3>Personalizar Mensaje 📝</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                    Usa <code>{nombre}</code> (quien regala), <code>{amigo}</code> (quien recibe) y
+                    <code>{evento}</code>.
+                </p>
+                <textarea id="msgTemplate" rows="4"
+                    style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 0.5rem; font-family: sans-serif; resize: vertical;"
+                    placeholder="Escribe tu mensaje aquí..."></textarea>
+
+                <div class="row">
+                    <button class="btn btn-secondary" onclick="goToStep(2)">👈 Atrás</button>
+                    <button class="btn btn-success" onclick="runRaffle()">🚀 Enviar Mensajes</button>
+                </div>
+            </div>
+
+            <!-- STEP 4: RESULTS -->
+            <div id="step4" class="step-section">
+                <h2>🚀 Mensajes Enviados</h2>
+                <p>Haz clic en cada botón para enviar el resultado por WhatsApp.</p>
+
+                <div id="resultsContainer"></div>
+
+                <div class="final-message">
+                    ¡Que disfrutes tu <span id="finalEventName">...</span>! 🎉
+                </div>
+
+                <button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 2rem;">Empezar de
+                    nuevo</button>
+            </div>
+
+        </div>
+
+        <script>
+            // --- STATE ---
+            let state = {
+                eventName: '',
+                participants: [], // {id, name, phone}
+                exclusions: [] // {fromId, toId}
+            };
+
+            // --- UTILS ---
+            const getEl = (id) => document.getElementById(id);
+
+            // --- EMOJI PICKER ---
+            const emojis = ["🎄", "🎅", "🎁", "⭐", "🎉", "⛄", "🕯️", "🦃", "🍾", "🥂", "🎂", "🎈", "🎲", "🎯", "🎨", "🎭", "🎪", "🎫", "🎮", "🕹️", "🎰", "🎱", "🎳"];
+            const picker = getEl('emojiPicker');
+
+            // Initialize picker
+            emojis.forEach(emoji => {
+                const span = document.createElement('span');
+                span.textContent = emoji;
+                span.style.cursor = 'pointer';
+                span.style.fontSize = '1.5rem';
+                span.style.padding = '0.25rem';
+                span.style.userSelect = 'none';
+                span.onclick = () => {
+                    const input = getEl('eventName');
+                    input.value += emoji;
+                    picker.style.display = 'none';
+                    input.focus();
+                };
+                picker.appendChild(span);
+            });
+
+            function toggleEmojiPicker() {
+                picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
+            }
+
+            // Close picker if clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.emoji-btn') && !e.target.closest('#emojiPicker')) {
+                    picker.style.display = 'none';
+                }
+            });
+
+            // --- STEPS NAVIGATION ---
+            function goToStep(step) {
+                // Validation
+                if (step === 2) {
+                    const name = getEl('eventName').value.trim();
+                    if (!name) return alert('Por favor escribe un nombre para el sorteo.');
+                    if (state.participants.length < 3) return alert('Necesitas al menos 3 participantes.');
+                    state.eventName = name;
+                    populateExclusionDropdowns();
+                }
+                if (step === 3) {
+                    renderReview();
+                }
+
+                // Switch UI
+                document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.step-dot').forEach(el => el.classList.remove('active'));
+
+                getEl(`step${step}`).classList.add('active');
+                getEl(`dot${step}`).classList.add('active');
+            }
+
+            // --- STEP 1: PARTICIPANTS ---
+            function addParticipant() {
+                const name = getEl('pName').value.trim();
+                const phone = getEl('pPhone').value.trim();
+
+                if (!name || !phone) return alert('Nombre y teléfono son obligatorios.');
+                if (state.participants.some(p => p.name === name)) return alert('Ese nombre ya existe.');
+
+                state.participants.push({
+                    id: Date.now().toString(),
+                    name,
+                    phone: phone.replace(/\D/g, '') // clean phone
+                });
+
+                getEl('pName').value = '';
+                getEl('pPhone').value = '';
+                renderParticipants();
+            }
+
+            function removeParticipant(id) {
+                state.participants = state.participants.filter(p => p.id !== id);
+                // Also remove related exclusions
+                state.exclusions = state.exclusions.filter(e => e.fromId !== id && e.toId !== id);
+                renderParticipants();
+            }
+
+            function renderParticipants() {
+                const list = getEl('participantsList');
+                list.innerHTML = '';
+                if (state.participants.length === 0) {
+                    list.innerHTML = '<li style="text-align:center; color: var(--text-muted);">No hay participantes aún</li>';
+                    return;
+                }
+                state.participants.forEach(p => {
+                    list.innerHTML += `
+                <li class="list-item">
+                    <div><strong>${p.name}</strong> <small>(${p.phone})</small></div>
+                    <span class="delete-icon" onclick="removeParticipant('${p.id}')">✕</span>
+                </li>
+            `;
+                });
+            }
+
+            // --- STEP 2: EXCLUSIONS ---
+            function populateExclusionDropdowns() {
+                const opts = state.participants.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                getEl('excFrom').innerHTML = opts;
+                getEl('excTo').innerHTML = opts;
+            }
+
+            function addExclusion() {
+                const fromId = getEl('excFrom').value;
+                const toId = getEl('excTo').value;
+
+                if (fromId === toId) return alert('No puedes excluirse a sí mismo (ya es automático).');
+
+                // Check duplicate
+                if (state.exclusions.some(e => e.fromId === fromId && e.toId === toId)) return;
+
+                state.exclusions.push({ fromId, toId });
+                renderExclusions();
+            }
+
+            function removeExclusion(index) {
+                state.exclusions.splice(index, 1);
+                renderExclusions();
+            }
+
+            function renderExclusions() {
+                const list = getEl('exclusionsList');
+                list.innerHTML = '';
+                state.exclusions.forEach((e, idx) => {
+                    const fromName = state.participants.find(p => p.id === e.fromId)?.name || '?';
+                    const toName = state.participants.find(p => p.id === e.toId)?.name || '?';
+                    list.innerHTML += `
+                <li class="list-item">
+                    <span>🚫 <strong>${fromName}</strong> no regala a <strong>${toName}</strong></span>
+                    <span class="delete-icon" onclick="removeExclusion(${idx})">✕</span>
+                </li>
+            `;
+                });
+            }
+
+            // --- STEP 3: REVIEW ---
+            function renderReview() {
+                getEl('countConfirm').innerText = state.participants.length;
+                getEl('reviewList').innerHTML = state.participants.map(p =>
+                    `<li>• ${p.name} (${p.phone})</li>`
+                ).join('');
+
+                // Set default template if empty
+                const textArea = getEl('msgTemplate');
+                if (!textArea.value.trim()) {
+                    textArea.value = `¡Hola {nombre}! 👋\n\nEn el sorteo "{evento}" te tocó regalarle a:\n👉 *{amigo}* 🎁\n\n¡Shhh! Es secreto 🤫`;
+                }
+            }
+
+            // --- LOGIC: RAFFLE ---
+            function runRaffle() {
+                const success = solveSecretSanta(state.participants, state.exclusions);
+                if (!success) {
+                    alert('❌ No fue posible generar un sorteo válido con estas exclusiones. Intenta reducir las restricciones.');
+                    return;
+                }
+
+                renderResults(success);
+                goToStep(4);
+            }
+
+            // Backtracking Algorithm
+            function solveSecretSanta(participants, exclusions) {
+                const givers = [...participants];
+                let receivers = new Array(givers.length).fill(null);
+                let used = new Array(givers.length).fill(false);
+
+                // Map ID to index for easier graph logic
+                const idToIndex = {};
+                participants.forEach((p, i) => idToIndex[p.id] = i);
+
+                // Build adjacency matrix of INVALID moves
+                const invalid = Array(givers.length).fill().map(() => Array(givers.length).fill(false));
+
+                // Self is invalid
+                for (let i = 0; i < givers.length; i++) invalid[i][i] = true;
+
+                // Exclusions are invalid
+                exclusions.forEach(e => {
+                    const u = idToIndex[e.fromId];
+                    const v = idToIndex[e.toId];
+                    if (u !== undefined && v !== undefined) invalid[u][v] = true;
+                });
+
+                // Shuffle givers order to ensure randomness in search
+                // (Actually we shuffle the "options" for each giver during search)
+
+                function canMatch(giverIdx) {
+                    if (giverIdx === givers.length) return true; // Solution found!
+
+                    // Create list of possible candidates (receiver indices)
+                    let candidates = [];
+                    for (let r = 0; r < givers.length; r++) {
+                        if (!used[r] && !invalid[giverIdx][r]) {
+                            candidates.push(r);
+                        }
+                    }
+
+                    // Shuffle candidates to make result random
+                    for (let i = candidates.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+                    }
+
+                    for (let r of candidates) {
+                        receivers[giverIdx] = participants[r];
+                        used[r] = true;
+                        if (canMatch(giverIdx + 1)) return true;
+                        // Backtrack
+                        used[r] = false;
+                        receivers[giverIdx] = null;
+                    }
+                    return false;
+                }
+
+                if (canMatch(0)) {
+                    // Return pairs
+                    return givers.map((g, i) => ({ giver: g, receiver: receivers[i] }));
+                }
+                return null;
+            }
+
+            // --- STEP 4: RESULTS ---
+            function renderResults(pairs) {
+                getEl('finalEventName').innerText = state.eventName;
+                const container = getEl('resultsContainer');
+                container.innerHTML = '';
+
+                pairs.forEach(pair => {
+                    // Get content from textarea (or default fallback)
+                    let template = getEl('msgTemplate').value;
+
+                    // Replace variables
+                    let msg = template
+                        .replace(/{nombre}/g, pair.giver.name)
+                        .replace(/{amigo}/g, pair.receiver.name)
+                        .replace(/{evento}/g, state.eventName);
+
+                    const url = `https://wa.me/${pair.giver.phone}?text=${encodeURIComponent(msg)}`;
+
+                    container.innerHTML += `
+                <div class="list-item">
+                    <span>Para: <strong>${pair.giver.name}</strong></span>
+                    <a href="${url}" target="_blank" class="whatsapp-btn">
+                         Enviar WhatsApp 📤
+                    </a>
+                </div>
+            `;
+                });
+            }
+
+            // --- BACKGROUND ANIMATION ---
+            const bgEmojis = ["💘", "💝", "💖", "🫶🏻", "💏", "👩‍❤️‍💋‍👨", "👩‍❤️‍💋‍👩", "👨‍👩‍👦", "👨‍👩‍👧‍👧", "👩‍👦‍👦", "👨‍👧‍👧", "🎲", "🐱", "🐈", "🐈‍⬛", "🕹️", "🐶", "🐕", "🍰", "🎈", "🎄", "🪅", "🎉", "🎊", "🎀", "🎁", "🧸", "🎮", "🪀", "🪁", "🎱", "🔮"];
+            const bgContainer = getEl('emoji-bg');
+
+            function createFallingEmoji() {
+                const el = document.createElement('div');
+                el.innerText = bgEmojis[Math.floor(Math.random() * bgEmojis.length)];
+                el.classList.add('falling-emoji');
+
+                // Random properties
+                const left = Math.random() * 100;
+                const duration = Math.random() * 5 + 5; // 5-10s
+                const size = Math.random() * 1.5 + 1; // 1-2.5rem
+                const rotate = Math.random() * 360;
+
+                el.style.left = left + '%';
+                el.style.animationDuration = duration + 's';
+                el.style.fontSize = size + 'rem';
+                el.style.transform = `rotate(${rotate}deg)`; // Initial rotation
+
+                // Re-apply rotation in keyframe requires dynamic keyframes or just fixed rotation
+                // Since requirements say "always in straight line downwards", we just rotate the element itself once.
+
+                bgContainer.appendChild(el);
+
+                // Cleanup
+                setTimeout(() => {
+                    el.remove();
+                }, duration * 1000);
+            }
+
+            // Create continuously
+            setInterval(createFallingEmoji, 500); // 2 emojis per second
+
+        </script>
+
+    </body>
+
+</html>
