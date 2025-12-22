@@ -297,7 +297,7 @@
 <body>
     <div id="version-badge"
         style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; z-index: 9999; pointer-events: none;">
-        v1.3 - Fixed Header</div>
+        v1.4 - Fixed Emoji Encoding</div>
     <div id="emoji-bg"></div>
 
     <div class="container">
@@ -848,7 +848,8 @@
                     .replace(/{amigo}/g, pair.receiver.name); // Still supported if they want to spoil
 
                 // WhatsApp URL encoding
-                const url = `https://wa.me/${pair.giver.phone}?text=${encodeURIComponent(msg)}`;
+                // wa.me often has issues with emoji encoding. api.whatsapp.com/send is more robust.
+                const url = `https://api.whatsapp.com/send?phone=${pair.giver.phone}&text=${encodeURIComponent(msg)}`;
 
                 container.innerHTML += `
                     <div class="list-item">
