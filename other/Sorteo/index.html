@@ -333,7 +333,7 @@
                     <h3>Agregar Participantes</h3>
                     <div class="row">
                         <input type="text" id="pName" placeholder="Nombre" style="flex: 1;">
-                        <input type="tel" id="pPhone" placeholder="Teléfono" style="flex: 1;">
+                        <input type="tel" id="pPhone" placeholder="Teléfono" value="569" style="flex: 1;">
                     </div>
                     <button class="btn btn-secondary" onclick="addParticipant()">+ Agregar</button>
                 </div>
@@ -425,6 +425,13 @@
 
             // --- UTILS ---
             const getEl = (id) => document.getElementById(id);
+
+            // XSS Sanitization
+            function sanitizeStr(str) {
+                const div = document.createElement('div');
+                div.innerText = str;
+                return div.innerHTML;
+            }
 
             // --- EMOJI PICKER ---
             const emojis = ["🎄", "🎅", "🎁", "⭐", "🎉", "⛄", "🕯️", "🦃", "🍾", "🥂", "🎂", "🎈", "🎲", "🎯", "🎨", "🎭", "🎪", "🎫", "🎮", "🕹️", "🎰", "🎱", "🎳"];
@@ -571,10 +578,15 @@
 
             // --- STEP 1: PARTICIPANTS ---
             function addParticipant() {
-                const name = getEl('pName').value.trim();
-                const phone = getEl('pPhone').value.trim();
+                let name = getEl('pName').value.trim();
+                let phone = getEl('pPhone').value.trim();
+
+                // Sanitize input
+                name = name.replace(/[<>"'&]/g, ""); // Remove dangerous chars
+                phone = phone.replace(/\D/g, ''); // Digits only
 
                 if (!name || !phone) return alert('Nombre y teléfono son obligatorios.');
+                if (phone.length < 8) return alert('El teléfono parece muy corto.');
                 if (state.participants.some(p => p.name === name)) return alert('Ese nombre ya existe.');
 
                 state.participants.push({
@@ -584,7 +596,7 @@
                 });
 
                 getEl('pName').value = '';
-                getEl('pPhone').value = '';
+                getEl('pPhone').value = '569'; // Reset with prefix
                 renderParticipants();
             }
 
@@ -659,10 +671,10 @@
                     `<li>• ${p.name} (${p.phone})</li>`
                 ).join('');
 
-                // Set default template if empty
+                // Set default template if empty OR matches old "spoiler" version
                 const textArea = getEl('msgTemplate');
+                // Check if it's empty OR contains the old "te tocó regalarle a" string which spoils the secret
                 if (!textArea.value.trim() || textArea.value.includes('te tocó regalarle a')) {
-                    // Force update to new secret template
                     textArea.value = `¡Hola {nombre}! 👋\n\nYa está listo el Amigo Secreto "{evento}" 🎁.\n\nMira a quién te tocó regalarle aquí:\n👉 {link}\n\n¡Shhh! Es secreto 🤫`;
                 }
             }
