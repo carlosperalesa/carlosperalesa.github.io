@@ -297,11 +297,11 @@
 <body>
     <div id="version-badge"
         style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; z-index: 9999; pointer-events: none;">
-        v1.2 - Debug Mode</div>
+        v1.3 - Fixed Header</div>
     <div id="emoji-bg"></div>
 
     <div class="container">
-        <header>
+        <header id="mainHeader">
             <h1 id="headerTitle">Amigo Secreto 🎁</h1>
             <div class="step-indicator">
                 <div class="step-dot active" id="dot1"></div>
@@ -447,7 +447,7 @@
 
         // --- INIT ON LOAD ---
         window.addEventListener('load', async () => {
-            console.log("v1.2 Loaded");
+            console.log("v1.3 Loaded");
 
             // Init Supabase
             try {
@@ -474,29 +474,32 @@
         });
 
         async function enterGuestMode(drawId, user) {
-            // Hide main app, show loading
-            document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
-            getEl('mainHeader').style.display = 'none';
+            try {
+                // Hide main app, show loading
+                document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
 
-            // Create loading View if not exists
-            let loading = getEl('loadingSection');
-            if (!loading) {
-                loading = document.createElement('div');
-                loading.id = 'loadingSection';
-                loading.style.textAlign = 'center';
-                loading.style.padding = '2rem';
-                loading.innerHTML = '<h2>🎁 Cargando sorteo...</h2><p>Buscando tu regalo...</p>';
-                getEl('step1').parentNode.insertBefore(loading, getEl('step1'));
-            }
-            loading.style.display = 'block';
+                const header = getEl('mainHeader');
+                if (header) header.style.display = 'none';
 
-            // Create Reveal View if not exists
-            let reveal = getEl('revealSection');
-            if (!reveal) {
-                reveal = document.createElement('div');
-                reveal.id = 'revealSection';
-                reveal.style.display = 'none';
-                reveal.innerHTML = `
+                // Create loading View if not exists
+                let loading = getEl('loadingSection');
+                if (!loading) {
+                    loading = document.createElement('div');
+                    loading.id = 'loadingSection';
+                    loading.style.textAlign = 'center';
+                    loading.style.padding = '2rem';
+                    loading.innerHTML = '<h2>🎁 Cargando sorteo...</h2><p>Buscando tu regalo...</p>';
+                    getEl('step1').parentNode.insertBefore(loading, getEl('step1'));
+                }
+                loading.style.display = 'block';
+
+                // Create Reveal View if not exists
+                let reveal = getEl('revealSection');
+                if (!reveal) {
+                    reveal = document.createElement('div');
+                    reveal.id = 'revealSection';
+                    reveal.style.display = 'none';
+                    reveal.innerHTML = `
                     <div class="reveal-card">
                         <h2>Hola <span id="guestName">...</span> 👋</h2>
                         <p>En el sorteo <strong id="guestEvent">...</strong></p>
@@ -510,10 +513,10 @@
                         <a href="index.html" style="color: var(--text-muted); text-decoration: none;">Crear mi propio sorteo</a>
                     </div>
                 `;
-                getEl('step1').parentNode.insertBefore(reveal, getEl('step1'));
-            }
+                    getEl('step1').parentNode.insertBefore(reveal, getEl('step1'));
+                }
 
-            try {
+
                 // Fetch Data
                 const { data, error } = await supabaseClient
                     .from('draws')
