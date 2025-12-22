@@ -295,188 +295,186 @@
 </head>
 
 <body>
+    <div id="emoji-bg"></div>
 
-    <body>
-        <div id="emoji-bg"></div>
+    <div class="container">
+        <header>
+            <h1 id="headerTitle">Amigo Secreto 🎁</h1>
+            <div class="step-indicator">
+                <div class="step-dot active" id="dot1"></div>
+                <div class="step-dot" id="dot2"></div>
+                <div class="step-dot" id="dot3"></div>
+                <div class="step-dot" id="dot4"></div>
+            </div>
+        </header>
 
-        <div class="container">
-            <header>
-                <h1 id="headerTitle">Amigo Secreto 🎁</h1>
-                <div class="step-indicator">
-                    <div class="step-dot active" id="dot1"></div>
-                    <div class="step-dot" id="dot2"></div>
-                    <div class="step-dot" id="dot3"></div>
-                    <div class="step-dot" id="dot4"></div>
-                </div>
-            </header>
+        <!-- STEP 1: SETUP -->
+        <div id="step1" class="step-section active">
+            <h2>🥳 Configuración</h2>
+            <div class="form-group">
+                <label>Nombre del Sorteo</label>
+                <div style="position: relative;">
+                    <input type="text" id="eventName" placeholder="Ej: Navidad Familia 2024"
+                        style="padding-right: 3rem;">
+                    <button type="button" class="emoji-btn" onclick="toggleEmojiPicker()"
+                        style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0;">😀</button>
 
-            <!-- STEP 1: SETUP -->
-            <div id="step1" class="step-section active">
-                <h2>🥳 Configuración</h2>
-                <div class="form-group">
-                    <label>Nombre del Sorteo</label>
-                    <div style="position: relative;">
-                        <input type="text" id="eventName" placeholder="Ej: Navidad Familia 2024"
-                            style="padding-right: 3rem;">
-                        <button type="button" class="emoji-btn" onclick="toggleEmojiPicker()"
-                            style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0;">😀</button>
-
-                        <!-- Emoji Picker -->
-                        <div id="emojiPicker"
-                            style="display: none; position: absolute; z-index: 100; top: 100%; right: 0; background: white; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 0.5rem; padding: 0.5rem; width: 250px; flex-wrap: wrap; gap: 0.25rem;">
-                            <!-- Emojis injected via JS -->
-                        </div>
+                    <!-- Emoji Picker -->
+                    <div id="emojiPicker"
+                        style="display: none; position: absolute; z-index: 100; top: 100%; right: 0; background: white; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-radius: 0.5rem; padding: 0.5rem; width: 250px; flex-wrap: wrap; gap: 0.25rem;">
+                        <!-- Emojis injected via JS -->
                     </div>
                 </div>
-
-                <div class="form-group" style="padding-top: 1rem; border-top: 1px solid var(--border);">
-                    <h3>Agregar Participantes</h3>
-                    <div class="row">
-                        <input type="text" id="pName" placeholder="Nombre" style="flex: 1;">
-                        <input type="tel" id="pPhone" placeholder="Teléfono" value="569" style="flex: 1;">
-                    </div>
-                    <button class="btn btn-secondary" onclick="addParticipant()">+ Agregar</button>
-                </div>
-
-                <ul class="list-group" id="participantsList">
-                    <li style="text-align:center; color: var(--text-muted); padding: 1rem;">No hay participantes aún
-                    </li>
-                </ul>
-
-                <button class="btn btn-primary" onclick="goToStep(2)">Siguiente: Exclusiones 👉</button>
             </div>
 
-            <!-- STEP 2: EXCLUSIONS -->
-            <div id="step2" class="step-section">
-                <h2>🚫 Exclusiones</h2>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Define quién NO puede regalarle a quién
-                    (opcional).
-                </p>
-
-                <div class="exclusion-form">
-                    <label>Regla de Exclusión:</label>
-                    <div class="row" style="align-items: center; margin-bottom: 0.5rem;">
-                        <select id="excFrom"></select>
-                        <span>no regala a</span>
-                        <select id="excTo"></select>
-                    </div>
-                    <button class="btn btn-secondary" onclick="addExclusion()" style="margin-top:0.5rem;">Agregar
-                        Regla</button>
-                </div>
-
-                <ul class="list-group" id="exclusionsList"></ul>
-
+            <div class="form-group" style="padding-top: 1rem; border-top: 1px solid var(--border);">
+                <h3>Agregar Participantes</h3>
                 <div class="row">
-                    <button class="btn btn-secondary" onclick="goToStep(1)">👈 Atrás</button>
-                    <button class="btn btn-primary" onclick="goToStep(3)">Siguiente: Confirmar 👉</button>
+                    <input type="text" id="pName" placeholder="Nombre" style="flex: 1;">
+                    <input type="tel" id="pPhone" placeholder="Teléfono" value="569" style="flex: 1;">
                 </div>
+                <button class="btn btn-secondary" onclick="addParticipant()">+ Agregar</button>
             </div>
 
-            <!-- STEP 3: CONFIRMATION -->
-            <div id="step3" class="step-section">
-                <h2>✅ Confirmación</h2>
-                <p>Verifica que los datos sean correctos antes de enviar.</p>
+            <ul class="list-group" id="participantsList">
+                <li style="text-align:center; color: var(--text-muted); padding: 1rem;">No hay participantes aún
+                </li>
+            </ul>
 
-                <div
-                    style="background: #fff; border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-                    <h3>Participantes (<span id="countConfirm">0</span>)</h3>
-                    <ul id="reviewList" style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;"></ul>
-                </div>
-
-                <h3>Personalizar Mensaje 📝</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-                    Usa <code>{nombre}</code> (quien regala), <code>{amigo}</code> (quien recibe) y
-                    <code>{evento}</code>.
-                </p>
-                <textarea id="msgTemplate" rows="4"
-                    style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 0.5rem; font-family: sans-serif; resize: vertical;"
-                    placeholder="Escribe tu mensaje aquí..."></textarea>
-
-                <div class="row">
-                    <button class="btn btn-secondary" onclick="goToStep(2)">👈 Atrás</button>
-                    <button class="btn btn-success" onclick="runRaffle()">🚀 Enviar Mensajes</button>
-                </div>
-            </div>
-
-            <!-- STEP 4: RESULTS -->
-            <div id="step4" class="step-section">
-                <h2>🚀 Mensajes Enviados</h2>
-                <p>Haz clic en cada botón para enviar el resultado por WhatsApp.</p>
-
-                <div id="resultsContainer"></div>
-
-                <div class="final-message">
-                    ¡Que disfrutes tu <span id="finalEventName">...</span>! 🎉
-                </div>
-
-                <button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 2rem;">Empezar de
-                    nuevo</button>
-            </div>
-
+            <button class="btn btn-primary" onclick="goToStep(2)">Siguiente: Exclusiones 👉</button>
         </div>
 
-        <script>
-            // --- STATE ---
-            let state = {
-                eventName: '',
-                participants: [], // {id, name, phone}
-                exclusions: [] // {fromId, toId}
-            };
+        <!-- STEP 2: EXCLUSIONS -->
+        <div id="step2" class="step-section">
+            <h2>🚫 Exclusiones</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Define quién NO puede regalarle a quién
+                (opcional).
+            </p>
 
-            // --- UTILS ---
-            const getEl = (id) => document.getElementById(id);
+            <div class="exclusion-form">
+                <label>Regla de Exclusión:</label>
+                <div class="row" style="align-items: center; margin-bottom: 0.5rem;">
+                    <select id="excFrom"></select>
+                    <span>no regala a</span>
+                    <select id="excTo"></select>
+                </div>
+                <button class="btn btn-secondary" onclick="addExclusion()" style="margin-top:0.5rem;">Agregar
+                    Regla</button>
+            </div>
 
-            // XSS Sanitization
-            function sanitizeStr(str) {
-                const div = document.createElement('div');
-                div.innerText = str;
-                return div.innerHTML;
+            <ul class="list-group" id="exclusionsList"></ul>
+
+            <div class="row">
+                <button class="btn btn-secondary" onclick="goToStep(1)">👈 Atrás</button>
+                <button class="btn btn-primary" onclick="goToStep(3)">Siguiente: Confirmar 👉</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: CONFIRMATION -->
+        <div id="step3" class="step-section">
+            <h2>✅ Confirmación</h2>
+            <p>Verifica que los datos sean correctos antes de enviar.</p>
+
+            <div
+                style="background: #fff; border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
+                <h3>Participantes (<span id="countConfirm">0</span>)</h3>
+                <ul id="reviewList" style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;"></ul>
+            </div>
+
+            <h3>Personalizar Mensaje 📝</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                Usa <code>{nombre}</code> (quien regala), <code>{amigo}</code> (quien recibe) y
+                <code>{evento}</code>.
+            </p>
+            <textarea id="msgTemplate" rows="4"
+                style="width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: 0.5rem; font-family: sans-serif; resize: vertical;"
+                placeholder="Escribe tu mensaje aquí..."></textarea>
+
+            <div class="row">
+                <button class="btn btn-secondary" onclick="goToStep(2)">👈 Atrás</button>
+                <button class="btn btn-success" onclick="runRaffle()">🚀 Enviar Mensajes</button>
+            </div>
+        </div>
+
+        <!-- STEP 4: RESULTS -->
+        <div id="step4" class="step-section">
+            <h2>🚀 Mensajes Enviados</h2>
+            <p>Haz clic en cada botón para enviar el resultado por WhatsApp.</p>
+
+            <div id="resultsContainer"></div>
+
+            <div class="final-message">
+                ¡Que disfrutes tu <span id="finalEventName">...</span>! 🎉
+            </div>
+
+            <button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 2rem;">Empezar de
+                nuevo</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- STATE ---
+        let state = {
+            eventName: '',
+            participants: [], // {id, name, phone}
+            exclusions: [] // {fromId, toId}
+        };
+
+        // --- UTILS ---
+        const getEl = (id) => document.getElementById(id);
+
+        // XSS Sanitization
+        function sanitizeStr(str) {
+            const div = document.createElement('div');
+            div.innerText = str;
+            return div.innerHTML;
+        }
+
+        // --- EMOJI PICKER ---
+        const emojis = ["🎄", "🎅", "🎁", "⭐", "🎉", "⛄", "🕯️", "🦃", "🍾", "🥂", "🎂", "🎈", "🎲", "🎯", "🎨", "🎭", "🎪", "🎫", "🎮", "🕹️", "🎰", "🎱", "🎳"];
+        const picker = getEl('emojiPicker');
+
+        // --- SUPABASE CONFIG ---
+        const SB_URL = 'https://wmuqrvxnwzywkijgoaik.supabase.co';
+        // Note: exposing anon key is standard for Supabase client-side apps if RLS is set correctly
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdXFydnhud3p5d2tpamdvYWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MzAzNzYsImV4cCI6MjA4MjAwNjM3Nn0.Kql89OScgmA4zYCS6Xa85Kh3FpbmcF-hLNPj2H_vQxk';
+        const supabase = window.supabase.createClient(SB_URL, SB_KEY);
+
+        // --- GUEST MODE ---
+        window.addEventListener('load', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const drawId = params.get('id');
+            const user = params.get('u');
+            if (drawId && user) {
+                enterGuestMode(drawId, user);
             }
+        });
 
-            // --- EMOJI PICKER ---
-            const emojis = ["🎄", "🎅", "🎁", "⭐", "🎉", "⛄", "🕯️", "🦃", "🍾", "🥂", "🎂", "🎈", "🎲", "🎯", "🎨", "🎭", "🎪", "🎫", "🎮", "🕹️", "🎰", "🎱", "🎳"];
-            const picker = getEl('emojiPicker');
+        async function enterGuestMode(drawId, user) {
+            // Hide main app, show loading
+            document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
+            getEl('mainHeader').style.display = 'none';
 
-            // --- SUPABASE CONFIG ---
-            const SB_URL = 'https://wmuqrvxnwzywkijgoaik.supabase.co';
-            // Note: exposing anon key is standard for Supabase client-side apps if RLS is set correctly
-            const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdXFydnhud3p5d2tpamdvYWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MzAzNzYsImV4cCI6MjA4MjAwNjM3Nn0.Kql89OScgmA4zYCS6Xa85Kh3FpbmcF-hLNPj2H_vQxk';
-            const supabase = window.supabase.createClient(SB_URL, SB_KEY);
+            // Create loading View if not exists
+            let loading = getEl('loadingSection');
+            if (!loading) {
+                loading = document.createElement('div');
+                loading.id = 'loadingSection';
+                loading.style.textAlign = 'center';
+                loading.style.padding = '2rem';
+                loading.innerHTML = '<h2>🎁 Cargando sorteo...</h2><p>Buscando tu regalo...</p>';
+                getEl('step1').parentNode.insertBefore(loading, getEl('step1'));
+            }
+            loading.style.display = 'block';
 
-            // --- GUEST MODE ---
-            window.addEventListener('load', async () => {
-                const params = new URLSearchParams(window.location.search);
-                const drawId = params.get('id');
-                const user = params.get('u');
-                if (drawId && user) {
-                    enterGuestMode(drawId, user);
-                }
-            });
-
-            async function enterGuestMode(drawId, user) {
-                // Hide main app, show loading
-                document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
-                getEl('mainHeader').style.display = 'none';
-
-                // Create loading View if not exists
-                let loading = getEl('loadingSection');
-                if (!loading) {
-                    loading = document.createElement('div');
-                    loading.id = 'loadingSection';
-                    loading.style.textAlign = 'center';
-                    loading.style.padding = '2rem';
-                    loading.innerHTML = '<h2>🎁 Cargando sorteo...</h2><p>Buscando tu regalo...</p>';
-                    getEl('step1').parentNode.insertBefore(loading, getEl('step1'));
-                }
-                loading.style.display = 'block';
-
-                // Create Reveal View if not exists
-                let reveal = getEl('revealSection');
-                if (!reveal) {
-                    reveal = document.createElement('div');
-                    reveal.id = 'revealSection';
-                    reveal.style.display = 'none';
-                    reveal.innerHTML = `
+            // Create Reveal View if not exists
+            let reveal = getEl('revealSection');
+            if (!reveal) {
+                reveal = document.createElement('div');
+                reveal.id = 'revealSection';
+                reveal.style.display = 'none';
+                reveal.innerHTML = `
                     <div class="reveal-card">
                         <h2>Hola <span id="guestName">...</span> 👋</h2>
                         <p>En el sorteo <strong id="guestEvent">...</strong></p>
@@ -490,328 +488,337 @@
                         <a href="index.html" style="color: var(--text-muted); text-decoration: none;">Crear mi propio sorteo</a>
                     </div>
                 `;
-                    getEl('step1').parentNode.insertBefore(reveal, getEl('step1'));
-                }
+                getEl('step1').parentNode.insertBefore(reveal, getEl('step1'));
+            }
 
-                try {
-                    // Fetch Data
-                    const { data, error } = await supabase
-                        .from('draws')
-                        .select('*')
-                        .eq('id', drawId)
-                        .single();
+            try {
+                // Fetch Data
+                const { data, error } = await supabase
+                    .from('draws')
+                    .select('*')
+                    .eq('id', drawId)
+                    .single();
 
-                    if (error || !data) throw error;
+                if (error || !data) throw error;
 
-                    // Find result
-                    const result = data.data.pairs.find(p => p.giver.name === user);
+                // Find result
+                const result = data.data.pairs.find(p => p.giver.name === user);
 
-                    if (!result) {
-                        alert('No encontré tu nombre en este sorteo. Verifica el link.');
-                        window.location.href = window.location.pathname.split('?')[0];
-                        return;
-                    }
-
-                    // Show Result
-                    loading.style.display = 'none';
-                    reveal.style.display = 'block';
-                    getEl('guestName').innerText = result.giver.name;
-                    getEl('guestEvent').innerText = data.event_name;
-                    getEl('secretName').innerText = result.receiver.name;
-
-                } catch (err) {
-                    console.error(err);
-                    alert('No se pudo cargar el sorteo. Puede que no exista.');
+                if (!result) {
+                    alert('No encontré tu nombre en este sorteo. Verifica el link.');
                     window.location.href = window.location.pathname.split('?')[0];
+                    return;
                 }
+
+                // Show Result
+                loading.style.display = 'none';
+                reveal.style.display = 'block';
+                getEl('guestName').innerText = result.giver.name;
+                getEl('guestEvent').innerText = data.event_name;
+                getEl('secretName').innerText = result.receiver.name;
+
+            } catch (err) {
+                console.error(err);
+                alert('No se pudo cargar el sorteo. Puede que no exista.');
+                window.location.href = window.location.pathname.split('?')[0];
+            }
+        }
+
+        // Initialize picker
+        emojis.forEach(emoji => {
+            const span = document.createElement('span');
+            span.textContent = emoji;
+            span.style.cursor = 'pointer';
+            span.style.fontSize = '1.5rem';
+            span.style.padding = '0.25rem';
+            span.style.userSelect = 'none';
+            span.onclick = () => {
+                const input = getEl('eventName');
+                input.value += emoji;
+                picker.style.display = 'none';
+                input.focus();
+            };
+            picker.appendChild(span);
+        });
+
+        function toggleEmojiPicker() {
+            picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Close picker if clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.emoji-btn') && !e.target.closest('#emojiPicker')) {
+                picker.style.display = 'none';
+            }
+        });
+
+        // --- STEPS NAVIGATION ---
+        function goToStep(step) {
+            // Validation
+            if (step === 2) {
+                const name = getEl('eventName').value.trim();
+                if (!name) return alert('Por favor escribe un nombre para el sorteo.');
+                if (state.participants.length < 3) return alert('Necesitas al menos 3 participantes.');
+                state.eventName = name;
+                populateExclusionDropdowns();
+            }
+            if (step === 3) {
+                renderReview();
             }
 
-            // Initialize picker
-            emojis.forEach(emoji => {
-                const span = document.createElement('span');
-                span.textContent = emoji;
-                span.style.cursor = 'pointer';
-                span.style.fontSize = '1.5rem';
-                span.style.padding = '0.25rem';
-                span.style.userSelect = 'none';
-                span.onclick = () => {
-                    const input = getEl('eventName');
-                    input.value += emoji;
-                    picker.style.display = 'none';
-                    input.focus();
-                };
-                picker.appendChild(span);
-            });
+            // Switch UI
+            document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.step-dot').forEach(el => el.classList.remove('active'));
 
-            function toggleEmojiPicker() {
-                picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
-            }
+            getEl(`step${step}`).classList.add('active');
+            getEl(`dot${step}`).classList.add('active');
+        }
 
-            // Close picker if clicking outside
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.emoji-btn') && !e.target.closest('#emojiPicker')) {
-                    picker.style.display = 'none';
-                }
-            });
-
-            // --- STEPS NAVIGATION ---
-            function goToStep(step) {
-                // Validation
-                if (step === 2) {
-                    const name = getEl('eventName').value.trim();
-                    if (!name) return alert('Por favor escribe un nombre para el sorteo.');
-                    if (state.participants.length < 3) return alert('Necesitas al menos 3 participantes.');
-                    state.eventName = name;
-                    populateExclusionDropdowns();
-                }
-                if (step === 3) {
-                    renderReview();
-                }
-
-                // Switch UI
-                document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.step-dot').forEach(el => el.classList.remove('active'));
-
-                getEl(`step${step}`).classList.add('active');
-                getEl(`dot${step}`).classList.add('active');
-            }
-
-            // --- STEP 1: PARTICIPANTS ---
-            function addParticipant() {
+        // --- STEP 1: PARTICIPANTS ---
+        function addParticipant() {
+            try {
                 let name = getEl('pName').value.trim();
                 let phone = getEl('pPhone').value.trim();
 
                 // Sanitize input
                 name = name.replace(/[<>"'&]/g, ""); // Remove dangerous chars
-                phone = phone.replace(/\D/g, ''); // Digits only
+                const cleanPhone = phone.replace(/\D/g, ''); // Digits only
 
-                if (!name || !phone) return alert('Nombre y teléfono son obligatorios.');
-                if (phone.length < 8) return alert('El teléfono parece muy corto.');
+                console.log("Adding:", name, cleanPhone);
+
+                if (!name || !cleanPhone) return alert('Nombre y teléfono son obligatorios.');
+                // Chile: 569 + 8 digits = 11. Minimal valid could be shorter in other countries, keeping 7 safely.
+                if (cleanPhone.length < 7) return alert('El teléfono parece muy corto (' + cleanPhone.length + ' dígitos).');
+
                 if (state.participants.some(p => p.name === name)) return alert('Ese nombre ya existe.');
 
                 state.participants.push({
                     id: Date.now().toString(),
-                    name,
-                    phone: phone.replace(/\D/g, '') // clean phone
+                    name: name,
+                    phone: cleanPhone
                 });
 
                 getEl('pName').value = '';
                 getEl('pPhone').value = '569'; // Reset with prefix
                 renderParticipants();
+            } catch (e) {
+                console.error("Add Error:", e);
+                alert("Error al agregar: " + e.message);
             }
+        }
 
-            function removeParticipant(id) {
-                state.participants = state.participants.filter(p => p.id !== id);
-                // Also remove related exclusions
-                state.exclusions = state.exclusions.filter(e => e.fromId !== id && e.toId !== id);
-                renderParticipants();
+        function removeParticipant(id) {
+            state.participants = state.participants.filter(p => p.id !== id);
+            // Also remove related exclusions
+            state.exclusions = state.exclusions.filter(e => e.fromId !== id && e.toId !== id);
+            renderParticipants();
+        }
+
+        function renderParticipants() {
+            const list = getEl('participantsList');
+            list.innerHTML = '';
+            if (state.participants.length === 0) {
+                list.innerHTML = '<li style="text-align:center; color: var(--text-muted);">No hay participantes aún</li>';
+                return;
             }
-
-            function renderParticipants() {
-                const list = getEl('participantsList');
-                list.innerHTML = '';
-                if (state.participants.length === 0) {
-                    list.innerHTML = '<li style="text-align:center; color: var(--text-muted);">No hay participantes aún</li>';
-                    return;
-                }
-                state.participants.forEach(p => {
-                    list.innerHTML += `
+            state.participants.forEach(p => {
+                list.innerHTML += `
                 <li class="list-item">
                     <div><strong>${p.name}</strong> <small>(${p.phone})</small></div>
                     <span class="delete-icon" onclick="removeParticipant('${p.id}')">✕</span>
                 </li>
             `;
-                });
-            }
+            });
+        }
 
-            // --- STEP 2: EXCLUSIONS ---
-            function populateExclusionDropdowns() {
-                const opts = state.participants.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-                getEl('excFrom').innerHTML = opts;
-                getEl('excTo').innerHTML = opts;
-            }
+        // --- STEP 2: EXCLUSIONS ---
+        function populateExclusionDropdowns() {
+            const opts = state.participants.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            getEl('excFrom').innerHTML = opts;
+            getEl('excTo').innerHTML = opts;
+        }
 
-            function addExclusion() {
-                const fromId = getEl('excFrom').value;
-                const toId = getEl('excTo').value;
+        function addExclusion() {
+            const fromId = getEl('excFrom').value;
+            const toId = getEl('excTo').value;
 
-                if (fromId === toId) return alert('No puedes excluirse a sí mismo (ya es automático).');
+            if (fromId === toId) return alert('No puedes excluirse a sí mismo (ya es automático).');
 
-                // Check duplicate
-                if (state.exclusions.some(e => e.fromId === fromId && e.toId === toId)) return;
+            // Check duplicate
+            if (state.exclusions.some(e => e.fromId === fromId && e.toId === toId)) return;
 
-                state.exclusions.push({ fromId, toId });
-                renderExclusions();
-            }
+            state.exclusions.push({ fromId, toId });
+            renderExclusions();
+        }
 
-            function removeExclusion(index) {
-                state.exclusions.splice(index, 1);
-                renderExclusions();
-            }
+        function removeExclusion(index) {
+            state.exclusions.splice(index, 1);
+            renderExclusions();
+        }
 
-            function renderExclusions() {
-                const list = getEl('exclusionsList');
-                list.innerHTML = '';
-                state.exclusions.forEach((e, idx) => {
-                    const fromName = state.participants.find(p => p.id === e.fromId)?.name || '?';
-                    const toName = state.participants.find(p => p.id === e.toId)?.name || '?';
-                    list.innerHTML += `
+        function renderExclusions() {
+            const list = getEl('exclusionsList');
+            list.innerHTML = '';
+            state.exclusions.forEach((e, idx) => {
+                const fromName = state.participants.find(p => p.id === e.fromId)?.name || '?';
+                const toName = state.participants.find(p => p.id === e.toId)?.name || '?';
+                list.innerHTML += `
                 <li class="list-item">
                     <span>🚫 <strong>${fromName}</strong> no regala a <strong>${toName}</strong></span>
                     <span class="delete-icon" onclick="removeExclusion(${idx})">✕</span>
                 </li>
             `;
-                });
+            });
+        }
+
+        // --- STEP 3: REVIEW ---
+        function renderReview() {
+            getEl('countConfirm').innerText = state.participants.length;
+            getEl('reviewList').innerHTML = state.participants.map(p =>
+                `<li>• ${p.name} (${p.phone})</li>`
+            ).join('');
+
+            // Set default template if empty OR matches old "spoiler" version
+            const textArea = getEl('msgTemplate');
+            // Check if it's empty OR contains the old "te tocó regalarle a" string which spoils the secret
+            if (!textArea.value.trim() || textArea.value.includes('te tocó regalarle a')) {
+                textArea.value = `¡Hola {nombre}! 👋\n\nYa está listo el Amigo Secreto "{evento}" 🎁.\n\nMira a quién te tocó regalarle aquí:\n👉 {link}\n\n¡Shhh! Es secreto 🤫`;
+            }
+        }
+
+        // --- LOGIC: RAFFLE ---
+        // --- LOGIC: RAFFLE ---
+        async function runRaffle() {
+            const btn = document.querySelector('#step3 .btn-success');
+            const originalText = btn.innerText;
+            btn.innerText = '⏳ Guardando...';
+            btn.disabled = true;
+
+            // local solve
+            const successPairs = solveSecretSanta(state.participants, state.exclusions);
+            if (!successPairs) {
+                alert('❌ No fue posible generar un sorteo válido con estas exclusiones. Intenta reducir las restricciones.');
+                btn.innerText = originalText;
+                btn.disabled = false;
+                return;
             }
 
-            // --- STEP 3: REVIEW ---
-            function renderReview() {
-                getEl('countConfirm').innerText = state.participants.length;
-                getEl('reviewList').innerHTML = state.participants.map(p =>
-                    `<li>• ${p.name} (${p.phone})</li>`
-                ).join('');
+            try {
+                // Save to Supabase
+                const payload = {
+                    event_name: state.eventName,
+                    pairs: successPairs
+                };
 
-                // Set default template if empty OR matches old "spoiler" version
-                const textArea = getEl('msgTemplate');
-                // Check if it's empty OR contains the old "te tocó regalarle a" string which spoils the secret
-                if (!textArea.value.trim() || textArea.value.includes('te tocó regalarle a')) {
-                    textArea.value = `¡Hola {nombre}! 👋\n\nYa está listo el Amigo Secreto "{evento}" 🎁.\n\nMira a quién te tocó regalarle aquí:\n👉 {link}\n\n¡Shhh! Es secreto 🤫`;
-                }
+                const { data, error } = await supabase
+                    .from('draws')
+                    .insert([{ event_name: state.eventName, data: payload }])
+                    .select();
+
+                if (error) throw error;
+
+                const drawId = data[0].id;
+                renderResults(successPairs, drawId);
+                goToStep(4);
+
+            } catch (err) {
+                console.error("Supabase Error:", err);
+                alert('Error al guardar el sorteo en la nube. Revisa tu conexión.');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
             }
+        }
 
-            // --- LOGIC: RAFFLE ---
-            // --- LOGIC: RAFFLE ---
-            async function runRaffle() {
-                const btn = document.querySelector('#step3 .btn-success');
-                const originalText = btn.innerText;
-                btn.innerText = '⏳ Guardando...';
-                btn.disabled = true;
+        // Backtracking Algorithm
+        function solveSecretSanta(participants, exclusions) {
+            const givers = [...participants];
+            let receivers = new Array(givers.length).fill(null);
+            let used = new Array(givers.length).fill(false);
 
-                // local solve
-                const successPairs = solveSecretSanta(state.participants, state.exclusions);
-                if (!successPairs) {
-                    alert('❌ No fue posible generar un sorteo válido con estas exclusiones. Intenta reducir las restricciones.');
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                    return;
-                }
+            // Map ID to index for easier graph logic
+            const idToIndex = {};
+            participants.forEach((p, i) => idToIndex[p.id] = i);
 
-                try {
-                    // Save to Supabase
-                    const payload = {
-                        event_name: state.eventName,
-                        pairs: successPairs
-                    };
+            // Build adjacency matrix of INVALID moves
+            const invalid = Array(givers.length).fill().map(() => Array(givers.length).fill(false));
 
-                    const { data, error } = await supabase
-                        .from('draws')
-                        .insert([{ event_name: state.eventName, data: payload }])
-                        .select();
+            // Self is invalid
+            for (let i = 0; i < givers.length; i++) invalid[i][i] = true;
 
-                    if (error) throw error;
+            // Exclusions are invalid
+            exclusions.forEach(e => {
+                const u = idToIndex[e.fromId];
+                const v = idToIndex[e.toId];
+                if (u !== undefined && v !== undefined) invalid[u][v] = true;
+            });
 
-                    const drawId = data[0].id;
-                    renderResults(successPairs, drawId);
-                    goToStep(4);
+            // Shuffle givers order to ensure randomness in search
+            // (Actually we shuffle the "options" for each giver during search)
 
-                } catch (err) {
-                    console.error("Supabase Error:", err);
-                    alert('Error al guardar el sorteo en la nube. Revisa tu conexión.');
-                } finally {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                }
-            }
+            function canMatch(giverIdx) {
+                if (giverIdx === givers.length) return true; // Solution found!
 
-            // Backtracking Algorithm
-            function solveSecretSanta(participants, exclusions) {
-                const givers = [...participants];
-                let receivers = new Array(givers.length).fill(null);
-                let used = new Array(givers.length).fill(false);
-
-                // Map ID to index for easier graph logic
-                const idToIndex = {};
-                participants.forEach((p, i) => idToIndex[p.id] = i);
-
-                // Build adjacency matrix of INVALID moves
-                const invalid = Array(givers.length).fill().map(() => Array(givers.length).fill(false));
-
-                // Self is invalid
-                for (let i = 0; i < givers.length; i++) invalid[i][i] = true;
-
-                // Exclusions are invalid
-                exclusions.forEach(e => {
-                    const u = idToIndex[e.fromId];
-                    const v = idToIndex[e.toId];
-                    if (u !== undefined && v !== undefined) invalid[u][v] = true;
-                });
-
-                // Shuffle givers order to ensure randomness in search
-                // (Actually we shuffle the "options" for each giver during search)
-
-                function canMatch(giverIdx) {
-                    if (giverIdx === givers.length) return true; // Solution found!
-
-                    // Create list of possible candidates (receiver indices)
-                    let candidates = [];
-                    for (let r = 0; r < givers.length; r++) {
-                        if (!used[r] && !invalid[giverIdx][r]) {
-                            candidates.push(r);
-                        }
+                // Create list of possible candidates (receiver indices)
+                let candidates = [];
+                for (let r = 0; r < givers.length; r++) {
+                    if (!used[r] && !invalid[giverIdx][r]) {
+                        candidates.push(r);
                     }
-
-                    // Shuffle candidates to make result random
-                    for (let i = candidates.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
-                    }
-
-                    for (let r of candidates) {
-                        receivers[giverIdx] = participants[r];
-                        used[r] = true;
-                        if (canMatch(giverIdx + 1)) return true;
-                        // Backtrack
-                        used[r] = false;
-                        receivers[giverIdx] = null;
-                    }
-                    return false;
                 }
 
-                if (canMatch(0)) {
-                    // Return pairs
-                    return givers.map((g, i) => ({ giver: g, receiver: receivers[i] }));
+                // Shuffle candidates to make result random
+                for (let i = candidates.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
                 }
-                return null;
+
+                for (let r of candidates) {
+                    receivers[giverIdx] = participants[r];
+                    used[r] = true;
+                    if (canMatch(giverIdx + 1)) return true;
+                    // Backtrack
+                    used[r] = false;
+                    receivers[giverIdx] = null;
+                }
+                return false;
             }
 
-            // --- STEP 4: RESULTS ---
-            function renderResults(pairs, drawId) {
-                getEl('finalEventName').innerText = state.eventName;
-                const container = getEl('resultsContainer');
-                container.innerHTML = '';
+            if (canMatch(0)) {
+                // Return pairs
+                return givers.map((g, i) => ({ giver: g, receiver: receivers[i] }));
+            }
+            return null;
+        }
 
-                // Construct Base URL (handles local file vs domain)
-                // If local file, it will be file:///..., which won't work for others, but OK for testing.
-                const baseUrl = window.location.href.split('?')[0];
+        // --- STEP 4: RESULTS ---
+        function renderResults(pairs, drawId) {
+            getEl('finalEventName').innerText = state.eventName;
+            const container = getEl('resultsContainer');
+            container.innerHTML = '';
 
-                pairs.forEach(pair => {
-                    let template = getEl('msgTemplate').value;
+            // Construct Base URL (handles local file vs domain)
+            // If local file, it will be file:///..., which won't work for others, but OK for testing.
+            const baseUrl = window.location.href.split('?')[0];
 
-                    // Generate Secret Link
-                    // encodeURIComponent ensures emojis/spaces in Name don't break the URL
-                    const secretLink = `${baseUrl}?id=${drawId}&u=${encodeURIComponent(pair.giver.name)}`;
+            pairs.forEach(pair => {
+                let template = getEl('msgTemplate').value;
 
-                    // Replace variables
-                    let msg = template
-                        .replace(/{nombre}/g, pair.giver.name)
-                        .replace(/{evento}/g, state.eventName)
-                        .replace(/{link}/g, secretLink)
-                        .replace(/{amigo}/g, pair.receiver.name); // Still supported if they want to spoil
+                // Generate Secret Link
+                // encodeURIComponent ensures emojis/spaces in Name don't break the URL
+                const secretLink = `${baseUrl}?id=${drawId}&u=${encodeURIComponent(pair.giver.name)}`;
 
-                    // WhatsApp URL encoding
-                    const url = `https://wa.me/${pair.giver.phone}?text=${encodeURIComponent(msg)}`;
+                // Replace variables
+                let msg = template
+                    .replace(/{nombre}/g, pair.giver.name)
+                    .replace(/{evento}/g, state.eventName)
+                    .replace(/{link}/g, secretLink)
+                    .replace(/{amigo}/g, pair.receiver.name); // Still supported if they want to spoil
 
-                    container.innerHTML += `
+                // WhatsApp URL encoding
+                const url = `https://wa.me/${pair.giver.phone}?text=${encodeURIComponent(msg)}`;
+
+                container.innerHTML += `
                     <div class="list-item">
                         <span>Para: <strong>${pair.giver.name}</strong></span>
                         <a href="${url}" target="_blank" class="whatsapp-btn">
@@ -819,45 +826,45 @@
                         </a>
                     </div>
                 `;
-                });
-            }
+            });
+        }
 
-            // --- BACKGROUND ANIMATION ---
-            const bgEmojis = ["💘", "💝", "💖", "🫶🏻", "💏", "👩‍❤️‍💋‍👨", "👩‍❤️‍💋‍👩", "👨‍👩‍👦", "👨‍👩‍👧‍👧", "👩‍👦‍👦", "👨‍👧‍👧", "🎲", "🐱", "🐈", "🐈‍⬛", "🕹️", "🐶", "🐕", "🍰", "🎈", "🎄", "🪅", "🎉", "🎊", "🎀", "🎁", "🧸", "🎮", "🪀", "🪁", "🎱", "🔮"];
-            const bgContainer = getEl('emoji-bg');
+        // --- BACKGROUND ANIMATION ---
+        const bgEmojis = ["💘", "💝", "💖", "🫶🏻", "💏", "👩‍❤️‍💋‍👨", "👩‍❤️‍💋‍👩", "👨‍👩‍👦", "👨‍👩‍👧‍👧", "👩‍👦‍👦", "👨‍👧‍👧", "🎲", "🐱", "🐈", "🐈‍⬛", "🕹️", "🐶", "🐕", "🍰", "🎈", "🎄", "🪅", "🎉", "🎊", "🎀", "🎁", "🧸", "🎮", "🪀", "🪁", "🎱", "🔮"];
+        const bgContainer = getEl('emoji-bg');
 
-            function createFallingEmoji() {
-                const el = document.createElement('div');
-                el.innerText = bgEmojis[Math.floor(Math.random() * bgEmojis.length)];
-                el.classList.add('falling-emoji');
+        function createFallingEmoji() {
+            const el = document.createElement('div');
+            el.innerText = bgEmojis[Math.floor(Math.random() * bgEmojis.length)];
+            el.classList.add('falling-emoji');
 
-                // Random properties
-                const left = Math.random() * 100;
-                const duration = Math.random() * 5 + 5; // 5-10s
-                const size = Math.random() * 1.5 + 1; // 1-2.5rem
-                const rotate = Math.random() * 360;
+            // Random properties
+            const left = Math.random() * 100;
+            const duration = Math.random() * 5 + 5; // 5-10s
+            const size = Math.random() * 1.5 + 1; // 1-2.5rem
+            const rotate = Math.random() * 360;
 
-                el.style.left = left + '%';
-                el.style.animationDuration = duration + 's';
-                el.style.fontSize = size + 'rem';
-                el.style.transform = `rotate(${rotate}deg)`; // Initial rotation
+            el.style.left = left + '%';
+            el.style.animationDuration = duration + 's';
+            el.style.fontSize = size + 'rem';
+            el.style.transform = `rotate(${rotate}deg)`; // Initial rotation
 
-                // Re-apply rotation in keyframe requires dynamic keyframes or just fixed rotation
-                // Since requirements say "always in straight line downwards", we just rotate the element itself once.
+            // Re-apply rotation in keyframe requires dynamic keyframes or just fixed rotation
+            // Since requirements say "always in straight line downwards", we just rotate the element itself once.
 
-                bgContainer.appendChild(el);
+            bgContainer.appendChild(el);
 
-                // Cleanup
-                setTimeout(() => {
-                    el.remove();
-                }, duration * 1000);
-            }
+            // Cleanup
+            setTimeout(() => {
+                el.remove();
+            }, duration * 1000);
+        }
 
-            // Create continuously
-            setInterval(createFallingEmoji, 500); // 2 emojis per second
+        // Create continuously
+        setInterval(createFallingEmoji, 500); // 2 emojis per second
 
-        </script>
+    </script>
 
-    </body>
+</body>
 
 </html>
