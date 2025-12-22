@@ -295,6 +295,9 @@
 </head>
 
 <body>
+    <div id="version-badge"
+        style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; z-index: 9999; pointer-events: none;">
+        v1.2 - Debug Mode</div>
     <div id="emoji-bg"></div>
 
     <div class="container">
@@ -433,22 +436,41 @@
 
         // --- EMOJI PICKER ---
         const emojis = ["🎄", "🎅", "🎁", "⭐", "🎉", "⛄", "🕯️", "🦃", "🍾", "🥂", "🎂", "🎈", "🎲", "🎯", "🎨", "🎭", "🎪", "🎫", "🎮", "🕹️", "🎰", "🎱", "🎳"];
-        const picker = getEl('emojiPicker');
+        // Picker const removed, we get it dynamically to be safe
 
         // --- SUPABASE CONFIG ---
         const SB_URL = 'https://wmuqrvxnwzywkijgoaik.supabase.co';
         // Note: exposing anon key is standard for Supabase client-side apps if RLS is set correctly
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdXFydnhud3p5d2tpamdvYWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MzAzNzYsImV4cCI6MjA4MjAwNjM3Nn0.Kql89OScgmA4zYCS6Xa85Kh3FpbmcF-hLNPj2H_vQxk';
-        const supabase = window.supabase.createClient(SB_URL, SB_KEY);
 
-        // --- GUEST MODE ---
+        let supabaseClient = null;
+
+        // --- INIT ON LOAD ---
         window.addEventListener('load', async () => {
+            console.log("v1.2 Loaded");
+
+            // Init Supabase
+            try {
+                if (window.supabase) {
+                    supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+                    console.log("Supabase Ready");
+                } else {
+                    console.error("Supabase SDK not found");
+                }
+            } catch (e) {
+                console.error("Supabase Init Error:", e);
+            }
+
+            // Guest Mode Check
             const params = new URLSearchParams(window.location.search);
             const drawId = params.get('id');
             const user = params.get('u');
             if (drawId && user) {
                 enterGuestMode(drawId, user);
             }
+
+            // Init Emoji Picker
+            initEmojiPicker();
         });
 
         async function enterGuestMode(drawId, user) {
@@ -493,7 +515,7 @@
 
             try {
                 // Fetch Data
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('draws')
                     .select('*')
                     .eq('id', drawId)
@@ -525,30 +547,37 @@
         }
 
         // Initialize picker
-        emojis.forEach(emoji => {
-            const span = document.createElement('span');
-            span.textContent = emoji;
-            span.style.cursor = 'pointer';
-            span.style.fontSize = '1.5rem';
-            span.style.padding = '0.25rem';
-            span.style.userSelect = 'none';
-            span.onclick = () => {
-                const input = getEl('eventName');
-                input.value += emoji;
-                picker.style.display = 'none';
-                input.focus();
-            };
-            picker.appendChild(span);
-        });
+        function initEmojiPicker() {
+            const picker = getEl('emojiPicker');
+            if (!picker) return;
+
+            emojis.forEach(emoji => {
+                const span = document.createElement('span');
+                span.textContent = emoji;
+                span.style.cursor = 'pointer';
+                span.style.fontSize = '1.5rem';
+                span.style.padding = '0.25rem';
+                span.style.userSelect = 'none';
+                span.onclick = () => {
+                    const input = getEl('eventName');
+                    input.value += emoji;
+                    picker.style.display = 'none';
+                    input.focus();
+                };
+                picker.appendChild(span);
+            });
+        }
 
         function toggleEmojiPicker() {
-            picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
+            const picker = getEl('emojiPicker');
+            if (picker) picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
         }
 
         // Close picker if clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.emoji-btn') && !e.target.closest('#emojiPicker')) {
-                picker.style.display = 'none';
+                const picker = getEl('emojiPicker');
+                if (picker) picker.style.display = 'none';
             }
         });
 
@@ -710,7 +739,7 @@
                     pairs: successPairs
                 };
 
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('draws')
                     .insert([{ event_name: state.eventName, data: payload }])
                     .select();
