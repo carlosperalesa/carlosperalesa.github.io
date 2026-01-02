@@ -1,176 +1,260 @@
-// ============================================
-// SCRIPT PRINCIPAL - PORTAFOLIO CARLOS PERALES
-// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Force scroll to top on refresh to prevent layout glitches with sticky headers
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
 
-// ============================================
-// INICIALIZACIÓN DEL DOM
-// ============================================
-document.addEventListener('DOMContentLoaded', (event) => {
-    
-    // ============================================
-    // BOTONES FLOTANTES - Menú de acciones rápidas
-    // ============================================
-    const mainButton = document.getElementById('mainButton');
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const scrollTopButton = document.getElementById('scrollTopButton');
+    // --- MAGNETIC CURSOR ---
+    const cursorDot = document.querySelector(".cursor-dot");
+    const cursorOutline = document.querySelector(".cursor-outline");
+    const isDesktop = matchMedia('(hover: hover)').matches;
 
-    // Toggle del menú flotante
-    if (mainButton) {
-        mainButton.addEventListener('click', () => {
-            mainButton.classList.toggle('active');
-            const secondaryButtons = document.querySelectorAll('.secondary-button');
-            secondaryButtons.forEach(button => {
-                button.style.opacity = mainButton.classList.contains('active') ? '1' : '0';
-                button.style.transform = mainButton.classList.contains('active') ? 'scale(1)' : 'scale(0)';
-            });
+    if (isDesktop && cursorDot && cursorOutline) {
+        window.addEventListener("mousemove", (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        const hoverables = document.querySelectorAll('a, button, .tile, .contact-item, .skill-tag, .theme-switch, .social-link, .mobile-menu-toggle, input, .filter-btn');
+
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => { document.body.classList.add('hovering'); });
+            el.addEventListener('mouseleave', () => { document.body.classList.remove('hovering'); });
         });
     }
 
-    // ============================================
-    // MODO OSCURO - Toggle dark/light mode
-    // ============================================
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const icon = darkModeToggle.querySelector('ion-icon');
-            if (icon) {
-                icon.setAttribute('name', document.body.classList.contains('dark-mode') ? 'sunny-outline' : 'moon-outline');
-            }
-            
-            // Guardar preferencia en localStorage
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+
+
+    // --- MOBILE SCROLL EFFECTS (Flip & Scale) ---
+    let mobileObserver;
+
+    function initMobileScrollEffects() {
+        const isMobile = window.innerWidth <= 768;
+        const flipCards = document.querySelectorAll('.tile.flip-card');
+        const staticTiles = document.querySelectorAll('.tile:not(.flip-card)');
+
+        // Cleanup previous observer
+        if (mobileObserver) {
+            mobileObserver.disconnect();
+            mobileObserver = null;
+        }
+
+        // Reset styles
+        flipCards.forEach(card => {
+            const cardInner = card.querySelector('.card-inner');
+            if (cardInner) cardInner.style.transform = '';
+        });
+        staticTiles.forEach(tile => {
+            tile.style.transform = '';
         });
 
-        // Recuperar preferencia guardada
-        const savedDarkMode = localStorage.getItem('darkMode');
-        if (savedDarkMode === 'true') {
-            document.body.classList.add('dark-mode');
-            const icon = darkModeToggle.querySelector('ion-icon');
-            if (icon) {
-                icon.setAttribute('name', 'sunny-outline');
-            }
+        if (isMobile) {
+            const observerOptions = {
+                threshold: 0.6, // Higher threshold for center focus
+                rootMargin: "-20% 0px -20% 0px"
+            };
+
+            mobileObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const target = entry.target;
+
+                    // Case 1: Flip Card
+                    if (target.classList.contains('flip-card')) {
+                        const cardInner = target.querySelector('.card-inner');
+                        if (cardInner) {
+                            if (entry.isIntersecting) {
+                                cardInner.style.transform = 'rotateY(180deg)';
+                            } else {
+                                cardInner.style.transform = 'rotateY(0deg)';
+                            }
+                        }
+                    }
+                    // Case 2: Static Tile (Scale Effect)
+                    else {
+                        if (entry.isIntersecting) {
+                            target.style.transform = 'scale(1.03)'; // Subtle pop
+                        } else {
+                            target.style.transform = 'scale(1)';
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            flipCards.forEach(card => mobileObserver.observe(card));
+            staticTiles.forEach(tile => mobileObserver.observe(tile));
         }
     }
 
-    // ============================================
-    // SCROLL TO TOP - Botón para volver arriba
-    // ============================================
-    if (scrollTopButton) {
-        // Evento click para scroll suave
-        scrollTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+    // Initialize and Listen for Resize
+    initMobileScrollEffects();
+    window.addEventListener('resize', () => {
+        clearTimeout(window.resizeTimer);
+        window.resizeTimer = setTimeout(initMobileScrollEffects, 200);
+    });
 
-        // Mostrar/ocultar botón según scroll
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 100) {
-                scrollTopButton.style.display = 'flex';
+
+    // --- SCROLL ANIMATION (Reveal) ---
+    const tiles = document.querySelectorAll('.tile');
+
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 50);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    tiles.forEach(tile => {
+        observer.observe(tile);
+
+        // --- 3D TILT EFFECT (Desktop Only for Performance) ---
+        if (isDesktop && !tile.classList.contains('flip-card')) {
+            tile.addEventListener('mousemove', (e) => {
+                const rect = tile.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                tile.style.setProperty('--mouse-x', `${x}px`);
+                tile.style.setProperty('--mouse-y', `${y}px`);
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const percentX = (x - centerX) / centerX;
+                const percentY = (y - centerY) / centerY;
+
+                let maxRotate = 5;
+                if (rect.width > 400) maxRotate = 2.5;
+
+                const rotateY = percentX * maxRotate * -1;
+                const rotateX = percentY * maxRotate;
+
+                tile.style.transform = `
+                    perspective(1000px)
+                    rotateX(${rotateX}deg) 
+                    rotateY(${rotateY}deg)
+                    scale3d(1.02, 1.02, 1.02)
+                `;
+            });
+
+            tile.addEventListener('mouseleave', () => {
+                tile.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        }
+    });
+
+    // --- DARK MODE LOGIC ---
+    const themeCheckbox = document.getElementById('checkbox');
+    const body = document.body;
+
+    // Check local storage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = true;
+    }
+
+    if (themeCheckbox) {
+        themeCheckbox.addEventListener('change', () => {
+            if (themeCheckbox.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
             } else {
-                scrollTopButton.style.display = 'none';
+                body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
             }
         });
     }
 
-    // ============================================
-    // SECCIONES COLAPSABLES - Expandir/Colapsar contenido
-    // ============================================
-    const collapsibleSections = document.querySelectorAll('.collapsible-section');
+    // --- MOBILE MENU LOGIC ---
+    const topBar = document.querySelector('.top-bar');
+    const overlay = document.querySelector('.mobile-menu-overlay');
 
-    collapsibleSections.forEach(section => {
-        const header = section.querySelector('.section-header');
-        if (header) {
-            header.addEventListener('click', () => {
-                section.classList.toggle('collapsed');
-                
-                // Actualizar aria-expanded para accesibilidad
-                const arrow = header.querySelector('.arrow');
-                if (arrow) {
-                    const isExpanded = !section.classList.contains('collapsed');
-                    arrow.setAttribute('aria-expanded', isExpanded);
-                }
-                
-                // Actualizar aria-hidden del contenido
-                const content = section.querySelector('.section-content');
-                if (content) {
-                    const isHidden = section.classList.contains('collapsed');
-                    content.setAttribute('aria-hidden', isHidden);
-                }
-            });
+    if (topBar && overlay) {
+        topBar.addEventListener('click', (e) => {
+            // Only trigger if clicking mobile menu icon specifically, 
+            // OR if clicking blank space in top bar (but not links/switch)
+            if (window.innerWidth <= 768) {
+                if (e.target.closest('.theme-switch-wrapper') || e.target.closest('a')) return;
 
-            // Soporte para navegación por teclado
-            const arrow = header.querySelector('.arrow');
-            if (arrow) {
-                arrow.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        header.click();
+                // If clicked toggle or empty space
+                if (e.target.closest('.mobile-menu-toggle') || e.target === topBar || e.target.closest('.brand')) {
+                    overlay.classList.add('active');
+                }
+            }
+        });
+
+        overlay.addEventListener('transitionend', () => {
+            if (overlay.classList.contains('active')) {
+                // Focus Trap Logic
+                const focusableElements = overlay.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (firstElement) firstElement.focus();
+
+                overlay.addEventListener('keydown', function (e) {
+                    if (e.key === 'Tab') {
+                        if (e.shiftKey) { /* shift + tab */
+                            if (document.activeElement === firstElement) {
+                                e.preventDefault();
+                                lastElement.focus();
+                            }
+                        } else { /* tab */
+                            if (document.activeElement === lastElement) {
+                                e.preventDefault();
+                                firstElement.focus();
+                            }
+                        }
+                    }
+                    if (e.key === 'Escape') {
+                        overlay.classList.remove('active');
                     }
                 });
             }
-        }
-    });
-
-}); // Cierre del DOMContentLoaded principal
-
-// ============================================
-// TARJETAS DE PROYECTOS - Flip cards interactivas
-// ============================================
-function toggleCard(card, url) {
-    // Click abre el proyecto directamente
-    window.open(url, '_blank');
-}
-
-// Agregar eventos hover a las tarjetas de proyectos
-document.addEventListener('DOMContentLoaded', () => {
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    projectCards.forEach(card => {
-        // Voltear al pasar el cursor
-        card.addEventListener('mouseenter', () => {
-            card.classList.add('active');
-        });
-        
-        // Volver a la posición original al salir
-        card.addEventListener('mouseleave', () => {
-            card.classList.remove('active');
-        });
-    });
-});
-
-// ============================================
-// GALERÍA DE CERTIFICADOS - Carrusel interactivo
-// ============================================
-$(function () {
-    // Verificar si el elemento existe antes de inicializar
-    if ($('.cert-container').length > 0) {
-        // Inicialización de la galería
-        $('.cert-container').gallery({
-            autoplay: false,  // Sin reproducción automática
-            interval: 4000    // Intervalo en caso de activarse
         });
 
-        // Navegación con botón anterior
-        $('.dg-prev').on('click', function () {
-            $('.cert-container').data('gallery')._navigate('prev');
-        });
-
-        // Navegación con botón siguiente
-        $('.dg-next').on('click', function () {
-            $('.cert-container').data('gallery')._navigate('next');
-        });
-
-        // Soporte para navegación con teclado
-        $(document).on('keydown', function(e) {
-            if ($('.cert-container').is(':visible')) {
-                if (e.key === 'ArrowLeft') {
-                    $('.dg-prev').click();
-                } else if (e.key === 'ArrowRight') {
-                    $('.dg-next').click();
-                }
-            }
+        overlay.addEventListener('click', () => {
+            overlay.classList.remove('active');
         });
     }
+
+    // --- KEYBOARD ACCESSIBILITY FOR FLIP CARDS ---
+    const accessibleFlipCards = document.querySelectorAll('.tile.flip-card');
+    accessibleFlipCards.forEach(card => {
+        // Toggle on click (for unified behavior)
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+
+        // Toggle on Enter/Space
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault(); // Prevent scrolling for space
+                card.classList.toggle('flipped');
+            }
+        });
+
+        // Remove flipped state on blur (optional but good for focus flow)
+        card.addEventListener('blur', () => {
+            card.classList.remove('flipped');
+        });
+    });
+
 });

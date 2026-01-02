@@ -14,14 +14,13 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="css/tiles.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
 </head>
 
 <body>
 
-    <!-- CRYSTAL COMBO: ORBS ONLY (Noise Removed) -->
-    <!-- <div class="noise-overlay"></div> -->
+    <!-- CRYSTAL COMBO: ORBS ONLY -->
     <div class="orb-container">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -34,30 +33,32 @@
                 <span>Carlos Perales Dev</span>
             </div>
 
-            <div class="mobile-menu-toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
+            <!-- RIGHT ACTIONS CONTAINER -->
+            <div class="right-actions">
+                <nav class="nav-actions">
+                    <a href="https://github.com/carlosperalesa/" target="_blank" class="social-link"
+                        title="GitHub"><ion-icon name="logo-github"></ion-icon></a>
+                    <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-link"
+                        title="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+                    <a href="mailto:carlosperalesa@gmail.com" class="social-link" title="Email"><ion-icon
+                            name="mail-outline"></ion-icon></a>
+                    <a href="tel:+56962798030" class="social-link" title="Llamar"><ion-icon
+                            name="call-outline"></ion-icon></a>
+                    <a href="https://wa.me/56962798030" target="_blank" class="social-link" title="WhatsApp"><ion-icon
+                            name="logo-whatsapp"></ion-icon></a>
+                </nav>
 
-            <div class="nav-actions">
-                <a href="https://github.com/carlosperalesa/" target="_blank" class="social-link"
-                    title="GitHub"><ion-icon name="logo-github"></ion-icon></a>
-                <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-link"
-                    title="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
-                <a href="mailto:carlosperalesa@gmail.com" class="social-link" title="Email"><ion-icon
-                        name="mail-outline"></ion-icon></a>
-                <a href="tel:+56962798030" class="social-link" title="Llamar"><ion-icon
-                        name="call-outline"></ion-icon></a>
-                <a href="https://wa.me/56962798030" target="_blank" class="social-link" title="WhatsApp"><ion-icon
-                        name="logo-whatsapp"></ion-icon></a>
-
+                <!-- THEME SWITCH (Option 8 - Dribbble Polish) -->
                 <div class="theme-switch-wrapper">
-                    <label class="theme-switch" for="checkbox">
-                        <input type="checkbox" id="checkbox" />
-                        <div class="slider">
-                            <i class="fas fa-sun slider-icon icon-sun" style="color:#f39c12"></i>
-                            <i class="fas fa-moon slider-icon icon-moon" style="color:#f1c40f"></i>
-                        </div>
+                    <label class="toggle-variant toggle-opt-8" for="checkbox">
+                        <input type="checkbox" id="checkbox" aria-label="Alternar modo oscuro" />
+                        <span class="slider"></span>
                     </label>
+                </div>
+
+                <!-- MENU TOGGLE -->
+                <div class="mobile-menu-toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
                 </div>
             </div>
         </header>
@@ -85,13 +86,61 @@
         <!-- SIDEBAR -->
         <aside class="personal-section">
             <div class="tile avatar-section">
-                <img src="./img/avatar.jpg" alt="Carlos Perales" class="avatar-img">
+                <img src="./img/avatar.webp" alt="Carlos Perales" class="avatar-img">
                 <h1 style="margin:0; font-size:1.4rem; font-weight:500;">Carlos Perales</h1>
                 <p style="margin:5px 0 15px 0; color:var(--accent-color); font-weight:400; font-size:0.9rem;">Full Stack
                     Specialist</p>
                 <div style="font-size:0.9rem; opacity:0.8; line-height:1.5;">
                     Pasión por crear experiencias digitales hermosas y funcionales. Especialista en Arquitectura Web y
                     Diseño UI/UX.
+                </div>
+            </div>
+
+
+
+            <div class="tile">
+                <h2>Stack</h2>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="skill-tag html"><i class="fab fa-html5"></i> HTML5</span>
+                    <span class="skill-tag css"><i class="fab fa-css3-alt"></i> CSS3</span>
+                    <span class="skill-tag js"><i class="fab fa-js"></i> JavaScript</span>
+                    <span class="skill-tag python"><i class="fab fa-python"></i> Python</span>
+                    <span class="skill-tag react"><i class="fab fa-react"></i> React</span>
+                    <span class="skill-tag sql"><i class="fas fa-database"></i> SQL</span>
+                    <span class="skill-tag git"><i class="fab fa-git-alt"></i> Git</span>
+
+                    <span class="skill-tag django"><i class="fab fa-python"></i> Django</span>
+                    <span class="skill-tag wordpress"><i class="fab fa-wordpress"></i> WordPress</span>
+                    <span class="skill-tag postgres"><i class="fas fa-database"></i> PostgreSQL</span>
+                </div>
+            </div>
+
+            <div class="tile">
+                <h2>Habilidades & Idiomas</h2>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Soft Skills</h3>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px;">
+                        <span class="skill-tag">Comunicación</span>
+                        <span class="skill-tag">Creatividad</span>
+                        <span class="skill-tag">Adaptabilidad</span>
+                        <span class="skill-tag">Análisis</span>
+                        <span class="skill-tag">Proactividad</span>
+                        <span class="skill-tag">Detalle</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="margin-top:20px;">
+                    <h3 class="timeline-title">Idiomas</h3>
+                    <div style="margin-top:5px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                            <span>Español</span>
+                            <span style="opacity:0.7;">Nativo</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>Inglés</span>
+                            <span style="opacity:0.7;">C1 (Avanzado)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -102,78 +151,163 @@
                         style="font-size:0.85rem;">carlosperalesa@gmail.com</span></div>
                 <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>Santiago, Chile</span></div>
             </div>
-
-            <div class="tile">
-                <h2>Stack</h2>
-                <!-- ADDED CLASSES FOR BRAND COLORS -->
-                <div style="display:flex; flex-wrap:wrap; gap:4px;">
-                    <span class="skill-tag html"><i class="fab fa-html5"></i> HTML5</span>
-                    <span class="skill-tag css"><i class="fab fa-css3-alt"></i> CSS3</span>
-                    <span class="skill-tag js"><i class="fab fa-js"></i> JavaScript</span>
-                    <span class="skill-tag python"><i class="fab fa-python"></i> Python</span>
-                    <span class="skill-tag react"><i class="fab fa-react"></i> React</span>
-                    <span class="skill-tag sql"><i class="fas fa-database"></i> SQL</span>
-                    <span class="skill-tag git"><i class="fab fa-git-alt"></i> Git</span>
-                </div>
-            </div>
         </aside>
 
         <!-- PORTFOLIO GRID -->
         <main class="projects-section">
 
+
+
+            <!-- TOP ROW: Profile (Identity) -->
+            <div class="tile wide">
+                <h2>Perfil Profesional</h2>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Full Stack + Visión de Negocio</h3>
+                    <p class="timeline-desc">
+                        Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de cliente
+                        y traducirlas en soluciones técnicas eficientes.
+                        Mi background en ventas me permite construir productos con una fuerte orientación al usuario
+                        final y comunicación efectiva.
+                    </p>
+                </div>
+                <div class="timeline-item" style="margin-top:15px;">
+                    <h3 class="timeline-title">Soft Skills & Cultura</h3>
+                    <p class="timeline-desc">
+                        <strong>Team Player:</strong> Me desempeño mejor en estructuras colaborativas.
+                        <strong>Resolución:</strong> Enfoque pragmático para solucionar problemas bajo presión.
+                        <strong>Adaptabilidad:</strong> Rápida integración a nuevos stacks y metodologías ágiles.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ROW 2: Formación (1/4) & Experiencia (3/4) -->
+            <div class="tile-group-1-3">
+                <!-- 1. Formación (Left - 25%) -->
+                <div class="tile">
+                    <h2>Formación Académica</h2>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Analista Programador</h3>
+                        <p class="timeline-subtitle">INACAP (En curso - 2025)</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Derecho (Congelado)</h3>
+                        <p class="timeline-subtitle">Universidad Central (2009-2014)</p>
+                    </div>
+
+                    <h2 style="margin-top:20px; font-size:1rem; opacity:0.8;">Certificaciones</h2>
+                    <ul style="padding-left:15px; margin:5px 0; font-size:0.85rem; line-height:1.4; opacity:0.9;">
+                        <li>Full-Stack Developer (UTN.BA, 2023)</li>
+                        <li>Full Stack Python (Desafío Latam, 2024)</li>
+                        <li>Full Stack Python (SENCE, 2024)</li>
+                        <li>Full Stack Python (Talento Digital, 2024)</li>
+                        <li>Ciberseguridad & Acceso Seguro (Didactik)</li>
+                    </ul>
+                </div>
+
+                <!-- 2. Experiencia (Right - 75%) -->
+                <div class="tile">
+                    <h2>Experiencia Transferible</h2>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Ejecutivo de Ventas</h3>
+                        <p class="timeline-subtitle">S3 Group - Santander Zurich (oct. 2024 - nov. 2024)</p>
+                        <p class="timeline-desc">
+                            Gestión de requerimientos críticos y evaluación de riesgos. Optimización de procesos
+                            mediante análisis de reportes y datos.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Backoffice Servicio Móvil</h3>
+                        <p class="timeline-subtitle">T-Sales - Movistar (sep. 2022 - nov. 2022)</p>
+                        <p class="timeline-desc">
+                            Resolución de incidencias técnicas y manejo de excepciones en sistemas de venta.
+                            Aseguramiento de calidad en procesos.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Ejecutivo Comercial</h3>
+                        <p class="timeline-subtitle">Xinerlink - Empresas Claro (nov. 2021 - feb. 2022)</p>
+                        <p class="timeline-desc">
+                            Gestión de proyectos para clientes PYME. Coordinación inter-áreas
+                            (Logística/Técnica/Comercial) para cumplimiento de SLAs.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Ejecutivo de Ventas</h3>
+                        <p class="timeline-subtitle">Entel Call Center (ene. 2018 - ene. 2021)</p>
+                        <p class="timeline-desc">
+                            Laboratorio de Ventas: Pilotaje de nuevos productos y procedimientos. Detección de errores
+                            en flujos de venta antes del despliegue masivo.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- BOTTOM: Projects -->
             <!-- ROW 1 (4 Items) -->
 
             <!-- Project 1: HootieHoo -->
-            <div class="tile flip-card">
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto HootieHoo">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/hh.png" alt="HootieHoo" class="project-logo">
+                        <img src="/img/cards/hh.webp" alt="HootieHoo" class="project-logo" loading="lazy">
                         <h3>HootieHoo</h3>
                     </div>
                     <div class="card-back">
                         <h3>HootieHoo</h3>
-                        <p>Plataforma educativa interactiva.</p>
+                        <p style="font-size:0.85rem;">Plataforma/landing de un laboratorio de formación
+                            virtual,
+                            gamificación, marketing digital y experiencias de aprendizaje.</p>
                         <div style="margin-bottom:10px;">
-                            <span class="skill-tag">Web</span>
-                            <span class="skill-tag">Interactive</span>
+                            <span class="skill-tag">EdTech</span>
+                            <span class="skill-tag">Gamificación</span>
+                            <span class="skill-tag">Marketing</span>
                         </div>
-                        <a href="/other/hootiehoo/index.html" class="flip-link">Ver Proyecto</a>
+                        <a href="https://hootiehoo.cl/" target="_blank" class="flip-link">Ver
+                            Proyecto</a>
                     </div>
                 </div>
             </div>
 
             <!-- Project 2: Ghivs -->
-            <div class="tile flip-card">
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Ghivs">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/ghivs.svg" alt="Ghivs" class="project-logo">
+                        <img src="/img/cards/ghivs.svg" alt="Ghivs" class="project-logo" loading="lazy">
                         <h3>Ghivs</h3>
                     </div>
                     <div class="card-back">
                         <h3>Ghivs</h3>
-                        <p>Plataforma SaaS corporativa.</p>
+                        <p style="font-size:0.85rem;">Portal para soluciones de ingeniería en trabajos
+                            en altura con
+                            gestión de proyectos y supervisión.</p>
                         <div style="margin-bottom:10px;">
+                            <span class="skill-tag">Corporativo</span>
+                            <span class="skill-tag">Ingeniería</span>
                             <span class="skill-tag">SaaS</span>
-                            <span class="skill-tag">Vue.js</span>
                         </div>
-                        <a href="https://ghivs.com/v2/" target="_blank" class="flip-link">Visitar</a>
+                        <a href="https://ghivs.com/v2/" target="_blank" class="flip-link">Ver
+                            Proyecto</a>
                     </div>
                 </div>
             </div>
 
             <!-- Project 3: Pokedex -->
-            <div class="tile flip-card">
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Pokédex Live">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/pm_logo.png" alt="Pokedex" class="project-logo">
+                        <img src="/img/cards/pm_logo.webp" alt="Pokedex" class="project-logo" loading="lazy">
                         <h3>Pokédex Live</h3>
                     </div>
                     <div class="card-back">
                         <h3>Pokédex Live</h3>
-                        <p>API RESTful con renderizado JS.</p>
+                        <p style="font-size:0.85rem;">Pokedex interactiva consumiendo una API REST y
+                            mostrando datos con
+                            renderizado dinámico.</p>
                         <div style="margin-bottom:10px;">
                             <span class="skill-tag">API</span>
                             <span class="skill-tag">JS</span>
+                            <span class="skill-tag">Interactivo</span>
                         </div>
                         <a href="/other/pokedex/index.html" class="flip-link">Ver Proyecto</a>
                     </div>
@@ -181,20 +315,24 @@
             </div>
 
             <!-- Project 4: Las Triples -->
-            <div class="tile flip-card">
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Las Triples">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/tn_logo.png" alt="Las Triples" class="project-logo">
+                        <img src="/img/cards/tn_logo.webp" alt="Las Triples" class="project-logo" loading="lazy">
                         <h3>Las Triples</h3>
                     </div>
                     <div class="card-back">
                         <h3>Las Triples</h3>
-                        <p>E-commerce completo.</p>
+                        <p style="font-size:0.85rem;">Sitio informativo de una agrupación de apoyo para
+                            mujeres con
+                            Cáncer de Mama Triple Negativo.</p>
                         <div style="margin-bottom:10px;">
-                            <span class="skill-tag">E-commerce</span>
-                            <span class="skill-tag">PHP</span>
+                            <span class="skill-tag">Informativo</span>
+                            <span class="skill-tag">Comunidad</span>
+                            <span class="skill-tag">WordPress</span>
                         </div>
-                        <a href="http://161.35.224.79" target="_blank" class="flip-link">Visitar</a>
+                        <a href="http://161.35.224.79" target="_blank" class="flip-link">Ver
+                            Proyecto</a>
                     </div>
                 </div>
             </div>
@@ -202,7 +340,7 @@
             <!-- ROW 2 (3 Items) -->
 
             <!-- Project 5: Proton UI -->
-            <div class="tile flip-card">
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Proton UI">
                 <div class="card-inner">
                     <div class="card-front">
                         <div style="font-size:3rem; margin-bottom:10px;">🔒</div>
@@ -210,18 +348,21 @@
                     </div>
                     <div class="card-back">
                         <h3>Proton UI</h3>
-                        <p>Clon interfaz pixel-perfect.</p>
+                        <p style="font-size:0.85rem;">Clon de una interfaz visual “pixel-perfect”
+                            replicando diseño
+                            original con HTML/CSS.</p>
                         <div style="margin-bottom:10px;">
                             <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">Diseño UI</span>
                             <span class="skill-tag">PixelPerfect</span>
                         </div>
-                        <a href="/other/proton-pass/proton-pass.html" class="flip-link">Ver Demo</a>
+                        <a href="/other/proton-pass/proton-pass.html" class="flip-link">Ver Proyecto</a>
                     </div>
                 </div>
             </div>
 
             <!-- Project 6: Amigo Secreto -->
-            <div class="tile flip-card">
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Amigo Secreto">
                 <div class="card-inner">
                     <div class="card-front">
                         <div style="font-size:3rem; margin-bottom:10px;">🎁</div>
@@ -229,18 +370,20 @@
                     </div>
                     <div class="card-back">
                         <h3>Amigo Secreto</h3>
-                        <p>Lógica JS avanzada.</p>
+                        <p style="font-size:0.85rem;">Herramienta de sorteo para “amigo secreto” con
+                            lógica avanzada en
+                            JS y manejo de arreglos.</p>
                         <div style="margin-bottom:10px;">
-                            <span class="skill-tag">Logic</span>
-                            <span class="skill-tag">Arrays</span>
+                            <span class="skill-tag">JS</span>
+                            <span class="skill-tag">Algoritmos</span>
+                            <span class="skill-tag">Sorteo</span>
                         </div>
-                        <a href="/other/Sorteo/index.html" class="flip-link">Jugar</a>
+                        <a href="/other/Sorteo/index.html" class="flip-link">Ver Proyecto</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 7: Currículum Vitae -->
-            <div class="tile flip-card">
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de Curriculum Vitae">
                 <div class="card-inner">
                     <div class="card-front">
                         <div style="font-size:3rem; margin-bottom:10px;">📄</div>
@@ -248,81 +391,24 @@
                     </div>
                     <div class="card-back">
                         <h3>CV Online</h3>
-                        <p>Versión web de mi CV.</p>
+                        <p style="font-size:0.85rem;">Versión web de tu currículum interactivo y
+                            portfolio personal.</p>
                         <div style="margin-bottom:10px;">
                             <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">Portfolio</span>
                             <span class="skill-tag">Resume</span>
                         </div>
-                        <a href="/other/cv/cv.html" class="flip-link">Ver CV</a>
+                        <a href="/other/cv/cv.html" class="flip-link">Ver Proyecto</a>
                     </div>
                 </div>
             </div>
 
-            <!-- INFO GROUP: Edu & Profile -->
-            <div class="tile-group-wide">
-                <!-- Education -->
-                <div class="tile half">
-                    <h2>Formación</h2>
-                    <div class="timeline-item">
-                        <h3 class="timeline-title">Analista Programador</h3>
-                        <p class="timeline-subtitle">INACAP (En curso)</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h3 class="timeline-title">Full Stack Python</h3>
-                        <p class="timeline-subtitle">Desafío Latam (2024)</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h3 class="timeline-title">Full-Stack Developer</h3>
-                        <p class="timeline-subtitle">UTN.BA (2023)</p>
-                    </div>
-                </div>
-                <!-- Profile -->
-                <div class="tile half">
-                    <h2>Perfil</h2>
-                    <div class="timeline-item">
-                        <h3 class="timeline-title">DISC: Promotor</h3>
-                        <p class="timeline-desc">Sociable, optimista y persuasivo.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h3 class="timeline-title">Team Player</h3>
-                        <p class="timeline-desc">Valoro la colaboración (35%).</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h3 class="timeline-title">Metodología</h3>
-                        <p class="timeline-desc">Agile & Scrum Awareness</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Experience -->
-            <div class="tile wide">
-                <h2>Experiencia</h2>
-                <div class="timeline-item">
-                    <h3 class="timeline-title">Ejecutivo de Ventas</h3>
-                    <p class="timeline-subtitle">S3 Group - Santander Zurich (oct. 2024 - nov. 2024)</p>
-                    <p class="timeline-desc">Gestión comercial y categorización de riesgo.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3 class="timeline-title">Backoffice Servicio Móvil</h3>
-                    <p class="timeline-subtitle">T-Sales - Movistar (sep. 2022 - nov. 2022)</p>
-                    <p class="timeline-desc">Ingreso de negocios y reportes de ventas.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3 class="timeline-title">Ejecutivo Comercial</h3>
-                    <p class="timeline-subtitle">Xinerlink - Empresas Claro (2021-2022)</p>
-                    <p class="timeline-desc">Búsqueda de clientes B2B y postventa.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3 class="timeline-title">Ejecutivo de Ventas</h3>
-                    <p class="timeline-subtitle">Entel Call Center (2018 - 2021)</p>
-                    <p class="timeline-desc">Venta servicios hogar/móvil y laboratorio de ventas.</p>
-                </div>
-            </div>
 
         </main>
     </div>
 
-    <script src="js/tiles.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
