@@ -4,845 +4,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-        crossorigin="anonymous"></script>
-    <!-- google fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
-    <!-- font-awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- jQuery (cargado una sola vez) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- lightbox (sin jQuery incluido) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-    <!-- Slick carousel -->
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <!-- css -->
-    <link rel="stylesheet" href="./css/style.css">
-    <!-- <link rel="stylesheet" href="./css/google.css"> -->
-    <!-- Favicon SVG -->
-    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
-    <!-- Favicon Fallback para navegadores que no soportan SVG -->
-    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
-    <!-- Favicon para dispositivos Apple -->
-    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-    <title>Carlos Perales A. - Desarrollador Web</title>
+
+    <title>Carlos Perales | Full Stack Developer & Design Specialist</title>
     <meta name="description"
-        content="Portafolio digital de Carlos Perales A., desarrollador web full-stack con experiencia en telecomunicaciones y ventas.">
+        content="Portafolio Premium de Carlos Perales A. Desarrollador Full Stack y especialista en Diseño Web.">
 
-    <!-- Open Graph meta tags para redes sociales -->
-    <meta property="og:title" content="Carlos Perales A. - Desarrollador Web Full Stack">
-    <meta property="og:description"
-        content="Portafolio digital de Carlos Perales A., desarrollador web full-stack con experiencia en telecomunicaciones y ventas.">
-    <meta property="og:image" content="https://carlosperalesa.github.io/img/avatar.jpg">
-    <meta property="og:url" content="https://carlosperalesa.github.io">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="es_ES">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Twitter Card meta tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Carlos Perales A. - Desarrollador Web Full Stack">
-    <meta name="twitter:description"
-        content="Portafolio digital de Carlos Perales A., desarrollador web full-stack con experiencia en telecomunicaciones y ventas.">
-    <meta name="twitter:image" content="https://carlosperalesa.github.io/img/avatar.jpg">
-
-    <!-- Schema.org Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Carlos Perales A.",
-      "alternateName": "Carlos Perales",
-      "jobTitle": "Desarrollador Web Full Stack",
-      "description": "Desarrollador web en formación con experiencia en telecomunicaciones, especializado en Python, Django, JavaScript y WordPress",
-      "url": "https://carlosperalesa.github.io",
-      "image": "https://carlosperalesa.github.io/img/avatar.jpg",
-      "email": "carlosperalesa@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "CL"
-      },
-      "sameAs": [
-        "https://github.com/carlosperalesa",
-        "https://linkedin.com/in/carlosperalesa"
-      ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Freelance"
-      },
-      "alumniOf": [
-        {
-          "@type": "EducationalOrganization",
-          "name": "Instituto Profesional INACAP"
-        },
-        {
-          "@type": "EducationalOrganization",
-          "name": "Universidad Central de Chile"
-        }
-      ],
-      "hasCredential": [
-        {
-          "@type": "EducationalOccupationalCredential",
-          "name": "Full-Stack Developer",
-          "credentialCategory": "certificate",
-          "dateCreated": "2023",
-          "issuedBy": {
-            "@type": "Organization",
-            "name": "Universidad Tecnológica Nacional (UTN.BA)"
-          }
-        },
-        {
-          "@type": "EducationalOccupationalCredential",
-          "name": "Desarrollo de aplicaciones Full Stack PYTHON",
-          "credentialCategory": "certificate",
-          "dateCreated": "2024",
-          "educationalLevel": "462 horas",
-          "issuedBy": {
-            "@type": "Organization",
-            "name": "Desafío Latam"
-          }
-        }
-      ],
-      "knowsAbout": [
-        "HTML5",
-        "CSS3",
-        "JavaScript",
-        "Python",
-        "Django",
-        "PostgreSQL",
-        "SQLite",
-        "MySQL",
-        "Git",
-        "GitHub",
-        "WordPress",
-        "Desarrollo Web Full Stack",
-        "Frontend Development",
-        "Backend Development"
-      ],
-      "knowsLanguage": [
-        {
-          "@type": "Language",
-          "name": "Español",
-          "alternateName": "es"
-        },
-        {
-          "@type": "Language",
-          "name": "Inglés",
-          "alternateName": "en"
-        }
-      ],
-      "hasOccupation": {
-        "@type": "Occupation",
-        "name": "Desarrollador Web",
-        "occupationLocation": {
-          "@type": "Country",
-          "name": "Chile"
-        },
-        "skills": [
-          "Python",
-          "Django",
-          "JavaScript",
-          "HTML",
-          "CSS",
-          "PostgreSQL",
-          "Git",
-          "WordPress"
-        ]
-      }
-    }
-    </script>
-
+    <link rel="stylesheet" href="css/tiles.css">
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
 </head>
 
 <body>
 
-    <div class="container">
-        <!-- sidebar -->
-        <aside class="sidebar">
-            <!-- sidebar / avatar -->
-            <div class="avatar-box">
-                <img src="./img/avatar.jpg" alt="Carlos Perales A.">
-                <h1>Carlos Perales A.</h1>
-                <p>Web Developer</p>
-            </div>
-            <nav>
-                <!-- accesos directos-->
-                <ul>
-                    <li>
-                        <div>
-                            <a class="card" href="#sobre-mi">
-                                <div class="icon-box">
-                                    <ion-icon name="code-slash"></ion-icon>
-                                    Sobre mí
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <a class="card" href="#proyectos-activos">
-                                <div class="icon-box">
-                                    <ion-icon name="rocket-outline"></ion-icon>
-                                    Proyectos Activos
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <a class="card" href="#experiencia-laboral">
-                                <div class="icon-box">
-                                    <ion-icon name="briefcase-outline"></ion-icon>
-                                    Experiencia Laboral
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <a class="card" href="#formacion-academica">
-                                <div class="icon-box">
-                                    <ion-icon name="school-outline"></ion-icon>
-                                    Formación Académica
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div><a class="card" href="#habilidades">
-                                <div class="icon-box">
-                                    <ion-icon name="star-outline"></ion-icon>
-                                    Habilidades
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div><a class="card" href="#idiomas">
-                                <div class="icon-box">
-                                    <ion-icon name="language-outline"></ion-icon>
-                                    Idiomas
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div><a class="card" href="#lenguajes">
-                                <div class="icon-box">
-                                    <ion-icon name="build-outline"></ion-icon>
-                                    Lenguajes y Tecnologías
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <a class="card" href="#tests-psicologicos">
-                                <div class="icon-box">
-                                    <ion-icon name="heart-outline"></ion-icon>
-                                    Tests Psicológicos
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-                <!-- tarjeta de contacto -->
-                <div class="card contacto ">
-                    <li><a href="mailto:carlosperalesa@gmail.com"><ion-icon
-                                name="mail-outline"></ion-icon>carlosperalesa@gmail.com</a></li>
-                    <li><a href="tel:+56962798030"><ion-icon name="phone-portrait-outline"></ion-icon>+569
-                            62798030</a>
-                    </li>
-                    <li><a href="https://maps.google.com/?q=Santiago+de+Chile" target="_blank"><ion-icon
-                                name="location-outline"></ion-icon>Santiago de Chile</a></li>
-
-                    <div class="social-links">
-                        <a href="https://wa.me/56962798030"><ion-icon name="logo-whatsapp"></ion-icon></a>
-                        <a href="https://github.com/carlosperalesa/" target="_blank"><ion-icon
-                                name="logo-github"></ion-icon></a>
-                        <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank"><ion-icon
-                                name="logo-linkedin"></ion-icon></a>
-                    </div>
-                </div>
-            </nav>
-        </aside>
-        <!-- container -->
-        <main class="main-content">
-            <section id="sobre-mi" class="card collapsible-section">
-                <h2 class="section-header">Sobre mí <span class="arrow" role="button" tabindex="0" aria-expanded="false"
-                        aria-controls="sobre-mi-content" aria-label="Expandir o colapsar sección Sobre mí">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="sobre-mi-content" class="section-content" aria-hidden="true">
-                    <p>Soy un desarrollador web en formación con experiencia en telecomunicaciones y atención al
-                        cliente. He trabajado en áreas de ventas, soporte y gestión de equipos, lo que me ha permitido
-                        desarrollar buenas habilidades de comunicación y resolución de problemas. Actualmente estudio
-                        Analista Programador para seguir con Ingeniería en Informática y busco un puesto donde pueda
-                        combinar mi experiencia comercial con mis conocimientos técnicos, aportar valor a los clientes y
-                        seguir creciendo profesionalmente.
-                    </p>
-                </div>
-            </section>
-            <section id="proyectos-activos" class="card collapsible-section">
-                <h2 class="section-header">Proyectos Activos <span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false" aria-controls="proyectos-activos-content"
-                        aria-label="Expandir o colapsar sección Proyectos Activos">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="proyectos-activos-content" class="project-container section-content" aria-hidden="true">
-                    <div class="project-card animate-slide-left stagger-1"
-                        onclick="toggleCard(this, '/other/hootiehoo/index.html')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <div class="card-body">
-                                    <img src="/img/cards/hh.png" alt="HootieHoo Logo" class="project-logo"
-                                        loading="lazy">
-                                </div>
-                                <div class="card-footer">
-                                    <h3>HootieHoo</h3>
-                                </div>
-                            </div>
-                            <div class="card-back">
-                                <img src="img/cards/hh_screenshot.jpg" alt="HootieHoo Back" class="back-image"
-                                    loading="lazy">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card animate-slide-left stagger-2"
-                        onclick="toggleCard(this, 'https://ghivs.com/v2/')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <div class="card-body">
-                                    <img src="/img/cards/ghivs.svg" alt="Ghivs Logo" class="project-logo"
-                                        loading="lazy">
-                                </div>
-                                <div class="card-footer">
-                                    <h3>Ghivs</h3>
-                                </div>
-                            </div>
-                            <div class="card-back">
-                                <img src="img/cards/ghivs_screenshot.jpg" alt="Ghivs Back" class="back-image"
-                                    loading="lazy">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card animate-slide-left stagger-3"
-                        onclick="toggleCard(this, '/other/pokedex/index.html')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <div class="card-body">
-                                    <img src="/img/cards/pm_logo.png" alt="Pokemones" class="project-logo"
-                                        loading="lazy">
-                                </div>
-                                <div class="card-footer">
-                                    <h3>Pokemones</h3>
-                                </div>
-                            </div>
-                            <div class="card-back">
-                                <img src="img/cards/pm_screenshot.jpg" alt="Pokemones Back" class="back-image"
-                                    loading="lazy">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="project-card animate-slide-left stagger-4" onclick="toggleCard(this, '/other/experiments/index.html')">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="card-body">
-                                <h1>🚀</h1>
-                            </div>
-                            <div class="card-footer">
-                                <h3>Portafolio Espacial</h3>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <h1>🚀</h1>
-                        </div>
-                    </div>
-                </div> -->
-                    <div class="project-card animate-slide-left stagger-5"
-                        onclick="toggleCard(this, 'http://161.35.224.79')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <div class="card-body">
-                                    <img src="/img/cards/tn_logo.png" alt="Ghivs Logo" class="project-logo"
-                                        loading="lazy">
-                                </div>
-                                <div class="card-footer">
-                                    <h3>Las Triples Chile</h3>
-                                </div>
-                            </div>
-                            <div class="card-back">
-                                <img src="img/cards/tn_screenshot.jpg" alt="Las Triples Chile Screenshot"
-                                    class="back-image" loading="lazy">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card animate-slide-left stagger-6"
-                        onclick="toggleCard(this, '/other/proton-pass/proton-pass.html')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <div class="card-body">
-                                    <h1>🔒</h1>
-                                </div>
-                                <div class="card-footer">
-                                    <h3>Proton Pass</h3>
-                                </div>
-                            </div>
-                            <div class="card-back">
-                                <h1>🔒</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card animate-slide-left stagger-7"
-                        onclick="toggleCard(this, '/other/cv/cv.html')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <div class="card-body">
-                                    <h1>📄</h1>
-                                </div>
-                                <div class="card-footer">
-                                    <h3>Currículum Vitae</h3>
-                                </div>
-                            </div>
-                            <div class="card-back">
-                                <h1>📄</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card animate-slide-left stagger-8"
-                        onclick="toggleCard(this, '/other/Sorteo/index.html')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <div class="card-body">
-                                    <h1>🎁</h1>
-                                </div>
-                                <div class="card-footer">
-                                    <h3>Amigo Secreto</h3>
-                                </div>
-                            </div>
-                            <div class="card-back">
-                                <h1>🤫</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
-            <section id="formacion-academica" class="card collapsible-section">
-                <h2 class="section-header">Formación Académica <span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false" aria-controls="formacion-academica-content"
-                        aria-label="Expandir o colapsar sección Formación Académica">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="formacion-academica-content" class="section-content" aria-hidden="true">
-                    <h3>Certificaciones</h3>
-                    <ul>
-                        <li>Universidad Tecnológica Nacional (UTN.BA): Full-Stack Developer (2023)</li>
-                        <li>Desafío Latam: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
-                        <li>SENCE: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
-                        <li>Talento Digital: Desarrollo de aplicaciones Full Stack PYTHON (462 horas) (2024)</li>
-                    </ul>
-                    <div class="cert-container dg-container animate-scale-up">
-                        <div class="dg-wrapper">
-                            <a href="./img/cert/certificado-curso-fullstack-incluyeme.png" target="_blank">
-                                <img src="./img/cert/certificado-curso-fullstack-incluyeme.png"
-                                    alt="Certificado Curso FullStack Incluyeme" loading="lazy">
-                                <div>Certificado Curso FullStack Incluyeme</div>
-                            </a>
-                            <a href="./img/cert/certificado-desarrollo-de-aplicaciones-full-stack-python-trainee.png"
-                                target="_blank">
-                                <img src="./img/cert/certificado-desarrollo-de-aplicaciones-full-stack-python-trainee.png"
-                                    alt="Certificado Desarrollo de aplicaciones full stack python trainee"
-                                    loading="lazy">
-                                <div>Certificado Desarrollo de aplicaciones full stack python trainee</div>
-                            </a>
-                            <a href="./img/cert/bootcamp-desarrollo-aplicaciones-full-stack-python-trainee.png"
-                                target="_blank">
-                                <img src="./img/cert/bootcamp-desarrollo-aplicaciones-full-stack-python-trainee.png"
-                                    alt="BOOTCAMP DESARROLLO APLICACIONES FULL STACK PYTHON TRAINEE" loading="lazy">
-                                <div>Bootcamp Desarrollo Aplicaciones full stack python trainee</div>
-                            </a>
-                            <a href="./img/cert/certificado-sence.png" target="_blank">
-                                <img src="./img/cert/certificado-sence.png" alt="Certificado SENCE" loading="lazy">
-                                <div>Certificado SENCE</div>
-                            </a>
-                            <a href="./img/cert/certificado-curso-sensibilizacion-a-la-discapacidad-konecta-chile.pdf"
-                                target="_blank">
-                                <img src="./img/cert/certificado-curso-sensibilizacion-a-la-discapacidad-konecta-chile.pdf"
-                                    alt="Certificado Curso Sensibilización a la Discapacidad Konecta Chile"
-                                    loading="lazy">
-                                <div>Certificado Curso Sensibilización a la Discapacidad Konecta Chile</div>
-                            </a>
-                            <a href="./img/cert/certificado-didactik-curso-autenticacion-de-dos-factores-2fa.pdf"
-                                target="_blank">
-                                <img src="./img/cert/certificado-didactik-curso-autenticacion-de-dos-factores-2fa.pdf"
-                                    alt="Certificado Didactik curso - Autenticación de Dos Factores (2FA)"
-                                    loading="lazy">
-                                <div>Certificado Didactik curso - Autenticación de Dos Factores (2FA)</div>
-                            </a>
-                            <a href="./img/cert/certificado-didactik-curso-ciberseguridad-y-acceso-seguro.pdf"
-                                target="_blank">
-                                <img src="./img/cert/certificado-didactik-curso-ciberseguridad-y-acceso-seguro.pdf"
-                                    alt="Certificado Didactik curso - CIBERSEGURIDAD Y ACCESO SEGURO" loading="lazy">
-                                <div>Certificado Didactik curso - CIBERSEGURIDAD Y ACCESO SEGURO</div>
-                            </a>
-                            <a href="./img/cert/certificado-didactik-curso-seguridad-informatica.pdf" target="_blank">
-                                <img src="./img/cert/certificado-didactik-curso-seguridad-informatica.pdf"
-                                    alt="Certificado Didactik curso - SEGURIDAD INFORMÁTICA" loading="lazy">
-                                <div>Certificado Didactik curso - SEGURIDAD INFORMÁTICA</div>
-                            </a>
-                            <a href="./img/cert/certificado-evaluacion-de-certificacion-venta-remota-movil-vtr.pdf"
-                                target="_blank">
-                                <img src="./img/cert/certificado-evaluacion-de-certificacion-venta-remota-movil-vtr.pdf"
-                                    alt="Certificado Evaluación de Certificación Venta Remota Móvil VTR" loading="lazy">
-                                <div>Certificado Evaluación de Certificación Venta Remota Móvil VTR</div>
-                            </a>
-                        </div>
-                        <button class="dg-prev"><i class="fas fa-chevron-left"></i></button>
-                        <button class="dg-next"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <h3>Universitaria</h3>
-                    <p><strong>Instituto Profesional INACAP</strong>: Analista Programador, conducente a Ingeniero en
-                        Informática (matriculado 2025)
-                    </p>
-                    <p><strong>Universidad Central de Chile</strong>: Derecho (congelado)(2009 - 2014)</p>
-                    <h3>Media</h3>
-                    <p><strong>Liceo Manuel Arriarán Barros</strong>, Salesianos, Santiago (egresado 2002)</p>
-                    <h3>Básica</h3>
-                    <p><strong>Colegio El Salvador</strong>, Barnabitas, San Vicente de Tagua Tagua (egresado 1998)</p>
-                </div>
-            </section>
-            <section id="experiencia-laboral" class="card collapsible-section">
-                <h2 class="section-header">Experiencia Laboral <span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false" aria-controls="experiencia-laboral-content"
-                        aria-label="Expandir o colapsar sección Experiencia Laboral">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="experiencia-laboral-content" class="section-content" aria-hidden="true">
-                    <div class="job">
-                        <h3>S3 Group, Seguros</h3>
-                        <p>Ejecutivo de ventas <strong>Santander Zurich</strong> (oct. 2024 - nov. 2024)</p>
-                        <p>Respuesta a requerimientos del área de ventas, ingreso de negocios, revisión de documentos,
-                            categorización de riesgo, manejo de excepciones y confección de reportes de ventas.</p>
-                    </div><br>
-                    <div class="job">
-                        <h3>T-Sales, Telecomunicaciones</h3>
-                        <p>Backoffice servicio móvil <strong>Movistar</strong> (sep. 2022 - nov. 2022)</p>
-                        <p>Respuesta a requerimientos del área de ventas, ingreso de negocios, revisión de documentos,
-                            categorización de riesgo, manejo de excepciones y confección de reportes de ventas.</p>
-                    </div><br>
-                    <div class="job">
-                        <h3>Xinerlink, Telecomunicaciones</h3>
-                        <p>Ejecutivo comercial en <strong>Empresas Claro</strong> (nov. 2021 - feb. 2022)</p>
-                        <p>Búsqueda de nuevos clientes, presentación de productos móviles a empresas PYME, coordinación
-                            con
-                            áreas de despacho y logística, sucursales, áreas técnicas y de postventa. Seguimiento de
-                            funcionamiento de productos.</p>
-                    </div><br>
-                    <div class="job">
-                        <h3>Entel Call Center, Telecomunicaciones</strong></h3>
-                        <p>Ejecutivo de ventas para <strong>Entel</strong> (ene. 2018 - ene. 2021)</p>
-                        <p>Ejecutivo de Laboratorio de ventas, venta de servicios hogar y móviles, pruebas de
-                            procedimientos, servicios y promociones para su implementación en áreas de fuerza de venta.
-                        </p>
-                    </div><br>
-                </div>
-            </section>
-            <section id="habilidades" class="card collapsible-section">
-                <h2 class="section-header">Habilidades <span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false" aria-controls="habilidades-content"
-                        aria-label="Expandir o colapsar sección Habilidades">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="habilidades-content" class="section-content" aria-hidden="true">
-                    <ul>
-                        <li>Comunicación efectiva</li>
-                        <li>Creatividad</li>
-                        <li>Adaptabilidad</li>
-                        <li>Habilidad para analizar problemas</li>
-                        <li>Proactividad</li>
-                        <li>Atención al detalle</li>
-                        <li>Asertividad</li>
-                    </ul>
-                </div>
-            </section>
-            <section id="idiomas" class="card collapsible-section">
-                <h2 class="section-header">Idiomas <span class="arrow" role="button" tabindex="0" aria-expanded="false"
-                        aria-controls="idiomas-content" aria-label="Expandir o colapsar sección Idiomas">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="idiomas-content" class="section-content" aria-hidden="true">
-                    <ul>
-                        <li>Inglés - Nivel alto - Conversacional</li>
-                        <li>Español - Nativo</li>
-                    </ul>
-                </div>
-            </section>
-            <section id="lenguajes" class="card collapsible-section">
-                <h2 class="section-header">Lenguajes y Tecnologías<span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false" aria-controls="lenguajes-content"
-                        aria-label="Expandir o colapsar sección Lenguajes y Tecnologías">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="lenguajes-content" class="section-content" aria-hidden="true">
-                    <div class="language-grid">
-                        <div class="language-card animate-scale-up">
-                            <h3>Frontend</h3>
-                            <div class="language-items">
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/html5.svg" alt="HTML5" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>HTML5</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar html" style="width: 90%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/css3.svg" alt="CSS3" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>CSS3</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar css" style="width: 80%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/js.svg" alt="JavaScript" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>JavaScript</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar js" style="width: 70%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/wordpress.svg" alt="WordPress" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>WordPress</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar wordpress" style="width: 90%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="language-card animate-scale-up stagger-1">
-                            <h3>Backend</h3>
-                            <div class="language-items">
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/python.svg" alt="Python" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>Python</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar python" style="width: 85%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/django.svg" alt="Django" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>Django</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar django" style="width: 70%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="language-card animate-scale-up stagger-2">
-                            <h3>Databases</h3>
-                            <div class="language-items">
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/postgresql.svg" alt="PostgreSQL" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>PostgreSQL</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar postgresql" style="width: 60%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/sqlite.svg" alt="SQLite" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>SQLite</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar sqlite" style="width: 80%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/mysql.svg" alt="MySql" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>MySql</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar MySql" style="width: 85%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="language-card animate-scale-up stagger-3">
-                            <h3>Version Control</h3>
-                            <div class="language-items">
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/git.svg" alt="Git" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>Git</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar git" style="width: 75%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="language-item">
-                                    <img src="./img/lenguajes/github.svg" alt="GitHub" loading="lazy">
-                                    <div class="language-info">
-                                        <h4>GitHub</h4>
-                                        <div class="progress-container">
-                                            <div class="progress-bar github" style="width: 85%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section id="tests-psicologicos" class="card collapsible-section">
-                <h2 class="section-header">Tests Psicológicos <span class="arrow" role="button" tabindex="0"
-                        aria-expanded="false" aria-controls="tests-psicologicos-content"
-                        aria-label="Expandir o colapsar sección Tests Psicológicos">
-                        <i class="fas fa-chevron-down"></i>
-                    </span></h2>
-                <div id="tests-psicologicos-content" class="section-content" aria-hidden="true">
-                    <div class="tests-grid">
-                        <div class="tests-card">
-                            <a href="https://perfilesdisc.es/" target="_blank">
-                                <h3>Perfil DISC</h3>
-                            </a>
-                            <p><strong>Nombre de Perfil:</strong> PROMOTOR</p>
-                            <p><strong>Palabras clave que describen el perfil:</strong></p>
-                            <ul>
-                                <li>Seguro</li>
-                                <li>Independiente</li>
-                                <li>Energético</li>
-                                <li>Competitivo</li>
-                                <li>Autónomo</li>
-                                <li>Resolutivo</li>
-                            </ul>
-                            <p>
-                                El perfil DISC se centra en la forma en que una persona se comporta y se relaciona con
-                                los demás. Los promotores son personas que tienden a ser sociables, optimistas y
-                                persuasivos. Suelen ser buenos comunicadores y disfrutan de trabajar en equipo.
-                            </p>
-                            <p><strong>Características:</strong></p>
-                            <ul>
-                                <li>Habilidades interpersonales fuertes</li>
-                                <li>Capacidad para motivar a otros</li>
-                                <li>Enfoque en el trabajo en equipo</li>
-                                <li>Flexibilidad y adaptabilidad</li>
-                            </ul>
-                            <p>
-                                <strong>Carlos Iván</strong> es, por naturaleza, una persona muy sociable y
-                                <strong>amable</strong> en su enfoque hacia los demás. Prefiere trabajar con y a través
-                                de las personas para completar las tareas y asignaciones. Por lo general es optimista.
-                                Le interesa conocer y relacionarse con una amplia variedad de personas, pero puede tomar
-                                un poco de distancia frente a situaciones que percibe como desfavorables.
-                            </p>
-                            <p>
-                                Su aproximación orientada a la “gente” promueve que sea una persona sociable,
-                                extrovertida, divertida, encantadora e ingeniosa. Demuestra espontaneidad y mucha
-                                sensibilidad respecto a sus necesidades y a las de los demás.
-                            </p>
-                            <p>
-                                <strong>Carlos Iván</strong> es una persona diplomática al tratar con situaciones
-                                negativas. No le gustan las situaciones de confrontación y cargadas de conflicto. Es
-                                independiente y expresa sus opiniones <strong>sin problemas</strong> en situaciones no
-                                amenazantes.
-                            </p>
-                        </div>
-                        <div class="tests-card">
-                            <a href="https://www.getonbrd.com/quizzes/webpro-cultural-fit/assessments/95b6438df18ac17ae9302389087080c1/share?utm_source=share"
-                                target="_blank">
-                                <h3>Tu Cultura de Trabajo Ideal</h3>
-                            </a>
-                            <p><strong>Team Player</strong></p>
-                            <li>Team Player: 35.0 %</li>
-                            <li>Venturer: 28.3 %</li>
-                            <li>Hustler: 11.7 %</li>
-                            <li>Commander: 25.0 %</li>
-                            <p><strong>Descripción:</strong></p>
-                            <p>Valora la confianza, la humanidad y la inclusión. La cultura de trabajo Team Player se
-                                parece a una familia o a un clan, es cercana y basada en la confianza.</p>
-                            <p>Las personas con perfil Team Player creen en el poder de la colaboración y gustan crear
-                                espacios de trabajo donde todo el mundo se siente bienvenido e incluido. Prosperan
-                                cuando el trabajo está estructurado en torno a equipos en lugar de roles individuales, y
-                                se sienten más a gusto en organizaciones horizontales.</p>
-                            <p>Prefieren trabajar en espacios donde la compañía comunique de forma abierta las
-                                decisiones y que hagan partícipes a sus miembros de ellas.</p>
-                            <p>Las organizaciones de tipo Team Player ven a sus clientes y proveedores como partners o
-                                socios estratégicos y ven beneficios en alianzas y negocios conjuntos. Además, asumen
-                                como su misión el hacer un bien en el mundo y crear un gran entorno de trabajo, que saca
-                                lo mejor de sus miembros empoderándolos.</p>
-                            <p>Este tipo de organizaciones suelen adaptarse a situaciones de incertidumbre o cambios
-                                recurriendo a los valores y cultura compartidas del equipo como una guía y una brújula.
-                            </p>
-                            <p>Si tu nivel de Team Player es elevado, te gustará la idea de trabajar en empresas
-                                transparentes por defecto, donde fluya el intercambio de ideas y el trabajo
-                                colaborativo, sin encasillarse en roles competitivos y donde los triunfos y derrotas
-                                sean enfrentados como grupo.</p>
-                        </div>
-                        <!-- <div class="tests-card">
-                                    <h3>Test 2</h3>
-                                    <p>En construcción</p>
-                                </div>
-                                <div class="tests-card">
-                                    <h3>Test 3</h3>
-                                    <p>En construcción</p>
-                                </div> -->
-                    </div>
-                </div>
-            </section>
-        </main>
-        <!-- boton principal -->
-        <div class="button-container">
-            <a href="https://wa.me/56962798030" class="secondary-button whatsapp-button">
-                <ion-icon name="logo-whatsapp"></ion-icon>
-            </a>
-            <a href="tel:+56962798030" class="secondary-button phone-button">
-                <ion-icon name="call-outline"></ion-icon>
-            </a>
-            <button class="secondary-button" id="darkModeToggle">
-                <ion-icon name="moon-outline"></ion-icon>
-            </button>
-            <button class="secondary-button" id="scrollTopButton">
-                <ion-icon name="arrow-up-outline"></ion-icon>
-            </button>
-            <button class="main-button" id="mainButton">
-                <ion-icon name="add-outline"></ion-icon>
-            </button>
-        </div>
+    <!-- CRYSTAL COMBO: ORBS ONLY (Noise Removed) -->
+    <!-- <div class="noise-overlay"></div> -->
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
     </div>
 
-    <!-- Ionicons -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.js"></script>
+    <div class="top-bar-container">
+        <header class="top-bar">
+            <div class="brand">
+                <ion-icon name="code-slash"></ion-icon>
+                <span>Carlos Perales Dev</span>
+            </div>
 
-    <!-- Scripts externos del portafolio -->
-    <script src="js/jquery.gallery.js"></script>
-    <script src="js/modernizr.custom.53451.js"></script>
+            <div class="mobile-menu-toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
 
-    <!-- Script principal -->
-    <script src="js/script.js"></script>
+            <div class="nav-actions">
+                <a href="https://github.com/carlosperalesa/" target="_blank" class="social-link"
+                    title="GitHub"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-link"
+                    title="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+                <a href="mailto:carlosperalesa@gmail.com" class="social-link" title="Email"><ion-icon
+                        name="mail-outline"></ion-icon></a>
+                <a href="tel:+56962798030" class="social-link" title="Llamar"><ion-icon
+                        name="call-outline"></ion-icon></a>
+                <a href="https://wa.me/56962798030" target="_blank" class="social-link" title="WhatsApp"><ion-icon
+                        name="logo-whatsapp"></ion-icon></a>
 
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider">
+                            <i class="fas fa-sun slider-icon icon-sun" style="color:#f39c12"></i>
+                            <i class="fas fa-moon slider-icon icon-moon" style="color:#f1c40f"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu-overlay">
+        <div class="close-menu-btn">
+            <ion-icon name="close-outline"></ion-icon>
+        </div>
+        <a href="https://github.com/carlosperalesa/" class="mobile-menu-link"><ion-icon name="logo-github"></ion-icon>
+            GitHub</a>
+        <a href="https://www.linkedin.com/in/carlosperalesa" class="mobile-menu-link"><ion-icon
+                name="logo-linkedin"></ion-icon> LinkedIn</a>
+        <a href="mailto:carlosperalesa@gmail.com" class="mobile-menu-link"><ion-icon name="mail-outline"></ion-icon>
+            Email</a>
+        <a href="tel:+56962798030" class="mobile-menu-link"><ion-icon name="call-outline"></ion-icon> Llamar</a>
+        <a href="https://wa.me/56962798030" class="mobile-menu-link"><ion-icon name="logo-whatsapp"></ion-icon>
+            WhatsApp</a>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-wrapper">
+
+        <!-- SIDEBAR -->
+        <aside class="personal-section">
+            <div class="tile avatar-section">
+                <img src="./img/avatar.jpg" alt="Carlos Perales" class="avatar-img">
+                <h1 style="margin:0; font-size:1.4rem; font-weight:500;">Carlos Perales</h1>
+                <p style="margin:5px 0 15px 0; color:var(--accent-color); font-weight:400; font-size:0.9rem;">Full Stack
+                    Specialist</p>
+                <div style="font-size:0.9rem; opacity:0.8; line-height:1.5;">
+                    Pasión por crear experiencias digitales hermosas y funcionales. Especialista en Arquitectura Web y
+                    Diseño UI/UX.
+                </div>
+            </div>
+
+            <div class="tile">
+                <h2>Contacto</h2>
+                <div class="contact-item"><i class="fas fa-phone-alt"></i> <span>+569 62798030</span></div>
+                <div class="contact-item"><i class="fas fa-envelope"></i> <span
+                        style="font-size:0.85rem;">carlosperalesa@gmail.com</span></div>
+                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>Santiago, Chile</span></div>
+            </div>
+
+            <div class="tile">
+                <h2>Stack</h2>
+                <!-- ADDED CLASSES FOR BRAND COLORS -->
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="skill-tag html"><i class="fab fa-html5"></i> HTML5</span>
+                    <span class="skill-tag css"><i class="fab fa-css3-alt"></i> CSS3</span>
+                    <span class="skill-tag js"><i class="fab fa-js"></i> JavaScript</span>
+                    <span class="skill-tag python"><i class="fab fa-python"></i> Python</span>
+                    <span class="skill-tag react"><i class="fab fa-react"></i> React</span>
+                    <span class="skill-tag sql"><i class="fas fa-database"></i> SQL</span>
+                    <span class="skill-tag git"><i class="fab fa-git-alt"></i> Git</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- PORTFOLIO GRID -->
+        <main class="projects-section">
+
+            <!-- ROW 1 (4 Items) -->
+
+            <!-- Project 1: HootieHoo -->
+            <div class="tile flip-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/hh.png" alt="HootieHoo" class="project-logo">
+                        <h3>HootieHoo</h3>
+                        <p style="font-size:0.8rem; margin-top:5px; opacity:0.6;">(Tap to flip)</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>HootieHoo</h3>
+                        <p>Plataforma educativa interactiva.</p>
+                        <div style="margin-bottom:10px;">
+                            <span class="skill-tag">Web</span>
+                            <span class="skill-tag">Interactive</span>
+                        </div>
+                        <a href="/other/hootiehoo/index.html" class="flip-link">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: Ghivs -->
+            <div class="tile flip-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/ghivs.svg" alt="Ghivs" class="project-logo">
+                        <h3>Ghivs</h3>
+                        <p style="font-size:0.8rem; margin-top:5px; opacity:0.6;">(Tap to flip)</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>Ghivs</h3>
+                        <p>Plataforma SaaS corporativa.</p>
+                        <div style="margin-bottom:10px;">
+                            <span class="skill-tag">SaaS</span>
+                            <span class="skill-tag">Vue.js</span>
+                        </div>
+                        <a href="https://ghivs.com/v2/" target="_blank" class="flip-link">Visitar</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3: Pokedex -->
+            <div class="tile flip-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/pm_logo.png" alt="Pokedex" class="project-logo">
+                        <h3>Pokédex Live</h3>
+                        <p style="font-size:0.8rem; margin-top:5px; opacity:0.6;">(Tap to flip)</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>Pokédex Live</h3>
+                        <p>API RESTful con renderizado JS.</p>
+                        <div style="margin-bottom:10px;">
+                            <span class="skill-tag">API</span>
+                            <span class="skill-tag">JS</span>
+                        </div>
+                        <a href="/other/pokedex/index.html" class="flip-link">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4: Las Triples -->
+            <div class="tile flip-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/tn_logo.png" alt="Las Triples" class="project-logo">
+                        <h3>Las Triples</h3>
+                        <p style="font-size:0.8rem; margin-top:5px; opacity:0.6;">(Tap to flip)</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>Las Triples</h3>
+                        <p>E-commerce completo.</p>
+                        <div style="margin-bottom:10px;">
+                            <span class="skill-tag">E-commerce</span>
+                            <span class="skill-tag">PHP</span>
+                        </div>
+                        <a href="http://161.35.224.79" target="_blank" class="flip-link">Visitar</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 2 (3 Items) -->
+
+            <!-- Project 5: Proton UI -->
+            <div class="tile flip-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div style="font-size:3rem; margin-bottom:10px;">🔒</div>
+                        <h3>Proton UI</h3>
+                        <p style="font-size:0.8rem; margin-top:5px; opacity:0.6;">(Tap to flip)</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>Proton UI</h3>
+                        <p>Clon interfaz pixel-perfect.</p>
+                        <div style="margin-bottom:10px;">
+                            <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">PixelPerfect</span>
+                        </div>
+                        <a href="/other/proton-pass/proton-pass.html" class="flip-link">Ver Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6: Amigo Secreto -->
+            <div class="tile flip-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div style="font-size:3rem; margin-bottom:10px;">🎁</div>
+                        <h3>Amigo Secreto</h3>
+                        <p style="font-size:0.8rem; margin-top:5px; opacity:0.6;">(Tap to flip)</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>Amigo Secreto</h3>
+                        <p>Lógica JS avanzada.</p>
+                        <div style="margin-bottom:10px;">
+                            <span class="skill-tag">Logic</span>
+                            <span class="skill-tag">Arrays</span>
+                        </div>
+                        <a href="/other/Sorteo/index.html" class="flip-link">Jugar</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 7: Currículum Vitae -->
+            <div class="tile flip-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div style="font-size:3rem; margin-bottom:10px;">📄</div>
+                        <h3>Curriculum</h3>
+                        <p style="font-size:0.8rem; margin-top:5px; opacity:0.6;">(Tap to flip)</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>CV Online</h3>
+                        <p>Versión web de mi CV.</p>
+                        <div style="margin-bottom:10px;">
+                            <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">Resume</span>
+                        </div>
+                        <a href="/other/cv/cv.html" class="flip-link">Ver CV</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INFO GROUP: Edu & Profile -->
+            <div class="tile-group-wide">
+                <!-- Education -->
+                <div class="tile half">
+                    <h2>Formación</h2>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Analista Programador</h3>
+                        <p class="timeline-subtitle">INACAP (En curso)</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Full Stack Python</h3>
+                        <p class="timeline-subtitle">Desafío Latam (2024)</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Full-Stack Developer</h3>
+                        <p class="timeline-subtitle">UTN.BA (2023)</p>
+                    </div>
+                </div>
+                <!-- Profile -->
+                <div class="tile half">
+                    <h2>Perfil</h2>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">DISC: Promotor</h3>
+                        <p class="timeline-desc">Sociable, optimista y persuasivo.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Team Player</h3>
+                        <p class="timeline-desc">Valoro la colaboración (35%).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Metodología</h3>
+                        <p class="timeline-desc">Agile & Scrum Awareness</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience -->
+            <div class="tile wide">
+                <h2>Experiencia</h2>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Ejecutivo de Ventas</h3>
+                    <p class="timeline-subtitle">S3 Group - Santander Zurich (oct. 2024 - nov. 2024)</p>
+                    <p class="timeline-desc">Gestión comercial y categorización de riesgo.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Backoffice Servicio Móvil</h3>
+                    <p class="timeline-subtitle">T-Sales - Movistar (sep. 2022 - nov. 2022)</p>
+                    <p class="timeline-desc">Ingreso de negocios y reportes de ventas.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Ejecutivo Comercial</h3>
+                    <p class="timeline-subtitle">Xinerlink - Empresas Claro (2021-2022)</p>
+                    <p class="timeline-desc">Búsqueda de clientes B2B y postventa.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Ejecutivo de Ventas</h3>
+                    <p class="timeline-subtitle">Entel Call Center (2018 - 2021)</p>
+                    <p class="timeline-desc">Venta servicios hogar/móvil y laboratorio de ventas.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/tiles.js"></script>
 </body>
 
 </html>
-
-<!-- los iconos se sacaron de https://iconos8.es/ -->
