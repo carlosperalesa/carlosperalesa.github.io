@@ -22,7 +22,6 @@ jobs:
       
       - name: Deploy to carlosperalesa.dev
         run: |
-ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'bash /home/deploy.sh'      
-      - name: GitHub Pages auto-deploy
+ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "bash /home/deploy.sh"      - name: GitHub Pages auto-deploy
         run: |
           echo "GitHub Pages automatically deploys from main branch"
