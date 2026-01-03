@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experimental Tiles (10x4)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --glass-alpha: 0.65;
+            --glass-bg: rgba(255, 255, 255, var(--glass-alpha));
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+            --text-color: #1a1a1a;
+            --accent-color: #0078d4;
+            --bg-gradient: #f0f0f0;
+            --grid-gap: 15px;
+            --border-radius: 12px;
+
+            /* Orb Colors (Light Mode) */
+            --orb-opacity: 0.8;
+            --orb-color-1: rgba(0, 80, 180, 0.75);
+            --orb-color-2: rgba(140, 50, 170, 0.75);
+        }
+
+        /* --- DARK MODE OVERRIDES (Class-based) --- */
+        body.dark-mode {
+            --bg-gradient: #050505;
+            --glass-alpha: 0.5;
+            --glass-bg: rgba(20, 20, 20, var(--glass-alpha));
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.8);
+            --text-color: #e6e6e6;
+            --accent-color: #4cc2ff;
+            --orb-opacity: 0.5;
+            --orb-color-1: rgba(0, 120, 212, 0.6);
+            --orb-color-2: rgba(155, 89, 182, 0.6);
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        /* --- AMBIENT ORBS --- */
+        .orb-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: var(--orb-opacity);
+            animation: floatOrb 12s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--orb-color-1) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, var(--orb-color-2) 0%, transparent 70%);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: -6s;
+        }
+
+        @keyframes floatOrb {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(100px, 50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-50px, 100px) scale(0.9);
+            }
+        }
+
+        /* --- GRID LAYOUT --- */
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* 4 Columns */
+            gap: var(--grid-gap);
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- TILE STYLE --- */
+        .tile {
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--glass-shadow);
+            padding: 20px;
+            height: 100px;
+            /* Fixed height for uniformity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            /* Faster transform for magnetism */
+            transform-style: preserve-3d;
+            overflow: visible;
+            /* Needed for spotlight outside bounds */
+        }
+
+        .control-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--text-color);
+            border-radius: 4px;
+            padding: 4px 8px;
+            width: 50px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            margin-right: 15px;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+
+        /* Spotlight Effect */
+        .tile::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: var(--border-radius);
+            padding: 1px;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.4), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tile:hover::after {
+            opacity: 1;
+        }
+
+
+
+        /* --- TOP BAR & NAVIGATION --- */
+        .top-bar-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            position: relative;
+            z-index: 2000;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .brand {
+            font-weight: 500;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand ion-icon {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+        }
+
+        .right-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- TOGGLE SWITCH (Option 8) --- */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-opt-8 {
+            display: inline-block;
+            position: relative;
+            width: 45px;
+            height: 25px;
+            margin: 0;
+        }
+
+        .toggle-opt-8 input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-opt-8 .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #83D8FF;
+            transition: .4s;
+            border-radius: 34px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        /* Sun/Moon Knob */
+        .toggle-opt-8 .slider:before {
+            position: absolute;
+            content: "";
+            height: 19px;
+            width: 19px;
+            left: 3px;
+            bottom: 3px;
+            background: #FFD93E;
+            transition: .4s cubic-bezier(0.77, 0, 0.175, 1);
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+            z-index: 2;
+        }
+
+        /* Cloud/Craters Effect */
+        .toggle-opt-8 .slider::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 8px;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            filter: blur(0.5px);
+            opacity: 1;
+            transition: 0.5s;
+            box-shadow: 10px -2px 0 2px #fff, 20px 0px 0 1px #fff;
+        }
+
+        /* Dark Mode State */
+        .toggle-opt-8 input:checked+.slider {
+            background: #1C233E;
+            /* 3 Distinct Stars */
+            background-image:
+                radial-gradient(circle, white 1px, transparent 1.5px),
+                radial-gradient(circle, white 1px, transparent 1.5px),
+                radial-gradient(circle, white 1px, transparent 1.5px);
+            background-position: 6px 6px, 14px 12px, 8px 18px;
+            background-size: 4px 4px;
+            background-repeat: no-repeat;
+        }
+
+        .toggle-opt-8 input:checked+.slider:before {
+            transform: translateX(20px);
+            background: #D9D9D9;
+            box-shadow: inset -2px -1px 0 #999, inset 1px 1px 0 #fff;
+            background-image: radial-gradient(circle at 35% 35%, #999 1px, transparent 1.5px),
+                radial-gradient(circle at 60% 60%, #999 1.5px, transparent 2px);
+        }
+
+        .toggle-opt-8 input:checked+.slider::after {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        /* Responsive */
+        @media(max-width: 900px) {
+            .tile-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 600px) {
+            .tile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+    <!-- Background Orbs -->
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- TOP BAR -->
+    <div class="top-bar-container">
+        <header class="top-bar">
+            <div class="brand">
+                <ion-icon name="flask-outline"></ion-icon>
+                <span>Lab: Tiles</span>
+            </div>
+
+            <div class="right-actions">
+                <!-- Tilt Control -->
+                <div style="display:flex; align-items:center; margin-right: 15px;">
+                    <label for="tilt-control" class="control-label">Tilt:</label>
+                    <input type="number" id="tilt-control" class="control-input" value="15" min="0" max="60">
+                </div>
+
+                <!-- Zoom Control -->
+                <div style="display:flex; align-items:center; margin-right: 15px;">
+                    <label for="zoom-control" class="control-label">Zoom:</label>
+                    <input type="number" id="zoom-control" class="control-input" value="1.05" min="1" max="2"
+                        step="0.01">
+                </div>
+
+                <!-- Opacity Control -->
+                <div style="display:flex; align-items:center; margin-right: 15px;">
+                    <label for="opacity-control" class="control-label">Opacity:</label>
+                    <input type="number" id="opacity-control" class="control-input" value="0.65" min="0" max="1"
+                        step="0.05">
+                </div>
+
+                <div class="theme-switch-wrapper">
+                    <label class="toggle-variant toggle-opt-8" for="checkbox">
+                        <input type="checkbox" id="checkbox" aria-label="Dark Mode Toggle" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- 10x4 Grid (40 Tiles) -->
+    <div class="tile-grid" id="grid">
+        <!-- Generated by Script for clean HTML or hardcoded below -->
+        <!-- Populating via JS for cleanliness, as requested 'styles/js integrated' -->
+    </div>
+
+    <script>
+        // Grid Generation
+        const grid = document.getElementById('grid');
+        const totalTiles = 12;
+
+        for (let i = 1; i <= totalTiles; i++) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.textContent = i;
+            tile.dataset.index = i; // Useful for future animations
+            grid.appendChild(tile);
+        }
+
+        // Dark Mode Logic
+        const toggle = document.getElementById('checkbox');
+        const body = document.body;
+
+        // Function to apply theme
+        function applyTheme(isDarkMode) {
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+            } else {
+                body.classList.add('light-mode');
+                body.classList.remove('dark-mode');
+            }
+        }
+
+        // Check system preference on load
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        toggle.checked = prefersDark;
+        applyTheme(prefersDark);
+
+        // Listen for toggle changes
+        toggle.addEventListener('change', (e) => {
+            applyTheme(e.target.checked);
+        });
+
+        // Listen for system preference changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            toggle.checked = e.matches;
+            applyTheme(e.matches);
+        });
+
+        // --- MAGNETISM & SPOTLIGHT LOGIC ---
+        const tiles = document.querySelectorAll('.tile');
+        const tiltInput = document.getElementById('tilt-control');
+        const zoomInput = document.getElementById('zoom-control');
+        const opacityInput = document.getElementById('opacity-control');
+
+        let maxRotate = parseFloat(tiltInput.value);
+        let maxScale = parseFloat(zoomInput.value);
+
+        // Update CSS Variable for Opacity
+        function updateOpacity(val) {
+            document.documentElement.style.setProperty('--glass-alpha', val);
+        }
+
+        // Initialize opacity
+        updateOpacity(opacityInput.value);
+
+        tiltInput.addEventListener('input', (e) => maxRotate = parseFloat(e.target.value));
+        zoomInput.addEventListener('input', (e) => maxScale = parseFloat(e.target.value));
+        opacityInput.addEventListener('input', (e) => updateOpacity(e.target.value));
+
+        tiles.forEach(tile => {
+            tile.addEventListener('mousemove', (e) => {
+                const rect = tile.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // 1. Set Props for Spotlight
+                tile.style.setProperty('--mouse-x', `${x}px`);
+                tile.style.setProperty('--mouse-y', `${y}px`);
+
+                // 2. Magnetic Tilt Calculation
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // Percent from center (-1 to 1)
+                const percentX = (x - centerX) / centerX;
+                const percentY = (y - centerY) / centerY;
+
+                // REPEL EFFECT (Inverted Logic)
+                const rotateY = percentX * maxRotate;      // Was * -1 (Now positive matches X direction)
+                const rotateX = percentY * maxRotate * -1; // Was positive (Now inverted Y)
+
+                // Apply Transform
+                tile.style.transform = `
+                    perspective(1000px)
+                    rotateX(${rotateX}deg) 
+                    rotateY(${rotateY}deg)
+                    scale3d(${maxScale}, ${maxScale}, ${maxScale})
+                `;
+            });
+
+            tile.addEventListener('mouseleave', () => {
+                // Reset
+                tile.style.transform = '';
+            });
+        });
+    </script>
+
+</body>
+
+</html>

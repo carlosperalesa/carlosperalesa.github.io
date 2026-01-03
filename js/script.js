@@ -5,13 +5,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.scrollTo(0, 0);
 
+    // --- HELPER: THROTTLE FUNCTION (Performance) ---
+    function throttle(func, limit) {
+        let lastFunc;
+        let lastRan;
+        return function () {
+            const context = this;
+            const args = arguments;
+            if (!lastRan) {
+                func.apply(context, args);
+                lastRan = Date.now();
+            } else {
+                clearTimeout(lastFunc);
+                lastFunc = setTimeout(function () {
+                    if ((Date.now() - lastRan) >= limit) {
+                        func.apply(context, args);
+                        lastRan = Date.now();
+                    }
+                }, limit - (Date.now() - lastRan));
+            }
+        }
+    }
+
     // --- MAGNETIC CURSOR ---
     const cursorDot = document.querySelector(".cursor-dot");
     const cursorOutline = document.querySelector(".cursor-outline");
     const isDesktop = matchMedia('(hover: hover)').matches;
 
     if (isDesktop && cursorDot && cursorOutline) {
-        window.addEventListener("mousemove", (e) => {
+        // Throttled Mouse Move (16ms = ~60fps)
+        window.addEventListener("mousemove", throttle((e) => {
             const posX = e.clientX;
             const posY = e.clientY;
 
@@ -22,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 left: `${posX}px`,
                 top: `${posY}px`
             }, { duration: 500, fill: "forwards" });
-        });
+        }, 16));
 
         const hoverables = document.querySelectorAll('a, button, .tile, .contact-item, .skill-tag, .theme-switch, .social-link, .mobile-menu-toggle, input, .filter-btn');
 
@@ -58,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (isMobile) {
+            const topBar = document.querySelector('.top-bar'); // Select top bar
+
             const observerOptions = {
                 threshold: 0.6, // Higher threshold for center focus
                 rootMargin: "-20% 0px -20% 0px"
@@ -68,29 +93,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     const target = entry.target;
 
                     // Case 1: Flip Card
-                    if (target.classList.contains('flip-card')) {
-                        const cardInner = target.querySelector('.card-inner');
-                        if (cardInner) {
-                            if (entry.isIntersecting) {
-                                cardInner.style.transform = 'rotateY(180deg)';
-                            } else {
-                                cardInner.style.transform = 'rotateY(0deg)';
-                            }
-                        }
-                    }
-                    // Case 2: Static Tile (Scale Effect)
-                    else {
-                        if (entry.isIntersecting) {
-                            target.style.transform = 'scale(1.03)'; // Subtle pop
-                        } else {
-                            target.style.transform = 'scale(1)';
-                        }
+                    // Case 1: Flip Card - REMOVED AUTO FLIP (User Feedback)
+                    // if (target.classList.contains('flip-card')) { ... }
+
+                    // Case 2: Static Tile (Scale Effect) applied to ALL tiles now
+                    if (entry.isIntersecting) {
+                        target.style.transform = 'scale(1.02)'; // Subtle pop
+                    } else {
+                        target.style.transform = 'scale(1)';
                     }
                 });
             }, observerOptions);
 
             flipCards.forEach(card => mobileObserver.observe(card));
             staticTiles.forEach(tile => mobileObserver.observe(tile));
+            if (topBar) mobileObserver.observe(topBar); // Observe Top Bar
         }
     }
 
@@ -126,7 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- 3D TILT EFFECT (Desktop Only for Performance) ---
         if (isDesktop && !tile.classList.contains('flip-card')) {
-            tile.addEventListener('mousemove', (e) => {
+            // Throttled Tilt Effect
+            tile.addEventListener('mousemove', throttle((e) => {
                 const rect = tile.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
@@ -139,19 +157,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const percentX = (x - centerX) / centerX;
                 const percentY = (y - centerY) / centerY;
 
-                let maxRotate = 5;
-                if (rect.width > 400) maxRotate = 2.5;
+                let maxRotate = 2; // Production Value (Repel)
 
-                const rotateY = percentX * maxRotate * -1;
-                const rotateX = percentY * maxRotate;
+                // REPEL Logic: Inverted Directions
+                const rotateY = percentX * maxRotate;
+                const rotateX = percentY * maxRotate * -1;
 
                 tile.style.transform = `
                     perspective(1000px)
                     rotateX(${rotateX}deg) 
                     rotateY(${rotateY}deg)
-                    scale3d(1.02, 1.02, 1.02)
+                    scale3d(1.01, 1.01, 1.01)
                 `;
-            });
+            }, 16));
 
             tile.addEventListener('mouseleave', () => {
                 tile.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
@@ -171,7 +189,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (themeCheckbox) {
+        // Sync initial state
+        themeCheckbox.setAttribute('aria-pressed', themeCheckbox.checked);
+
         themeCheckbox.addEventListener('change', () => {
+            // Update ARIA state
+            themeCheckbox.setAttribute('aria-pressed', themeCheckbox.checked);
+
             if (themeCheckbox.checked) {
                 body.classList.add('dark-mode');
                 localStorage.setItem('theme', 'dark');
@@ -252,9 +276,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Remove flipped state on blur (optional but good for focus flow)
+        // Remove flipped state on blur (optional but good for focus flow)
         card.addEventListener('blur', () => {
             card.classList.remove('flipped');
         });
     });
+
+    // --- BACK TO TOP BUTTON ---
+    const backToTopBtn = document.querySelector('.back-to-top');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > window.innerHeight) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 
 });

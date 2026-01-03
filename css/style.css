@@ -1,43 +1,73 @@
 /* --- 1. VARIABLES & THEME SETUP --- */
 :root {
-    --glass-bg: rgba(255, 255, 255, 0.65);
-    /* ULTRA-GLASS: Lower opacity */
+    /* --- COLORS: PALETTE --- */
+    --accent-color: #0060aa;
+    /* Updated for WCAG AA (was #0078d4) */
+    --accent-light: #66c2ff;
+    --text-color: #1a1a1a;
+    --text-muted: #555555;
+
+    --bg-gradient: #f4f4f4;
+    /* Slightly warmer light grey */
+    --card-bg: rgba(255, 255, 255, 0.45);
+    /* Base for light mode */
+    --top-bar-bg: rgba(240, 240, 240, 0.7);
+
+    /* --- LAYOUT & SPACING --- */
+    --tile-padding: 24px;
+    /* Increased from 15px */
+    --grid-gap: 16px;
+    /* Slightly increased gap */
+    --border-radius: 12px;
+    /* Smoother corners */
+
+    /* --- TRANSPARENCY / GLASS --- */
+    --glass-alpha: 0.6;
+    /* Increased for contrast */
+    --glass-bg: rgba(255, 255, 255, var(--glass-alpha));
     --glass-border: rgba(255, 255, 255, 0.4);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-    --text-color: #1a1a1a;
-    --accent-color: #0078d4;
-    --bg-gradient: #f0f0f0;
 
-    /* Layout Settings */
-    --tile-padding: 15px;
-    --grid-gap: 12px;
-    --border-radius: 8px;
+    /* --- TYPOGRAPHY SCALE (1.25 Ratio) --- */
+    --font-xs: 0.8rem;
+    --font-sm: 1rem;
+    /* Base 16px */
+    --font-md: 1.25rem;
+    /* h3 */
+    --font-lg: 1.563rem;
+    /* h2 */
+    --font-xl: 1.953rem;
+    /* h1 */
+    --font-xxl: 2.441rem;
+    /* Display */
+
+    /* --- ANIMATION --- */
     --orb-opacity: 0.8;
-    /* Base opacity for Light Mode */
-    /* Stronger Colors for Light Mode */
     --orb-color-1: rgba(0, 80, 180, 0.75);
-    /* Darker Blue */
     --orb-color-2: rgba(140, 50, 170, 0.75);
-    /* Darker Purple */
+    --delay: 0s;
+    /* Stagger animation variable */
 }
 
 /* DARK MODE */
 body.dark-mode {
     --bg-gradient: #050505;
-    /* Deep black base */
-    --glass-bg: rgba(20, 20, 20, 0.5);
-    /* ULTRA-GLASS: 50% Opacity */
+
+    --glass-alpha: 0.6;
+    --glass-bg: rgba(20, 20, 20, var(--glass-alpha));
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.8);
-    --text-color: #e6e6e6;
+
+    --text-color: #f5f5f5;
+    /* Improved contrast (was #e6e6e6) */
+    --text-muted: #bbbbbb;
+    /* Lighter accent for contrast on dark bg */
     --accent-color: #4cc2ff;
-    --orb-opacity: 0.5;
-    /* Lower opacity for Dark Mode */
-    /* Lighter/Glowy Colors for Dark Mode */
+
+    --orb-opacity: 0.7;
+    /* Increased from 0.5 for better visibility */
     --orb-color-1: rgba(0, 120, 212, 0.6);
-    /* Original Blue */
     --orb-color-2: rgba(155, 89, 182, 0.6);
-    /* Original Purple */
 }
 
 /* --- 2. BASE STYLES --- */
@@ -54,6 +84,13 @@ body {
     position: relative;
     scroll-behavior: auto !important;
     /* Performance override */
+}
+
+/* Global Focus Indicator (Accessibility) */
+:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 4px;
+    border-radius: 4px;
 }
 
 html {
@@ -101,11 +138,6 @@ a {
     to {
         opacity: var(--orb-opacity);
     }
-}
-
-body.dark-mode @keyframes revealOrb {
-    /* CSS keyframes don't scope like this easily, so we will use a variable-based approach or specific overrides if strictly needed. 
-      For now, 0.8 looks fine for entrance, or we can use a CSS variable for the target. */
 }
 
 .orb-1 {
@@ -194,7 +226,7 @@ body.dark-mode @keyframes revealOrb {
 .brand {
     font-family: 'Outfit', sans-serif;
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: var(--font-md);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -203,7 +235,7 @@ body.dark-mode @keyframes revealOrb {
 
 .brand ion-icon {
     color: var(--accent-color);
-    font-size: 1.3rem;
+    font-size: var(--font-lg);
 }
 
 .right-actions,
@@ -227,7 +259,7 @@ body.dark-mode @keyframes revealOrb {
 
 .social-link {
     color: var(--text-color);
-    font-size: 1.2rem;
+    font-size: var(--font-md);
     transition: all 0.2s ease;
     opacity: 0.7;
     display: flex;
@@ -327,11 +359,32 @@ body.dark-mode .social-link:hover {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     padding: var(--tile-padding);
     position: relative;
-    overflow: visible;
-    transform-style: preserve-3d;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    opacity: 0;
     transform: translateY(30px);
+    overflow: visible;
+    /* Needed for spotlight */
+}
+
+/* Spotlight Effect */
+.tile:not(.flip-card)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--border-radius);
+    padding: 1px;
+    background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.4), transparent 40%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tile:hover::after {
+    opacity: 1;
 }
 
 .tile.visible {
@@ -361,7 +414,7 @@ body.dark-mode .tile {
     border-bottom: 1px solid rgba(120, 120, 120, 0.15);
     padding-bottom: 8px;
     margin: 0 0 12px 0;
-    font-size: 1.15rem;
+    font-size: var(--font-md);
 }
 
 .tile h2:hover {
@@ -373,7 +426,7 @@ body.dark-mode .tile h2 {
 }
 
 .tile p {
-    font-size: 0.9rem;
+    font-size: var(--font-sm);
     line-height: 1.5;
     color: var(--text-color);
     opacity: 0.9;
@@ -448,19 +501,19 @@ body.dark-mode .tile p {
 }
 
 .timeline-title {
-    font-size: 0.95rem;
+    font-size: var(--font-sm);
     margin: 0;
     font-weight: 500;
 }
 
 .timeline-subtitle {
-    font-size: 0.8rem;
+    font-size: var(--font-xs);
     color: var(--accent-color);
     margin: 0 0 2px 0;
 }
 
 .timeline-desc {
-    font-size: 0.85rem;
+    font-size: var(--font-xs);
     opacity: 0.8;
     margin: 0;
 }
@@ -471,7 +524,7 @@ body.dark-mode .tile p {
     align-items: center;
     gap: 10px;
     padding: 6px 8px;
-    font-size: 0.9rem;
+    font-size: var(--font-sm);
     cursor: pointer;
 }
 
@@ -494,7 +547,7 @@ body.dark-mode .tile p {
     padding: 5px 10px;
     border-radius: 4px;
     margin: 2px;
-    font-size: 0.8rem;
+    font-size: var(--font-xs);
     font-weight: 500;
     border: 1px solid transparent;
     transition: all 0.2s;
@@ -568,15 +621,21 @@ body.dark-mode .skill-tag i {
 }
 
 .skill-tag.django:hover {
-    color: #44B78B !important;
+    background: rgba(68, 183, 139, 0.15);
+    color: #44B78B;
+    border-color: #44B78B;
 }
 
-.skill-tag.wordpress:hover i {
-    color: #21759b !important;
+.skill-tag.wordpress:hover {
+    background: rgba(33, 117, 155, 0.15);
+    color: #21759b;
+    border-color: #21759b;
 }
 
-.skill-tag.postgres:hover i {
-    color: #336791 !important;
+.skill-tag.postgres:hover {
+    background: rgba(51, 103, 145, 0.15);
+    color: #336791;
+    border-color: #336791;
 }
 
 /* Flip Cards */
@@ -592,7 +651,8 @@ body.dark-mode .skill-tag i {
 .card-inner {
     width: 100%;
     height: 100%;
-    min-height: 260px;
+    min-height: 340px;
+    /* Increased to accommodate new padding/fonts */
     text-align: center;
     transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
     transform-style: preserve-3d;
@@ -619,6 +679,8 @@ body.dark-mode .skill-tag i {
     backface-visibility: hidden;
     transform: translateZ(0);
     /* Anti-blur fix */
+    -webkit-font-smoothing: subpixel-antialiased;
+    will-change: transform;
     background: var(--glass-bg);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
@@ -650,7 +712,7 @@ body.dark-mode .card-back {
 
 .card-back h3 {
     margin: 0 0 2px 0;
-    font-size: 1.1rem;
+    font-size: var(--font-sm);
 }
 
 .card-back p {
@@ -672,7 +734,7 @@ a.flip-link {
     background: var(--accent-color);
     color: white;
     border-radius: 6px;
-    font-size: 0.85rem;
+    font-size: var(--font-xs);
     font-weight: 500;
     transition: transform 0.2s;
     margin-top: 10px;
@@ -703,6 +765,12 @@ a.flip-link:hover {
     opacity: 0;
     width: 0;
     height: 0;
+}
+
+/* Accessibility: Show focus on slider when input is focused */
+.toggle-opt-8 input:focus-visible+.slider {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
 .toggle-opt-8 .slider {
@@ -798,30 +866,36 @@ a.flip-link:hover {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
+    height: 100vh;
+    /* Using vh to cover full viewport */
+    background: rgba(0, 0, 0, 0.4);
+    /* Dimmed background */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 1500;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 30px;
+
+    /* Animation: Slide-in from right */
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
 
 body.dark-mode .mobile-menu-overlay {
-    background: rgba(10, 10, 10, 0.8);
+    background: rgba(0, 0, 0, 0.85);
+    /* Darker in dark mode */
 }
 
 .mobile-menu-overlay.active {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateX(0%);
 }
 
 .mobile-menu-link {
@@ -839,13 +913,47 @@ body.dark-mode .mobile-menu-overlay {
     color: var(--accent-color);
 }
 
-.close-menu-btn {
-    position: absolute;
-    top: 30px;
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
     right: 30px;
-    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #333;
+    /* Dark icon for contrast on white */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    color: var(--text-color);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .back-to-top {
+    background: #333;
+    /* Dark background for dark mode */
+    color: #fff;
+    /* White icon */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 /* --- 10. RESPONSIVE / MEDIA QUERIES --- */
@@ -906,9 +1014,17 @@ body.dark-mode .mobile-menu-overlay {
 }
 
 /* Mobile (Max 768) */
+/* Mobile (Max 768) */
 @media (max-width: 768px) {
     .top-bar-container {
         padding: 0 15px;
+        /* Revert to match main-wrapper alignment */
+    }
+
+    /* Ensure top-bar scales smoothly */
+    .top-bar {
+        transition: transform 0.4s ease;
+        will-change: transform;
     }
 
     .nav-actions {
@@ -935,8 +1051,64 @@ body.dark-mode .mobile-menu-overlay {
     .personal-section .tile:last-child,
     .personal-section .tile:nth-child(2),
     .personal-section .tile:nth-child(3) {
-        grid-column: auto;
+        grid-column: 1;
         grid-row: auto;
+    }
+
+    /* Social Links: Larger Touch Targets (48px) */
+    .social-link {
+        padding: 12px;
+        min-width: 48px;
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        /* Ensure padding doesn't break layout */
+    }
+
+    /* Flip Card Mobile Hint */
+    .card-front::after {
+        content: '\f0a6';
+        /* Hand pointer icon (FontAwesome) */
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 1.2rem;
+        color: var(--text-color);
+        opacity: 0.5;
+        animation: pulseHint 2s infinite;
+        pointer-events: none;
+    }
+
+    /* Strict Horizontal Overflow Safety */
+    body,
+    html {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    .orbs-container {
+        /* Prevent orbs from causing scroll */
+        max-width: 100vw;
+        overflow: hidden;
+    }
+
+    @keyframes pulseHint {
+
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.3;
+        }
+
+        50% {
+            transform: scale(1.2);
+            opacity: 0.7;
+        }
     }
 
     .projects-section {
@@ -972,8 +1144,268 @@ body.dark-mode .mobile-menu-overlay {
     }
 
     .orb,
-    .tile:hover {
+    .tile:hover,
+    .skill-tag {
         transform: none !important;
         animation: none !important;
     }
+}
+
+/* --- 11. PROFILE & UTILITY CLASSES --- */
+.profile-name {
+    margin: 0;
+    font-size: var(--font-xl);
+    /* Increased to XL for better hierarchy */
+    font-weight: 500;
+}
+
+.profile-role {
+    margin: 5px 0 15px 0;
+    color: var(--accent-color);
+    font-weight: 400;
+    font-size: var(--font-md);
+    /* Increased visibility */
+}
+
+.profile-bio {
+    font-size: var(--font-sm);
+    opacity: 0.8;
+    line-height: 1.5;
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.soft-skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.cert-title {
+    margin-top: 20px;
+    font-size: var(--font-sm);
+    opacity: 0.8;
+}
+
+.cert-list {
+    padding-left: 15px;
+    margin: 5px 0;
+    font-size: var(--font-xs);
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+.lang-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.lang-level {
+    opacity: 0.7;
+}
+
+/* Project Card Utils */
+.project-desc {
+    font-size: var(--font-xs);
+    /* Was 0.85rem inline */
+}
+
+.project-skills {
+    margin-bottom: 10px;
+}
+
+.project-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+/* --- 13. PHASE 3: FINAL POLISH (Scrollbar & Selection) --- */
+
+/* Custom Scrollbar (Webkit) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    /* Makes the thumb look floating */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-color);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-color);
+}
+
+/* Custom Text Selection */
+::selection {
+    background: var(--accent-color);
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+}
+
+/* Fallback/Performance for Glass (Graceful Degradation) */
+@supports not (backdrop-filter: blur(20px)) {
+
+    .tile,
+    .top-bar,
+    .mobile-menu-overlay,
+    .card-front,
+    .card-back {
+        background: rgba(255, 255, 255, 0.95);
+        /* More opaque fallback */
+    }
+
+    body.dark-mode .tile,
+    body.dark-mode .top-bar,
+    body.dark-mode .mobile-menu-overlay {
+        background: rgba(20, 20, 20, 0.95);
+    }
+}
+
+/* 12.1 Staggered Entrance for Skill Tags */
+@keyframes fadeInUpSmall {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.skill-tag {
+    /* Existing styles are kept, we just add animation */
+    animation: fadeInUpSmall 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+/* Stagger delays for up to 15 items */
+.skill-tag:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.skill-tag:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.skill-tag:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.skill-tag:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.skill-tag:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.skill-tag:nth-child(6) {
+    animation-delay: 0.35s;
+}
+
+.skill-tag:nth-child(7) {
+    animation-delay: 0.4s;
+}
+
+.skill-tag:nth-child(8) {
+    animation-delay: 0.45s;
+}
+
+.skill-tag:nth-child(9) {
+    animation-delay: 0.5s;
+}
+
+.skill-tag:nth-child(10) {
+    animation-delay: 0.55s;
+}
+
+.skill-tag:nth-child(11) {
+    animation-delay: 0.6s;
+}
+
+.skill-tag:nth-child(12) {
+    animation-delay: 0.65s;
+}
+
+.skill-tag:nth-child(13) {
+    animation-delay: 0.7s;
+}
+
+.skill-tag:nth-child(14) {
+    animation-delay: 0.75s;
+}
+
+.skill-tag:nth-child(15) {
+    animation-delay: 0.8s;
+}
+
+/* 12.2 Enhanced Glassmorphism (Premium Borders) */
+/* Override generic border with a gradient-like effect using box-shadow inset + border top/left highlight */
+.tile,
+.top-bar {
+    border: 1px solid transparent !important;
+    /* Reset basic border */
+    box-shadow:
+        var(--glass-shadow),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+        /* Subtle full inner border */
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+    /* Top highlight for depth */
+}
+
+body.dark-mode .tile,
+body.dark-mode .top-bar {
+    box-shadow:
+        var(--glass-shadow),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 12.3 Micro-interactions (Actives & Hovers) */
+/* Buttons & Links 'Press' Effect */
+.skill-tag:active,
+.social-link:active,
+.flip-link:active,
+.tile.flip-card:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* Contact Item enhanced hover */
+.contact-item {
+    transition: transform 0.2s ease, background 0.2s ease;
+    border-radius: 6px;
+}
+
+.contact-item:hover {
+    background: rgba(120, 120, 120, 0.05);
+    transform: translateX(5px);
+}
+
+body.dark-mode .contact-item:hover {
+    background: rgba(255, 255, 255, 0.05);
 }

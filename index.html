@@ -9,9 +9,12 @@
     <meta name="description"
         content="Portafolio Premium de Carlos Perales A. Desarrollador Full Stack y especialista en Diseño Web.">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="css/style.css">
@@ -51,7 +54,7 @@
                 <!-- THEME SWITCH (Option 8 - Dribbble Polish) -->
                 <div class="theme-switch-wrapper">
                     <label class="toggle-variant toggle-opt-8" for="checkbox">
-                        <input type="checkbox" id="checkbox" aria-label="Alternar modo oscuro" />
+                        <input type="checkbox" id="checkbox" aria-label="Alternar modo oscuro" aria-pressed="false" />
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -66,9 +69,7 @@
 
     <!-- MOBILE MENU OVERLAY -->
     <div class="mobile-menu-overlay">
-        <div class="close-menu-btn">
-            <ion-icon name="close-outline"></ion-icon>
-        </div>
+        <!-- Close button removed as requested -->
         <a href="https://github.com/carlosperalesa/" class="mobile-menu-link"><ion-icon name="logo-github"></ion-icon>
             GitHub</a>
         <a href="https://www.linkedin.com/in/carlosperalesa" class="mobile-menu-link"><ion-icon
@@ -87,31 +88,38 @@
         <aside class="personal-section">
             <div class="tile avatar-section">
                 <img src="./img/avatar.webp" alt="Carlos Perales" class="avatar-img">
-                <h1 style="margin:0; font-size:1.4rem; font-weight:500;">Carlos Perales</h1>
-                <p style="margin:5px 0 15px 0; color:var(--accent-color); font-weight:400; font-size:0.9rem;">Full Stack
-                    Specialist</p>
-                <div style="font-size:0.9rem; opacity:0.8; line-height:1.5;">
+                <h1 class="profile-name">Carlos Perales</h1>
+                <p class="profile-role">Full Stack Specialist</p>
+                <div class="profile-bio">
                     Pasión por crear experiencias digitales hermosas y funcionales. Especialista en Arquitectura Web y
                     Diseño UI/UX.
                 </div>
             </div>
 
-
-
             <div class="tile">
                 <h2>Stack</h2>
-                <div style="display:flex; flex-wrap:wrap; gap:4px;">
-                    <span class="skill-tag html"><i class="fab fa-html5"></i> HTML5</span>
-                    <span class="skill-tag css"><i class="fab fa-css3-alt"></i> CSS3</span>
-                    <span class="skill-tag js"><i class="fab fa-js"></i> JavaScript</span>
-                    <span class="skill-tag python"><i class="fab fa-python"></i> Python</span>
-                    <span class="skill-tag react"><i class="fab fa-react"></i> React</span>
-                    <span class="skill-tag sql"><i class="fas fa-database"></i> SQL</span>
-                    <span class="skill-tag git"><i class="fab fa-git-alt"></i> Git</span>
+                <div class="skills-container" role="group" aria-label="Tecnologías y herramientas">
+                    <span class="skill-tag html" role="img" aria-label="HTML5"><i class="fab fa-html5"
+                            aria-hidden="true"></i> HTML5</span>
+                    <span class="skill-tag css" role="img" aria-label="CSS3"><i class="fab fa-css3-alt"
+                            aria-hidden="true"></i> CSS3</span>
+                    <span class="skill-tag js" role="img" aria-label="JavaScript"><i class="fab fa-js"
+                            aria-hidden="true"></i> JavaScript</span>
+                    <span class="skill-tag python" role="img" aria-label="Python"><i class="fab fa-python"
+                            aria-hidden="true"></i> Python</span>
+                    <span class="skill-tag react" role="img" aria-label="React"><i class="fab fa-react"
+                            aria-hidden="true"></i> React</span>
+                    <span class="skill-tag sql" role="img" aria-label="SQL"><i class="fas fa-database"
+                            aria-hidden="true"></i> SQL</span>
+                    <span class="skill-tag git" role="img" aria-label="Git"><i class="fab fa-git-alt"
+                            aria-hidden="true"></i> Git</span>
 
-                    <span class="skill-tag django"><i class="fab fa-python"></i> Django</span>
-                    <span class="skill-tag wordpress"><i class="fab fa-wordpress"></i> WordPress</span>
-                    <span class="skill-tag postgres"><i class="fas fa-database"></i> PostgreSQL</span>
+                    <span class="skill-tag django" role="img" aria-label="Django"><i class="fab fa-python"
+                            aria-hidden="true"></i> Django</span>
+                    <span class="skill-tag wordpress" role="img" aria-label="WordPress"><i class="fab fa-wordpress"
+                            aria-hidden="true"></i> WordPress</span>
+                    <span class="skill-tag postgres" role="img" aria-label="PostgreSQL"><i class="fas fa-database"
+                            aria-hidden="true"></i> PostgreSQL</span>
                 </div>
             </div>
 
@@ -119,7 +127,7 @@
                 <h2>Habilidades & Idiomas</h2>
                 <div class="timeline-item">
                     <h3 class="timeline-title">Soft Skills</h3>
-                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px;">
+                    <div class="soft-skills-container">
                         <span class="skill-tag">Comunicación</span>
                         <span class="skill-tag">Creatividad</span>
                         <span class="skill-tag">Adaptabilidad</span>
@@ -132,13 +140,13 @@
                 <div class="timeline-item" style="margin-top:20px;">
                     <h3 class="timeline-title">Idiomas</h3>
                     <div style="margin-top:5px;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <div class="lang-row">
                             <span>Español</span>
-                            <span style="opacity:0.7;">Nativo</span>
+                            <span class="lang-level">Nativo</span>
                         </div>
-                        <div style="display:flex; justify-content:space-between;">
+                        <div class="lang-row">
                             <span>Inglés</span>
-                            <span style="opacity:0.7;">C1 (Avanzado)</span>
+                            <span class="lang-level">C1 (Avanzado)</span>
                         </div>
                     </div>
                 </div>
@@ -194,8 +202,8 @@
                         <p class="timeline-subtitle">Universidad Central (2009-2014)</p>
                     </div>
 
-                    <h2 style="margin-top:20px; font-size:1rem; opacity:0.8;">Certificaciones</h2>
-                    <ul style="padding-left:15px; margin:5px 0; font-size:0.85rem; line-height:1.4; opacity:0.9;">
+                    <h2 class="cert-title">Certificaciones</h2>
+                    <ul class="cert-list">
                         <li>Full-Stack Developer (UTN.BA, 2023)</li>
                         <li>Full Stack Python (Desafío Latam, 2024)</li>
                         <li>Full Stack Python (SENCE, 2024)</li>
@@ -250,15 +258,16 @@
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto HootieHoo">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/hh.webp" alt="HootieHoo" class="project-logo" loading="lazy">
+                        <img src="/img/cards/hh.webp" alt="Logotipo de proyecto HootieHoo" class="project-logo"
+                            loading="lazy">
                         <h3>HootieHoo</h3>
                     </div>
                     <div class="card-back">
                         <h3>HootieHoo</h3>
-                        <p style="font-size:0.85rem;">Plataforma/landing de un laboratorio de formación
+                        <p class="project-desc">Plataforma/landing de un laboratorio de formación
                             virtual,
                             gamificación, marketing digital y experiencias de aprendizaje.</p>
-                        <div style="margin-bottom:10px;">
+                        <div class="project-skills">
                             <span class="skill-tag">EdTech</span>
                             <span class="skill-tag">Gamificación</span>
                             <span class="skill-tag">Marketing</span>
@@ -273,15 +282,16 @@
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Ghivs">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/ghivs.svg" alt="Ghivs" class="project-logo" loading="lazy">
+                        <img src="/img/cards/ghivs.svg" alt="Logotipo de proyecto Ghivs" class="project-logo"
+                            loading="lazy">
                         <h3>Ghivs</h3>
                     </div>
                     <div class="card-back">
                         <h3>Ghivs</h3>
-                        <p style="font-size:0.85rem;">Portal para soluciones de ingeniería en trabajos
+                        <p class="project-desc">Portal para soluciones de ingeniería en trabajos
                             en altura con
                             gestión de proyectos y supervisión.</p>
-                        <div style="margin-bottom:10px;">
+                        <div class="project-skills">
                             <span class="skill-tag">Corporativo</span>
                             <span class="skill-tag">Ingeniería</span>
                             <span class="skill-tag">SaaS</span>
@@ -296,15 +306,16 @@
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Pokédex Live">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/pm_logo.webp" alt="Pokedex" class="project-logo" loading="lazy">
+                        <img src="/img/cards/pm_logo.webp" alt="Logotipo de proyecto Pokedex" class="project-logo"
+                            loading="lazy">
                         <h3>Pokédex Live</h3>
                     </div>
                     <div class="card-back">
                         <h3>Pokédex Live</h3>
-                        <p style="font-size:0.85rem;">Pokedex interactiva consumiendo una API REST y
+                        <p class="project-desc">Pokedex interactiva consumiendo una API REST y
                             mostrando datos con
                             renderizado dinámico.</p>
-                        <div style="margin-bottom:10px;">
+                        <div class="project-skills">
                             <span class="skill-tag">API</span>
                             <span class="skill-tag">JS</span>
                             <span class="skill-tag">Interactivo</span>
@@ -318,15 +329,16 @@
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Las Triples">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="/img/cards/tn_logo.webp" alt="Las Triples" class="project-logo" loading="lazy">
+                        <img src="/img/cards/tn_logo.webp" alt="Logotipo de proyecto Las Triples" class="project-logo"
+                            loading="lazy">
                         <h3>Las Triples</h3>
                     </div>
                     <div class="card-back">
                         <h3>Las Triples</h3>
-                        <p style="font-size:0.85rem;">Sitio informativo de una agrupación de apoyo para
+                        <p class="project-desc">Sitio informativo de una agrupación de apoyo para
                             mujeres con
                             Cáncer de Mama Triple Negativo.</p>
-                        <div style="margin-bottom:10px;">
+                        <div class="project-skills">
                             <span class="skill-tag">Informativo</span>
                             <span class="skill-tag">Comunidad</span>
                             <span class="skill-tag">WordPress</span>
@@ -343,15 +355,15 @@
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Proton UI">
                 <div class="card-inner">
                     <div class="card-front">
-                        <div style="font-size:3rem; margin-bottom:10px;">🔒</div>
+                        <div class="project-icon">🔒</div>
                         <h3>Proton UI</h3>
                     </div>
                     <div class="card-back">
                         <h3>Proton UI</h3>
-                        <p style="font-size:0.85rem;">Clon de una interfaz visual “pixel-perfect”
+                        <p class="project-desc">Clon de una interfaz visual “pixel-perfect”
                             replicando diseño
                             original con HTML/CSS.</p>
-                        <div style="margin-bottom:10px;">
+                        <div class="project-skills">
                             <span class="skill-tag">CSS3</span>
                             <span class="skill-tag">Diseño UI</span>
                             <span class="skill-tag">PixelPerfect</span>
@@ -365,15 +377,15 @@
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Amigo Secreto">
                 <div class="card-inner">
                     <div class="card-front">
-                        <div style="font-size:3rem; margin-bottom:10px;">🎁</div>
+                        <div class="project-icon">🎁</div>
                         <h3>Amigo Secreto</h3>
                     </div>
                     <div class="card-back">
                         <h3>Amigo Secreto</h3>
-                        <p style="font-size:0.85rem;">Herramienta de sorteo para “amigo secreto” con
+                        <p class="project-desc">Herramienta de sorteo para “amigo secreto” con
                             lógica avanzada en
                             JS y manejo de arreglos.</p>
-                        <div style="margin-bottom:10px;">
+                        <div class="project-skills">
                             <span class="skill-tag">JS</span>
                             <span class="skill-tag">Algoritmos</span>
                             <span class="skill-tag">Sorteo</span>
@@ -386,14 +398,14 @@
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de Curriculum Vitae">
                 <div class="card-inner">
                     <div class="card-front">
-                        <div style="font-size:3rem; margin-bottom:10px;">📄</div>
+                        <div class="project-icon">📄</div>
                         <h3>Curriculum</h3>
                     </div>
                     <div class="card-back">
                         <h3>CV Online</h3>
-                        <p style="font-size:0.85rem;">Versión web de tu currículum interactivo y
+                        <p class="project-desc">Versión web de tu currículum interactivo y
                             portfolio personal.</p>
-                        <div style="margin-bottom:10px;">
+                        <div class="project-skills">
                             <span class="skill-tag">HTML</span>
                             <span class="skill-tag">Portfolio</span>
                             <span class="skill-tag">Resume</span>
@@ -406,6 +418,10 @@
 
 
         </main>
+    </div>
+
+    <div class="back-to-top">
+        <ion-icon name="arrow-up-outline"></ion-icon>
     </div>
 
     <script src="js/script.js"></script>
