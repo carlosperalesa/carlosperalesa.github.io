@@ -74,7 +74,7 @@ body.dark-mode {
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'ABC Favorit Mono', monospace;
     font-weight: 300;
     background: var(--bg-gradient);
     color: var(--text-color);
