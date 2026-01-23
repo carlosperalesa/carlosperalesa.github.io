@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Bruja Teatral</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Calibri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Quill Style -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Specific Admin Tweaks */
+        body {
+            background: #f4f4f4;
+        }
+
+        .edit-btn {
+            background: var(--color-blue);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: var(--color-red);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #editor-container {
+            height: 300px;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo"><img src="img/logo_placeholder.png" alt="Logo"></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Ver Sitio</a></li>
+                <li><a href="#" id="logoutBtn" style="color:red;">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="height: 100px;"></div> <!-- Spacer -->
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Panel de Administración</h1>
+            <span id="welcomeUser"></span>
+        </div>
+
+        <!-- REMOVED TABS -->
+        <div class="dashboard-section" style="margin-bottom: 40px;">
+            <h2 style="border-bottom: 2px solid var(--color-red); padding-bottom:10px; margin-bottom: 20px;">Entradas
+                del Blog</h2>
+
+            <!-- POSTS TAB -->
+            <div id="posts" class="active">
+                <button class="btn btn-primary" onclick="showPostForm()">+ Crear Nueva Entrada</button>
+
+                <div id="postsTableContainer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Imagen</th>
+                                <th>Título</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="postsTableBody">
+                            <!-- JS renders -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Create/Edit Form (Hidden by default) -->
+                <div id="postFormContainer"
+                    style="display:none; margin-top: 20px; background: #fff; padding: 20px; border-radius: 8px;">
+                    <h2 id="formTitle">Nueva Entrada</h2>
+                    <form id="postForm">
+                        <input type="hidden" id="postId">
+                        <div class="form-group">
+                            <label>Título</label>
+                            <input type="text" id="postTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Resumen Corto</label>
+                            <textarea id="postSummary" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagen Principal</label>
+                            <input type="file" id="imageInput" accept="image/*">
+                            <input type="hidden" id="imageUrl">
+                            <img id="imagePreview" style="max-height: 100px; display:none; margin-top:10px;">
+                        </div>
+                        <div class="form-group">
+                            <label>Contenido</label>
+                            <div id="editor-container"></div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-secondary" onclick="hidePostForm()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- End Posts Inner -->
+        </div> <!-- End Posts Section Wrapper -->
+
+        <!-- MESSAGES SECTION -->
+        <div class="dashboard-section" style="margin-top: 50px;">
+            <h2 style="border-bottom: 2px solid var(--color-blue); padding-bottom:10px; margin-bottom: 20px;">Mensajes
+                de Contacto</h2>
+
+            <div id="messages">
+                <div id="messagesContainer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha/Hora</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Asunto</th>
+                                <th>Mensaje</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesTableBody">
+                            <!-- JS renders -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

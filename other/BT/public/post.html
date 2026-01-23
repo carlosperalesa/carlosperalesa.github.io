@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Bruja Teatral</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Calibri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo"><a href="index.html"><img src="img/logo_placeholder.png" alt="Logo"></a></div>
+        <nav>
+            <ul>
+                <li><a href="index.html#blog">Volver al Blog</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="height: 100px;"></div>
+
+    <article style="max-width: 800px; margin: 0 auto; padding: 40px 5%;">
+        <div id="loading">Cargando...</div>
+        <div id="postContent" style="display:none;">
+            <h1 id="pTitle" class="section-title" style="text-align: left;"></h1>
+            <p id="pDate" style="color:#777; margin-bottom: 20px;"></p>
+            <img id="pImg" src="" style="width:100%; border-radius: 8px; margin-bottom: 30px;">
+            <div id="pBody" style="font-size: 1.2rem; line-height: 1.8;"></div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-col contact-info">
+            <h4>Contacto</h4>
+            <p><i class="fas fa-phone"></i> +56 9 1234 5678</p>
+            <p><i class="fas fa-envelope"></i> contacto@brujateatral.cl</p>
+            <p><i class="fas fa-map-marker-alt"></i> Calle Arte 123, Santiago</p>
+        </div>
+
+        <div class="footer-col">
+            <div class="logo">
+                <img src="img/logo_placeholder.png" alt="Logo"
+                    style="height: 50px; margin: 0 auto; filter: grayscale(1) brightness(10);">
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9rem;">&copy; <span id="year"></span> Bruja Teatral.</p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Síguenos</h4>
+            <div class="footer-socials">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+
+            if (!id) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/posts/${id}`);
+                if (!res.ok) throw new Error('Post no encontrado');
+                const post = await res.json();
+
+                document.getElementById('pTitle').textContent = post.title;
+                document.getElementById('pDate').textContent = new Date(post.created_at).toLocaleDateString();
+                if (post.image_url) document.getElementById('pImg').src = post.image_url;
+                else document.getElementById('pImg').style.display = 'none';
+
+                document.getElementById('pBody').innerHTML = post.content;
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('postContent').style.display = 'block';
+
+            } catch (err) {
+                document.getElementById('loading').textContent = 'Error al cargar la entrada.';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve Bruja Teatral
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/var/www/html-static/other/BT
+Environment="PATH=/var/www/html-static/other/BT/.venv/bin"
+ExecStart=/var/www/html-static/other/BT/.venv/bin/gunicorn --workers 3 --bind unix:bruja_teatral.sock -m 007 app:app
+
+[Install]
+WantedBy=multi-user.target

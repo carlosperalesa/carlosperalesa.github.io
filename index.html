@@ -31,12 +31,12 @@
         --text-color: #000000;
         --text-muted: #374151;
         --bg-gradient: #f8fafc;
-        
+
         /* Glassmorphism - Más opaco para mejor contraste */
         --glass-bg: rgba(255, 255, 255, 0.92);
         --glass-border: rgba(0, 0, 0, 0.08);
         --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
-        
+
         /* Tipografía */
         --font-xs: 0.75rem;
         --font-sm: 0.875rem;
@@ -44,27 +44,27 @@
         --font-lg: 1.25rem;
         --font-xl: 1.5rem;
         --font-xxl: 2rem;
-        
+
         /* Espaciado */
         --spacing-xs: 4px;
         --spacing-sm: 8px;
         --spacing-md: 16px;
         --spacing-lg: 24px;
         --spacing-xl: 32px;
-        
+
         /* Bordes - Más redondeados, tendencia actual */
         --radius-sm: 10px;
         --radius-md: 14px;
         --radius-lg: 22px;
         --radius-xl: 32px;
-        
+
         /* Dock */
         --dock-bg: rgba(255, 255, 255, 0.95);
         --dock-icon-size: 52px;
-        
+
         /* Modal */
         --modal-bg: rgba(255, 255, 255, 0.98);
-        
+
         /* Indicador */
         --indicator-color: #6366f1;
     }
@@ -87,13 +87,16 @@
     /* ============================================
        2. RESET Y BASE
        ============================================ */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
 
-    html, body {
+    html,
+    body {
         height: 100%;
         overflow: hidden;
     }
@@ -171,26 +174,22 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.15) 0%,
-            rgba(0, 0, 0, 0.02) 20%,
-            rgba(0, 0, 0, 0.02) 80%,
-            rgba(0, 0, 0, 0.25) 100%
-        );
+        background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.15) 0%,
+                rgba(0, 0, 0, 0.02) 20%,
+                rgba(0, 0, 0, 0.02) 80%,
+                rgba(0, 0, 0, 0.25) 100%);
         z-index: -1;
         pointer-events: none;
     }
 
     /* En modo oscuro, overlay más pronunciado */
     body.dark-mode .desktop-screen::before {
-        background: linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.35) 0%,
-            rgba(0, 0, 0, 0.1) 20%,
-            rgba(0, 0, 0, 0.1) 80%,
-            rgba(0, 0, 0, 0.45) 100%
-        );
+        background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.35) 0%,
+                rgba(0, 0, 0, 0.1) 20%,
+                rgba(0, 0, 0, 0.1) 80%,
+                rgba(0, 0, 0, 0.45) 100%);
     }
 
     /* 4. FONDO RESPONSIVE */
@@ -247,8 +246,13 @@
     }
 
     /* Nombre completo en desktop, abreviado en móvil */
-    .name-full { display: inline; }
-    .name-short { display: none; }
+    .name-full {
+        display: inline;
+    }
+
+    .name-short {
+        display: none;
+    }
 
     .top-bar-center {
         position: absolute;
@@ -280,7 +284,7 @@
     }
 
     /* Accesibilidad: Mostrar foco al seleccionar */
-    .theme-toggle input:focus-visible + .slider {
+    .theme-toggle input:focus-visible+.slider {
         outline: 3px solid var(--accent-color);
         outline-offset: 2px;
     }
@@ -331,7 +335,7 @@
     }
 
     /* Dark Mode State - Moon with stars */
-    .theme-toggle input:checked + .slider {
+    .theme-toggle input:checked+.slider {
         background: #1C233E;
         /* 3 Estrellas */
         background-image:
@@ -347,7 +351,7 @@
     }
 
     /* Moon with craters */
-    .theme-toggle input:checked + .slider::before {
+    .theme-toggle input:checked+.slider::before {
         transform: translateX(20px);
         background: #D9D9D9;
         box-shadow: inset -2px -1px 0 #999, inset 1px 1px 0 #fff;
@@ -355,7 +359,7 @@
     }
 
     /* Hide clouds in dark mode */
-    .theme-toggle input:checked + .slider::after {
+    .theme-toggle input:checked+.slider::after {
         transform: translateY(20px);
         opacity: 0;
     }
@@ -510,11 +514,25 @@
     }
 
     @keyframes dockBounce {
-        0% { transform: scale(1); }
-        30% { transform: scale(0.9); }
-        50% { transform: scale(1.05); }
-        70% { transform: scale(0.98); }
-        100% { transform: scale(1); }
+        0% {
+            transform: scale(1);
+        }
+
+        30% {
+            transform: scale(0.9);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        70% {
+            transform: scale(0.98);
+        }
+
+        100% {
+            transform: scale(1);
+        }
     }
 
     .dock-icon {
@@ -538,24 +556,60 @@
     }
 
     /* Iconos con colores sobre fondo blanco */
-    .dock-icon.formacion { color: #7c3aed; }
-    .dock-icon.formacion svg { fill: #7c3aed; }
-    .dock-icon.experiencia { color: #e11d48; }
-    .dock-icon.experiencia svg { fill: #e11d48; }
-    .dock-icon.skills { color: #0891b2; }
-    .dock-icon.skills svg { fill: #0891b2; }
-    .dock-icon.proyectos { color: #f59e0b; }
-    .dock-icon.proyectos svg { fill: #f59e0b; }
-    .dock-icon.whatsapp { color: #16a34a; }
-    .dock-icon.whatsapp svg { fill: #16a34a; }
-    .dock-icon.telefono { color: #3b82f6; }
-    .dock-icon.telefono svg { fill: #3b82f6; }
+    .dock-icon.formacion {
+        color: #7c3aed;
+    }
+
+    .dock-icon.formacion svg {
+        fill: #7c3aed;
+    }
+
+    .dock-icon.experiencia {
+        color: #e11d48;
+    }
+
+    .dock-icon.experiencia svg {
+        fill: #e11d48;
+    }
+
+    .dock-icon.skills {
+        color: #0891b2;
+    }
+
+    .dock-icon.skills svg {
+        fill: #0891b2;
+    }
+
+    .dock-icon.proyectos {
+        color: #f59e0b;
+    }
+
+    .dock-icon.proyectos svg {
+        fill: #f59e0b;
+    }
+
+    .dock-icon.whatsapp {
+        color: #16a34a;
+    }
+
+    .dock-icon.whatsapp svg {
+        fill: #16a34a;
+    }
+
+    .dock-icon.telefono {
+        color: #3b82f6;
+    }
+
+    .dock-icon.telefono svg {
+        fill: #3b82f6;
+    }
 
     .dock-label {
         font-size: 10px;
         color: var(--text-muted);
         text-align: center;
-        display: none; /* Oculto en móvil */
+        display: none;
+        /* Oculto en móvil */
     }
 
     /* Indicador de modal abierto */
@@ -595,15 +649,15 @@
         background: #1e293b;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
     }
-    
+
     body.dark-mode .top-bar {
         background: #0f172a;
     }
-    
+
     body.dark-mode .dock {
         background: #0f172a;
     }
-    
+
     body.dark-mode .home-content,
     body.dark-mode .home-profile {
         background: rgba(15, 23, 42, 0.85);
@@ -625,7 +679,8 @@
     }
 
     .modal-overlay.active {
-        pointer-events: none; /* El overlay no bloquea, solo el modal */
+        pointer-events: none;
+        /* El overlay no bloquea, solo el modal */
     }
 
     .modal {
@@ -646,12 +701,13 @@
         transform: scale(0);
         opacity: 0;
         visibility: hidden;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                    opacity 0.2s ease,
-                    visibility 0.2s ease,
-                    left 0.01s,
-                    top 0.01s;
-        pointer-events: auto; /* Solo el modal recibe clicks */
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+            opacity 0.2s ease,
+            visibility 0.2s ease,
+            left 0.01s,
+            top 0.01s;
+        pointer-events: auto;
+        /* Solo el modal recibe clicks */
     }
 
     /* Modal de proyectos más grande para tooltips */
@@ -660,7 +716,8 @@
     }
 
     #modal-proyectos .modal-body {
-        padding-bottom: 80px; /* Espacio extra para tooltips de la última fila */
+        padding-bottom: 80px;
+        /* Espacio extra para tooltips de la última fila */
     }
 
     .modal-overlay.active .modal {
@@ -673,8 +730,8 @@
     .modal-overlay.closing .modal {
         transform: scale(0);
         opacity: 0;
-        transition: transform 0.18s cubic-bezier(0.6, -0.28, 0.74, 0.05), 
-                    opacity 0.15s ease;
+        transition: transform 0.18s cubic-bezier(0.6, -0.28, 0.74, 0.05),
+            opacity 0.15s ease;
     }
 
     .modal-header {
@@ -696,13 +753,16 @@
         .modal-header {
             cursor: grab;
         }
+
         .modal-header:active {
             cursor: grabbing;
         }
+
         .modal.dragging {
             transition: none !important;
             user-select: none;
         }
+
         .modal.dragging .modal-header {
             cursor: grabbing;
         }
@@ -900,26 +960,95 @@
     }
 
     /* Colores persistentes de skills (sin hover) */
-    .skill-tag.html { background: rgba(228, 77, 38, 0.15); color: #E44D26; }
-    .skill-tag.html i { color: #E44D26; }
-    .skill-tag.css { background: rgba(38, 77, 228, 0.15); color: #264DE4; }
-    .skill-tag.css i { color: #264DE4; }
-    .skill-tag.js { background: rgba(247, 223, 30, 0.2); color: #b8a900; }
-    .skill-tag.js i { color: #b8a900; }
-    .skill-tag.python { background: rgba(55, 118, 171, 0.15); color: #3776AB; }
-    .skill-tag.python i { color: #3776AB; }
-    .skill-tag.react { background: rgba(97, 218, 251, 0.15); color: #00b4d8; }
-    .skill-tag.react i { color: #00b4d8; }
-    .skill-tag.sql { background: rgba(0, 120, 212, 0.15); color: #0078D4; }
-    .skill-tag.sql i { color: #0078D4; }
-    .skill-tag.git { background: rgba(240, 80, 50, 0.15); color: #F05032; }
-    .skill-tag.git i { color: #F05032; }
-    .skill-tag.django { background: rgba(68, 183, 139, 0.15); color: #44B78B; }
-    .skill-tag.django i { color: #44B78B; }
-    .skill-tag.wordpress { background: rgba(33, 117, 155, 0.15); color: #21759b; }
-    .skill-tag.wordpress i { color: #21759b; }
-    .skill-tag.postgres { background: rgba(51, 103, 145, 0.15); color: #336791; }
-    .skill-tag.postgres i { color: #336791; }
+    .skill-tag.html {
+        background: rgba(228, 77, 38, 0.15);
+        color: #E44D26;
+    }
+
+    .skill-tag.html i {
+        color: #E44D26;
+    }
+
+    .skill-tag.css {
+        background: rgba(38, 77, 228, 0.15);
+        color: #264DE4;
+    }
+
+    .skill-tag.css i {
+        color: #264DE4;
+    }
+
+    .skill-tag.js {
+        background: rgba(247, 223, 30, 0.2);
+        color: #b8a900;
+    }
+
+    .skill-tag.js i {
+        color: #b8a900;
+    }
+
+    .skill-tag.python {
+        background: rgba(55, 118, 171, 0.15);
+        color: #3776AB;
+    }
+
+    .skill-tag.python i {
+        color: #3776AB;
+    }
+
+    .skill-tag.react {
+        background: rgba(97, 218, 251, 0.15);
+        color: #00b4d8;
+    }
+
+    .skill-tag.react i {
+        color: #00b4d8;
+    }
+
+    .skill-tag.sql {
+        background: rgba(0, 120, 212, 0.15);
+        color: #0078D4;
+    }
+
+    .skill-tag.sql i {
+        color: #0078D4;
+    }
+
+    .skill-tag.git {
+        background: rgba(240, 80, 50, 0.15);
+        color: #F05032;
+    }
+
+    .skill-tag.git i {
+        color: #F05032;
+    }
+
+    .skill-tag.django {
+        background: rgba(68, 183, 139, 0.15);
+        color: #44B78B;
+    }
+
+    .skill-tag.django i {
+        color: #44B78B;
+    }
+
+    .skill-tag.wordpress {
+        background: rgba(33, 117, 155, 0.15);
+        color: #21759b;
+    }
+
+    .skill-tag.wordpress i {
+        color: #21759b;
+    }
+
+    .skill-tag.postgres {
+        background: rgba(51, 103, 145, 0.15);
+        color: #336791;
+    }
+
+    .skill-tag.postgres i {
+        color: #336791;
+    }
 
     /* Idiomas */
     .lang-row {
@@ -986,7 +1115,8 @@
 
     .project-app:hover {
         transform: translateY(-4px);
-        z-index: 100; /* Elevar el item completo al hacer hover */
+        z-index: 100;
+        /* Elevar el item completo al hacer hover */
     }
 
     .project-app:hover .project-icon {
@@ -1052,7 +1182,9 @@
     }
 
     @keyframes tooltipFade {
-        to { opacity: 1; }
+        to {
+            opacity: 1;
+        }
     }
 
     .project-icon {
@@ -1071,8 +1203,10 @@
     .project-icon img {
         width: 100%;
         height: 100%;
-        object-fit: contain; /* Cambiado de cover a contain */
-        padding: 8px; /* Espacio interno para logos */
+        object-fit: contain;
+        /* Cambiado de cover a contain */
+        padding: 8px;
+        /* Espacio interno para logos */
     }
 
     .project-icon.emoji {
@@ -1128,14 +1262,20 @@
        12. RESPONSIVE - MÓVIL
        ============================================ */
     @media (max-width: 768px) {
+
         /* Top Bar */
-        .name-full { display: none; }
-        .name-short { display: inline; }
-        
+        .name-full {
+            display: none;
+        }
+
+        .name-short {
+            display: inline;
+        }
+
         .top-bar-center {
             font-size: var(--font-xs);
         }
-        
+
         /* Home Screen - Cards centradas */
         .home-screen {
             padding: 60px 16px 100px 16px;
@@ -1143,7 +1283,7 @@
             align-items: center;
             overflow-x: hidden;
         }
-        
+
         .home-content {
             flex-direction: column;
             text-align: center;
@@ -1155,7 +1295,7 @@
             max-width: calc(100vw - 32px);
             box-sizing: border-box;
         }
-        
+
         .home-profile {
             padding: var(--spacing-lg);
             margin: 0 auto;
@@ -1163,29 +1303,29 @@
             max-width: calc(100vw - 32px);
             box-sizing: border-box;
         }
-        
+
         .avatar-img {
             width: 100px;
             height: 100px;
         }
-        
+
         .profile-name {
             font-size: var(--font-lg);
         }
-        
+
         .profile-role {
             font-size: var(--font-sm);
         }
-        
+
         .contact-list {
             align-items: center;
             font-size: var(--font-sm);
         }
-        
+
         .contact-item {
             font-size: var(--font-xs);
         }
-        
+
         /* Dock - mismo ancho que cards */
         .dock {
             width: calc(100vw - 32px);
@@ -1193,26 +1333,26 @@
             justify-content: space-around;
             padding: var(--spacing-sm);
         }
-        
+
         /* Top bar y Dock siempre por encima del overlay en móvil */
         .top-bar {
             z-index: 3000 !important;
         }
-        
+
         .dock-container {
             z-index: 3000 !important;
         }
-        
+
         .dock-icon {
             width: 44px;
             height: 44px;
             font-size: 20px;
         }
-        
+
         .dock-separator {
             display: none;
         }
-        
+
         /* Modales - ocupan el área entre top bar y dock */
         .modal-overlay {
             padding: 0;
@@ -1228,13 +1368,13 @@
             background: transparent;
             pointer-events: none;
         }
-        
+
         /* SOLO cuando está activo mostrar fondo */
         .modal-overlay.active {
             background: rgba(0, 0, 0, 0.3);
             pointer-events: auto;
         }
-        
+
         .modal {
             position: relative !important;
             left: auto !important;
@@ -1248,17 +1388,17 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .modal-body {
             flex: 1;
             overflow-y: auto;
         }
-        
+
         .modal-header {
             cursor: default !important;
             flex-shrink: 0;
         }
-        
+
         /* Modales de confirmación (WhatsApp/Teléfono) - centrados en móvil */
         .modal.modal-confirm {
             position: relative !important;
@@ -1270,20 +1410,20 @@
             align-self: center;
             justify-self: center;
         }
-        
+
         /* Header arrastrables en móvil para modales de confirmación */
         .modal.modal-confirm .modal-header {
             cursor: grab !important;
         }
-        
+
         .modal.modal-confirm.dragging {
             position: absolute !important;
         }
-        
+
         .modal.modal-confirm.dragging .modal-header {
             cursor: grabbing !important;
         }
-        
+
         /* Overlay centrado para modales de confirmación */
         #modal-whatsapp,
         #modal-telefono {
@@ -1291,13 +1431,13 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* Overlay más sutil para modales de confirmación */
         #modal-whatsapp.active,
         #modal-telefono.active {
             background: rgba(0, 0, 0, 0.2);
         }
-        
+
         /* Proyectos grid */
         .projects-grid {
             grid-template-columns: repeat(3, 1fr);
@@ -1309,7 +1449,7 @@
         .dock-label {
             display: block;
         }
-        
+
         .dock-icon {
             width: 52px;
             height: 52px;
@@ -1320,7 +1460,10 @@
        13. ANIMACIONES REDUCIDAS
        ============================================ */
     @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
+
+        *,
+        *::before,
+        *::after {
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
@@ -1364,7 +1507,7 @@
 
     <!-- Contenedor principal -->
     <div class="desktop-screen">
-        
+
         <!-- Top Bar -->
         <header class="top-bar">
             <div class="top-bar-left">
@@ -1373,11 +1516,11 @@
                     <span class="name-short">C.P. Dev</span>
                 </span>
             </div>
-            
+
             <div class="top-bar-center" id="datetime">
                 <!-- Hora y fecha se actualizan con JS -->
             </div>
-            
+
             <div class="top-bar-right">
                 <label class="theme-toggle">
                     <input type="checkbox" id="themeToggle" aria-label="Alternar modo oscuro">
@@ -1411,12 +1554,12 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="home-profile">
                 <h2 class="profile-title">Perfil Profesional</h2>
                 <p class="profile-text">
-                    Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de cliente 
-                    y traducirlas en soluciones técnicas eficientes. Mi background en ventas me permite construir 
+                    Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de cliente
+                    y traducirlas en soluciones técnicas eficientes. Mi background en ventas me permite construir
                     productos con una fuerte orientación al usuario final y comunicación efectiva.
                 </p>
                 <p class="profile-text" style="margin-top: var(--spacing-sm);">
@@ -1437,7 +1580,7 @@
                     <span class="dock-label">Formación</span>
                     <div class="dock-indicator"></div>
                 </div>
-                
+
                 <div class="dock-item" data-modal="experiencia">
                     <div class="dock-icon experiencia">
                         <i class="fas fa-briefcase"></i>
@@ -1445,7 +1588,7 @@
                     <span class="dock-label">Experiencia</span>
                     <div class="dock-indicator"></div>
                 </div>
-                
+
                 <div class="dock-item" data-modal="skills">
                     <div class="dock-icon skills">
                         <i class="fas fa-bolt"></i>
@@ -1453,7 +1596,7 @@
                     <span class="dock-label">Skills</span>
                     <div class="dock-indicator"></div>
                 </div>
-                
+
                 <div class="dock-item" data-modal="proyectos">
                     <div class="dock-icon proyectos">
                         <i class="fas fa-folder"></i>
@@ -1461,9 +1604,9 @@
                     <span class="dock-label">Proyectos</span>
                     <div class="dock-indicator"></div>
                 </div>
-                
+
                 <div class="dock-separator"></div>
-                
+
                 <div class="dock-item" data-modal="whatsapp">
                     <div class="dock-icon whatsapp">
                         <i class="fab fa-whatsapp"></i>
@@ -1471,7 +1614,7 @@
                     <span class="dock-label">WhatsApp</span>
                     <div class="dock-indicator"></div>
                 </div>
-                
+
                 <div class="dock-item" data-modal="telefono">
                     <div class="dock-icon telefono">
                         <i class="fas fa-phone"></i>
@@ -1486,7 +1629,7 @@
     <!-- ============================================
          MODALES
          ============================================ -->
-    
+
     <!-- Modal: Formación -->
     <div class="modal-overlay" id="modal-formacion">
         <div class="modal">
@@ -1505,7 +1648,7 @@
                     <p class="timeline-subtitle">Universidad Central (2009-2014)</p>
                     <p class="timeline-desc">Estudios universitarios en derecho, actualmente en pausa.</p>
                 </div>
-                
+
                 <h3 class="skills-section-title" style="margin-top: var(--spacing-lg);">Certificaciones</h3>
                 <ul class="cert-list">
                     <li>Full-Stack Developer (UTN.BA, 2023)</li>
@@ -1529,22 +1672,26 @@
                 <div class="timeline-item">
                     <h3 class="timeline-title">Ejecutivo de Ventas</h3>
                     <p class="timeline-subtitle">S3 Group - Santander Zurich (oct. 2024 - nov. 2024)</p>
-                    <p class="timeline-desc">Gestión de requerimientos críticos y evaluación de riesgos. Optimización de procesos mediante análisis de reportes y datos.</p>
+                    <p class="timeline-desc">Gestión de requerimientos críticos y evaluación de riesgos. Optimización de
+                        procesos mediante análisis de reportes y datos.</p>
                 </div>
                 <div class="timeline-item">
                     <h3 class="timeline-title">Backoffice Servicio Móvil</h3>
                     <p class="timeline-subtitle">T-Sales - Movistar (sep. 2022 - nov. 2022)</p>
-                    <p class="timeline-desc">Resolución de incidencias técnicas y manejo de excepciones en sistemas de venta. Aseguramiento de calidad en procesos.</p>
+                    <p class="timeline-desc">Resolución de incidencias técnicas y manejo de excepciones en sistemas de
+                        venta. Aseguramiento de calidad en procesos.</p>
                 </div>
                 <div class="timeline-item">
                     <h3 class="timeline-title">Ejecutivo Comercial</h3>
                     <p class="timeline-subtitle">Xinerlink - Empresas Claro (nov. 2021 - feb. 2022)</p>
-                    <p class="timeline-desc">Gestión de proyectos para clientes PYME. Coordinación inter-áreas (Logística/Técnica/Comercial) para cumplimiento de SLAs.</p>
+                    <p class="timeline-desc">Gestión de proyectos para clientes PYME. Coordinación inter-áreas
+                        (Logística/Técnica/Comercial) para cumplimiento de SLAs.</p>
                 </div>
                 <div class="timeline-item">
                     <h3 class="timeline-title">Ejecutivo de Ventas</h3>
                     <p class="timeline-subtitle">Entel Call Center (ene. 2018 - ene. 2021)</p>
-                    <p class="timeline-desc">Laboratorio de Ventas: Pilotaje de nuevos productos y procedimientos. Detección de errores en flujos de venta antes del despliegue masivo.</p>
+                    <p class="timeline-desc">Laboratorio de Ventas: Pilotaje de nuevos productos y procedimientos.
+                        Detección de errores en flujos de venta antes del despliegue masivo.</p>
                 </div>
             </div>
         </div>
@@ -1573,7 +1720,7 @@
                         <span class="skill-tag postgres"><i class="fas fa-database"></i> PostgreSQL</span>
                     </div>
                 </div>
-                
+
                 <div class="skills-section">
                     <h3 class="skills-section-title">Soft Skills</h3>
                     <div class="skills-container">
@@ -1585,7 +1732,7 @@
                         <span class="skill-tag">🔍 Atención al Detalle</span>
                     </div>
                 </div>
-                
+
                 <div class="skills-section">
                     <h3 class="skills-section-title">Idiomas</h3>
                     <div class="lang-row">
@@ -1610,52 +1757,67 @@
             </div>
             <div class="modal-body">
                 <div class="projects-grid">
-                    <a href="https://hootiehoo.cl/" target="_blank" class="project-app" data-tooltip="Plataforma de formación virtual, gamificación y marketing digital">
+                    <a href="https://hootiehoo.cl/" target="_blank" class="project-app"
+                        data-tooltip="Plataforma de formación virtual, gamificación y marketing digital">
                         <div class="project-icon">
                             <img src="./img/cards/hh.webp" alt="HootieHoo">
                         </div>
                         <span class="project-name">HootieHoo</span>
                     </a>
-                    
-                    <a href="https://ghivs.com/v2/" target="_blank" class="project-app" data-tooltip="Soluciones de ingeniería en trabajos en altura">
+
+                    <a href="https://ghivs.com/v2/" target="_blank" class="project-app"
+                        data-tooltip="Soluciones de ingeniería en trabajos en altura">
                         <div class="project-icon">
                             <img src="./img/cards/ghivs.svg" alt="Ghivs">
                         </div>
                         <span class="project-name">Ghivs</span>
                     </a>
-                    
-                    <a href="./other/pokedex/index.html" target="_blank" class="project-app" data-tooltip="Pokédex interactiva con API REST y renderizado dinámico">
+
+                    <a href="./other/pokedex/index.html" target="_blank" class="project-app"
+                        data-tooltip="Pokédex interactiva con API REST y renderizado dinámico">
                         <div class="project-icon">
                             <img src="./img/cards/pm_logo.webp" alt="Pokédex">
                         </div>
                         <span class="project-name">Pokédex</span>
                     </a>
-                    
-                    <a href="http://161.35.224.79" target="_blank" class="project-app" data-tooltip="Comunidad de apoyo para mujeres con cáncer triple negativo">
+
+                    <a href="http://161.35.224.79" target="_blank" class="project-app"
+                        data-tooltip="Comunidad de apoyo para mujeres con cáncer triple negativo">
                         <div class="project-icon">
                             <img src="./img/cards/tn_logo.webp" alt="Las Triples">
                         </div>
                         <span class="project-name">Las Triples</span>
                     </a>
-                    
-                    <a href="./other/proton-pass.html" target="_blank" class="project-app" data-tooltip="Clon pixel-perfect de interfaz Proton">
+
+                    <a href="./other/proton-pass.html" target="_blank" class="project-app"
+                        data-tooltip="Clon pixel-perfect de interfaz Proton">
                         <div class="project-icon emoji">🔒</div>
                         <span class="project-name">Proton UI</span>
                     </a>
-                    
-                    <a href="./other/sorteo.html" target="_blank" class="project-app" data-tooltip="Herramienta de sorteo con lógica avanzada en JS">
+
+                    <a href="./other/sorteo.html" target="_blank" class="project-app"
+                        data-tooltip="Herramienta de sorteo con lógica avanzada en JS">
                         <div class="project-icon emoji">🎁</div>
                         <span class="project-name">Amigo Secreto</span>
                     </a>
-                    
-                    <a href="./other/cv/cv.html" target="_blank" class="project-app" data-tooltip="Currículum web interactivo">
+
+                    <a href="./other/cv/cv.html" target="_blank" class="project-app"
+                        data-tooltip="Currículum web interactivo">
                         <div class="project-icon emoji">📄</div>
                         <span class="project-name">CV Online</span>
                     </a>
-                    
+
                     <a href="./other/calculadora-honorarios.html" target="_blank" class="project-app">
                         <div class="project-icon emoji">💰</div>
                         <span class="project-name">Calc. Honorarios</span>
+                    </a>
+
+                    <a href="./other/BT/public/index.html" target="_blank" class="project-app"
+                        data-tooltip="Bruja Teatral">
+                        <div class="project-icon">
+                            <img src="./other/BT/public/img/logo.png" alt="Bruja Teatral">
+                        </div>
+                        <span class="project-name">Bruja Teatral</span>
                     </a>
                 </div>
             </div>
@@ -1672,13 +1834,15 @@
             <div class="modal-body">
                 <div class="modal-confirm-icon whatsapp-icon">
                     <svg viewBox="0 0 24 24" width="48" height="48" fill="#25D366">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                     </svg>
                 </div>
                 <p class="modal-confirm-text">¿Deseas abrir WhatsApp para contactar a Carlos?</p>
                 <div class="modal-confirm-actions">
                     <button class="modal-btn modal-btn-secondary" data-action="cancel">Cancelar</button>
-                    <a href="https://wa.me/56962798030" target="_blank" class="modal-btn modal-btn-primary">Abrir WhatsApp</a>
+                    <a href="https://wa.me/56962798030" target="_blank" class="modal-btn modal-btn-primary">Abrir
+                        WhatsApp</a>
                 </div>
             </div>
         </div>
@@ -1694,7 +1858,8 @@
             <div class="modal-body">
                 <div class="modal-confirm-icon phone-icon">
                     <svg viewBox="0 0 24 24" width="48" height="48" fill="#3b82f6">
-                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                        <path
+                            d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
                     </svg>
                 </div>
                 <p class="modal-confirm-text">¿Deseas llamar a Carlos al +56 9 6279 8030?</p>
@@ -1725,14 +1890,14 @@
             // ============================================
             function playTap() {
                 tapSound.currentTime = 0;
-                tapSound.play().catch(() => {}); // Ignorar errores de autoplay
+                tapSound.play().catch(() => { }); // Ignorar errores de autoplay
             }
 
             // ============================================
             // HORA Y FECHA EN TIEMPO REAL
             // ============================================
             const datetimeEl = document.getElementById('datetime');
-            
+
             function updateDateTime() {
                 const now = new Date();
                 const hours = now.getHours().toString().padStart(2, '0');
@@ -1741,10 +1906,10 @@
                 const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
                 const month = months[now.getMonth()];
                 const year = now.getFullYear();
-                
+
                 datetimeEl.textContent = `${hours}:${minutes} | ${day} ${month} ${year}`;
             }
-            
+
             updateDateTime();
             setInterval(updateDateTime, 1000);
 
@@ -1779,7 +1944,7 @@
             const dockItems = document.querySelectorAll('.dock-item');
             let openModals = [];
             let zIndexCounter = 1;
-            
+
             // Guardar posiciones de modales en desktop
             const modalPositions = {};
 
@@ -1787,10 +1952,10 @@
             function getDockIconPosition(modalId) {
                 const dockItem = document.querySelector(`.dock-item[data-modal="${modalId}"]`);
                 if (!dockItem) return null;
-                
+
                 const icon = dockItem.querySelector('.dock-icon');
                 const rect = icon.getBoundingClientRect();
-                
+
                 return {
                     x: rect.left + rect.width / 2,
                     y: rect.top + rect.height / 2
@@ -1809,9 +1974,9 @@
             function openModal(modalId) {
                 const overlay = document.getElementById(`modal-${modalId}`);
                 if (!overlay) return;
-                
+
                 const modal = overlay.querySelector('.modal');
-                
+
                 playTap();
 
                 // En móvil, cerrar modal anterior
@@ -1821,12 +1986,12 @@
 
                 // Obtener posición del icono para transform-origin
                 const iconPos = getDockIconPosition(modalId);
-                
+
                 if (!isMobile() && iconPos) {
                     // Calcular posición central (usamos tamaño fijo conocido del modal)
                     const modalWidth = 600; // max-width del modal
                     const modalHeight = 400; // altura aproximada
-                    
+
                     let targetX, targetY;
                     if (modalPositions[modalId]) {
                         targetX = modalPositions[modalId].x;
@@ -1836,11 +2001,11 @@
                         targetX = Math.max(20, (window.innerWidth - modalWidth) / 2);
                         targetY = Math.max(60, (window.innerHeight - modalHeight) / 2);
                     }
-                    
+
                     // Calcular transform-origin relativo al modal
                     const originX = iconPos.x - targetX;
                     const originY = iconPos.y - targetY;
-                    
+
                     modal.style.transformOrigin = `${originX}px ${originY}px`;
                     modal.style.left = `${targetX}px`;
                     modal.style.top = `${targetY}px`;
@@ -1850,7 +2015,7 @@
                 overlay.classList.remove('closing');
                 overlay.classList.add('active');
                 overlay.style.zIndex = 2000 + zIndexCounter++;
-                
+
                 // Agregar a lista de modales abiertos
                 if (!openModals.includes(modalId)) {
                     openModals.push(modalId);
@@ -1866,7 +2031,7 @@
             function closeModal(modalId, withSound = true) {
                 const overlay = document.getElementById(`modal-${modalId}`);
                 if (!overlay) return;
-                
+
                 const modal = overlay.querySelector('.modal');
 
                 if (withSound) playTap();
@@ -1878,7 +2043,7 @@
                         x: rect.left,
                         y: rect.top
                     };
-                    
+
                     // Actualizar transform-origin para animación de cierre
                     const iconPos = getDockIconPosition(modalId);
                     if (iconPos) {
@@ -1890,11 +2055,11 @@
 
                 // Animación de cierre
                 overlay.classList.add('closing');
-                
+
                 // Esperar que termine la animación
                 setTimeout(() => {
                     overlay.classList.remove('active', 'closing');
-                    
+
                     // Remover de lista
                     openModals = openModals.filter(id => id !== modalId);
 
@@ -1908,19 +2073,19 @@
 
             function minimizeAll() {
                 playTap();
-                
+
                 // Cerrar todos con animación escalonada
                 openModals.forEach((modalId, index) => {
                     setTimeout(() => {
                         const overlay = document.getElementById(`modal-${modalId}`);
                         if (overlay) {
                             const modal = overlay.querySelector('.modal');
-                            
+
                             // Guardar posición
                             if (!isMobile()) {
                                 const rect = modal.getBoundingClientRect();
                                 modalPositions[modalId] = { x: rect.left, y: rect.top };
-                                
+
                                 const iconPos = getDockIconPosition(modalId);
                                 if (iconPos) {
                                     const originX = iconPos.x - rect.left;
@@ -1928,21 +2093,21 @@
                                     modal.style.transformOrigin = `${originX}px ${originY}px`;
                                 }
                             }
-                            
+
                             overlay.classList.add('closing');
-                            
+
                             setTimeout(() => {
                                 overlay.classList.remove('active', 'closing');
                             }, 300);
                         }
-                        
+
                         const dockItem = document.querySelector(`.dock-item[data-modal="${modalId}"]`);
                         if (dockItem) {
                             dockItem.classList.remove('active');
                         }
                     }, index * 50);
                 });
-                
+
                 openModals = [];
                 zIndexCounter = 1;
             }
@@ -1968,27 +2133,27 @@
             function initDragging(modal, e) {
                 const modalEl = modal.closest('.modal');
                 const isConfirmModal = modalEl.classList.contains('modal-confirm');
-                
+
                 // En móvil solo permitir arrastre de modales de confirmación
                 if (isMobile() && !isConfirmModal) return;
-                
+
                 // Prevenir comportamiento por defecto en touch
                 if (e.cancelable) {
                     e.preventDefault();
                 }
-                
+
                 const overlay = modal.closest('.modal-overlay');
-                
+
                 isDragging = true;
                 dragModal = modalEl;
-                
+
                 const rect = modalEl.getBoundingClientRect();
                 const coords = getEventCoords(e);
                 dragOffset.x = coords.x - rect.left;
                 dragOffset.y = coords.y - rect.top;
-                
+
                 modalEl.classList.add('dragging');
-                
+
                 // Habilitar posición absoluta para modales de confirmación en móvil
                 if (isMobile() && isConfirmModal) {
                     modalEl.style.position = 'absolute';
@@ -1996,23 +2161,23 @@
                     modalEl.style.left = `${rect.left}px`;
                     modalEl.style.top = `${rect.top - 44}px`; // Restar top bar height
                 }
-                
+
                 // Traer al frente
                 overlay.style.zIndex = 2000 + zIndexCounter++;
             }
 
             function handleDrag(e) {
                 if (!isDragging || !dragModal) return;
-                
+
                 // Prevenir scroll mientras arrastramos
                 if (e.cancelable) {
                     e.preventDefault();
                 }
-                
+
                 const coords = getEventCoords(e);
                 let x = coords.x - dragOffset.x;
                 let y = coords.y - dragOffset.y;
-                
+
                 // Limitar dentro del viewport
                 const modalWidth = dragModal.offsetWidth;
                 const modalHeight = dragModal.offsetHeight;
@@ -2020,25 +2185,25 @@
                 const maxY = (isMobile() ? window.innerHeight - 80 - 44 : window.innerHeight) - modalHeight;
                 const minX = 20 - modalWidth;
                 const maxX = window.innerWidth - 20;
-                
+
                 x = Math.max(minX, Math.min(maxX, x));
                 y = Math.max(minY, Math.min(maxY, y));
-                
+
                 dragModal.style.left = `${x}px`;
                 dragModal.style.top = `${y}px`;
             }
 
             function endDrag(e) {
                 if (!isDragging || !dragModal) return;
-                
+
                 dragModal.classList.remove('dragging');
-                
+
                 // Guardar posición
                 const overlay = dragModal.closest('.modal-overlay');
                 const modalId = overlay.id.replace('modal-', '');
                 const rect = dragModal.getBoundingClientRect();
                 modalPositions[modalId] = { x: rect.left, y: rect.top };
-                
+
                 isDragging = false;
                 dragModal = null;
             }
@@ -2046,7 +2211,7 @@
             // Event listeners para arrastre - Mouse
             document.addEventListener('mousemove', handleDrag);
             document.addEventListener('mouseup', endDrag);
-            
+
             // Event listeners para arrastre - Touch (passive: false para poder preventDefault)
             document.addEventListener('touchmove', handleDrag, { passive: false });
             document.addEventListener('touchend', endDrag);
@@ -2056,21 +2221,21 @@
             modalOverlays.forEach(overlay => {
                 const header = overlay.querySelector('.modal-header');
                 const modal = overlay.querySelector('.modal');
-                
+
                 if (header) {
                     // Mouse
                     header.addEventListener('mousedown', (e) => {
                         if (e.target.closest('.modal-close')) return;
                         initDragging(header, e);
                     });
-                    
+
                     // Touch - passive: false para poder prevenir scroll
                     header.addEventListener('touchstart', (e) => {
                         if (e.target.closest('.modal-close')) return;
                         initDragging(header, e);
                     }, { passive: false });
                 }
-                
+
                 // Click en modal para traerlo al frente
                 modal.addEventListener('mousedown', () => {
                     if (!isMobile()) {
@@ -2084,7 +2249,7 @@
                 item.addEventListener('click', () => {
                     const modalId = item.dataset.modal;
                     const overlay = document.getElementById(`modal-${modalId}`);
-                    
+
                     // Si el modal ya está abierto, cerrarlo
                     if (openModals.includes(modalId)) {
                         closeModal(modalId);
@@ -2098,7 +2263,7 @@
             modalOverlays.forEach(overlay => {
                 const closeBtn = overlay.querySelector('.modal-close');
                 const cancelBtn = overlay.querySelector('[data-action="cancel"]');
-                
+
                 if (closeBtn) {
                     closeBtn.addEventListener('click', () => {
                         const modalId = overlay.id.replace('modal-', '');
@@ -2136,7 +2301,7 @@
             // TOAST DE BIENVENIDA
             // ============================================
             const toast = document.getElementById('welcomeToast');
-            
+
             setTimeout(() => {
                 toast.classList.add('show');
                 setTimeout(() => {
