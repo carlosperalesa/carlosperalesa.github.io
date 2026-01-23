@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Carlos Perales | Full Stack Developer & Design Specialist</title>
+    <meta name="description"
+        content="Portafolio Premium de Carlos Perales A. Desarrollador Full Stack y especialista en Diseño Web.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+</head>
+
+<style>
+    /* --- 1. VARIABLES Y TEMA --- */
+    :root {
+        /* --- COLORES: PALETA --- */
+        --accent-color: #0060aa;
+        --accent-light: #66c2ff;
+        --text-color: #1a1a1a;
+        --text-muted: #555555;
+
+        --bg-gradient: #f4f4f4;
+        --card-bg: rgba(255, 255, 255, 0.45);
+        --top-bar-bg: rgba(240, 240, 240, 0.7);
+
+        /* --- DISEÑO Y ESPACIADO --- */
+        --tile-padding: 24px;
+        --grid-gap: 16px;
+        --border-radius: 12px;
+
+        /* --- TRANSPARENCIA / CRISTAL --- */
+        --glass-alpha: 0.6;
+        --glass-bg: rgba(255, 255, 255, var(--glass-alpha));
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+
+        /* --- ESCALA TIPOGRÁFICA (Ratio 1.25) --- */
+        --font-xs: 0.8rem;
+        --font-sm: 1rem;
+        --font-md: 1.25rem;
+        --font-lg: 1.563rem;
+        --font-xl: 1.953rem;
+        --font-xxl: 2.441rem;
+
+        /* --- ANIMACIÓN --- */
+        --orb-opacity: 0.8;
+        --orb-color-1: rgba(0, 80, 180, 0.75);
+        --orb-color-2: rgba(140, 50, 170, 0.75);
+        --delay: 0s;
+
+        /* --- BRILLO ORBE (Reflejo de Borde) --- */
+        --orb-glow-1: rgba(0, 120, 212, 0.7);
+        --orb-glow-2: rgba(155, 89, 182, 0.7);
+    }
+
+    /* MODO OSCURO */
+    body.dark-mode {
+        --bg-gradient: #050505;
+
+        --glass-alpha: 0.6;
+        --glass-bg: rgba(20, 20, 20, var(--glass-alpha));
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.8);
+
+        --text-color: #f5f5f5;
+        --text-muted: #bbbbbb;
+        --accent-color: #4cc2ff;
+
+        --orb-opacity: 0.7;
+        --orb-color-1: rgba(0, 120, 212, 0.6);
+        --orb-color-2: rgba(155, 89, 182, 0.6);
+
+        /* Brillo orbe - más brillante para modo oscuro */
+        --orb-glow-1: rgba(0, 150, 255, 0.8);
+        --orb-glow-2: rgba(180, 100, 220, 0.8);
+    }
+
+    /* --- 2. ESTILOS BASE --- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Calibri, sans-serif;
+        font-weight: 300;
+        background: var(--bg-gradient);
+        color: var(--text-color);
+        overflow-x: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        min-height: 100vh;
+        position: relative;
+        scroll-behavior: auto !important;
+    }
+
+    /* Indicador Global de Foco (Accesibilidad) */
+    :focus-visible {
+        outline: 3px solid var(--accent-color);
+        outline-offset: 4px;
+        border-radius: 4px;
+    }
+
+    html {
+        scroll-behavior: auto !important;
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* --- 3. ORBES AMBIENTALES (Fondo) --- */
+    .orb-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0;
+        /* Flotar = Continuo, Revelar = Una vez */
+        animation: floatOrb 12s infinite ease-in-out, revealOrb 2s ease-out forwards;
+    }
+
+    @keyframes revealOrb {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: var(--orb-opacity);
+        }
+    }
+
+    .orb-1 {
+        width: 900px;
+        height: 900px;
+        background: radial-gradient(circle, var(--orb-color-1) 0%, transparent 70%);
+        top: -200px;
+        left: -200px;
+        animation-delay: 0s;
+    }
+
+    .orb-2 {
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, var(--orb-color-2) 0%, transparent 70%);
+        bottom: -200px;
+        right: -200px;
+        animation-delay: -6s;
+    }
+
+    @keyframes floatOrb {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        33% {
+            transform: translate(200px, 100px) scale(1.1);
+        }
+
+        66% {
+            transform: translate(-100px, 200px) scale(0.9);
+        }
+
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+    }
+
+    /* --- 4. BARRA SUPERIOR Y NAVEGACIÓN --- */
+    .top-bar-container {
+        width: 100%;
+        max-width: 1600px;
+        margin: 15px auto 0 auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+        z-index: 2000;
+        position: sticky;
+        top: 10px;
+        /* Animación de Intro */
+        opacity: 0;
+        animation: slideDown 0.8s ease-out 1.5s forwards;
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--border-radius);
+        box-shadow: var(--glass-shadow);
+        transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: visible;
+    }
+
+    /* Efecto de Brillo de Borde para Barra Superior */
+    .top-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: var(--border-radius);
+        padding: 1px;
+        background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+                var(--orb-glow-1) 0%,
+                var(--orb-glow-2) 40%,
+                transparent 70%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        -webkit-mask-composite: xor;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: -1;
+    }
+
+    .top-bar:hover::after {
+        opacity: 1;
+    }
+
+    .brand {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        font-size: var(--font-md);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .brand ion-icon {
+        color: var(--accent-color);
+        font-size: var(--font-lg);
+    }
+
+    .right-actions,
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .mobile-menu-toggle {
+        display: none;
+        cursor: pointer;
+        font-size: 1.6rem;
+        color: var(--text-color);
+        z-index: 2002;
+        transition: color 0.3s;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+    }
+
+    .social-link {
+        color: var(--text-color);
+        font-size: var(--font-md);
+        transition: all 0.2s ease;
+        opacity: 0.7;
+        display: flex;
+        align-items: center;
+        padding: 6px;
+        border-radius: 50%;
+    }
+
+    .social-link:hover {
+        transform: translateY(-2px);
+        color: var(--accent-color);
+        background: rgba(120, 120, 120, 0.05);
+        opacity: 1;
+    }
+
+    body.dark-mode .social-link:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* --- 5. GRILLA DE DISEÑO --- */
+    .main-wrapper {
+        display: flex;
+        max-width: 1600px;
+        margin: 20px auto;
+        padding: 0 20px;
+        padding: 0 20px;
+        gap: var(--grid-gap);
+        align-items: flex-start;
+        /* Animación de Entrada */
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out 1.2s forwards;
+        position: relative;
+        z-index: 2;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .personal-section {
+        flex: 1;
+        max-width: 280px;
+        min-width: 250px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--grid-gap);
+    }
+
+    .projects-section {
+        flex: 4;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--grid-gap);
+        width: 100%;
+    }
+
+    .tile-group-wide {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 75% 1fr;
+        gap: var(--grid-gap);
+        width: 100%;
+    }
+
+    .tile-group-1-3 {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 25% 1fr;
+        gap: var(--grid-gap);
+        width: 100%;
+    }
+
+    .edu-grid {
+        display: flex;
+        gap: 20px;
+    }
+
+    .edu-col {
+        flex: 1;
+    }
+
+    /* --- 6. COMPONENTES: TARJETAS --- */
+    .tile {
+        background: var(--glass-bg);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: var(--tile-padding);
+        position: relative;
+        transform: translateY(30px);
+        overflow: visible;
+        /* Necesario para spotlight */
+    }
+
+    /* Efecto de Brillo de Borde (Todas las tarjetas excepto giratorias) */
+    .tile:not(.flip-card)::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: var(--border-radius);
+        padding: 1px;
+        background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+                var(--orb-glow-1) 0%,
+                var(--orb-glow-2) 40%,
+                transparent 70%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        -webkit-mask-composite: xor;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 3;
+    }
+
+    .tile:not(.flip-card):hover::after {
+        opacity: 1;
+    }
+
+    .tile.visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    body.dark-mode .tile {
+        box-shadow: var(--glass-shadow);
+    }
+
+    .tile.wide,
+    .tile.medium,
+    .tile.small {
+        grid-column: 1 / -1;
+    }
+
+    /* Typography inside Tiles */
+    .tile h2 {
+        width: fit-content;
+        font-weight: 500;
+        color: var(--text-color);
+        letter-spacing: -0.01em;
+        cursor: default;
+        transition: color 0.3s ease;
+        border-bottom: 1px solid rgba(120, 120, 120, 0.15);
+        padding-bottom: 8px;
+        margin: 0 0 12px 0;
+        font-size: var(--font-md);
+    }
+
+    .tile h2:hover {
+        color: var(--accent-color);
+    }
+
+    body.dark-mode .tile h2 {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .tile p {
+        font-size: var(--font-sm);
+        line-height: 1.5;
+        color: var(--text-color);
+        opacity: 0.9;
+        font-weight: 300;
+        margin: 0 0 10px 0;
+    }
+
+    body.dark-mode .tile p {
+        color: #e6e6e6;
+        opacity: 1;
+    }
+
+
+    /* --- 7. COMPONENTES: TARJETAS ESPECÍFICAS --- */
+
+    /* Avatar */
+    .avatar-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .avatar-img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        border: 3px solid var(--glass-border);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        margin-bottom: 12px;
+        object-fit: cover;
+    }
+
+    /* Timeline (Experience) */
+    .timeline-item {
+        transition: transform 0.2s ease;
+        cursor: default;
+        margin-bottom: 25px;
+        padding-left: 0;
+        border-left: none;
+    }
+
+
+
+    .timeline-item:hover .timeline-title {
+        color: var(--accent-color);
+    }
+
+    .timeline-title {
+        font-size: var(--font-sm);
+        margin: 0;
+        font-weight: 500;
+    }
+
+    .timeline-subtitle {
+        font-size: var(--font-xs);
+        color: var(--accent-color);
+        margin: 0 0 2px 0;
+    }
+
+    .timeline-desc {
+        font-size: var(--font-xs);
+        opacity: 0.8;
+        margin: 0;
+    }
+
+    /* Contact Items */
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 8px;
+        font-size: var(--font-sm);
+        cursor: pointer;
+    }
+
+    .contact-item i {
+        width: 24px;
+        text-align: center;
+        color: var(--accent-color);
+    }
+
+    .contact-item:hover span {
+        color: var(--accent-color);
+    }
+
+    /* Skills Tags */
+    .skill-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(120, 120, 120, 0.08);
+        padding: 5px 10px;
+        border-radius: 4px;
+        margin: 2px;
+        font-size: var(--font-xs);
+        font-weight: 500;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+        cursor: default;
+    }
+
+    body.dark-mode .skill-tag {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .skill-tag i {
+        color: var(--text-color);
+        transition: color 0.2s;
+    }
+
+    body.dark-mode .skill-tag i {
+        color: #ccc;
+    }
+
+    .skill-tag:hover {
+        background: rgba(120, 120, 120, 0.15);
+        border-color: var(--text-color);
+        color: var(--text-color);
+    }
+
+    .skill-tag:hover i {
+        color: inherit !important;
+    }
+
+    /* Brand Colors for Skills */
+    .skill-tag.html:hover {
+        background: rgba(228, 77, 38, 0.15);
+        color: #E44D26;
+        border-color: #E44D26;
+    }
+
+    .skill-tag.css:hover {
+        background: rgba(38, 77, 228, 0.15);
+        color: #264DE4;
+        border-color: #264DE4;
+    }
+
+    .skill-tag.js:hover {
+        background: rgba(247, 223, 30, 0.15);
+        color: #F7DF1E;
+        border-color: #F7DF1E;
+    }
+
+    .skill-tag.python:hover {
+        background: rgba(55, 118, 171, 0.15);
+        color: #3776AB;
+        border-color: #3776AB;
+    }
+
+    .skill-tag.react:hover {
+        background: rgba(97, 218, 251, 0.15);
+        color: #61DAFB;
+        border-color: #61DAFB;
+    }
+
+    .skill-tag.sql:hover {
+        background: rgba(0, 120, 212, 0.15);
+        color: #0078D4;
+        border-color: #0078D4;
+    }
+
+    .skill-tag.git:hover {
+        background: rgba(240, 80, 50, 0.15);
+        color: #F05032;
+        border-color: #F05032;
+    }
+
+    .skill-tag.django:hover {
+        background: rgba(68, 183, 139, 0.15);
+        color: #44B78B;
+        border-color: #44B78B;
+    }
+
+    .skill-tag.wordpress:hover {
+        background: rgba(33, 117, 155, 0.15);
+        color: #21759b;
+        border-color: #21759b;
+    }
+
+    .skill-tag.postgres:hover {
+        background: rgba(51, 103, 145, 0.15);
+        color: #336791;
+        border-color: #336791;
+    }
+
+    /* Flip Cards */
+    .tile.flip-card {
+        padding: 0;
+        perspective: 1000px;
+        cursor: pointer;
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    .card-inner {
+        width: 100%;
+        height: 100%;
+        min-height: 340px;
+        text-align: center;
+        transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        transform-style: preserve-3d;
+    }
+
+    /* Desktop: flip on hover; All viewports: flip on click (.flipped class) */
+    .tile.flip-card:hover .card-inner,
+    .tile.flip-card.flipped .card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .tile.flip-card:focus-visible {
+        outline: 3px solid var(--accent-color);
+        outline-offset: 4px;
+        border-radius: var(--border-radius);
+    }
+
+    .card-front,
+    .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        /* Corrección anti-desenfoque */
+        -webkit-font-smoothing: subpixel-antialiased;
+        will-change: transform;
+        background: var(--glass-bg);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--border-radius);
+        padding: var(--tile-padding);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark-mode .card-front,
+    body.dark-mode .card-back {
+        box-shadow: var(--glass-shadow);
+    }
+
+    .card-front {
+        z-index: 2;
+        overflow: hidden;
+    }
+
+    /* Efecto de Brillo para Tarjetas Giratorias */
+    .card-front::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: var(--border-radius);
+        padding: 1px;
+        background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+                var(--orb-glow-1) 0%,
+                var(--orb-glow-2) 40%,
+                transparent 70%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        -webkit-mask-composite: xor;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 10;
+    }
+
+    .tile.flip-card:hover .card-front::after {
+        opacity: 1;
+    }
+
+    .card-back {
+        transform: rotateY(180deg);
+        gap: 8px;
+        padding: 10px;
+        overflow: hidden;
+    }
+
+    /* Efecto de Brillo para Reverso de Tarjetas */
+    .card-back::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: var(--border-radius);
+        padding: 1px;
+        background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+                var(--orb-glow-1) 0%,
+                var(--orb-glow-2) 40%,
+                transparent 70%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        -webkit-mask-composite: xor;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 10;
+    }
+
+    .tile.flip-card:hover .card-back::after,
+    .tile.flip-card.flipped .card-back::after {
+        opacity: 1;
+    }
+
+    .card-back h3 {
+        margin: 0 0 2px 0;
+        font-size: var(--font-sm);
+    }
+
+    .card-back p {
+        margin: 0 0 5px 0;
+        line-height: 1.3;
+    }
+
+    .project-logo {
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+        margin-bottom: 10px;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    a.flip-link {
+        display: inline-block;
+        padding: 6px 14px;
+        background: var(--accent-color);
+        color: white;
+        border-radius: 6px;
+        font-size: var(--font-xs);
+        font-weight: 500;
+        transition: transform 0.2s;
+        margin-top: 10px;
+    }
+
+
+
+
+    /* --- 8. BOTÓN DE CAMBIO DE TEMA (Opción 8 - Estilo Dribbble) --- */
+    .theme-switch-wrapper {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .toggle-opt-8 {
+        display: inline-block;
+        position: relative;
+        width: 45px;
+        height: 25px;
+        margin: 10px;
+    }
+
+    .toggle-opt-8 input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* Accesibilidad: Mostrar foco al seleccionar */
+    .toggle-opt-8 input:focus-visible+.slider {
+        outline: 3px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+
+    .toggle-opt-8 .slider {
+        position: absolute;
+        cursor: pointer;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
+        border-radius: 34px;
+        background: #83D8FF;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Sun/Moon Knob */
+    .toggle-opt-8 .slider:before {
+        position: absolute;
+        content: "";
+        height: 19px;
+        width: 19px;
+        left: 3px;
+        bottom: 3px;
+        background: #FFD93E;
+        transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
+        border-radius: 50%;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+        z-index: 2;
+    }
+
+    /* Cloud/Craters */
+    .toggle-opt-8 .slider::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 8px;
+        width: 12px;
+        height: 12px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 10px -2px 0 2px #fff, 20px 0px 0 1px #fff;
+        filter: blur(0.5px);
+        transition: 0.5s;
+        opacity: 1;
+    }
+
+    /* Dark Mode State */
+    .toggle-opt-8 input:checked+.slider {
+        background: #1C233E;
+        /* 3 Estrellas Distintas */
+        background-image:
+            radial-gradient(circle, white 1px, transparent 1.5px),
+            radial-gradient(circle, white 1px, transparent 1.5px),
+            radial-gradient(circle, white 1px, transparent 1.5px);
+        background-position:
+            6px 6px,
+            14px 12px,
+            8px 18px;
+        background-size: 4px 4px;
+        /* Corrección crítica de visibilidad */
+        background-repeat: no-repeat;
+    }
+
+    .toggle-opt-8 input:checked+.slider:before {
+        transform: translateX(20px);
+        background: #D9D9D9;
+        box-shadow: inset -2px -1px 0 #999, inset 1px 1px 0 #fff;
+        background-image: radial-gradient(circle at 35% 35%, #999 1px, transparent 1.5px), radial-gradient(circle at 60% 60%, #999 1.5px, transparent 2px);
+    }
+
+    .toggle-opt-8 input:checked+.slider::after {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+
+    /* --- 9. MENÚ MÓVIL --- */
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        /* Usando vh para cubrir ventana completa */
+        background: rgba(0, 0, 0, 0.4);
+        /* Fondo atenuado */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 1500;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        /* Animación: Deslizamiento desde derecha */
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    }
+
+    body.dark-mode .mobile-menu-overlay {
+        background: rgba(0, 0, 0, 0.85);
+        /* Más oscuro en modo oscuro */
+    }
+
+    .mobile-menu-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0%);
+    }
+
+    .mobile-menu-link {
+        font-size: 1.5rem;
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 500;
+        gap: 15px;
+        display: flex;
+        align-items: center;
+        transition: color 0.2s;
+    }
+
+    .mobile-menu-link:hover {
+        color: var(--accent-color);
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #333;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+    }
+
+    .back-to-top.visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .back-to-top {
+        background: #333;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* --- 10. ADAPTABILIDAD / MEDIA QUERIES --- */
+
+    /* Tablet & Smaller (Max 1100) */
+    @media (max-width: 1100px) {
+        .projects-section {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* Tablet (Max 992px) */
+    @media (max-width: 992px) {
+        .main-wrapper {
+            flex-direction: column;
+        }
+
+        /* Transformar Barra Lateral en Panel Superior (2 Columnas) */
+        .personal-section {
+            max-width: 100%;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--grid-gap);
+        }
+
+        /* Col 1: Avatar + Contact */
+        .avatar-section {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .personal-section .tile:last-child {
+            /* Contact */
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        /* Col 2: Stack + Skills */
+        .personal-section .tile:nth-child(2) {
+            /* Stack */
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .personal-section .tile:nth-child(3) {
+            /* Skills */
+            grid-column: 2;
+            grid-row: 2;
+        }
+    }
+
+    /* Mobile (Max 900) */
+    @media (max-width: 900px) {
+        .projects-section {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* Mobile (Max 768) */
+    @media (max-width: 768px) {
+        .top-bar-container {
+            padding: 0 15px;
+            /* Revertir para coincidir con la alineación principal */
+        }
+
+        /* Asegurar escalado suave de barra superior */
+        .top-bar {
+            transition: transform 0.4s ease;
+            will-change: transform;
+        }
+
+        .nav-actions {
+            display: none;
+        }
+
+        .mobile-menu-toggle {
+            display: flex;
+        }
+
+        .main-wrapper {
+            padding: 0 15px;
+        }
+
+        .personal-section {
+            max-width: 100%;
+            width: 100%;
+            grid-template-columns: 1fr;
+            /* Forzar 1 columna */
+        }
+
+        /* Reiniciar Ubicación de Grilla para Móvil */
+        .avatar-section,
+        .personal-section .tile:last-child,
+        .personal-section .tile:nth-child(2),
+        .personal-section .tile:nth-child(3) {
+            grid-column: 1;
+            grid-row: auto;
+        }
+
+        /* Redes Sociales: Objetivos táctiles más grandes (48px) */
+        .social-link {
+            padding: 12px;
+            min-width: 48px;
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            /* Asegurar que el padding no rompa el diseño */
+        }
+
+        /* Pista de Tarjeta Giratoria Móvil */
+        .card-front::after {
+            content: '\f0a6';
+            /* Icono de mano (FontAwesome) */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.5;
+            animation: pulseHint 2s infinite;
+            pointer-events: none;
+        }
+
+        /* Seguridad estricta de desbordamiento horizontal */
+        body,
+        html {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        .orbs-container {
+            /* Prevenir scroll por orbes */
+            max-width: 100vw;
+            overflow: hidden;
+        }
+
+        @keyframes pulseHint {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+        }
+
+        .projects-section {
+            grid-template-columns: 1fr;
+        }
+
+        .tile-group-wide,
+        .tile-group-1-3,
+        .edu-grid {
+            flex-direction: column;
+            grid-template-columns: 1fr;
+        }
+
+        .flex-3,
+        .flex-2,
+        .flex-1 {
+            flex: 1 1 100% !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+    }
+
+    /* --- OPTIMIZACIONES DE RENDIMIENTO MÓVIL --- */
+    @media (max-width: 768px) {
+
+        /* 1. REDUCED BACKDROP-FILTER BLUR (Glass effect with better performance) */
+        .tile,
+        .top-bar,
+        .card-front,
+        .card-back {
+            backdrop-filter: blur(20px) !important;
+            /* Reduced from 40px */
+            -webkit-backdrop-filter: blur(20px) !important;
+        }
+
+        /* 2. OPTIMIZE ORB ANIMATIONS (Reduced blur for performance) */
+        .orb {
+            filter: blur(40px) !important;
+            /* Reduced from 80px */
+            animation: none !important;
+            /* Stop continuous animation */
+            opacity: 0.5 !important;
+            /* Slightly reduced */
+        }
+
+        /* 3. DISABLE ::after GLOW EFFECTS (radial-gradient is expensive) */
+        .tile:not(.flip-card)::after,
+        .card-front::after,
+        .card-back::after,
+        .top-bar::after {
+            display: none !important;
+        }
+
+        /* 4. GPU OPTIMIZATION: Contain and will-change */
+        .tile,
+        .card-front,
+        .card-back {
+            contain: layout style paint;
+            will-change: auto;
+            /* Reset will-change to prevent layer explosion */
+        }
+
+        /* 5. Simpler shadows for performance */
+        .tile,
+        .card-front,
+        .card-back {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        body.dark-mode .tile,
+        body.dark-mode .card-front,
+        body.dark-mode .card-back {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        /* 6. Disable skill-tag stagger animations (causes repaints) */
+        .skill-tag {
+            animation: none !important;
+            opacity: 1 !important;
+        }
+
+        /* 7. Simpler mobile menu overlay */
+        .mobile-menu-overlay {
+            backdrop-filter: blur(5px) !important;
+            -webkit-backdrop-filter: blur(5px) !important;
+        }
+
+        /* 8. Disable hover-based flip on mobile (use click only) */
+        .tile.flip-card:hover .card-inner {
+            transform: none;
+        }
+
+        .tile.flip-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+    }
+
+    /* Additional optimization for lower-end devices */
+    @media (max-width: 768px) and (hover: none) {
+
+        /* Touch devices: disable all hover transforms */
+        .tile:hover,
+        .skill-tag:hover,
+        .contact-item:hover,
+        .social-link:hover {
+            transform: none !important;
+        }
+
+        /* Reduce transition complexity */
+        .tile,
+        .skill-tag,
+        .contact-item {
+            transition: background-color 0.2s ease, color 0.2s ease !important;
+        }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01s !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01s !important;
+            scroll-behavior: auto !important;
+        }
+
+        .orb,
+        .tile:hover,
+        .skill-tag {
+            transform: none !important;
+            animation: none !important;
+        }
+    }
+
+    /* --- 11. PERFIL Y CLASES DE UTILIDAD --- */
+    .profile-name {
+        margin: 0;
+        font-size: var(--font-xl);
+        font-weight: 500;
+    }
+
+    .profile-role {
+        margin: 5px 0 15px 0;
+        color: var(--accent-color);
+        font-weight: 400;
+        font-size: var(--font-md);
+    }
+
+    .profile-bio {
+        font-size: var(--font-sm);
+        opacity: 0.8;
+        line-height: 1.5;
+    }
+
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .soft-skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .cert-title {
+        margin-top: 20px;
+        font-size: var(--font-sm);
+        opacity: 0.8;
+    }
+
+    .cert-list {
+        padding-left: 15px;
+        margin: 5px 0;
+        font-size: var(--font-xs);
+        line-height: 1.4;
+        opacity: 0.9;
+    }
+
+    .lang-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .lang-level {
+        opacity: 0.7;
+    }
+
+    /* Project Card Utils */
+    .project-desc {
+        font-size: var(--font-xs);
+    }
+
+    .project-skills {
+        margin-bottom: 10px;
+    }
+
+    .project-icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    /* --- 13. FASE 3: PULIDO FINAL (Scrollbar y Selección) --- */
+
+    /* Custom Scrollbar (Webkit) */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+        /* Hace que el pulgar parezca flotar */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--accent-color);
+    }
+
+    body.dark-mode ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--accent-color);
+    }
+
+    /* Custom Text Selection */
+    ::selection {
+        background: var(--accent-color);
+        color: #fff;
+        -webkit-text-fill-color: #fff;
+    }
+
+    /* Fallback/Performance for Glass (Graceful Degradation) */
+    @supports not (backdrop-filter: blur(20px)) {
+
+        .tile,
+        .top-bar,
+        .mobile-menu-overlay,
+        .card-front,
+        .card-back {
+            background: rgba(255, 255, 255, 0.95);
+            /* Fallback más opaco */
+        }
+
+        body.dark-mode .tile,
+        body.dark-mode .top-bar,
+        body.dark-mode .mobile-menu-overlay {
+            background: rgba(20, 20, 20, 0.95);
+        }
+    }
+
+    /* 12.1 Staggered Entrance for Skill Tags */
+    @keyframes fadeInUpSmall {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .skill-tag {
+        /* Existing styles are kept, we just add animation */
+        animation: fadeInUpSmall 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    }
+
+    /* Stagger delays for up to 15 items */
+    .skill-tag:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .skill-tag:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+
+    .skill-tag:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .skill-tag:nth-child(4) {
+        animation-delay: 0.25s;
+    }
+
+    .skill-tag:nth-child(5) {
+        animation-delay: 0.3s;
+    }
+
+    .skill-tag:nth-child(6) {
+        animation-delay: 0.35s;
+    }
+
+    .skill-tag:nth-child(7) {
+        animation-delay: 0.4s;
+    }
+
+    .skill-tag:nth-child(8) {
+        animation-delay: 0.45s;
+    }
+
+    .skill-tag:nth-child(9) {
+        animation-delay: 0.5s;
+    }
+
+    .skill-tag:nth-child(10) {
+        animation-delay: 0.55s;
+    }
+
+    .skill-tag:nth-child(11) {
+        animation-delay: 0.6s;
+    }
+
+    .skill-tag:nth-child(12) {
+        animation-delay: 0.65s;
+    }
+
+    .skill-tag:nth-child(13) {
+        animation-delay: 0.7s;
+    }
+
+    .skill-tag:nth-child(14) {
+        animation-delay: 0.75s;
+    }
+
+    .skill-tag:nth-child(15) {
+        animation-delay: 0.8s;
+    }
+
+    /* 12.2 Enhanced Glassmorphism (Premium Borders) */
+    /* Override generic border with a gradient-like effect using box-shadow inset + border top/left highlight */
+    .tile,
+    .top-bar {
+        border: 1px solid transparent !important;
+        /* Reset basic border */
+        box-shadow:
+            var(--glass-shadow),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+            /* Subtle full inner border */
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+        /* Top highlight for depth */
+    }
+
+    body.dark-mode .tile,
+    body.dark-mode .top-bar {
+        box-shadow:
+            var(--glass-shadow),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    }
+
+    /* 12.3 Micro-interactions (Actives & Hovers) */
+    /* Buttons & Links 'Press' Effect */
+    .skill-tag:active,
+    .social-link:active,
+    .flip-link:active,
+    .tile.flip-card:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+
+    /* Contact Item enhanced hover */
+    .contact-item {
+        transition: transform 0.2s ease, background 0.2s ease;
+        border-radius: 6px;
+    }
+
+    .contact-item:hover {
+        background: rgba(120, 120, 120, 0.05);
+        transform: translateX(5px);
+    }
+
+    body.dark-mode .contact-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+</style>
+
+<body>
+
+    <!-- COMBO CRISTAL: SOLO ORBES -->
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="top-bar-container">
+        <header class="top-bar">
+            <a href="#" class="brand">
+                <ion-icon name="code-slash"></ion-icon>
+                <span>Carlos Perales Dev</span>
+            </a>
+
+            <!-- CONTENEDOR ACCIONES DERECHA -->
+            <div class="right-actions">
+                <nav class="nav-actions">
+                    <a href="https://github.com/carlosperalesa/" target="_blank" class="social-link"
+                        title="GitHub"><ion-icon name="logo-github"></ion-icon></a>
+                    <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-link"
+                        title="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+                    <a href="mailto:carlosperalesa@gmail.com" class="social-link" title="Email"><ion-icon
+                            name="mail-outline"></ion-icon></a>
+                    <a href="tel:+56962798030" class="social-link" title="Llamar"><ion-icon
+                            name="call-outline"></ion-icon></a>
+                    <a href="https://wa.me/56962798030" target="_blank" class="social-link" title="WhatsApp"><ion-icon
+                            name="logo-whatsapp"></ion-icon></a>
+                </nav>
+
+                <!-- INTERRUPTOR DE TEMA -->
+                <div class="theme-switch-wrapper">
+                    <label class="toggle-variant toggle-opt-8" for="checkbox">
+                        <input type="checkbox" id="checkbox" aria-label="Alternar modo oscuro" aria-pressed="false" />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- MENU HAMBURGUESA -->
+                <div class="mobile-menu-toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- SUPERPOSICIÓN MENÚ MÓVIL -->
+    <div class="mobile-menu-overlay">
+        <!-- Close button removed as requested -->
+        <a href="https://github.com/carlosperalesa/" class="mobile-menu-link"><ion-icon name="logo-github"></ion-icon>
+            GitHub</a>
+        <a href="https://www.linkedin.com/in/carlosperalesa" class="mobile-menu-link"><ion-icon
+                name="logo-linkedin"></ion-icon> LinkedIn</a>
+        <a href="mailto:carlosperalesa@gmail.com" class="mobile-menu-link"><ion-icon name="mail-outline"></ion-icon>
+            Email</a>
+        <a href="tel:+56962798030" class="mobile-menu-link"><ion-icon name="call-outline"></ion-icon> Llamar</a>
+        <a href="https://wa.me/56962798030" class="mobile-menu-link"><ion-icon name="logo-whatsapp"></ion-icon>
+            WhatsApp</a>
+    </div>
+
+    <!-- GRILLA PRINCIPAL -->
+    <div class="main-wrapper">
+
+        <!-- BARRA LATERAL -->
+        <aside class="personal-section">
+            <div class="tile avatar-section">
+                <img src="./img/avatar.webp" alt="Carlos Perales" class="avatar-img">
+                <h1 class="profile-name">Carlos Perales</h1>
+                <p class="profile-role">Full Stack Specialist</p>
+                <div class="profile-bio">
+                    Pasión por crear experiencias digitales hermosas y funcionales. Especialista en Arquitectura Web y
+                    Diseño UI/UX.
+                </div>
+            </div>
+
+            <div class="tile">
+                <h2>Stack</h2>
+                <div class="skills-container" role="group" aria-label="Tecnologías y herramientas">
+                    <span class="skill-tag html" role="img" aria-label="HTML5"><i class="fab fa-html5"
+                            aria-hidden="true"></i> HTML5</span>
+                    <span class="skill-tag css" role="img" aria-label="CSS3"><i class="fab fa-css3-alt"
+                            aria-hidden="true"></i> CSS3</span>
+                    <span class="skill-tag js" role="img" aria-label="JavaScript"><i class="fab fa-js"
+                            aria-hidden="true"></i> JavaScript</span>
+                    <span class="skill-tag python" role="img" aria-label="Python"><i class="fab fa-python"
+                            aria-hidden="true"></i> Python</span>
+                    <span class="skill-tag react" role="img" aria-label="React"><i class="fab fa-react"
+                            aria-hidden="true"></i> React</span>
+                    <span class="skill-tag sql" role="img" aria-label="SQL"><i class="fas fa-database"
+                            aria-hidden="true"></i> SQL</span>
+                    <span class="skill-tag git" role="img" aria-label="Git"><i class="fab fa-git-alt"
+                            aria-hidden="true"></i> Git</span>
+
+                    <span class="skill-tag django" role="img" aria-label="Django"><i class="fab fa-python"
+                            aria-hidden="true"></i> Django</span>
+                    <span class="skill-tag wordpress" role="img" aria-label="WordPress"><i class="fab fa-wordpress"
+                            aria-hidden="true"></i> WordPress</span>
+                    <span class="skill-tag postgres" role="img" aria-label="PostgreSQL"><i class="fas fa-database"
+                            aria-hidden="true"></i> PostgreSQL</span>
+                </div>
+            </div>
+
+            <div class="tile">
+                <h2>Habilidades & Idiomas</h2>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Soft Skills</h3>
+                    <div class="soft-skills-container">
+                        <span class="skill-tag">Comunicación</span>
+                        <span class="skill-tag">Creatividad</span>
+                        <span class="skill-tag">Adaptabilidad</span>
+                        <span class="skill-tag">Análisis</span>
+                        <span class="skill-tag">Proactividad</span>
+                        <span class="skill-tag">Detalle</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="margin-top:20px;">
+                    <h3 class="timeline-title">Idiomas</h3>
+                    <div style="margin-top:5px;">
+                        <div class="lang-row">
+                            <span>Español</span>
+                            <span class="lang-level">Nativo</span>
+                        </div>
+                        <div class="lang-row">
+                            <span>Inglés</span>
+                            <span class="lang-level">C1 (Avanzado)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tile">
+                <h2>Contacto</h2>
+                <div class="contact-item"><i class="fas fa-phone-alt"></i> <span>+569 62798030</span></div>
+                <div class="contact-item"><i class="fas fa-envelope"></i> <span
+                        style="font-size:0.85rem;">carlosperalesa@gmail.com</span></div>
+                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>Santiago, Chile</span></div>
+            </div>
+        </aside>
+
+        <!-- PORTAFOLIO -->
+        <main class="projects-section">
+
+
+
+            <!-- FILA SUPERIOR: Perfil -->
+            <div class="tile wide">
+                <h2>Perfil Profesional</h2>
+                <div class="timeline-item">
+                    <h3 class="timeline-title">Full Stack + Visión de Negocio</h3>
+                    <p class="timeline-desc">
+                        Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de cliente
+                        y traducirlas en soluciones técnicas eficientes.
+                        Mi background en ventas me permite construir productos con una fuerte orientación al usuario
+                        final y comunicación efectiva.
+                    </p>
+                </div>
+                <div class="timeline-item" style="margin-top:15px;">
+                    <h3 class="timeline-title">Soft Skills & Cultura</h3>
+                    <p class="timeline-desc">
+                        <strong>Team Player:</strong> Me desempeño mejor en estructuras colaborativas.
+                        <strong>Resolución:</strong> Enfoque pragmático para solucionar problemas bajo presión.
+                        <strong>Adaptabilidad:</strong> Rápida integración a nuevos stacks y metodologías ágiles.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FILA 2: Formación (1/4) & Experiencia (3/4) -->
+            <div class="tile-group-1-3">
+                <!-- 1. Formación (Izquierda - 25%) -->
+                <div class="tile">
+                    <h2>Formación Académica</h2>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Analista Programador</h3>
+                        <p class="timeline-subtitle">INACAP (En curso - 2025)</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Derecho (Congelado)</h3>
+                        <p class="timeline-subtitle">Universidad Central (2009-2014)</p>
+                    </div>
+
+                    <h2 class="cert-title">Certificaciones</h2>
+                    <ul class="cert-list">
+                        <li>Full-Stack Developer (UTN.BA, 2023)</li>
+                        <li>Full Stack Python (Desafío Latam, 2024)</li>
+                        <li>Full Stack Python (SENCE, 2024)</li>
+                        <li>Full Stack Python (Talento Digital, 2024)</li>
+                        <li>Ciberseguridad & Acceso Seguro (Didactik)</li>
+                    </ul>
+                </div>
+
+                <!-- 2. Experiencia (Derecha - 75%) -->
+                <div class="tile">
+                    <h2>Experiencia Transferible</h2>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Ejecutivo de Ventas</h3>
+                        <p class="timeline-subtitle">S3 Group - Santander Zurich (oct. 2024 - nov. 2024)</p>
+                        <p class="timeline-desc">
+                            Gestión de requerimientos críticos y evaluación de riesgos. Optimización de procesos
+                            mediante análisis de reportes y datos.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Backoffice Servicio Móvil</h3>
+                        <p class="timeline-subtitle">T-Sales - Movistar (sep. 2022 - nov. 2022)</p>
+                        <p class="timeline-desc">
+                            Resolución de incidencias técnicas y manejo de excepciones en sistemas de venta.
+                            Aseguramiento de calidad en procesos.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Ejecutivo Comercial</h3>
+                        <p class="timeline-subtitle">Xinerlink - Empresas Claro (nov. 2021 - feb. 2022)</p>
+                        <p class="timeline-desc">
+                            Gestión de proyectos para clientes PYME. Coordinación inter-áreas
+                            (Logística/Técnica/Comercial) para cumplimiento de SLAs.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">Ejecutivo de Ventas</h3>
+                        <p class="timeline-subtitle">Entel Call Center (ene. 2018 - ene. 2021)</p>
+                        <p class="timeline-desc">
+                            Laboratorio de Ventas: Pilotaje de nuevos productos y procedimientos. Detección de errores
+                            en flujos de venta antes del despliegue masivo.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- INFERIOR: Proyectos -->
+            <!-- FILA 1 (4 Items) -->
+
+            <!-- Proyecto 1: HootieHoo -->
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto HootieHoo">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/hh.webp" alt="Logotipo de proyecto HootieHoo" class="project-logo"
+                            loading="lazy">
+                        <h3>HootieHoo</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>HootieHoo</h3>
+                        <p class="project-desc">Plataforma/landing de un laboratorio de formación
+                            virtual,
+                            gamificación, marketing digital y experiencias de aprendizaje.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">EdTech</span>
+                            <span class="skill-tag">Gamificación</span>
+                            <span class="skill-tag">Marketing</span>
+                        </div>
+                        <a href="https://hootiehoo.cl/" target="_blank" class="flip-link">Ver
+                            Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto 2: Ghivs -->
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Ghivs">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/ghivs.svg" alt="Logotipo de proyecto Ghivs" class="project-logo"
+                            loading="lazy">
+                        <h3>Ghivs</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Ghivs</h3>
+                        <p class="project-desc">Portal para soluciones de ingeniería en trabajos
+                            en altura con
+                            gestión de proyectos y supervisión.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Corporativo</span>
+                            <span class="skill-tag">Ingeniería</span>
+                            <span class="skill-tag">SaaS</span>
+                        </div>
+                        <a href="https://ghivs.com/v2/" target="_blank" class="flip-link">Ver
+                            Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto 3: Pokedex -->
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Pokédex Live">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/pm_logo.webp" alt="Logotipo de proyecto Pokedex" class="project-logo"
+                            loading="lazy">
+                        <h3>Pokédex Live</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Pokédex Live</h3>
+                        <p class="project-desc">Pokedex interactiva consumiendo una API REST y
+                            mostrando datos con
+                            renderizado dinámico.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">API</span>
+                            <span class="skill-tag">JS</span>
+                            <span class="skill-tag">Interactivo</span>
+                        </div>
+                        <a href="/other/pokedex/index.html" target="_blank" class="flip-link">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto 4: Las Triples -->
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Las Triples">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/img/cards/tn_logo.webp" alt="Logotipo de proyecto Las Triples" class="project-logo"
+                            loading="lazy">
+                        <h3>Las Triples</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Las Triples</h3>
+                        <p class="project-desc">Sitio informativo de una agrupación de apoyo para
+                            mujeres con
+                            Cáncer de Mama Triple Negativo.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Informativo</span>
+                            <span class="skill-tag">Comunidad</span>
+                            <span class="skill-tag">WordPress</span>
+                        </div>
+                        <a href="http://161.35.224.79" target="_blank" class="flip-link">Ver
+                            Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILA 2 (3 Items) -->
+
+            <!-- Proyecto 5: Proton UI -->
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Proton UI">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="project-icon">🔒</div>
+                        <h3>Proton UI</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Proton UI</h3>
+                        <p class="project-desc">Clon de una interfaz visual “pixel-perfect”
+                            replicando diseño
+                            original con HTML/CSS.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">Diseño UI</span>
+                            <span class="skill-tag">PixelPerfect</span>
+                        </div>
+                        <a href="/other/proton-pass.html" target="_blank" class="flip-link">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto 6: Amigo Secreto -->
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Amigo Secreto">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="project-icon">🎁</div>
+                        <h3>Amigo Secreto</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Amigo Secreto</h3>
+                        <p class="project-desc">Herramienta de sorteo para “amigo secreto” con
+                            lógica avanzada en
+                            JS y manejo de arreglos.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">JS</span>
+                            <span class="skill-tag">Algoritmos</span>
+                            <span class="skill-tag">Sorteo</span>
+                        </div>
+                        <a href="/other/sorteo.html" target="_blank" class="flip-link">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de Curriculum Vitae">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="project-icon">📄</div>
+                        <h3>Curriculum</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>CV Online</h3>
+                        <p class="project-desc">Versión web de tu currículum interactivo y
+                            portfolio personal.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">Portfolio</span>
+                            <span class="skill-tag">Resume</span>
+                        </div>
+                        <a href="/other/cv/cv.html" target="_blank" class="flip-link">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyecto 8: Calculadora de Honorarios -->
+            <div class="tile flip-card" tabindex="0" role="button"
+                aria-label="Ver detalles de Calculadora de Honorarios">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="project-icon">💰</div>
+                        <h3>Calc. Honorarios</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Calculadora de Honorarios</h3>
+                        <p class="project-desc">Herramienta para calcular honorarios profesionales con valor UF
+                            actualizado y descuentos legales.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">JS</span>
+                            <span class="skill-tag">API</span>
+                            <span class="skill-tag">Finanzas</span>
+                        </div>
+                        <a href="/other/calculadora-honorarios.html" target="_blank" class="flip-link">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </main>
+    </div>
+
+    <div class="back-to-top">
+        <ion-icon name="arrow-up-outline"></ion-icon>
+    </div>
+
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Force scroll to top on refresh to prevent layout glitches with sticky headers
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
+        // --- HELPER: FUNCIÓN THROTTLE (Rendimiento) ---
+        function throttle(func, limit) {
+            let lastFunc;
+            let lastRan;
+            return function () {
+                const context = this;
+                const args = arguments;
+                if (!lastRan) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                } else {
+                    clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function () {
+                        if ((Date.now() - lastRan) >= limit) {
+                            func.apply(context, args);
+                            lastRan = Date.now();
+                        }
+                    }, limit - (Date.now() - lastRan));
+                }
+            }
+        }
+
+        // --- CURSOR MAGNÉTICO ---
+        const cursorDot = document.querySelector(".cursor-dot");
+        const cursorOutline = document.querySelector(".cursor-outline");
+        const isDesktop = matchMedia('(hover: hover)').matches;
+
+        if (isDesktop && cursorDot && cursorOutline) {
+            // Throttled Mouse Move (16ms = ~60fps)
+            window.addEventListener("mousemove", throttle((e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 500, fill: "forwards" });
+            }, 16));
+
+            const hoverables = document.querySelectorAll('a, button, .tile, .contact-item, .skill-tag, .theme-switch, .social-link, .mobile-menu-toggle, input, .filter-btn');
+
+            hoverables.forEach(el => {
+                el.addEventListener('mouseenter', () => { document.body.classList.add('hovering'); });
+                el.addEventListener('mouseleave', () => { document.body.classList.remove('hovering'); });
+            });
+        }
+
+
+
+        // --- EFECTOS DE SCROLL MÓVIL (Giro y Escala) ---
+        // PERFORMANCE: Observer completely disabled since all effects are removed
+        // Keeping the structure for future use if effects are re-enabled
+        let mobileObserver = null;
+
+        function initMobileScrollEffects() {
+            // Cleanup any existing observer
+            if (mobileObserver) {
+                mobileObserver.disconnect();
+                mobileObserver = null;
+            }
+            // Observer creation disabled - no active effects to observe
+            // This eliminates IntersectionObserver overhead during scroll
+        }
+
+        // Only listen for resize if needed in future
+        // initMobileScrollEffects(); // Disabled
+        // window.addEventListener('resize', ...) // Disabled
+
+
+        // --- ANIMACIÓN DE SCROLL (Revelar) ---
+        const tiles = document.querySelectorAll('.tile');
+        const isMobile = window.innerWidth <= 768;
+
+        const observerOptions = {
+            threshold: isMobile ? 0.05 : 0.1, // Lower threshold on mobile for earlier reveal
+            rootMargin: isMobile ? "50px" : "0px" // Pre-load on mobile
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // MOBILE: Apply immediately without delays for smoother scroll
+                    // DESKTOP: Keep staggered animation for visual effect
+                    if (isMobile) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 50);
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        tiles.forEach(tile => {
+            observer.observe(tile);
+
+
+
+            // --- RASTREO DE MOUSE BRILLO ORBE (Para todas las tarjetas incluyendo giratorias) ---
+            if (isDesktop) {
+                tile.addEventListener('mousemove', throttle((e) => {
+                    const rect = tile.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    tile.style.setProperty('--mouse-x', `${x}px`);
+                    tile.style.setProperty('--mouse-y', `${y}px`);
+                }, 16));
+            }
+        });
+
+        // --- ORB GLOW MOUSE TRACKING FOR TOP-BAR ---
+        const topBarElement = document.querySelector('.top-bar');
+        if (isDesktop && topBarElement) {
+            topBarElement.addEventListener('mousemove', throttle((e) => {
+                const rect = topBarElement.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                topBarElement.style.setProperty('--mouse-x', `${x}px`);
+                topBarElement.style.setProperty('--mouse-y', `${y}px`);
+            }, 16));
+        }
+
+        // --- LÓGICA MODO OSCURO ---
+        const themeCheckbox = document.getElementById('checkbox');
+        const body = document.body;
+
+        // Check local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            if (themeCheckbox) themeCheckbox.checked = true;
+        }
+
+        if (themeCheckbox) {
+            // Sync initial state
+            themeCheckbox.setAttribute('aria-pressed', themeCheckbox.checked);
+
+            themeCheckbox.addEventListener('change', () => {
+                // Update ARIA state
+                themeCheckbox.setAttribute('aria-pressed', themeCheckbox.checked);
+
+                if (themeCheckbox.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+
+        // --- LÓGICA MENÚ MÓVIL ---
+        const topBar = document.querySelector('.top-bar');
+        const overlay = document.querySelector('.mobile-menu-overlay');
+
+        if (topBar && overlay) {
+            topBar.addEventListener('click', (e) => {
+                // Only trigger if clicking mobile menu icon specifically, 
+                // OR if clicking blank space in top bar (but not links/switch)
+                if (window.innerWidth <= 768) {
+                    if (e.target.closest('.theme-switch-wrapper') || e.target.closest('a')) return;
+
+                    // If clicked toggle or empty space
+                    if (e.target.closest('.mobile-menu-toggle') || e.target === topBar || e.target.closest('.brand')) {
+                        overlay.classList.add('active');
+                    }
+                }
+            });
+
+            overlay.addEventListener('transitionend', () => {
+                if (overlay.classList.contains('active')) {
+                    // Focus Trap Logic
+                    const focusableElements = overlay.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+
+                    if (firstElement) firstElement.focus();
+
+                    overlay.addEventListener('keydown', function (e) {
+                        if (e.key === 'Tab') {
+                            if (e.shiftKey) { /* shift + tab */
+                                if (document.activeElement === firstElement) {
+                                    e.preventDefault();
+                                    lastElement.focus();
+                                }
+                            } else { /* tab */
+                                if (document.activeElement === lastElement) {
+                                    e.preventDefault();
+                                    firstElement.focus();
+                                }
+                            }
+                        }
+                        if (e.key === 'Escape') {
+                            overlay.classList.remove('active');
+                        }
+                    });
+                }
+            });
+
+            overlay.addEventListener('click', () => {
+                overlay.classList.remove('active');
+            });
+        }
+
+        // --- COMPORTAMIENTO CLICK TARJETA GIRATORIA ---
+        const accessibleFlipCards = document.querySelectorAll('.tile.flip-card');
+        accessibleFlipCards.forEach(card => {
+            const cardFront = card.querySelector('.card-front');
+            const cardBack = card.querySelector('.card-back');
+
+            // Click en FRENTE: girar al reverso
+            if (cardFront) {
+                cardFront.addEventListener('click', (e) => {
+                    card.classList.add('flipped');
+                });
+            }
+
+            // Click en REVERSO: girar al frente (EXCEPTO si hace click en el botón del proyecto)
+            if (cardBack) {
+                cardBack.addEventListener('click', (e) => {
+                    // Si hace click en el botón "Ver Proyecto", navegar normalmente
+                    if (e.target.closest('.flip-link')) {
+                        return; // No girar, dejar que el enlace funcione
+                    }
+                    // De lo contrario, girar de vuelta al frente
+                    card.classList.remove('flipped');
+                });
+            }
+
+            // Accesibilidad teclado: Alternar con Enter/Espacio
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.classList.toggle('flipped');
+                }
+            });
+        });
+
+        // --- BOTÓN VOLVER ARRIBA ---
+        const backToTopBtn = document.querySelector('.back-to-top');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > window.innerHeight) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+    });
+
+</script>
+
+</html>
