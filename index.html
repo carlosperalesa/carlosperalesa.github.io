@@ -17,67 +17,54 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
+
     <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
 </head>
 
 <style>
-    /* --- 1. VARIABLES & THEME SETUP --- */
+    /* --- 1. VARIABLES Y TEMA --- */
     :root {
-        /* --- COLORS: PALETTE --- */
+        /* --- COLORES: PALETA --- */
         --accent-color: #0060aa;
-        /* Updated for WCAG AA (was #0078d4) */
         --accent-light: #66c2ff;
         --text-color: #1a1a1a;
         --text-muted: #555555;
 
         --bg-gradient: #f4f4f4;
-        /* Slightly warmer light grey */
         --card-bg: rgba(255, 255, 255, 0.45);
-        /* Base for light mode */
         --top-bar-bg: rgba(240, 240, 240, 0.7);
 
-        /* --- LAYOUT & SPACING --- */
+        /* --- DISEÑO Y ESPACIADO --- */
         --tile-padding: 24px;
-        /* Increased from 15px */
         --grid-gap: 16px;
-        /* Slightly increased gap */
         --border-radius: 12px;
-        /* Smoother corners */
 
-        /* --- TRANSPARENCY / GLASS --- */
+        /* --- TRANSPARENCIA / CRISTAL --- */
         --glass-alpha: 0.6;
-        /* Increased for contrast */
         --glass-bg: rgba(255, 255, 255, var(--glass-alpha));
         --glass-border: rgba(255, 255, 255, 0.4);
         --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
 
-        /* --- TYPOGRAPHY SCALE (1.25 Ratio) --- */
+        /* --- ESCALA TIPOGRÁFICA (Ratio 1.25) --- */
         --font-xs: 0.8rem;
         --font-sm: 1rem;
-        /* Base 16px */
         --font-md: 1.25rem;
-        /* h3 */
         --font-lg: 1.563rem;
-        /* h2 */
         --font-xl: 1.953rem;
-        /* h1 */
         --font-xxl: 2.441rem;
-        /* Display */
 
-        /* --- ANIMATION --- */
+        /* --- ANIMACIÓN --- */
         --orb-opacity: 0.8;
         --orb-color-1: rgba(0, 80, 180, 0.75);
         --orb-color-2: rgba(140, 50, 170, 0.75);
         --delay: 0s;
-        /* Stagger animation variable */
 
-        /* --- ORB GLOW (Border Reflection) --- */
+        /* --- BRILLO ORBE (Reflejo de Borde) --- */
         --orb-glow-1: rgba(0, 120, 212, 0.7);
         --orb-glow-2: rgba(155, 89, 182, 0.7);
     }
 
-    /* DARK MODE */
+    /* MODO OSCURO */
     body.dark-mode {
         --bg-gradient: #050505;
 
@@ -87,22 +74,19 @@
         --glass-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.8);
 
         --text-color: #f5f5f5;
-        /* Improved contrast (was #e6e6e6) */
         --text-muted: #bbbbbb;
-        /* Lighter accent for contrast on dark bg */
         --accent-color: #4cc2ff;
 
         --orb-opacity: 0.7;
-        /* Increased from 0.5 for better visibility */
         --orb-color-1: rgba(0, 120, 212, 0.6);
         --orb-color-2: rgba(155, 89, 182, 0.6);
 
-        /* Orb glow - brighter for dark mode */
+        /* Brillo orbe - más brillante para modo oscuro */
         --orb-glow-1: rgba(0, 150, 255, 0.8);
         --orb-glow-2: rgba(180, 100, 220, 0.8);
     }
 
-    /* --- 2. BASE STYLES --- */
+    /* --- 2. ESTILOS BASE --- */
     body {
         margin: 0;
         padding: 0;
@@ -115,10 +99,9 @@
         min-height: 100vh;
         position: relative;
         scroll-behavior: auto !important;
-        /* Performance override */
     }
 
-    /* Global Focus Indicator (Accessibility) */
+    /* Indicador Global de Foco (Accesibilidad) */
     :focus-visible {
         outline: 3px solid var(--accent-color);
         outline-offset: 4px;
@@ -140,7 +123,7 @@
         color: inherit;
     }
 
-    /* --- 3. AMBIENT ORBS (Background) --- */
+    /* --- 3. ORBES AMBIENTALES (Fondo) --- */
     .orb-container {
         position: fixed;
         top: 0;
@@ -157,8 +140,7 @@
         border-radius: 50%;
         filter: blur(80px);
         opacity: 0;
-        /* Hidden initially */
-        /* Float = Continuous, Reveal = Once */
+        /* Flotar = Continuo, Revelar = Una vez */
         animation: floatOrb 12s infinite ease-in-out, revealOrb 2s ease-out forwards;
     }
 
@@ -208,7 +190,7 @@
         }
     }
 
-    /* --- 4. TOP BAR & NAVIGATION --- */
+    /* --- 4. BARRA SUPERIOR Y NAVEGACIÓN --- */
     .top-bar-container {
         width: 100%;
         max-width: 1600px;
@@ -218,13 +200,7 @@
         z-index: 2000;
         position: sticky;
         top: 10px;
-        margin: 15px auto 0 auto;
-        padding: 0 20px;
-        box-sizing: border-box;
-        z-index: 2000;
-        position: sticky;
-        top: 10px;
-        /* Intro Animation */
+        /* Animación de Intro */
         opacity: 0;
         animation: slideDown 0.8s ease-out 1.5s forwards;
     }
@@ -257,7 +233,7 @@
         overflow: visible;
     }
 
-    /* Orb Glow Border Effect for Top Bar */
+    /* Efecto de Brillo de Borde para Barra Superior */
     .top-bar::after {
         content: '';
         position: absolute;
@@ -341,7 +317,7 @@
         background: rgba(255, 255, 255, 0.05);
     }
 
-    /* --- 5. LAYOUT GRID --- */
+    /* --- 5. GRILLA DE DISEÑO --- */
     .main-wrapper {
         display: flex;
         max-width: 1600px;
@@ -350,7 +326,7 @@
         padding: 0 20px;
         gap: var(--grid-gap);
         align-items: flex-start;
-        /* Intro Animation */
+        /* Animación de Entrada */
         opacity: 0;
         animation: fadeIn 0.8s ease-out 1.2s forwards;
         position: relative;
@@ -411,7 +387,7 @@
         flex: 1;
     }
 
-    /* --- 6. COMPONENTS: TILES --- */
+    /* --- 6. COMPONENTES: TARJETAS --- */
     .tile {
         background: var(--glass-bg);
         backdrop-filter: blur(40px);
@@ -423,10 +399,10 @@
         position: relative;
         transform: translateY(30px);
         overflow: visible;
-        /* Needed for spotlight */
+        /* Necesario para spotlight */
     }
 
-    /* Orb Glow Border Effect - Reflects orb colors on hover (ALL tiles except flip-cards) */
+    /* Efecto de Brillo de Borde (Todas las tarjetas excepto giratorias) */
     .tile:not(.flip-card)::after {
         content: '';
         position: absolute;
@@ -507,7 +483,7 @@
     }
 
 
-    /* --- 7. COMPONENTS: SPECIFIC TILES --- */
+    /* --- 7. COMPONENTES: TARJETAS ESPECÍFICAS --- */
 
     /* Avatar */
     .avatar-section {
@@ -536,10 +512,7 @@
         border-left: none;
     }
 
-    /* Disabled zoom/transform effect
-.timeline-item:hover {
-    transform: translateX(4px);
-} */
+
 
     .timeline-item:hover .timeline-title {
         color: var(--accent-color);
@@ -697,7 +670,6 @@
         width: 100%;
         height: 100%;
         min-height: 340px;
-        /* Increased to accommodate new padding/fonts */
         text-align: center;
         transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
         transform-style: preserve-3d;
@@ -723,7 +695,7 @@
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         transform: translateZ(0);
-        /* Anti-blur fix */
+        /* Corrección anti-desenfoque */
         -webkit-font-smoothing: subpixel-antialiased;
         will-change: transform;
         background: var(--glass-bg);
@@ -750,7 +722,7 @@
         overflow: hidden;
     }
 
-    /* Orb Glow Effect for Flip Cards */
+    /* Efecto de Brillo para Tarjetas Giratorias */
     .card-front::after {
         content: '';
         position: absolute;
@@ -785,7 +757,7 @@
         overflow: hidden;
     }
 
-    /* Orb Glow Effect for Flip Card Back */
+    /* Efecto de Brillo para Reverso de Tarjetas */
     .card-back::after {
         content: '';
         position: absolute;
@@ -844,13 +816,10 @@
         margin-top: 10px;
     }
 
-    /* Disabled zoom/transform effect
-a.flip-link:hover {
-    transform: scale(1.05);
-} */
 
 
-    /* --- 8. TOGGLE SWITCH (Option 8 - Dribbble Style) --- */
+
+    /* --- 8. BOTÓN DE CAMBIO DE TEMA (Opción 8 - Estilo Dribbble) --- */
     .theme-switch-wrapper {
         display: flex;
         align-items: center;
@@ -861,7 +830,6 @@ a.flip-link:hover {
         display: inline-block;
         position: relative;
         width: 45px;
-        /* Resized to 45px (Compact) */
         height: 25px;
         margin: 10px;
     }
@@ -872,7 +840,7 @@ a.flip-link:hover {
         height: 0;
     }
 
-    /* Accessibility: Show focus on slider when input is focused */
+    /* Accesibilidad: Mostrar foco al seleccionar */
     .toggle-opt-8 input:focus-visible+.slider {
         outline: 3px solid var(--accent-color);
         outline-offset: 2px;
@@ -889,7 +857,6 @@ a.flip-link:hover {
         transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
         border-radius: 34px;
         background: #83D8FF;
-        /* Day Blue */
         box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15);
     }
 
@@ -898,11 +865,9 @@ a.flip-link:hover {
         position: absolute;
         content: "";
         height: 19px;
-        /* Smaller knob */
         width: 19px;
         left: 3px;
         bottom: 3px;
-        /* Centered vertically (25-19)/2 = 3 */
         background: #FFD93E;
         transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
         border-radius: 50%;
@@ -915,16 +880,12 @@ a.flip-link:hover {
         content: "";
         position: absolute;
         bottom: -6px;
-        /* Adjusted position */
         left: 8px;
-        /* Adjusted position */
         width: 12px;
-        /* Smaller cloud */
         height: 12px;
         background: #fff;
         border-radius: 50%;
         box-shadow: 10px -2px 0 2px #fff, 20px 0px 0 1px #fff;
-        /* Adjusted cloud shape */
         filter: blur(0.5px);
         transition: 0.5s;
         opacity: 1;
@@ -933,27 +894,22 @@ a.flip-link:hover {
     /* Dark Mode State */
     .toggle-opt-8 input:checked+.slider {
         background: #1C233E;
-        /* Night Blue */
-        /* 3 Distinct Stars - Fixed with background-size */
+        /* 3 Estrellas Distintas */
         background-image:
             radial-gradient(circle, white 1px, transparent 1.5px),
             radial-gradient(circle, white 1px, transparent 1.5px),
             radial-gradient(circle, white 1px, transparent 1.5px);
         background-position:
             6px 6px,
-            /* Top Left (Safe Zone) */
             14px 12px,
-            /* Middle (Safe Zone) */
             8px 18px;
-        /* Bottom Left (Safe Zone) */
         background-size: 4px 4px;
-        /* Critical fix for visibility */
+        /* Corrección crítica de visibilidad */
         background-repeat: no-repeat;
     }
 
     .toggle-opt-8 input:checked+.slider:before {
         transform: translateX(20px);
-        /* 45px - 19px - 6px = 20px travel */
         background: #D9D9D9;
         box-shadow: inset -2px -1px 0 #999, inset 1px 1px 0 #fff;
         background-image: radial-gradient(circle at 35% 35%, #999 1px, transparent 1.5px), radial-gradient(circle at 60% 60%, #999 1.5px, transparent 2px);
@@ -965,16 +921,16 @@ a.flip-link:hover {
     }
 
 
-    /* --- 9. MOBILE MENU --- */
+    /* --- 9. MENÚ MÓVIL --- */
     .mobile-menu-overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100vh;
-        /* Using vh to cover full viewport */
+        /* Usando vh para cubrir ventana completa */
         background: rgba(0, 0, 0, 0.4);
-        /* Dimmed background */
+        /* Fondo atenuado */
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         z-index: 1500;
@@ -984,8 +940,7 @@ a.flip-link:hover {
         justify-content: center;
         align-items: center;
         gap: 30px;
-
-        /* Animation: Slide-in from right */
+        /* Animación: Deslizamiento desde derecha */
         opacity: 0;
         pointer-events: none;
         transform: translateX(100%);
@@ -994,7 +949,7 @@ a.flip-link:hover {
 
     body.dark-mode .mobile-menu-overlay {
         background: rgba(0, 0, 0, 0.85);
-        /* Darker in dark mode */
+        /* Más oscuro en modo oscuro */
     }
 
     .mobile-menu-overlay.active {
@@ -1032,7 +987,6 @@ a.flip-link:hover {
         justify-content: center;
         font-size: 1.5rem;
         color: #333;
-        /* Dark icon for contrast on white */
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         cursor: pointer;
         z-index: 999;
@@ -1055,13 +1009,11 @@ a.flip-link:hover {
 
     body.dark-mode .back-to-top {
         background: #333;
-        /* Dark background for dark mode */
         color: #fff;
-        /* White icon */
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
 
-    /* --- 10. RESPONSIVE / MEDIA QUERIES --- */
+    /* --- 10. ADAPTABILIDAD / MEDIA QUERIES --- */
 
     /* Tablet & Smaller (Max 1100) */
     @media (max-width: 1100px) {
@@ -1076,7 +1028,7 @@ a.flip-link:hover {
             flex-direction: column;
         }
 
-        /* Transform Sidebar into Top Dashboard (2 Columns) */
+        /* Transformar Barra Lateral en Panel Superior (2 Columnas) */
         .personal-section {
             max-width: 100%;
             width: 100%;
@@ -1119,14 +1071,13 @@ a.flip-link:hover {
     }
 
     /* Mobile (Max 768) */
-    /* Mobile (Max 768) */
     @media (max-width: 768px) {
         .top-bar-container {
             padding: 0 15px;
-            /* Revert to match main-wrapper alignment */
+            /* Revertir para coincidir con la alineación principal */
         }
 
-        /* Ensure top-bar scales smoothly */
+        /* Asegurar escalado suave de barra superior */
         .top-bar {
             transition: transform 0.4s ease;
             will-change: transform;
@@ -1148,10 +1099,10 @@ a.flip-link:hover {
             max-width: 100%;
             width: 100%;
             grid-template-columns: 1fr;
-            /* Force 1 column */
+            /* Forzar 1 columna */
         }
 
-        /* Reset Grid Placement for Mobile */
+        /* Reiniciar Ubicación de Grilla para Móvil */
         .avatar-section,
         .personal-section .tile:last-child,
         .personal-section .tile:nth-child(2),
@@ -1160,7 +1111,7 @@ a.flip-link:hover {
             grid-row: auto;
         }
 
-        /* Social Links: Larger Touch Targets (48px) */
+        /* Redes Sociales: Objetivos táctiles más grandes (48px) */
         .social-link {
             padding: 12px;
             min-width: 48px;
@@ -1169,13 +1120,13 @@ a.flip-link:hover {
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            /* Ensure padding doesn't break layout */
+            /* Asegurar que el padding no rompa el diseño */
         }
 
-        /* Flip Card Mobile Hint */
+        /* Pista de Tarjeta Giratoria Móvil */
         .card-front::after {
             content: '\f0a6';
-            /* Hand pointer icon (FontAwesome) */
+            /* Icono de mano (FontAwesome) */
             font-family: "Font Awesome 5 Free";
             font-weight: 900;
             position: absolute;
@@ -1188,7 +1139,7 @@ a.flip-link:hover {
             pointer-events: none;
         }
 
-        /* Strict Horizontal Overflow Safety */
+        /* Seguridad estricta de desbordamiento horizontal */
         body,
         html {
             overflow-x: hidden;
@@ -1197,7 +1148,7 @@ a.flip-link:hover {
         }
 
         .orbs-container {
-            /* Prevent orbs from causing scroll */
+            /* Prevenir scroll por orbes */
             max-width: 100vw;
             overflow: hidden;
         }
@@ -1236,7 +1187,7 @@ a.flip-link:hover {
         }
     }
 
-    /* --- MOBILE PERFORMANCE OPTIMIZATIONS --- */
+    /* --- OPTIMIZACIONES DE RENDIMIENTO MÓVIL --- */
     @media (max-width: 768px) {
 
         /* 1. REDUCED BACKDROP-FILTER BLUR (Glass effect with better performance) */
@@ -1350,11 +1301,10 @@ a.flip-link:hover {
         }
     }
 
-    /* --- 11. PROFILE & UTILITY CLASSES --- */
+    /* --- 11. PERFIL Y CLASES DE UTILIDAD --- */
     .profile-name {
         margin: 0;
         font-size: var(--font-xl);
-        /* Increased to XL for better hierarchy */
         font-weight: 500;
     }
 
@@ -1363,7 +1313,6 @@ a.flip-link:hover {
         color: var(--accent-color);
         font-weight: 400;
         font-size: var(--font-md);
-        /* Increased visibility */
     }
 
     .profile-bio {
@@ -1412,7 +1361,6 @@ a.flip-link:hover {
     /* Project Card Utils */
     .project-desc {
         font-size: var(--font-xs);
-        /* Was 0.85rem inline */
     }
 
     .project-skills {
@@ -1424,7 +1372,7 @@ a.flip-link:hover {
         margin-bottom: 10px;
     }
 
-    /* --- 13. PHASE 3: FINAL POLISH (Scrollbar & Selection) --- */
+    /* --- 13. FASE 3: PULIDO FINAL (Scrollbar y Selección) --- */
 
     /* Custom Scrollbar (Webkit) */
     ::-webkit-scrollbar {
@@ -1440,7 +1388,7 @@ a.flip-link:hover {
         border-radius: 10px;
         border: 2px solid transparent;
         background-clip: content-box;
-        /* Makes the thumb look floating */
+        /* Hace que el pulgar parezca flotar */
     }
 
     ::-webkit-scrollbar-thumb:hover {
@@ -1473,7 +1421,7 @@ a.flip-link:hover {
         .card-front,
         .card-back {
             background: rgba(255, 255, 255, 0.95);
-            /* More opaque fallback */
+            /* Fallback más opaco */
         }
 
         body.dark-mode .tile,
@@ -1612,7 +1560,7 @@ a.flip-link:hover {
 
 <body>
 
-    <!-- CRYSTAL COMBO: ORBS ONLY -->
+    <!-- COMBO CRISTAL: SOLO ORBES -->
     <div class="orb-container">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -1620,12 +1568,12 @@ a.flip-link:hover {
 
     <div class="top-bar-container">
         <header class="top-bar">
-            <div class="brand">
+            <a href="#" class="brand">
                 <ion-icon name="code-slash"></ion-icon>
                 <span>Carlos Perales Dev</span>
-            </div>
+            </a>
 
-            <!-- RIGHT ACTIONS CONTAINER -->
+            <!-- CONTENEDOR ACCIONES DERECHA -->
             <div class="right-actions">
                 <nav class="nav-actions">
                     <a href="https://github.com/carlosperalesa/" target="_blank" class="social-link"
@@ -1640,7 +1588,7 @@ a.flip-link:hover {
                             name="logo-whatsapp"></ion-icon></a>
                 </nav>
 
-                <!-- THEME SWITCH (Option 8 - Dribbble Polish) -->
+                <!-- INTERRUPTOR DE TEMA -->
                 <div class="theme-switch-wrapper">
                     <label class="toggle-variant toggle-opt-8" for="checkbox">
                         <input type="checkbox" id="checkbox" aria-label="Alternar modo oscuro" aria-pressed="false" />
@@ -1648,7 +1596,7 @@ a.flip-link:hover {
                     </label>
                 </div>
 
-                <!-- MENU TOGGLE -->
+                <!-- MENU HAMBURGUESA -->
                 <div class="mobile-menu-toggle">
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
@@ -1656,7 +1604,7 @@ a.flip-link:hover {
         </header>
     </div>
 
-    <!-- MOBILE MENU OVERLAY -->
+    <!-- SUPERPOSICIÓN MENÚ MÓVIL -->
     <div class="mobile-menu-overlay">
         <!-- Close button removed as requested -->
         <a href="https://github.com/carlosperalesa/" class="mobile-menu-link"><ion-icon name="logo-github"></ion-icon>
@@ -1670,10 +1618,10 @@ a.flip-link:hover {
             WhatsApp</a>
     </div>
 
-    <!-- MAIN GRID -->
+    <!-- GRILLA PRINCIPAL -->
     <div class="main-wrapper">
 
-        <!-- SIDEBAR -->
+        <!-- BARRA LATERAL -->
         <aside class="personal-section">
             <div class="tile avatar-section">
                 <img src="./img/avatar.webp" alt="Carlos Perales" class="avatar-img">
@@ -1750,12 +1698,12 @@ a.flip-link:hover {
             </div>
         </aside>
 
-        <!-- PORTFOLIO GRID -->
+        <!-- PORTAFOLIO -->
         <main class="projects-section">
 
 
 
-            <!-- TOP ROW: Profile (Identity) -->
+            <!-- FILA SUPERIOR: Perfil -->
             <div class="tile wide">
                 <h2>Perfil Profesional</h2>
                 <div class="timeline-item">
@@ -1777,9 +1725,9 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- ROW 2: Formación (1/4) & Experiencia (3/4) -->
+            <!-- FILA 2: Formación (1/4) & Experiencia (3/4) -->
             <div class="tile-group-1-3">
-                <!-- 1. Formación (Left - 25%) -->
+                <!-- 1. Formación (Izquierda - 25%) -->
                 <div class="tile">
                     <h2>Formación Académica</h2>
                     <div class="timeline-item">
@@ -1801,7 +1749,7 @@ a.flip-link:hover {
                     </ul>
                 </div>
 
-                <!-- 2. Experiencia (Right - 75%) -->
+                <!-- 2. Experiencia (Derecha - 75%) -->
                 <div class="tile">
                     <h2>Experiencia Transferible</h2>
                     <div class="timeline-item">
@@ -1840,10 +1788,10 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- BOTTOM: Projects -->
-            <!-- ROW 1 (4 Items) -->
+            <!-- INFERIOR: Proyectos -->
+            <!-- FILA 1 (4 Items) -->
 
-            <!-- Project 1: HootieHoo -->
+            <!-- Proyecto 1: HootieHoo -->
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto HootieHoo">
                 <div class="card-inner">
                     <div class="card-front">
@@ -1867,7 +1815,7 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- Project 2: Ghivs -->
+            <!-- Proyecto 2: Ghivs -->
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Ghivs">
                 <div class="card-inner">
                     <div class="card-front">
@@ -1891,7 +1839,7 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- Project 3: Pokedex -->
+            <!-- Proyecto 3: Pokedex -->
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Pokédex Live">
                 <div class="card-inner">
                     <div class="card-front">
@@ -1914,7 +1862,7 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- Project 4: Las Triples -->
+            <!-- Proyecto 4: Las Triples -->
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Las Triples">
                 <div class="card-inner">
                     <div class="card-front">
@@ -1938,9 +1886,9 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- ROW 2 (3 Items) -->
+            <!-- FILA 2 (3 Items) -->
 
-            <!-- Project 5: Proton UI -->
+            <!-- Proyecto 5: Proton UI -->
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Proton UI">
                 <div class="card-inner">
                     <div class="card-front">
@@ -1962,7 +1910,7 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- Project 6: Amigo Secreto -->
+            <!-- Proyecto 6: Amigo Secreto -->
             <div class="tile flip-card" tabindex="0" role="button" aria-label="Ver detalles de proyecto Amigo Secreto">
                 <div class="card-inner">
                     <div class="card-front">
@@ -2004,7 +1952,7 @@ a.flip-link:hover {
                 </div>
             </div>
 
-            <!-- Project 8: Calculadora de Honorarios -->
+            <!-- Proyecto 8: Calculadora de Honorarios -->
             <div class="tile flip-card" tabindex="0" role="button"
                 aria-label="Ver detalles de Calculadora de Honorarios">
                 <div class="card-inner">
@@ -2021,7 +1969,7 @@ a.flip-link:hover {
                             <span class="skill-tag">API</span>
                             <span class="skill-tag">Finanzas</span>
                         </div>
-                        <a href="/other/Calculadora Honorarios.html" target="_blank" class="flip-link">Ver Proyecto</a>
+                        <a href="/other/calculadora-honorarios.html" target="_blank" class="flip-link">Ver Proyecto</a>
                     </div>
                 </div>
             </div>
@@ -2035,7 +1983,7 @@ a.flip-link:hover {
         <ion-icon name="arrow-up-outline"></ion-icon>
     </div>
 
-    <!-- <script src="js/script.js"></script> -->
+
 </body>
 
 <script>
@@ -2046,7 +1994,7 @@ a.flip-link:hover {
         }
         window.scrollTo(0, 0);
 
-        // --- HELPER: THROTTLE FUNCTION (Performance) ---
+        // --- HELPER: FUNCIÓN THROTTLE (Rendimiento) ---
         function throttle(func, limit) {
             let lastFunc;
             let lastRan;
@@ -2068,7 +2016,7 @@ a.flip-link:hover {
             }
         }
 
-        // --- MAGNETIC CURSOR ---
+        // --- CURSOR MAGNÉTICO ---
         const cursorDot = document.querySelector(".cursor-dot");
         const cursorOutline = document.querySelector(".cursor-outline");
         const isDesktop = matchMedia('(hover: hover)').matches;
@@ -2098,7 +2046,7 @@ a.flip-link:hover {
 
 
 
-        // --- MOBILE SCROLL EFFECTS (Flip & Scale) ---
+        // --- EFECTOS DE SCROLL MÓVIL (Giro y Escala) ---
         // PERFORMANCE: Observer completely disabled since all effects are removed
         // Keeping the structure for future use if effects are re-enabled
         let mobileObserver = null;
@@ -2118,7 +2066,7 @@ a.flip-link:hover {
         // window.addEventListener('resize', ...) // Disabled
 
 
-        // --- SCROLL ANIMATION (Reveal) ---
+        // --- ANIMACIÓN DE SCROLL (Revelar) ---
         const tiles = document.querySelectorAll('.tile');
         const isMobile = window.innerWidth <= 768;
 
@@ -2147,44 +2095,9 @@ a.flip-link:hover {
         tiles.forEach(tile => {
             observer.observe(tile);
 
-            // --- 3D TILT EFFECT (Desktop Only for Performance) --- DISABLED
-            /* Disabled zoom/transform effect
-            if (isDesktop && !tile.classList.contains('flip-card')) {
-                // Throttled Tilt Effect
-                tile.addEventListener('mousemove', throttle((e) => {
-                    const rect = tile.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-    
-                    tile.style.setProperty('--mouse-x', `${x}px`);
-                    tile.style.setProperty('--mouse-y', `${y}px`);
-    
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const percentX = (x - centerX) / centerX;
-                    const percentY = (y - centerY) / centerY;
-    
-                    let maxRotate = 2; // Production Value (Repel)
-    
-                    // REPEL Logic: Inverted Directions
-                    const rotateY = percentX * maxRotate;
-                    const rotateX = percentY * maxRotate * -1;
-    
-                    tile.style.transform = `
-                        perspective(1000px)
-                        rotateX(${rotateX}deg) 
-                        rotateY(${rotateY}deg)
-                        scale3d(1.01, 1.01, 1.01)
-                    `;
-                }, 16));
-    
-                tile.addEventListener('mouseleave', () => {
-                    tile.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                });
-            }
-            */
 
-            // --- ORB GLOW MOUSE TRACKING (For all tiles including flip-cards) ---
+
+            // --- RASTREO DE MOUSE BRILLO ORBE (Para todas las tarjetas incluyendo giratorias) ---
             if (isDesktop) {
                 tile.addEventListener('mousemove', throttle((e) => {
                     const rect = tile.getBoundingClientRect();
@@ -2208,7 +2121,7 @@ a.flip-link:hover {
             }, 16));
         }
 
-        // --- DARK MODE LOGIC ---
+        // --- LÓGICA MODO OSCURO ---
         const themeCheckbox = document.getElementById('checkbox');
         const body = document.body;
 
@@ -2237,7 +2150,7 @@ a.flip-link:hover {
             });
         }
 
-        // --- MOBILE MENU LOGIC ---
+        // --- LÓGICA MENÚ MÓVIL ---
         const topBar = document.querySelector('.top-bar');
         const overlay = document.querySelector('.mobile-menu-overlay');
 
@@ -2290,32 +2203,32 @@ a.flip-link:hover {
             });
         }
 
-        // --- FLIP CARD CLICK BEHAVIOR ---
+        // --- COMPORTAMIENTO CLICK TARJETA GIRATORIA ---
         const accessibleFlipCards = document.querySelectorAll('.tile.flip-card');
         accessibleFlipCards.forEach(card => {
             const cardFront = card.querySelector('.card-front');
             const cardBack = card.querySelector('.card-back');
 
-            // Click on FRONT: flip to back
+            // Click en FRENTE: girar al reverso
             if (cardFront) {
                 cardFront.addEventListener('click', (e) => {
                     card.classList.add('flipped');
                 });
             }
 
-            // Click on BACK: flip to front (EXCEPT if clicking project link button)
+            // Click en REVERSO: girar al frente (EXCEPTO si hace click en el botón del proyecto)
             if (cardBack) {
                 cardBack.addEventListener('click', (e) => {
-                    // If clicked on the "Ver Proyecto" button, let it navigate normally
+                    // Si hace click en el botón "Ver Proyecto", navegar normalmente
                     if (e.target.closest('.flip-link')) {
-                        return; // Don't flip, let the link work
+                        return; // No girar, dejar que el enlace funcione
                     }
-                    // Otherwise, flip back to front
+                    // De lo contrario, girar de vuelta al frente
                     card.classList.remove('flipped');
                 });
             }
 
-            // Keyboard accessibility: Toggle on Enter/Space
+            // Accesibilidad teclado: Alternar con Enter/Espacio
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -2324,7 +2237,7 @@ a.flip-link:hover {
             });
         });
 
-        // --- BACK TO TOP BUTTON ---
+        // --- BOTÓN VOLVER ARRIBA ---
         const backToTopBtn = document.querySelector('.back-to-top');
         if (backToTopBtn) {
             window.addEventListener('scroll', () => {
