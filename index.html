@@ -703,8 +703,8 @@
         transform-style: preserve-3d;
     }
 
+    /* Desktop: flip on hover; All viewports: flip on click (.flipped class) */
     .tile.flip-card:hover .card-inner,
-    .tile.flip-card:focus-within .card-inner,
     .tile.flip-card.flipped .card-inner {
         transform: rotateY(180deg);
     }
@@ -1233,6 +1233,100 @@ a.flip-link:hover {
             flex: 1 1 100% !important;
             width: 100% !important;
             max-width: 100% !important;
+        }
+    }
+
+    /* --- MOBILE PERFORMANCE OPTIMIZATIONS --- */
+    @media (max-width: 768px) {
+
+        /* 1. REDUCED BACKDROP-FILTER BLUR (Glass effect with better performance) */
+        .tile,
+        .top-bar,
+        .card-front,
+        .card-back {
+            backdrop-filter: blur(20px) !important;
+            /* Reduced from 40px */
+            -webkit-backdrop-filter: blur(20px) !important;
+        }
+
+        /* 2. OPTIMIZE ORB ANIMATIONS (Reduced blur for performance) */
+        .orb {
+            filter: blur(40px) !important;
+            /* Reduced from 80px */
+            animation: none !important;
+            /* Stop continuous animation */
+            opacity: 0.5 !important;
+            /* Slightly reduced */
+        }
+
+        /* 3. DISABLE ::after GLOW EFFECTS (radial-gradient is expensive) */
+        .tile:not(.flip-card)::after,
+        .card-front::after,
+        .card-back::after,
+        .top-bar::after {
+            display: none !important;
+        }
+
+        /* 4. GPU OPTIMIZATION: Contain and will-change */
+        .tile,
+        .card-front,
+        .card-back {
+            contain: layout style paint;
+            will-change: auto;
+            /* Reset will-change to prevent layer explosion */
+        }
+
+        /* 5. Simpler shadows for performance */
+        .tile,
+        .card-front,
+        .card-back {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        body.dark-mode .tile,
+        body.dark-mode .card-front,
+        body.dark-mode .card-back {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        /* 6. Disable skill-tag stagger animations (causes repaints) */
+        .skill-tag {
+            animation: none !important;
+            opacity: 1 !important;
+        }
+
+        /* 7. Simpler mobile menu overlay */
+        .mobile-menu-overlay {
+            backdrop-filter: blur(5px) !important;
+            -webkit-backdrop-filter: blur(5px) !important;
+        }
+
+        /* 8. Disable hover-based flip on mobile (use click only) */
+        .tile.flip-card:hover .card-inner {
+            transform: none;
+        }
+
+        .tile.flip-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+    }
+
+    /* Additional optimization for lower-end devices */
+    @media (max-width: 768px) and (hover: none) {
+
+        /* Touch devices: disable all hover transforms */
+        .tile:hover,
+        .skill-tag:hover,
+        .contact-item:hover,
+        .social-link:hover {
+            transform: none !important;
+        }
+
+        /* Reduce transition complexity */
+        .tile,
+        .skill-tag,
+        .contact-item {
+            transition: background-color 0.2s ease, color 0.2s ease !important;
         }
     }
 
@@ -2005,83 +2099,46 @@ a.flip-link:hover {
 
 
         // --- MOBILE SCROLL EFFECTS (Flip & Scale) ---
-        let mobileObserver;
+        // PERFORMANCE: Observer completely disabled since all effects are removed
+        // Keeping the structure for future use if effects are re-enabled
+        let mobileObserver = null;
 
         function initMobileScrollEffects() {
-            const isMobile = window.innerWidth <= 768;
-            const flipCards = document.querySelectorAll('.tile.flip-card');
-            const staticTiles = document.querySelectorAll('.tile:not(.flip-card)');
-
-            // Cleanup previous observer
+            // Cleanup any existing observer
             if (mobileObserver) {
                 mobileObserver.disconnect();
                 mobileObserver = null;
             }
-
-            // Reset styles
-            flipCards.forEach(card => {
-                const cardInner = card.querySelector('.card-inner');
-                if (cardInner) cardInner.style.transform = '';
-            });
-            staticTiles.forEach(tile => {
-                tile.style.transform = '';
-            });
-
-            if (isMobile) {
-                const topBar = document.querySelector('.top-bar'); // Select top bar
-
-                const observerOptions = {
-                    threshold: 0.6, // Higher threshold for center focus
-                    rootMargin: "-20% 0px -20% 0px"
-                };
-
-                mobileObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        const target = entry.target;
-
-                        // Case 1: Flip Card
-                        // Case 1: Flip Card - REMOVED AUTO FLIP (User Feedback)
-                        // if (target.classList.contains('flip-card')) { ... }
-
-                        // Case 2: Static Tile (Scale Effect) - DISABLED
-                        /* Disabled zoom/transform effect
-                        if (entry.isIntersecting) {
-                            target.style.transform = 'scale(1.02)'; // Subtle pop
-                        } else {
-                            target.style.transform = 'scale(1)';
-                        }
-                        */
-                    });
-                }, observerOptions);
-
-                flipCards.forEach(card => mobileObserver.observe(card));
-                staticTiles.forEach(tile => mobileObserver.observe(tile));
-                if (topBar) mobileObserver.observe(topBar); // Observe Top Bar
-            }
+            // Observer creation disabled - no active effects to observe
+            // This eliminates IntersectionObserver overhead during scroll
         }
 
-        // Initialize and Listen for Resize
-        initMobileScrollEffects();
-        window.addEventListener('resize', () => {
-            clearTimeout(window.resizeTimer);
-            window.resizeTimer = setTimeout(initMobileScrollEffects, 200);
-        });
+        // Only listen for resize if needed in future
+        // initMobileScrollEffects(); // Disabled
+        // window.addEventListener('resize', ...) // Disabled
 
 
         // --- SCROLL ANIMATION (Reveal) ---
         const tiles = document.querySelectorAll('.tile');
+        const isMobile = window.innerWidth <= 768;
 
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px"
+            threshold: isMobile ? 0.05 : 0.1, // Lower threshold on mobile for earlier reveal
+            rootMargin: isMobile ? "50px" : "0px" // Pre-load on mobile
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => {
+                    // MOBILE: Apply immediately without delays for smoother scroll
+                    // DESKTOP: Keep staggered animation for visual effect
+                    if (isMobile) {
                         entry.target.classList.add('visible');
-                    }, index * 50);
+                    } else {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 50);
+                    }
                     observer.unobserve(entry.target);
                 }
             });
@@ -2233,26 +2290,37 @@ a.flip-link:hover {
             });
         }
 
-        // --- KEYBOARD ACCESSIBILITY FOR FLIP CARDS ---
+        // --- FLIP CARD CLICK BEHAVIOR ---
         const accessibleFlipCards = document.querySelectorAll('.tile.flip-card');
         accessibleFlipCards.forEach(card => {
-            // Toggle on click (for unified behavior)
-            card.addEventListener('click', () => {
-                card.classList.toggle('flipped');
-            });
+            const cardFront = card.querySelector('.card-front');
+            const cardBack = card.querySelector('.card-back');
 
-            // Toggle on Enter/Space
+            // Click on FRONT: flip to back
+            if (cardFront) {
+                cardFront.addEventListener('click', (e) => {
+                    card.classList.add('flipped');
+                });
+            }
+
+            // Click on BACK: flip to front (EXCEPT if clicking project link button)
+            if (cardBack) {
+                cardBack.addEventListener('click', (e) => {
+                    // If clicked on the "Ver Proyecto" button, let it navigate normally
+                    if (e.target.closest('.flip-link')) {
+                        return; // Don't flip, let the link work
+                    }
+                    // Otherwise, flip back to front
+                    card.classList.remove('flipped');
+                });
+            }
+
+            // Keyboard accessibility: Toggle on Enter/Space
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault(); // Prevent scrolling for space
+                    e.preventDefault();
                     card.classList.toggle('flipped');
                 }
-            });
-
-            // Remove flipped state on blur (optional but good for focus flow)
-            // Remove flipped state on blur (optional but good for focus flow)
-            card.addEventListener('blur', () => {
-                card.classList.remove('flipped');
             });
         });
 
