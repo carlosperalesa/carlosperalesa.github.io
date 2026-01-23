@@ -1,4 +1,4 @@
-const API_URL = '/api';
+const API_URL = '/other/BT/api';
 let quill;
 
 document.addEventListener('DOMContentLoaded', () => {
