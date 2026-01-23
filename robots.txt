@@ -1,4 +1,4 @@
-# robots.txt para https://carlosperalesa.github.io/
+# robots.txt para https://carlosperales.dev/
 
 User-agent: *
 Disallow: /private/
@@ -9,4 +9,4 @@ Disallow: /other/
 # Permitir el acceso a todo el resto del sitio
 Allow: /
 
-Sitemap: https://carlosperalesa.github.io/sitemap.xml
+Sitemap: https://carlosperales.dev/sitemap.xml

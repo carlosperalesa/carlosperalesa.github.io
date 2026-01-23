@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpiador de Duplicados - Proton Pass</title>
+    <style>
+        /* Fondo general */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url('/img/gradient.svg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Contenedor principal */
+        .max-w-7xl {
+            /* max-width: 1400px; */
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Tarjeta principal */
+        .main-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Títulos */
+        h1 {
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            /* font-size: 0.9375rem; */
+            /* line-height: 1.5; */
+            /* margin-bottom: 1.5rem; */
+        }
+
+        /* Sección de carga */
+        .upload-section {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .upload-zone {
+            text-align: center;
+        }
+
+        .upload-text {
+            font-size: 1rem;
+            font-weight: 500;
+            /* margin-bottom: 0.75rem; */
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        .btn-upload {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 4px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-upload:hover {
+            background-color: #106ebe;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-upload:active {
+            background-color: #005a9e;
+            transform: translateY(0);
+        }
+
+        .btn-upload svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Alertas */
+        .alert {
+            padding: 0.875rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            margin-top: 1.5rem;
+            background-color: transparent;
+            border: none;
+        }
+
+        .alert svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            flex-shrink: 0;
+            color: #92400e;
+        }
+
+        .alert-content {
+            font-size: 0.8125rem;
+            color: #92400e;
+            line-height: 1.5;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+        }
+
+        .alert ul {
+            list-style: disc;
+            padding-left: 1.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .alert li {
+            margin-bottom: 0.125rem;
+        }
+
+        .alert-warning {
+            background-color: transparent;
+            border: none;
+            color: #92400e;
+        }
+
+        .alert-info {
+            background-color: transparent;
+            border: none;
+        }
+
+        /* Grupos de servicio */
+        .service-group {
+            border-radius: 12px;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .service-header:hover {
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+
+        .expand-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .service-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #6366f1;
+        }
+
+        .service-count {
+            background-color: #eef2ff;
+            color: #6366f1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Input file personalizado */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Iconos SVG */
+        .icon-large {
+            width: 3rem;
+            height: 3rem;
+            /* margin: 0 auto 1rem; */
+            color: #6366f1;
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .space-y-6>*+* {
+            margin-top: 1.5rem;
+        }
+
+        .space-y-4>*+* {
+            margin-top: 1rem;
+        }
+
+        /* Divisor */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent);
+            margin: 1.5rem 0;
+        }
+
+        /* Tarjetas de entrada */
+        .entry-card {
+            padding: 1rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: stretch;
+            gap: 1rem;
+        }
+
+        .entry-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.1);
+        }
+
+        .entry-card-left {
+            flex: 0 0 220px;
+            max-width: 220px;
+            overflow-wrap: anywhere;
+        }
+
+        .entry-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .entry-card-subtitle {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .details-section {
+            flex: 1 1 0%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #4b5563;
+            min-width: 80px;
+            font-size: 0.875rem;
+        }
+
+        .detail-value {
+            word-break: break-all;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 100px;
+            flex: 0 0 120px;
+        }
+
+        /* Botones Fluent Design */
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        /* Botón primario (Eliminar/Mantener) */
+        .btn-primary-action {
+            background-color: #0078d4;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary-action:hover {
+            background-color: #106ebe;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary-action:active {
+            background-color: #005a9e;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botón primario alternativo (Mantener) */
+        .btn-primary-keep {
+            background-color: #107c10;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary-keep:hover {
+            background-color: #0e6b0e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary-keep:active {
+            background-color: #0c5a0c;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botones secundarios */
+        .btn-secondary {
+            background-color: transparent;
+            color: #323130;
+            border: 1px solid #8a8886;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f3f2f1;
+            border-color: #323130;
+        }
+
+        .btn-secondary:active {
+            background-color: #edebe9;
+        }
+
+        /* Botón de eliminar grupo (rojo) */
+        .btn-danger {
+            background-color: #d13438;
+            color: white;
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8125rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-danger:hover {
+            background-color: #a4262c;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-danger:active {
+            background-color: #8c1d1d;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-card {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .upload-zone {
+                padding: 2rem 1rem;
+            }
+
+            .service-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .entry-card {
+                flex-direction: column;
+            }
+
+            .entry-card-left,
+            .action-buttons {
+                flex: unset;
+                max-width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+                justify-content: flex-start;
+            }
+        }
+
+        .btn-primary {
+            background-color: #0078d4;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #106ebe;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:active {
+            background-color: #005a9e;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="max-w-7xl">
+        <div class="main-card">
+            <div class="text-center">
+                <h1>🔐 Limpiador de Duplicados</h1>
+                <p class="subtitle">Analiza y elimina contraseñas duplicadas en tu exportación de Proton Pass</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Upload Section -->
+            <div id="uploadSection" class="space-y-6">
+                <div class="upload-section">
+                    <input type="file" accept=".csv,.txt" id="fileInput">
+                    <div class="upload-zone">
+                        <svg class="icon-large" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        <p class="upload-text">Selecciona tu archivo CSV exportado desde Proton Pass</p>
+                        <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                            </svg>
+                            Cargar archivo
+                        </button>
+                    </div>
+                </div>
+                <div class="alert alert-warning">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                    <div class="alert-content">
+                        <p class="alert-title">Seguridad y privacidad</p>
+                        <ul>
+                            <li>El archivo se procesa localmente en tu navegador</li>
+                            <li>Ningún dato se envía a servidores externos</li>
+                            <li>Elimina el archivo después de completar el proceso</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Section -->
+            <div id="reviewSection" class="hidden space-y-6">
+                <div class="alert alert-info">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center; width: 100%;">
+                        <div>
+                            <p style="font-size: 2rem; font-weight: bold; color: #6366f1; padding: 0; margin: 0;"
+                                id="totalCount">0</p>
+                            <p style="font-size: 0.875rem; color: #6b7280;">Total</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 2rem; font-weight: bold; color: #3b82f6; padding: 0; margin: 0;"
+                                id="servicesCount">0</p>
+                            <p style="font-size: 0.875rem; color: #6b7280;">Servicios</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 2rem; font-weight: bold; color: #22c55e; padding: 0; margin: 0;"
+                                id="keepCount">0</p>
+                            <p style="font-size: 0.875rem; color: #6b7280;">Mantener</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 2rem; font-weight: bold; color: #ef4444; padding: 0; margin: 0;"
+                                id="removeCount">0</p>
+                            <p style="font-size: 0.875rem; color: #6b7280;">Eliminar</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="groupsContainer"
+                    style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 600px; overflow-y: auto;">
+                </div>
+
+                <div style="display: flex; gap: 1rem; padding-top: 1rem; flex-wrap: wrap;">
+                    <button id="cancelBtn" class="btn btn-secondary" style="flex: 1; min-width: 150px;">
+                        Cancelar
+                    </button>
+                    <button id="exportBtn" class="btn btn-primary"
+                        style="flex: 1; min-width: 150px; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Descargar CSV Limpio
+                    </button>
+                </div>
+            </div>
+
+            <!-- Done Section -->
+            <div id="doneSection" class="hidden" style="text-align: center; padding: 3rem 0;">
+                <svg style="width: 5rem; height: 5rem; margin: 0 auto 1rem; color: #22c55e;" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h2 style="font-size: 1.5rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">¡Listo!</h2>
+                <p style="color: #6b7280; margin-bottom: 1.5rem;">Tu archivo limpio se ha descargado.</p>
+                <div class="main-card" style="text-align: left; max-width: 42rem; margin: 0 auto 1.5rem;">
+                    <p style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <span style="font-weight: bold; color: #6366f1;">1.</span>
+                        <span>Ir a Proton Pass y eliminar todas las entradas actuales</span>
+                    </p>
+                    <p style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <span style="font-weight: bold; color: #6366f1;">2.</span>
+                        <span>Vaciar la papelera de Proton Pass</span>
+                    </p>
+                    <p style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <span style="font-weight: bold; color: #6366f1;">3.</span>
+                        <span>Importar el archivo limpio que acabas de descargar</span>
+                    </p>
+                    <p style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                        <span style="font-weight: bold; color: #6366f1;">4.</span>
+                        <span style="font-weight: 600; color: #ef4444;">Eliminar ambos archivos CSV de tu
+                            computador</span>
+                    </p>
+                </div>
+                <button id="resetBtn" class="btn btn-primary">
+                    Procesar otro archivo
+                </button>
+            </div>
+        </div>
+        <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8125rem;">
+            <p>🔒 Procesamiento 100% local • Tus datos nunca salen de tu dispositivo</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // PROTON PASS - GESTOR DE DUPLICADOS
+        // Herramienta para revisar y limpiar contraseñas duplicadas
+        // ============================================
+
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let entries = [];
+        let groups = [];
+        let expandedGroups = new Set();
+        const entryMap = new Map();
+        const groupIdMap = new Map();
+        let groupIdCounter = 0;
+        let fileHeaders = [];
+
+        // ============================================
+        // ELEMENTOS DEL DOM
+        // ============================================
+        const uploadSection = document.getElementById('uploadSection');
+        const reviewSection = document.getElementById('reviewSection');
+        const doneSection = document.getElementById('doneSection');
+        const fileInput = document.getElementById('fileInput');
+        const groupsContainer = document.getElementById('groupsContainer');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        fileInput.addEventListener('change', handleFileUpload);
+        cancelBtn.addEventListener('click', reset);
+        exportBtn.addEventListener('click', exportClean);
+        resetBtn.addEventListener('click', reset);
+
+        // ============================================
+        // CARGA Y PROCESAMIENTO DE ARCHIVO
+        // ============================================
+        async function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const text = await file.text();
+                resetStateForNewFile();
+
+                const rows = parseCSV(stripBOM(text));
+                if (!rows.length) {
+                    alert('El archivo está vacío.');
+                    return;
+                }
+
+                fileHeaders = rows[0].map((header) => header.trim());
+                if (!fileHeaders.length) {
+                    alert('El archivo CSV no contiene encabezados.');
+                    return;
+                }
+
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (!row || !row.some(hasContent)) continue;
+
+                    const entry = { keep: true };
+                    fileHeaders.forEach((header, idx) => {
+                        entry[header] = row[idx] !== undefined ? row[idx] : '';
+                    });
+
+                    const hasKeyData = ['name', 'url', 'username', 'email'].some((key) => hasContent(entry[key]));
+                    if (!hasKeyData) continue;
+
+                    entry.id = `entry-${entries.length}`;
+                    entries.push(entry);
+                    entryMap.set(entry.id, entry);
+                }
+
+                if (!entries.length) {
+                    alert('No se encontraron entradas válidas en el archivo.');
+                    return;
+                }
+
+                groupEntries();
+                uploadSection.classList.add('hidden');
+                reviewSection.classList.remove('hidden');
+                renderGroups();
+            } catch (error) {
+                console.error(error);
+                alert('Error al leer el archivo. Asegúrate de que sea un CSV válido.');
+            }
+        }
+
+        // ============================================
+        // AGRUPACIÓN DE ENTRADAS
+        // ============================================
+        function groupEntries() {
+            const grouped = new Map();
+
+            entries.forEach((entry) => {
+                const keyCandidate = entry.name || entry.url || 'Sin nombre';
+                const key = (keyCandidate || 'Sin nombre').trim() || 'Sin nombre';
+                if (!grouped.has(key)) grouped.set(key, []);
+                grouped.get(key).push(entry);
+            });
+
+            groups = Array.from(grouped.entries())
+                .map(([name, items]) => {
+                    let id = groupIdMap.get(name);
+                    if (!id) {
+                        id = `group-${groupIdCounter++}`;
+                        groupIdMap.set(name, id);
+                    }
+
+                    return {
+                        id,
+                        name,
+                        items,
+                        count: items.length,
+                        hasPossibleDuplicates: checkPossibleDuplicates(items)
+                    };
+                })
+                .sort((a, b) => b.count - a.count);
+        }
+
+        // ============================================
+        // DETECCIÓN DE DUPLICADOS
+        // ============================================
+        function checkPossibleDuplicates(items) {
+            if (items.length <= 1) return false;
+            const usernames = items.map(i => (i.username || i.email || '').toLowerCase().trim());
+            const uniqueUsernames = new Set(usernames.filter(u => u));
+            return uniqueUsernames.size < items.length;
+        }
+
+        // ============================================
+        // ORDENAMIENTO
+        // ============================================
+        function handleSort() {
+            groups.sort((a, b) => b.count - a.count);
+            renderGroups();
+        }
+
+        // ============================================
+        // RENDERIZADO DE GRUPOS
+        // ============================================
+        function renderGroups() {
+            updateCounts();
+
+            let html = '';
+
+            groups.forEach((group) => {
+                const isExpanded = expandedGroups.has(group.id);
+                const canSelectSingle = group.items.length > 1;
+                const sortedItems = [...group.items].sort((a, b) => {
+                    const userA = (a.username || a.email || '').toLowerCase();
+                    const userB = (b.username || b.email || '').toLowerCase();
+                    return userA.localeCompare(userB);
+                });
+
+                const itemsHtml = sortedItems
+                    .map((entry) => {
+                        const modifyDate = formatTimestamp(entry.modifyTime);
+
+                        return `
+                            <div class="entry-card" style="opacity: ${entry.keep ? '1' : '0.6'}">
+                                <div class="entry-card-left">
+                                    <p class="entry-card-title">${escapeHtml(entry.username || entry.email || '(sin usuario)')}</p>
+                                    ${modifyDate ? `<p class="entry-card-subtitle">Última modificación: ${escapeHtml(modifyDate)}</p>` : ''}
+                                </div>
+                                <div class="details-section">
+                                    <div class="detail-row">
+                                        <span class="detail-label">Usuario:</span>
+                                        <span class="detail-value">${escapeHtml(entry.username || entry.email || '(sin usuario)')}</span>
+                                    </div>
+                                    ${entry.url ? `<div class="detail-row">
+                                        <span class="detail-label">URL:</span>
+                                        <span class="detail-value" style="color: #2563eb;">${escapeHtml(entry.url)}</span>
+                                    </div>` : ''}
+                                    <div class="detail-row">
+                                        <span class="detail-label">Contraseña:</span>
+                                        <span class="detail-value" style="font-family: monospace;">${escapeHtml(entry.password || '(vacía)')}</span>
+                                    </div>
+                                    ${entry.note ? `<div class="detail-row">
+                                        <span class="detail-label">Nota:</span>
+                                        <span class="detail-value" style="color: #6b7280;">${escapeHtml(entry.note)}</span>
+                                    </div>` : ''}
+                                </div>
+                                <div class="action-buttons">
+                                    <button onclick="toggleKeep('${entry.id}', event)" class="btn ${entry.keep ? 'btn-primary-action' : 'btn-primary-keep'} toggle-btn">
+                                        ${entry.keep ? 'Eliminar' : 'Mantener'}
+                                    </button>
+                                    ${canSelectSingle ? `<button onclick="keepOnlyThis('${group.id}', '${entry.id}')" class="btn btn-secondary">Solo esta</button>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    })
+                    .join('');
+
+                html += `
+                    <div class="service-group">
+                        <div class="service-header" onclick="toggleGroup('${group.id}')">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <svg class="expand-icon" id="icon-${group.id}" style="width: 1.25rem; height: 1.25rem; transition: transform 0.3s ease; transform: rotate(${isExpanded ? '90deg' : '0deg'});" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                <span class="service-title">${escapeHtml(group.name)}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span class="service-count">${group.count} entradas</span>
+                                <button onclick="event.stopPropagation(); deleteAllInGroup('${group.id}')" class="btn btn-danger">Eliminar todas</button>
+                            </div>
+                        </div>
+                        <div id="group-${group.id}" class="${isExpanded ? '' : 'hidden'}" style="margin-top: 0.5rem;">
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            groupsContainer.innerHTML = html;
+        }
+
+        // ============================================
+        // TOGGLE DE GRUPOS
+        // ============================================
+        function toggleGroup(groupId) {
+            const element = document.getElementById(`group-${groupId}`);
+            const icon = document.getElementById(`icon-${groupId}`);
+            if (!element) return;
+
+            const willExpand = element.classList.contains('hidden');
+            if (willExpand) {
+                element.classList.remove('hidden');
+                expandedGroups.add(groupId);
+            } else {
+                element.classList.add('hidden');
+                expandedGroups.delete(groupId);
+            }
+
+            if (icon) {
+                icon.style.transform = willExpand ? 'rotate(90deg)' : 'rotate(0deg)';
+            }
+        }
+
+        // ============================================
+        // GESTIÓN DE ENTRADAS
+        // ============================================
+        function toggleKeep(entryId, evt) {
+            const entry = entryMap.get(entryId);
+            if (!entry) return;
+
+            entry.keep = !entry.keep;
+
+            if (evt) {
+                const button = evt.currentTarget || evt.target;
+                const card = button.closest('.entry-card');
+
+                button.textContent = entry.keep ? 'Eliminar' : 'Mantener';
+                button.className = `btn ${entry.keep ? 'btn-primary-action' : 'btn-primary-keep'} toggle-btn`;
+                if (card) {
+                    card.style.opacity = entry.keep ? '1' : '0.6';
+                }
+            }
+
+            updateCounts();
+        }
+
+        function keepOnlyThis(groupId, entryId) {
+            const group = groups.find((g) => g.id === groupId);
+            if (!group) return;
+
+            group.items.forEach((item) => {
+                item.keep = item.id === entryId;
+            });
+
+            renderGroups();
+        }
+
+        function deleteAllInGroup(groupId) {
+            const group = groups.find((g) => g.id === groupId);
+            if (!group) return;
+
+            group.items.forEach((item) => {
+                item.keep = false;
+            });
+
+            renderGroups();
+        }
+
+        // ============================================
+        // ACTUALIZACIÓN DE CONTADORES
+        // ============================================
+        function updateCounts() {
+            document.getElementById('totalCount').textContent = entries.length;
+            document.getElementById('servicesCount').textContent = groups.length;
+            document.getElementById('keepCount').textContent = entries.filter(e => e.keep).length;
+            document.getElementById('removeCount').textContent = entries.filter(e => !e.keep).length;
+        }
+
+        // ============================================
+        // EXPORTACIÓN
+        // ============================================
+        function exportClean() {
+            if (!entries.length) {
+                alert('No hay datos cargados. Carga un archivo primero.');
+                return;
+            }
+
+            const kept = entries.filter((entry) => entry.keep);
+            if (!kept.length) {
+                alert('No hay entradas marcadas para mantener.');
+                return;
+            }
+
+            let headers = fileHeaders.slice();
+            if (!headers.length) {
+                headers = Object.keys(kept[0]).filter((key) => key !== 'keep' && key !== 'id');
+            }
+
+            const rows = [headers];
+            kept.forEach((entry) => {
+                rows.push(headers.map((header) => (entry[header] !== undefined ? entry[header] : '')));
+            });
+
+            const csvContent = serializeCSV(rows);
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'proton-pass-limpio.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            reviewSection.classList.add('hidden');
+            doneSection.classList.remove('hidden');
+        }
+
+        // ============================================
+        // RESET
+        // ============================================
+        function reset() {
+            resetStateForNewFile();
+            fileInput.value = '';
+            uploadSection.classList.remove('hidden');
+            reviewSection.classList.add('hidden');
+            doneSection.classList.add('hidden');
+        }
+
+        function resetStateForNewFile() {
+            entries = [];
+            groups = [];
+            fileHeaders = [];
+            expandedGroups.clear();
+            entryMap.clear();
+            groupIdMap.clear();
+            groupIdCounter = 0;
+            groupsContainer.innerHTML = '';
+            updateCounts();
+        }
+
+        function stripBOM(text) {
+            if (!text) return '';
+            return text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
+        }
+
+        // Parser sencillo para CSV que respeta comillas y nuevas líneas embebidas.
+        function parseCSV(text) {
+            const rows = [];
+            let current = '';
+            let row = [];
+            let inQuotes = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+
+                if (char === '"') {
+                    if (inQuotes && text[i + 1] === '"') {
+                        current += '"';
+                        i += 1;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    row.push(current);
+                    current = '';
+                } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                    row.push(current);
+                    current = '';
+                    if (row.length) rows.push(row);
+                    row = [];
+                    if (char === '\r' && text[i + 1] === '\n') {
+                        i += 1;
+                    }
+                } else {
+                    current += char;
+                }
+            }
+
+            if (current.length || row.length) {
+                row.push(current);
+                rows.push(row);
+            }
+
+            return rows;
+        }
+
+        function serializeCSV(rows) {
+            return rows
+                .map((row) =>
+                    row
+                        .map((value) => {
+                            const stringValue = value === undefined || value === null ? '' : String(value);
+                            if (/[",\r\n]/.test(stringValue)) {
+                                return `"${stringValue.replace(/"/g, '""')}"`;
+                            }
+                            return stringValue;
+                        })
+                        .join(',')
+                )
+                .join('\r\n');
+        }
+
+        function hasContent(value) {
+            return value !== undefined && value !== null && String(value).trim() !== '';
+        }
+
+        function escapeHtml(value) {
+            if (value === undefined || value === null) return '';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatTimestamp(value) {
+            if (!value) return '';
+            const seconds = Number(value);
+            if (!Number.isFinite(seconds) || seconds <= 0) return '';
+            const date = new Date(seconds * 1000);
+            if (Number.isNaN(date.getTime())) return '';
+            return date.toLocaleDateString();
+        }
+    </script>
+</body>
+
+</html>
