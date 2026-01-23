@@ -1259,15 +1259,37 @@
             flex-shrink: 0;
         }
         
-        /* Modales de confirmación (WhatsApp/Teléfono) - como en desktop */
+        /* Modales de confirmación (WhatsApp/Teléfono) - centrados en móvil */
         .modal.modal-confirm {
-            position: absolute !important;
-            width: auto;
+            position: relative !important;
+            width: 300px;
             max-width: 300px;
             height: auto;
             max-height: fit-content;
-            inset: 0;
             margin: auto;
+            align-self: center;
+            justify-self: center;
+        }
+        
+        /* Header arrastrables en móvil para modales de confirmación */
+        .modal.modal-confirm .modal-header {
+            cursor: grab !important;
+        }
+        
+        .modal.modal-confirm.dragging {
+            position: absolute !important;
+        }
+        
+        .modal.modal-confirm.dragging .modal-header {
+            cursor: grabbing !important;
+        }
+        
+        /* Overlay centrado para modales de confirmación */
+        #modal-whatsapp,
+        #modal-telefono {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* Overlay más sutil para modales de confirmación */
@@ -1926,46 +1948,78 @@
             }
 
             // ============================================
-            // ARRASTRE DE VENTANAS (Solo Desktop)
+            // ARRASTRE DE VENTANAS
             // ============================================
             let isDragging = false;
             let dragModal = null;
             let dragOffset = { x: 0, y: 0 };
 
+            // Obtener coordenadas del evento (mouse o touch)
+            function getEventCoords(e) {
+                if (e.touches && e.touches.length > 0) {
+                    return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+                if (e.changedTouches && e.changedTouches.length > 0) {
+                    return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+                }
+                return { x: e.clientX, y: e.clientY };
+            }
+
             function initDragging(modal, e) {
-                if (isMobile()) return;
-                
                 const modalEl = modal.closest('.modal');
+                const isConfirmModal = modalEl.classList.contains('modal-confirm');
+                
+                // En móvil solo permitir arrastre de modales de confirmación
+                if (isMobile() && !isConfirmModal) return;
+                
+                // Prevenir comportamiento por defecto en touch
+                if (e.cancelable) {
+                    e.preventDefault();
+                }
+                
                 const overlay = modal.closest('.modal-overlay');
-                const modalId = overlay.id.replace('modal-', '');
                 
                 isDragging = true;
                 dragModal = modalEl;
                 
                 const rect = modalEl.getBoundingClientRect();
-                dragOffset.x = e.clientX - rect.left;
-                dragOffset.y = e.clientY - rect.top;
+                const coords = getEventCoords(e);
+                dragOffset.x = coords.x - rect.left;
+                dragOffset.y = coords.y - rect.top;
                 
                 modalEl.classList.add('dragging');
                 
+                // Habilitar posición absoluta para modales de confirmación en móvil
+                if (isMobile() && isConfirmModal) {
+                    modalEl.style.position = 'absolute';
+                    modalEl.style.margin = '0';
+                    modalEl.style.left = `${rect.left}px`;
+                    modalEl.style.top = `${rect.top - 44}px`; // Restar top bar height
+                }
+                
                 // Traer al frente
-                overlay.setAttribute('data-zindex', zIndexCounter++);
+                overlay.style.zIndex = 2000 + zIndexCounter++;
             }
 
             function handleDrag(e) {
                 if (!isDragging || !dragModal) return;
                 
-                e.preventDefault();
+                // Prevenir scroll mientras arrastramos
+                if (e.cancelable) {
+                    e.preventDefault();
+                }
                 
-                let x = e.clientX - dragOffset.x;
-                let y = e.clientY - dragOffset.y;
+                const coords = getEventCoords(e);
+                let x = coords.x - dragOffset.x;
+                let y = coords.y - dragOffset.y;
                 
                 // Limitar dentro del viewport
-                const rect = dragModal.getBoundingClientRect();
-                const minY = 44; // Altura del top bar
-                const maxY = window.innerHeight - 100; // Espacio para el dock
-                const minX = -rect.width + 100;
-                const maxX = window.innerWidth - 100;
+                const modalWidth = dragModal.offsetWidth;
+                const modalHeight = dragModal.offsetHeight;
+                const minY = isMobile() ? 0 : 44;
+                const maxY = (isMobile() ? window.innerHeight - 80 - 44 : window.innerHeight) - modalHeight;
+                const minX = 20 - modalWidth;
+                const maxX = window.innerWidth - 20;
                 
                 x = Math.max(minX, Math.min(maxX, x));
                 y = Math.max(minY, Math.min(maxY, y));
@@ -1974,7 +2028,7 @@
                 dragModal.style.top = `${y}px`;
             }
 
-            function endDrag() {
+            function endDrag(e) {
                 if (!isDragging || !dragModal) return;
                 
                 dragModal.classList.remove('dragging');
@@ -1989,9 +2043,14 @@
                 dragModal = null;
             }
 
-            // Event listeners para arrastre
+            // Event listeners para arrastre - Mouse
             document.addEventListener('mousemove', handleDrag);
             document.addEventListener('mouseup', endDrag);
+            
+            // Event listeners para arrastre - Touch (passive: false para poder preventDefault)
+            document.addEventListener('touchmove', handleDrag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+            document.addEventListener('touchcancel', endDrag);
 
             // Inicializar arrastre en headers de modales
             modalOverlays.forEach(overlay => {
@@ -1999,11 +2058,17 @@
                 const modal = overlay.querySelector('.modal');
                 
                 if (header) {
+                    // Mouse
                     header.addEventListener('mousedown', (e) => {
-                        // No arrastrar si click en botón cerrar
                         if (e.target.closest('.modal-close')) return;
                         initDragging(header, e);
                     });
+                    
+                    // Touch - passive: false para poder prevenir scroll
+                    header.addEventListener('touchstart', (e) => {
+                        if (e.target.closest('.modal-close')) return;
+                        initDragging(header, e);
+                    }, { passive: false });
                 }
                 
                 // Click en modal para traerlo al frente
