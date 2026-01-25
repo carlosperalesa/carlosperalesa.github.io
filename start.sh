@@ -30,7 +30,7 @@ run_task() {
     fi
 }
 
-echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v3.0\n"
+echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v3.1\n"
 
 # Resumen de tareas
 echo -e "${BLUE}Plan de ejecución:${NC}"
