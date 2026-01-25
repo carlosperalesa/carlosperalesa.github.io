@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments (NOT needed in Docker)
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Environment files (use docker-compose env instead)
+.env
+
+# Systemd service (server specific)
+*.service
+
+# Documentation
+*.pdf
+README.md
+
+# Database (will be mounted as volume)
+*.db
+
+# Uploads (will be mounted as volume)
+public/uploads/

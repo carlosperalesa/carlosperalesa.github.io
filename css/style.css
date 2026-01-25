@@ -1,0 +1,1636 @@
+/* ============================================
+   1. VARIABLES Y TEMA
+   ============================================ */
+/* FUENTE LOCAL */
+@font-face {
+    font-family: 'Geist';
+    src: url('../fonts/Geist.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* Colores - Alta legibilidad */
+    --accent-color: #4f46e5;
+    --accent-light: #818cf8;
+    --text-color: #000000;
+    --text-muted: #374151;
+    --bg-gradient: #f8fafc;
+
+    /* Glassmorphism - Más opaco para mejor contraste */
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+
+    /* Tipografía */
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-md: 1rem;
+    --font-lg: 1.25rem;
+    --font-xl: 1.5rem;
+    --font-xxl: 2rem;
+
+    /* Espaciado */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Bordes - Más redondeados, tendencia actual */
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-xl: 32px;
+
+    /* Dock */
+    --dock-bg: rgba(255, 255, 255, 0.95);
+    --dock-icon-size: 52px;
+
+    /* Modal */
+    --modal-bg: rgba(255, 255, 255, 0.98);
+
+    /* Indicador */
+    --indicator-color: #6366f1;
+}
+
+/* Modo Oscuro - Más profundo y con acentos neón */
+body.dark-mode {
+    --bg-gradient: #030712;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --glass-bg: rgba(15, 23, 42, 0.8);
+    --glass-border: rgba(148, 163, 184, 0.1);
+    --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(148, 163, 184, 0.05);
+    --dock-bg: rgba(15, 23, 42, 0.9);
+    --modal-bg: rgba(15, 23, 42, 0.95);
+    --indicator-color: #a5b4fc;
+    --accent-color: #818cf8;
+    --accent-light: #c4b5fd;
+}
+
+/* ============================================
+   2. RESET Y BASE
+   ============================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 450;
+    background: var(--bg-gradient);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* Focus visible */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Scrollbar personalizado - pill blanca sobre transparente */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.9) transparent;
+}
+
+/* ============================================
+   3. FONDO DE PANTALLA (Bing Daily fallback)
+   ============================================ */
+.desktop-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    /* Fondo de Bing */
+    background-image: url('https://bing.biturl.top/?format=image&index=random&resolution=1920');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Overlay sutil para legibilidad */
+.desktop-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.15) 0%,
+            rgba(0, 0, 0, 0.02) 20%,
+            rgba(0, 0, 0, 0.02) 80%,
+            rgba(0, 0, 0, 0.25) 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* En modo oscuro, overlay más pronunciado */
+body.dark-mode .desktop-screen::before {
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.35) 0%,
+            rgba(0, 0, 0, 0.1) 20%,
+            rgba(0, 0, 0, 0.1) 80%,
+            rgba(0, 0, 0, 0.45) 100%);
+}
+
+/* 4. FONDO RESPONSIVE */
+@media (max-width: 768px) {
+    .desktop-screen {
+        /* Resolución menor para móvil - carga más rápido */
+        background-image: url('https://bing.biturl.top/?format=image&index=random&resolution=1920&image_format=webp');
+    }
+}
+
+/* ============================================
+   5. TOP BAR (Estilo iOS)
+   ============================================ */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacing-md);
+    background: #ffffff;
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 1000;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.top-bar-name {
+    font-weight: 500;
+    font-size: var(--font-md);
+    cursor: pointer;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.top-bar-name:hover {
+    background: rgba(128, 128, 128, 0.15);
+    border-color: var(--glass-border);
+    color: var(--accent-color);
+}
+
+.top-bar-name:active {
+    transform: scale(0.98);
+    background: rgba(128, 128, 128, 0.2);
+}
+
+/* Nombre completo en desktop, abreviado en móvil */
+.name-full {
+    display: inline;
+}
+
+.name-short {
+    display: none;
+}
+
+.top-bar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Toggle Tema (Sol/Luna con estrellas y nubes) */
+.theme-toggle {
+    display: inline-block;
+    position: relative;
+    width: 45px;
+    height: 25px;
+}
+
+.theme-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Accesibilidad: Mostrar foco al seleccionar */
+.theme-toggle input:focus-visible+.slider {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.theme-toggle .slider {
+    position: absolute;
+    cursor: pointer;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
+    border-radius: 34px;
+    background: #83D8FF;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Sun/Moon Knob */
+.theme-toggle .slider::before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background: #FFD93E;
+    transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+    z-index: 2;
+}
+
+/* Cloud */
+.theme-toggle .slider::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 8px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 10px -2px 0 2px #fff, 20px 0px 0 1px #fff;
+    filter: blur(0.5px);
+    transition: 0.5s;
+    opacity: 1;
+}
+
+/* Dark Mode State - Moon with stars */
+.theme-toggle input:checked+.slider {
+    background: #1C233E;
+    /* 3 Estrellas */
+    background-image:
+        radial-gradient(circle, white 1px, transparent 1.5px),
+        radial-gradient(circle, white 1px, transparent 1.5px),
+        radial-gradient(circle, white 1px, transparent 1.5px);
+    background-position:
+        6px 6px,
+        14px 12px,
+        8px 18px;
+    background-size: 4px 4px;
+    background-repeat: no-repeat;
+}
+
+/* Moon with craters */
+.theme-toggle input:checked+.slider::before {
+    transform: translateX(20px);
+    background: #D9D9D9;
+    box-shadow: inset -2px -1px 0 #999, inset 1px 1px 0 #fff;
+    background-image: radial-gradient(circle at 35% 35%, #999 1px, transparent 1.5px), radial-gradient(circle at 60% 60%, #999 1.5px, transparent 2px);
+}
+
+/* Hide clouds in dark mode */
+.theme-toggle input:checked+.slider::after {
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+/* ============================================
+   6. PANTALLA DE INICIO (Home Screen)
+   ============================================ */
+.home-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px var(--spacing-lg) 100px;
+    overflow-y: auto;
+}
+
+.home-content {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-xl);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: var(--glass-shadow);
+}
+
+.home-avatar {
+    flex-shrink: 0;
+}
+
+.avatar-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid var(--glass-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+}
+
+.home-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: var(--font-xxl);
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+}
+
+.profile-role {
+    font-size: var(--font-lg);
+    color: var(--accent-color);
+    font-weight: 400;
+    margin-bottom: var(--spacing-sm);
+}
+
+.profile-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-md);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    font-weight: 500;
+    font-size: var(--font-xs);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.status-separator {
+    color: var(--glass-border);
+}
+
+.location-text {
+    opacity: 0.8;
+}
+
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+.contact-item i {
+    width: 16px;
+    color: var(--accent-color);
+}
+
+/* Social Link Icons (For Main Card) */
+.social-links-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.social-link {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.social-link:hover {
+    transform: translateY(-2px);
+    color: var(--accent-color);
+    background: rgba(120, 120, 120, 0.15);
+    opacity: 1;
+}
+
+body.dark-mode .social-link {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .social-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+.home-profile {
+    width: 100%;
+    max-width: 800px;
+    margin-top: var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--glass-shadow);
+}
+
+.profile-title {
+    font-size: var(--font-md);
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    color: var(--accent-color);
+}
+
+.profile-text {
+    font-size: var(--font-sm);
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.profile-text strong {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* ============================================
+   7. DOCK (Estilo iOS)
+   ============================================ */
+.dock-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    padding-bottom: max(var(--spacing-sm), env(safe-area-inset-bottom));
+    z-index: 1000;
+}
+
+.dock {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: #ffffff;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--glass-shadow);
+}
+
+.dock-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.dock-item:active {
+    animation: dockBounce 0.3s ease;
+}
+
+@keyframes dockBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(0.9);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.dock-icon {
+    width: var(--dock-icon-size);
+    height: var(--dock-icon-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    /* Fondo sólido - mejor rendimiento */
+    background: #ffffff;
+    color: var(--accent-color);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dock-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* Iconos con colores sobre fondo blanco */
+.dock-icon.formacion {
+    color: #7c3aed;
+}
+
+.dock-icon.formacion svg {
+    fill: #7c3aed;
+}
+
+.dock-icon.experiencia {
+    color: #e11d48;
+}
+
+.dock-icon.experiencia svg {
+    fill: #e11d48;
+}
+
+.dock-icon.skills {
+    color: #0891b2;
+}
+
+.dock-icon.skills svg {
+    fill: #0891b2;
+}
+
+.dock-icon.proyectos {
+    color: #f59e0b;
+}
+
+.dock-icon.proyectos svg {
+    fill: #f59e0b;
+}
+
+.dock-icon.whatsapp {
+    color: #16a34a;
+}
+
+.dock-icon.whatsapp svg {
+    fill: #16a34a;
+}
+
+.dock-icon.telefono {
+    color: #3b82f6;
+}
+
+.dock-icon.telefono svg {
+    fill: #3b82f6;
+}
+
+.dock-icon.contacto {
+    color: #ef4444;
+}
+
+.dock-icon.contacto svg {
+    fill: #ef4444;
+}
+
+
+.dock-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    display: none;
+    /* Oculto en móvil */
+}
+
+/* Indicador de modal abierto */
+.dock-indicator {
+    position: absolute;
+    bottom: -8px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--indicator-color);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.dock-item.active .dock-indicator {
+    opacity: 1;
+}
+
+/* Separador en el dock */
+.dock-separator {
+    width: 1px;
+    height: 40px;
+    background: var(--glass-border);
+    margin: 0 var(--spacing-xs);
+}
+
+/* Hover efecto magnify (desktop) */
+@media (hover: hover) {
+    .dock-item:hover .dock-icon {
+        transform: scale(1.12) translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* Modo oscuro - fondos sólidos oscuros */
+body.dark-mode .dock-icon {
+    background: #1e293b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .top-bar {
+    background: #0f172a;
+}
+
+body.dark-mode .dock {
+    background: #0f172a;
+}
+
+body.dark-mode .home-content,
+body.dark-mode .home-profile {
+    background: rgba(15, 23, 42, 0.85);
+}
+
+/* ============================================
+   8. SISTEMA DE MODALES
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-lg);
+    /* En desktop: no bloquear el fondo */
+    pointer-events: none;
+}
+
+.modal-overlay.active {
+    pointer-events: none;
+    /* El overlay no bloquea, solo el modal */
+}
+
+.modal {
+    position: absolute;
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    background: var(--modal-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Animación desde icono */
+    transform: scale(0);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        left 0.01s,
+        top 0.01s;
+    pointer-events: auto;
+    /* Solo el modal recibe clicks */
+}
+
+/* Modal de proyectos más grande para tooltips */
+#modal-proyectos .modal {
+    max-height: 90vh;
+}
+
+#modal-proyectos .modal-body {
+    padding-bottom: 80px;
+    /* Espacio extra para tooltips de la última fila */
+}
+
+.modal-overlay.active .modal {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Estado de cierre (animación hacia el icono) */
+.modal-overlay.closing .modal {
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.18s cubic-bezier(0.6, -0.28, 0.74, 0.05),
+        opacity 0.15s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-bottom: 1px solid var(--glass-border);
+    background: transparent;
+    min-height: 40px;
+    /* Arrastrable en desktop */
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Cursor de arrastre solo en desktop */
+@media (min-width: 769px) {
+    .modal-header {
+        cursor: grab;
+    }
+
+    .modal-header:active {
+        cursor: grabbing;
+    }
+
+    .modal.dragging {
+        transition: none !important;
+        user-select: none;
+    }
+
+    .modal.dragging .modal-header {
+        cursor: grabbing;
+    }
+}
+
+.modal-title {
+    font-size: var(--font-md);
+    font-weight: 500;
+    pointer-events: none;
+    color: var(--text-muted);
+}
+
+.modal-close {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #ff5f56;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: transparent;
+    font-size: 0;
+    transition: all 0.15s ease;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.modal-close::before {
+    content: '×';
+    position: absolute;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    line-height: 1;
+}
+
+.modal-close:hover::before {
+    opacity: 1;
+}
+
+.modal-close:hover {
+    background: #ff4136;
+}
+
+.modal-close:active {
+    transform: scale(0.95);
+}
+
+.modal-body {
+    flex: 1;
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+}
+
+/* Modal de confirmación (más pequeño) */
+.modal.modal-confirm {
+    max-width: 320px;
+    text-align: center;
+}
+
+.modal-confirm .modal-body {
+    padding: var(--spacing-xl);
+}
+
+.modal-confirm-icon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-confirm-icon svg {
+    width: 56px;
+    height: 56px;
+}
+
+.modal-confirm-text {
+    font-size: var(--font-md);
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-muted);
+}
+
+.modal-confirm-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.modal-btn-primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.modal-btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.modal-btn-secondary {
+    background: rgba(128, 128, 128, 0.15);
+    color: var(--text-color);
+}
+
+.modal-btn-secondary:hover {
+    background: rgba(128, 128, 128, 0.25);
+}
+
+/* Z-index base para modales - se aplica dinámicamente con style */
+.modal-overlay {
+    z-index: 2000;
+}
+
+/* ============================================
+   9. CONTENIDO DE MODALES
+   ============================================ */
+/* Timeline */
+.timeline-item {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.timeline-title {
+    font-size: var(--font-md);
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+}
+
+.timeline-subtitle {
+    font-size: var(--font-sm);
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.timeline-desc {
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Skills */
+.skills-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.skills-section-title {
+    font-size: var(--font-md);
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+
+.skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(128, 128, 128, 0.08);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-xs);
+    font-weight: 500;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+}
+
+.skill-tag:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skill-tag i {
+    font-size: 14px;
+}
+
+/* Colores persistentes de skills (sin hover) */
+.skill-tag.html {
+    background: rgba(228, 77, 38, 0.15);
+    color: #E44D26;
+}
+
+.skill-tag.html i {
+    color: #E44D26;
+}
+
+.skill-tag.css {
+    background: rgba(38, 77, 228, 0.15);
+    color: #264DE4;
+}
+
+.skill-tag.css i {
+    color: #264DE4;
+}
+
+.skill-tag.js {
+    background: rgba(247, 223, 30, 0.2);
+    color: #b8a900;
+}
+
+.skill-tag.js i {
+    color: #b8a900;
+}
+
+.skill-tag.python {
+    background: rgba(55, 118, 171, 0.15);
+    color: #3776AB;
+}
+
+.skill-tag.python i {
+    color: #3776AB;
+}
+
+.skill-tag.react {
+    background: rgba(97, 218, 251, 0.15);
+    color: #00b4d8;
+}
+
+.skill-tag.react i {
+    color: #00b4d8;
+}
+
+.skill-tag.sql {
+    background: rgba(0, 120, 212, 0.15);
+    color: #0078D4;
+}
+
+.skill-tag.sql i {
+    color: #0078D4;
+}
+
+.skill-tag.git {
+    background: rgba(240, 80, 50, 0.15);
+    color: #F05032;
+}
+
+.skill-tag.git i {
+    color: #F05032;
+}
+
+.skill-tag.django {
+    background: rgba(68, 183, 139, 0.15);
+    color: #44B78B;
+}
+
+.skill-tag.django i {
+    color: #44B78B;
+}
+
+.skill-tag.wordpress {
+    background: rgba(33, 117, 155, 0.15);
+    color: #21759b;
+}
+
+.skill-tag.wordpress i {
+    color: #21759b;
+}
+
+.skill-tag.postgres {
+    background: rgba(51, 103, 145, 0.15);
+    color: #336791;
+}
+
+.skill-tag.postgres i {
+    color: #336791;
+}
+
+/* Idiomas */
+.lang-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.lang-row:last-child {
+    border-bottom: none;
+}
+
+.lang-level {
+    color: var(--text-muted);
+}
+
+/* Certificaciones */
+.cert-list {
+    list-style: none;
+}
+
+.cert-list li {
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: var(--font-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.cert-list li::before {
+    content: '✓';
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.cert-list li:last-child {
+    border-bottom: none;
+}
+
+/* ============================================
+   10. MODAL PROYECTOS (Carpeta iOS)
+   ============================================ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+}
+
+.project-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+.project-app:hover {
+    transform: translateY(-4px);
+    z-index: 100;
+    /* Elevar el item completo al hacer hover */
+}
+
+.project-app:hover .project-icon {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+.project-app:active {
+    transform: scale(0.95) translateY(0);
+}
+
+/* Tooltip con descripción - glassmorphism style */
+.project-app[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #f1f5f9;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 160px;
+    white-space: normal;
+    text-align: center;
+    z-index: 101;
+    opacity: 0;
+    animation: tooltipFade 0.2s ease 0.3s forwards;
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Modo claro: tooltip oscuro se ve bien */
+/* Modo oscuro: tooltip también oscuro con borde más visible */
+body.dark-mode .project-app[data-tooltip]:hover::after {
+    background: rgba(30, 41, 59, 0.98);
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+/* Flecha del tooltip */
+.project-app[data-tooltip]:hover::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: rgba(15, 23, 42, 0.95);
+    z-index: 102;
+    opacity: 0;
+    animation: tooltipFade 0.2s ease 0.3s forwards;
+}
+
+body.dark-mode .project-app[data-tooltip]:hover::before {
+    border-bottom-color: rgba(30, 41, 59, 0.98);
+}
+
+@keyframes tooltipFade {
+    to {
+        opacity: 1;
+    }
+}
+
+.project-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background: var(--glass-bg);
+}
+
+.project-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Cambiado de cover a contain */
+    padding: 8px;
+    /* Espacio interno para logos */
+}
+
+.project-icon.emoji {
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+}
+
+body.dark-mode .project-icon.emoji {
+    background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+body.dark-mode .project-icon {
+    background: rgba(30, 41, 59, 0.8);
+}
+
+.project-name {
+    font-size: 11px;
+    text-align: center;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ============================================
+   11. TOAST DE BIENVENIDA
+   ============================================ */
+.toast {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+    font-size: var(--font-sm);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 3000;
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   12. RESPONSIVE - MÓVIL
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Top Bar */
+    .name-full {
+        display: none;
+    }
+
+    .name-short {
+        display: inline;
+    }
+
+    .top-bar-center {
+        font-size: var(--font-xs);
+    }
+
+    /* Home Screen - Cards centradas */
+    .home-screen {
+        padding: 60px 16px 100px 16px;
+        justify-content: flex-start;
+        align-items: center;
+        overflow-x: hidden;
+    }
+
+    .home-content {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-lg);
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: var(--spacing-sm);
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        box-sizing: border-box;
+    }
+
+    .home-profile {
+        padding: var(--spacing-lg);
+        margin: 0 auto;
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        box-sizing: border-box;
+    }
+
+    .avatar-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-name {
+        font-size: var(--font-lg);
+    }
+
+    .profile-role {
+        font-size: var(--font-sm);
+    }
+
+    .contact-list {
+        align-items: center;
+        font-size: var(--font-sm);
+    }
+
+    .contact-item {
+        font-size: var(--font-xs);
+    }
+
+    /* Dock - mismo ancho que cards */
+    .dock {
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        justify-content: space-around;
+        padding: var(--spacing-sm);
+    }
+
+    /* Top bar y Dock siempre por encima del overlay en móvil */
+    .top-bar {
+        z-index: 3000 !important;
+    }
+
+    .dock-container {
+        z-index: 3000 !important;
+    }
+
+    .dock-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    .dock-separator {
+        display: none;
+    }
+
+    /* Modales - ocupan el área entre top bar y dock */
+    .modal-overlay {
+        padding: 0;
+        /* Posicionar entre top bar (44px) y dock (~80px) */
+        top: 44px;
+        bottom: 80px;
+        left: 0;
+        right: 0;
+        height: auto;
+        align-items: stretch;
+        justify-content: stretch;
+        /* Sin fondo por defecto - NO bloquea dock ni top bar */
+        background: transparent;
+        pointer-events: none;
+    }
+
+    /* SOLO cuando está activo mostrar fondo */
+    .modal-overlay.active {
+        background: rgba(0, 0, 0, 0.3);
+        pointer-events: auto;
+    }
+
+    .modal {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: calc(100% - 16px);
+        max-width: calc(100% - 16px);
+        height: calc(100% - 16px);
+        max-height: calc(100% - 16px);
+        margin: 8px;
+        border-radius: var(--radius-lg);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        cursor: default !important;
+        flex-shrink: 0;
+    }
+
+    /* Modales de confirmación (WhatsApp/Teléfono) - centrados en móvil */
+    .modal.modal-confirm {
+        position: relative !important;
+        width: 300px;
+        max-width: 300px;
+        height: auto;
+        max-height: fit-content;
+        margin: auto;
+        align-self: center;
+        justify-self: center;
+    }
+
+    /* Header arrastrables en móvil para modales de confirmación */
+    .modal.modal-confirm .modal-header {
+        cursor: grab !important;
+    }
+
+    .modal.modal-confirm.dragging {
+        position: absolute !important;
+    }
+
+    .modal.modal-confirm.dragging .modal-header {
+        cursor: grabbing !important;
+    }
+
+    /* Overlay centrado para modales de confirmación */
+    #modal-whatsapp,
+    #modal-telefono {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Overlay más sutil para modales de confirmación */
+    #modal-whatsapp.active,
+    #modal-telefono.active {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Proyectos grid */
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablet y Desktop - Mostrar labels del dock */
+@media (min-width: 769px) {
+    .dock-label {
+        display: block;
+    }
+
+    .dock-icon {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+/* ============================================
+   13. ANIMACIONES REDUCIDAS
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   14. SCROLLBAR PERSONALIZADO
+   ============================================ */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 128, 128, 0.5);
+}
+
+/* ============================================
+   15. SELECCIÓN DE TEXTO
+   ============================================ */
+::selection {
+    background: var(--accent-color);
+    color: white;
+}
+
+/* ============================================
+   16. FORMULARIO CONTACTO (Modal)
+   ============================================ */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.5);
+    font-family: inherit;
+    font-size: var(--font-sm);
+    transition: all 0.2s ease;
+    color: var(--text-color);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+body.dark-mode .form-input,
+body.dark-mode .form-textarea {
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .form-input:focus,
+body.dark-mode .form-textarea:focus {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--accent-color);
+}

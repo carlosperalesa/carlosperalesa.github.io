@@ -2,6 +2,7 @@ import os
 import sqlite3
 import datetime
 import secrets
+import hashlib
 from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -9,7 +10,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__, static_folder='public', static_url_path='')
 app.config['UPLOAD_FOLDER'] = os.path.join('public', 'uploads')
 app.config['DATABASE'] = 'database.db'
-app.config['SECRET_KEY'] = 'bruja_teatral_secret_key_2024' # Change in production
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'bruja_teatral_secret_key_2024_CHANGE_IN_PRODUCTION')
 
 # Ensure upload dir exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -69,19 +70,24 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Token check helper (Basic simulation for this scope, real JWT preferred but custom header works for simple Flask)
+# Token check helper - HMAC-based validation (stateless, survives restarts)
 def check_auth(req):
     token = req.headers.get('Authorization')
     if not token or not token.startswith('Bearer '):
         return False
-    # In a real app we decode JWT. Here we just simple-verify against a session logic or simplified check.
-    # For simplicity in this "simplest SQLite" port, we'll verify the token string simply IS the username signed (or just a shared secret + user).
-    # actually, let's just make the login return a dummy token and we check if it exists.
-    # IMPROVEMENT: Use a simple session dictionary or just accept the token returned by login.
-    # To keep it robust without extra libs like PyJWT, we will just use a global set of active tokens.
-    return token.split(' ')[1] in active_tokens
-
-active_tokens = set()
+    
+    token_value = token.split(' ')[1]
+    
+    # Verify token is valid HMAC of username with SECRET_KEY
+    try:
+        # Token format: {username}:{hmac_signature}
+        if ':' not in token_value:
+            return False
+        username, signature = token_value.split(':', 1)
+        expected_signature = hashlib.sha256((username + app.config['SECRET_KEY']).encode()).hexdigest()
+        return signature == expected_signature
+    except:
+        return False
 
 @app.route('/')
 def index():
@@ -104,8 +110,9 @@ def login():
     conn.close()
 
     if user and check_password_hash(user['password_hash'], password):
-        token = secrets.token_hex(16)
-        active_tokens.add(token)
+        # Generate HMAC-based token: {username}:{signature}
+        signature = hashlib.sha256((username + app.config['SECRET_KEY']).encode()).hexdigest()
+        token = f"{username}:{signature}"
         return jsonify({'token': token, 'username': username})
     
     return jsonify({'error': 'Invalid credentials'}), 401
@@ -198,8 +205,50 @@ def upload_file():
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_name))
     return jsonify({'url': f'/uploads/{unique_name}'})
 
+@app.route('/api/images', methods=['GET'])
+def get_images():
+    if not check_auth(request): return jsonify({'error': 'Unauthorized'}), 401
+    upload_folder = app.config['UPLOAD_FOLDER']
+    if not os.path.exists(upload_folder):
+        return jsonify([])
+    
+    images = []
+    for filename in os.listdir(upload_folder):
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')):
+            images.append({
+                'filename': filename,
+                'url': f'/uploads/{filename}'
+            })
+    return jsonify(images)
+
+@app.route('/api/images/<filename>', methods=['DELETE'])
+def delete_image(filename):
+    if not check_auth(request): return jsonify({'error': 'Unauthorized'}), 401
+    
+    # Security: only delete from uploads folder and prevent path traversal
+    if '..' in filename or '/' in filename or '\\' in filename:
+        return jsonify({'error': 'Invalid filename'}), 400
+    
+    upload_folder = app.config['UPLOAD_FOLDER']
+    filepath = os.path.join(upload_folder, filename)
+    
+    if not os.path.exists(filepath):
+        return jsonify({'error': 'File not found'}), 404
+    
+    try:
+        os.remove(filepath)
+        return jsonify({'success': True, 'message': 'Image deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     init_db()
+    port = int(os.environ.get('PORT', 3000))
+    flask_env = os.environ.get('FLASK_ENV', 'development')
+    debug = flask_env == 'development'
+    
     print("Database Initialized")
-    print("Starting Flask Server on http://localhost:3000")
-    app.run(port=3000, debug=True)
+    print(f"Starting Flask Server on http://localhost:{port}")
+    print(f"Environment: {flask_env}")
+    
+    app.run(host='0.0.0.0', port=port, debug=debug)

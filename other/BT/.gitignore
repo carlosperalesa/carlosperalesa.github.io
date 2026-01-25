@@ -1,19 +1,21 @@
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
 *.so
+
+# Environment
 .env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+
+# Database (data - persists via Docker volume)
 database.db
-instance/
-.pytest_cache/
-.coverage
-htmlcov/
-dist/
-build/
-*.egg-info/
+database.backup.db
+*.db-journal
+
+# Uploads (user content - persists via Docker volume)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Development
+.vscode/
+.idea/
+*.swp

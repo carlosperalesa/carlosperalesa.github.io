@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  contact-api:
+    build: .
+    container_name: portfolio-contact-api
+    ports:
+      - "5000:5000"
+    volumes:
+      # Persistir la base de datos SQLite
+      - ./data:/app/data
+    environment:
+      - PORT=5000
+      - FLASK_ENV=production
+      # Opcional: Configurar SMTP para notificaciones por email
+      # - SMTP_HOST=smtp.gmail.com
+      # - SMTP_PORT=587
+      # - SMTP_USER=tu_email@gmail.com
+      # - SMTP_PASSWORD=tu_contraseña_de_aplicación
+      # - NOTIFICATION_EMAIL=donde_recibir_notificaciones@email.com
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+
+networks:
+  portfolio-network:
+    driver: bridge

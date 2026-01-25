@@ -1,15 +1,22 @@
-const API_URL = '/other/BT/api';
+const API_URL = '/api';
 let quill;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Check auth first (synchronous, redirects if no token)
     checkAuth();
-    initQuill();
-    loadPosts();
-    loadMessages(); // Load both on init
 
+    // 2. Initialize UI elements
+    initQuill();
+
+    // 3. Set up event listeners
     document.getElementById('logoutBtn').addEventListener('click', logout);
     document.getElementById('postForm').addEventListener('submit', handlePostSubmit);
     document.getElementById('imageInput').addEventListener('change', handleImageUpload);
+
+    // 4. Load data (these can run in parallel since auth is already checked)
+    loadPosts();
+    loadMessages();
+    loadImageGallery();
 });
 
 function checkAuth() {
@@ -22,15 +29,29 @@ function checkAuth() {
 }
 
 function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = 'index.html';
+    // Clear all auth data
+    localStorage.clear(); // Clear everything to avoid conflicts
+    showToast('Sesión cerrada');
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 500);
 }
 
 function initQuill() {
     quill = new Quill('#editor-container', {
         theme: 'snow',
-        placeholder: 'Escribe tu historia aquí...'
+        placeholder: 'Escribe tu historia aquí...',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'align': [] }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['blockquote', 'code-block'],
+                ['link', 'image'],
+                ['clean']
+            ]
+        }
     });
 }
 
@@ -64,31 +85,42 @@ async function handlePostSubmit(e) {
     const id = document.getElementById('postId').value;
     const title = document.getElementById('postTitle').value;
     const summary = document.getElementById('postSummary').value;
-    const imageUrl = document.getElementById('imageUrl').value;
+    const imageUrl = document.getElementById('imageUrl').value || 'img/logo_placeholder.png'; // Default image
     const content = quill.root.innerHTML;
 
     const method = id ? 'PUT' : 'POST';
     const url = id ? `${API_URL}/posts/${id}` : `${API_URL}/posts`;
+
+    // DEBUG: Log token status
+    const token = localStorage.getItem('token');
+    console.log('🔑 Token from localStorage:', token ? 'EXISTS (' + token.substring(0, 10) + '...)' : 'NULL/MISSING');
+    console.log('📡 Request:', method, url);
 
     try {
         const res = await fetch(url, {
             method: method,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ title, summary, image_url: imageUrl, content })
         });
 
+        console.log('📥 Response status:', res.status, res.statusText);
+
         if (res.ok) {
-            showToast('Post guardado correctamente');
+            showToast('✅ Post guardado correctamente');
             hidePostForm();
             loadPosts();
         } else {
-            showToast('Error al guardar');
+            const errorData = await res.json();
+            console.log('❌ Error data:', errorData);
+            showToast(`❌ Error al guardar: ${errorData.error || res.statusText}`);
+            console.error('Save error:', errorData);
         }
     } catch (err) {
-        showToast('Error de conexión');
+        console.error('Save exception:', err);
+        showToast('❌ Error de conexión: ' + err.message);
     }
 }
 
@@ -140,33 +172,163 @@ async function handleImageUpload(e) {
     const formData = new FormData();
     formData.append('image', file);
 
+    // DEBUG: Log token status
+    const token = localStorage.getItem('token');
+    console.log('🖼️ IMAGE UPLOAD - Token:', token ? 'EXISTS (' + token.substring(0, 10) + '...)' : 'NULL/MISSING');
+
     try {
         const res = await fetch(`${API_URL}/upload`, {
             method: 'POST',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            headers: { 'Authorization': `Bearer ${token}` },
             body: formData
         });
+
+        console.log('📥 Upload response status:', res.status, res.statusText);
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            console.log('❌ Upload error data:', errorData);
+            showToast(`Error subiendo imagen: ${errorData.error || res.statusText}`);
+            console.error('Upload error:', errorData);
+            return;
+        }
+
         const data = await res.json();
+        console.log('✅ Upload success:', data);
         if (data.url) {
             document.getElementById('imageUrl').value = data.url;
             const preview = document.getElementById('imagePreview');
             preview.src = data.url;
             preview.style.display = 'block';
-            showToast('Imagen subida');
+            showToast('Imagen subida correctamente');
+        } else {
+            showToast('Error: No se recibió URL de imagen');
         }
     } catch (err) {
-        showToast('Error subiendo imagen');
+        console.error('Upload exception:', err);
+        showToast('Error subiendo imagen: ' + err.message);
+    }
+}
+
+/* --- IMAGE GALLERY --- */
+async function loadImageGallery() {
+    const gallery = document.getElementById('imageGallery');
+    if (!gallery) {
+        console.log('Gallery element not found, skipping load');
+        return; // Gallery not on this page
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/images`, {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+
+        if (!res.ok) {
+            gallery.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No se pudieron cargar las imágenes</p>';
+            return;
+        }
+
+        const images = await res.json();
+
+        if (images.length === 0) {
+            gallery.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No hay imágenes subidas aún</p>';
+            return;
+        }
+
+        gallery.innerHTML = images.map(img => `
+            <div style="
+                position: relative;
+                cursor: pointer;
+                border: 2px solid transparent;
+                border-radius: 4px;
+                overflow: hidden;
+                transition: all 0.2s;
+            " onmouseover="this.style.borderColor='var(--color-purple)'; this.style.transform='scale(1.05)'" 
+               onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)'">
+                <img src="${img.url}" onclick="selectImage('${img.url}')" style="width: 100%; height: 100px; object-fit: cover; display: block;" title="${img.filename}">
+                <button type="button" onclick="event.stopPropagation(); deleteImage('${img.filename}')" style="
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    background: rgba(255, 0, 0, 0.8);
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 24px;
+                    height: 24px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: background 0.2s;
+                " onmouseover="this.style.background='rgba(255, 0, 0, 1)'" 
+                   onmouseout="this.style.background='rgba(255, 0, 0, 0.8)'">×</button>
+            </div>
+        `).join('');
+    } catch (err) {
+        console.error('Gallery load error:', err);
+        if (gallery) {
+            gallery.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">Error al cargar galería</p>';
+        }
+    }
+}
+
+function selectImage(url) {
+    document.getElementById('imageUrl').value = url;
+    const preview = document.getElementById('imagePreview');
+    preview.src = url;
+    preview.style.display = 'block';
+    showToast('✅ Imagen seleccionada');
+}
+
+async function deleteImage(filename) {
+    if (!confirm(`¿Estás seguro de eliminar "${filename}"?\n\nEsta acción no se puede deshacer.`)) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/images/${encodeURIComponent(filename)}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+
+        if (res.ok) {
+            showToast('🗑️ Imagen eliminada');
+            loadImageGallery(); // Reload gallery
+        } else {
+            const errorData = await res.json();
+            showToast(`❌ Error: ${errorData.error || 'No se pudo eliminar'}`);
+        }
+    } catch (err) {
+        console.error('Delete error:', err);
+        showToast('❌ Error al eliminar imagen');
     }
 }
 
 /* --- MESSAGES --- */
 async function loadMessages() {
+    const tbody = document.getElementById('messagesTableBody');
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--color-purple);">⏳ Cargando mensajes, por favor espere...</td></tr>';
+
     try {
         const res = await fetch(`${API_URL}/messages`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
+
+        if (!res.ok) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ff6b6b;">❌ Error al cargar mensajes. Intenta hacer logout y login de nuevo.</td></tr>';
+            return;
+        }
+
         const messages = await res.json();
-        const tbody = document.getElementById('messagesTableBody');
+
+        if (messages.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #999;">No hay mensajes aún</td></tr>';
+            return;
+        }
+
         tbody.innerHTML = messages.map(m => `
             <tr>
                 <td>${new Date(m.created_at).toLocaleString()}</td>
@@ -181,7 +343,8 @@ async function loadMessages() {
             </tr>
         `).join('');
     } catch (err) {
-        console.error(err);
+        console.error('Error loading messages:', err);
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ff6b6b;">❌ Error de conexión</td></tr>';
     }
 }
 

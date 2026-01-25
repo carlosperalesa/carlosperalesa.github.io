@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: bruja-teatral
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      # Persist database
+      - ./database.db:/app/database.db
+      # Persist uploads
+      - ./public/uploads:/app/public/uploads
+    environment:
+      - FLASK_ENV=${FLASK_ENV:-production}
+      - SECRET_KEY=${SECRET_KEY:-bruja_teatral_secret_key_2024_CHANGE_IN_PRODUCTION}
+      - PORT=${PORT:-3000}
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

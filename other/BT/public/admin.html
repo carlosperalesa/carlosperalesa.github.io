@@ -109,6 +109,26 @@
                             <input type="file" id="imageInput" accept="image/*">
                             <input type="hidden" id="imageUrl">
                             <img id="imagePreview" style="max-height: 100px; display:none; margin-top:10px;">
+
+                            <!-- Image Gallery -->
+                            <div style="margin-top: 20px;">
+                                <label style="display: block; margin-bottom: 10px;">O selecciona una imagen subida
+                                    anteriormente:</label>
+                                <div id="imageGallery" style="
+                                    display: grid;
+                                    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                                    gap: 10px;
+                                    max-height: 300px;
+                                    overflow-y: auto;
+                                    border: 1px solid #ddd;
+                                    padding: 10px;
+                                    border-radius: 4px;
+                                    background: #f9f9f9;
+                                ">
+                                    <p style="grid-column: 1/-1; text-align: center; color: #999;">Cargando imágenes...
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Contenido</label>
@@ -156,7 +176,7 @@
 
     <!-- Quill JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="js/admin.js"></script>
+    <script src="js/admin.js?v=4"></script>
 </body>
 
 </html>
