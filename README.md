@@ -51,11 +51,19 @@ carlosperalesa.github.io/
 │   ├── cards/             # Imágenes de proyectos
 │   ├── cert/              # Certificaciones
 │   └── lenguajes/         # Iconos de tecnologías
+├── 📂 api/                # Backend Contact API (Docker)
+│   ├── app.py             # Flask API
+│   ├── docker-compose.yml # Docker config
+│   └── nginx.conf         # Nginx site config
 ├── 📂 other/              # Proyectos adicionales
+│   ├── BT/                # Bruja Teatral (Docker)
 │   ├── cv/                # Currículum en diferentes formatos
 │   ├── pokedex/           # Proyecto Pokédex
-│   ├── hootiehoo/         # Proyecto HootieHoo
-│   └── ...
+│   └── hootiehoo/         # Proyecto HootieHoo
+├── 📄 deploy.sh           # Script de deploy automático
+├── 📄 start.sh            # Deploy + rebuild de contenedores
+├── 📄 check.sh            # Health check del sistema
+├── 📄 backup.sh           # Script de backup
 ├── 📄 robots.txt          # Configuración para crawlers
 ├── 📄 sitemap.xml         # Mapa del sitio para SEO
 └── 📄 README.md           # Este archivo
@@ -63,16 +71,124 @@ carlosperalesa.github.io/
 
 ---
 
-## 🚀 Deploy
+## 🏗️ Arquitectura
 
-El sitio se despliega automáticamente en **GitHub Pages** con cada push a la rama principal.
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    DigitalOcean Droplet                     │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │                    Nginx (443)                       │   │
+│  │  • SSL/HTTPS (Let's Encrypt)                        │   │
+│  │  • Rate Limiting                                     │   │
+│  │  • Static Files + Reverse Proxy                      │   │
+│  └───────────┬─────────────────────────┬───────────────┘   │
+│              │                         │                    │
+│              ▼                         ▼                    │
+│  ┌─────────────────────┐   ┌─────────────────────┐        │
+│  │  Contact API        │   │  Bruja Teatral      │        │
+│  │  Docker :5000       │   │  Docker :3000       │        │
+│  │  • Flask            │   │  • Flask + Gunicorn │        │
+│  │  • SQLite + Encrypt │   │  • SQLite           │        │
+│  │  • Rate Limiting    │   │  • JWT Auth         │        │
+│  └─────────────────────┘   └─────────────────────┘        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Deployment
+
+### Deployment Automático (CI/CD)
+
+El sitio se despliega automáticamente con cada push a `main`:
+
+```
+GitHub Push → GitHub Actions → SSH → DigitalOcean → Docker Rebuild
+```
+
+### GitHub Secrets Requeridos
+
+| Secret | Descripción |
+|--------|-------------|
+| `DEPLOY_KEY` | SSH private key |
+| `DEPLOY_HOST` | IP del servidor |
+| `DEPLOY_USER` | Usuario SSH (root) |
+| `DEPLOY_DOMAIN` | carlosperales.dev |
+
+### Scripts de Servidor
+
+Los scripts están en la raíz del repo y se copian a `/bin/` en el servidor:
+
+```bash
+# Deploy completo + rebuild contenedores
+start
+
+# Health check del sistema
+check
+
+# Backup de bases de datos y uploads
+bash /var/www/html-static/backup.sh
+```
+
+### Setup Inicial del Servidor
+
+Requisitos: Ubuntu 22.04+, Docker, Nginx, Certbot
+
+```bash
+# 1. Clonar repo
+cd /var/www
+git clone https://github.com/carlosperalesa/carlosperalesa.github.io.git html-static
+
+# 2. Copiar scripts a /bin/
+cp html-static/start.sh /bin/start
+cp html-static/check.sh /bin/check
+chmod +x /bin/start /bin/check
+
+# 3. Configurar SSL
+certbot --nginx -d carlosperales.dev -d www.carlosperales.dev
+
+# 4. Deploy inicial
+start
+```
+
+### Deploy Manual
+
+```bash
+# En el servidor
+cd /var/www/html-static
+git pull origin main
+bash deploy.sh
+```
+
+### Backups
+
+```bash
+# Ejecutar backup manual
+bash /var/www/html-static/backup.sh
+
+# Programar backup diario (agregar a crontab)
+0 2 * * * /var/www/html-static/backup.sh >> /var/log/backup.log 2>&1
+```
+
+---
+
+## 🔧 Desarrollo Local
 
 ```bash
 # Clonar el repositorio
 git clone https://github.com/carlosperalesa/carlosperalesa.github.io.git
+cd carlosperalesa.github.io
 
-# Abrir en navegador (desarrollo local)
-# Simplemente abre index.html en tu navegador favorito
+# Levantar Contact API
+cd api
+docker-compose up -d
+
+# Levantar Bruja Teatral
+cd ../other/BT
+docker-compose up -d
+
+# Abrir index.html en navegador o usar Live Server
 ```
 
 ---
