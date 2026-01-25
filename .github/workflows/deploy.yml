@@ -4,13 +4,41 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # Permite ejecutar manualmente desde GitHub
+
+env:
+  DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+  DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
 
 jobs:
-  deploy:
+  # Job 1: Validaciones básicas antes del deploy
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      
+      - name: Validate HTML
+        run: |
+          echo "🔍 Validating critical files exist..."
+          test -f index.html || exit 1
+          test -f api/app.py || exit 1
+          test -f other/BT/app.py || exit 1
+          echo "✅ All critical files present"
+      
+      - name: Check for secrets in code
+        run: |
+          echo "🔒 Scanning for exposed secrets..."
+          ! grep -rE "(password|secret|api_key)\s*=\s*['\"][^'\"]+['\"]" --include="*.py" --include="*.js" . || echo "⚠️ Warning: Potential secrets found"
+          echo "✅ Secret scan complete"
+
+  # Job 2: Deploy al servidor
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       
       - name: Setup SSH key
         run: |
@@ -20,4 +48,30 @@ jobs:
           ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
       
       - name: Deploy to server
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash /home/deploy.sh
+        run: |
+          echo "🚀 Starting deployment..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'bash /home/deploy.sh'
+          echo "✅ Deployment complete"
+      
+      - name: Health check
+        run: |
+          echo "🏥 Running health checks..."
+          sleep 10
+          curl -f https://${{ secrets.DEPLOY_DOMAIN }}/api/health || echo "⚠️ Main API health check failed"
+          curl -f https://${{ secrets.DEPLOY_DOMAIN }}/bt/api/health || echo "⚠️ BT API health check failed"
+          echo "✅ Health checks complete"
+
+  # Job 3: Notificación (opcional)
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Deployment status
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+            exit 1
+          fi

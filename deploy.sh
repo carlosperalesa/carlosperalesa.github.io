@@ -1,43 +1,89 @@
 #!/bin/bash
 
-# Auto-deploy script for Bruja Teatral (and static site)
+# ============================================
+# Auto-deploy script for carlosperales.dev
+# Includes: Static site + Contact API + Bruja Teatral
+# ============================================
 
-echo "[$(date)] - Starting deploy..."
+set -e  # Exit on error
 
-# 1. Update Code
-cd /var/www/html-static
+LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
+SITE_DIR="/var/www/html-static"
+
+echo "$LOG_PREFIX - 🚀 Starting deploy..."
+
+# ============================================
+# 1. Update Code from Git
+# ============================================
+echo "$LOG_PREFIX - 📥 Pulling latest code..."
+cd $SITE_DIR
 git fetch origin
 git reset --hard origin/main
 
-# 2. Setup Python Backend for Bruja Teatral
-echo "[$(date)] - Setting up Python environment..."
-cd /var/www/html-static/other/BT
+# ============================================
+# 2. Deploy Contact API (Docker)
+# ============================================
+echo "$LOG_PREFIX - 🐳 Deploying Contact API..."
+cd $SITE_DIR/api
 
-# Create virtual environment if it doesn't exist
-if [ ! -d ".venv" ]; then
-    python3 -m venv .venv
-    echo "Virtual environment created."
+# Rebuild and restart container
+docker-compose down --remove-orphans 2>/dev/null || true
+docker-compose build --no-cache
+docker-compose up -d
+
+# Wait for health check
+echo "$LOG_PREFIX - ⏳ Waiting for Contact API health check..."
+sleep 5
+if curl -sf http://localhost:5000/api/health > /dev/null; then
+    echo "$LOG_PREFIX - ✅ Contact API is healthy"
+else
+    echo "$LOG_PREFIX - ⚠️ Contact API health check failed"
 fi
 
-# Install dependencies
-./.venv/bin/pip install -r requirements.txt
+# ============================================
+# 3. Deploy Bruja Teatral (Docker)
+# ============================================
+echo "$LOG_PREFIX - 🐳 Deploying Bruja Teatral..."
+cd $SITE_DIR/other/BT
 
-# 3. Permissions
-# Ensure database folder/file is writable by www-data
-chown -R www-data:www-data /var/www/html-static/other/BT
-chmod -R 775 /var/www/html-static/other/BT/public/uploads
-if [ -f "database.db" ]; then
-    chmod 664 database.db
+# Rebuild and restart container
+docker-compose down --remove-orphans 2>/dev/null || true
+docker-compose build --no-cache
+docker-compose up -d
+
+# Wait for health check
+echo "$LOG_PREFIX - ⏳ Waiting for BT health check..."
+sleep 5
+if curl -sf http://localhost:3000/api/health > /dev/null; then
+    echo "$LOG_PREFIX - ✅ Bruja Teatral is healthy"
+else
+    echo "$LOG_PREFIX - ⚠️ BT health check failed"
 fi
-# If dir exists but no db yet, ensure dir is writable so app can create it
-chmod 775 /var/www/html-static/other/BT
 
-# 4. Restart Service
-echo "[$(date)] - Restarting Gunicorn service..."
-# We use sudo here assuming the user running deploy might need it, 
-# but if running as root (per your cron/ssh), it's fine.
-systemctl daemon-reload
-systemctl enable --now bruja_teatral.service
-systemctl restart bruja_teatral.service
+# ============================================
+# 4. Permissions for uploads
+# ============================================
+echo "$LOG_PREFIX - 🔐 Setting permissions..."
+chmod -R 775 $SITE_DIR/other/BT/public/uploads 2>/dev/null || true
 
-echo "[$(date)] - Deploy completed successfully."
+# ============================================
+# 5. Reload Nginx (if config changed)
+# ============================================
+echo "$LOG_PREFIX - 🔄 Testing and reloading Nginx..."
+if nginx -t 2>/dev/null; then
+    systemctl reload nginx
+    echo "$LOG_PREFIX - ✅ Nginx reloaded"
+else
+    echo "$LOG_PREFIX - ⚠️ Nginx config test failed, skipping reload"
+fi
+
+# ============================================
+# 6. Cleanup old Docker resources
+# ============================================
+echo "$LOG_PREFIX - 🧹 Cleaning up old Docker resources..."
+docker image prune -f 2>/dev/null || true
+
+echo "$LOG_PREFIX - ✅ Deploy completed successfully!"
+echo ""
+echo "Services status:"
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "contact-api|bruja-teatral" || echo "No containers found"

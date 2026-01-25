@@ -1,0 +1,82 @@
+# ============================================
+# Global .gitignore for carlosperales.dev
+# ============================================
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+.eggs/
+*.egg
+
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === Databases ===
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# === Environment & Secrets ===
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+
+# === IDE & Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+*~
+
+# === OS Files ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# === Logs ===
+*.log
+logs/
+
+# === Build outputs ===
+dist/
+build/
+*.min.js
+*.min.css
+
+# === API specific ===
+api/data/
+api/*.db
+
+# === BT specific ===
+other/BT/database.db
+other/BT/database.backup.db
+other/BT/public/uploads/*
+!other/BT/public/uploads/.gitkeep
+
+# === Temporary files ===
+*.tmp
+*.temp
+*.bak
+*.backup
