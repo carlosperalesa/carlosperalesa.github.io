@@ -61,9 +61,12 @@ else
 fi
 
 # ============================================
-# 4. Permissions for uploads
+# 4. Permissions for uploads & Database (User 1000 inside container)
 # ============================================
 echo "$LOG_PREFIX - 🔐 Setting permissions..."
+# BT uses a non-root user (id 1000), so we must chown the bind-mounted files
+chown 1000:1000 $SITE_DIR/other/BT/database.db 2>/dev/null || true
+chown -R 1000:1000 $SITE_DIR/other/BT/public/uploads 2>/dev/null || true
 chmod -R 775 $SITE_DIR/other/BT/public/uploads 2>/dev/null || true
 
 # ============================================
