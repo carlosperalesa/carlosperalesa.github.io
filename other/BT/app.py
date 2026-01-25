@@ -243,6 +243,13 @@ def delete_image(filename):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Initialize DB for production (Gunicorn)
+try:
+    with app.app_context():
+        init_db()
+except Exception as e:
+    print(f"Warning: DB init failed: {e}")
+
 if __name__ == '__main__':
     init_db()
     port = int(os.environ.get('PORT', 3000))
