@@ -89,6 +89,7 @@ def init_db():
     print(f"✅ Base de datos inicializada en {DB_PATH}")
 
 @app.route('/api/health', methods=['GET'])
+@limiter.exempt  # Excluir health check del rate limiting
 def health():
     """Endpoint para verificar que la API está funcionando"""
     return jsonify({

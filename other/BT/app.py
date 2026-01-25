@@ -3,6 +3,7 @@ import sqlite3
 import time
 import secrets
 import hashlib
+from datetime import datetime
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -148,6 +149,16 @@ def login():
         })
     
     return jsonify({'error': 'Invalid credentials'}), 401
+
+# Health check endpoint
+@app.route('/api/health', methods=['GET'])
+def health():
+    """Endpoint para verificar que la API está funcionando"""
+    return jsonify({
+        'status': 'ok',
+        'service': 'Bruja Teatral API',
+        'timestamp': datetime.now().isoformat()
+    })
 
 @app.route('/api/posts', methods=['GET'])
 def get_posts():
