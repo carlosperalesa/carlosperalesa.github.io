@@ -61,6 +61,10 @@ echo -e "\n⏳ Iniciando rebuild de Bruja Teatral. Ten paciencia..."
 touch "$BT_DIR/database.db"
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
+# 5. Recargar Nginx (Importante para cambios de config)
+echo -e "\n🔄 Recargando configuración de proxy..."
+run_task "nginx -t && systemctl reload nginx" "Recargando Nginx"
+
 echo "-----------------------------------"
 echo -e "\n🔍 VERIFICACIÓN DE SALUD (HEALTH CHECKS)\n"
 
