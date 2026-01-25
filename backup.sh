@@ -20,7 +20,7 @@ mkdir -p "$BACKUP_DIR"
 # 1. Backup Contact API Database
 # ============================================
 echo "📦 Backing up Contact API database..."
-CONTACT_DB="/var/www/html-static/api/data/contacts.db"
+CONTACT_DB="/var/www/html-static/api/data/contactos.db"
 if [ -f "$CONTACT_DB" ]; then
     cp "$CONTACT_DB" "$BACKUP_DIR/contacts_$DATE.db"
     echo "✅ Contact API database backed up"

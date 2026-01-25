@@ -55,7 +55,10 @@ echo -e "\n⏳ Iniciando rebuild de Main API. Ten paciencia..."
 run_task "cd $API_DIR && docker compose up -d --build" "Reconstruyendo Main API"
 
 # 4. Bruja Teatral (BT)
+# 4. Bruja Teatral (BT)
 echo -e "\n⏳ Iniciando rebuild de Bruja Teatral. Ten paciencia..."
+# Ensure DB file exists to prevent Docker directory creation issue
+touch "$BT_DIR/database.db"
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
 echo "-----------------------------------"

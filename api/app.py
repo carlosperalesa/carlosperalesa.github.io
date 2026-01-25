@@ -235,7 +235,18 @@ def ratelimit_handler(e):
         'retry_after': e.description
     }), 429
 
+# =============================================
+# GUNICORN ENTRY POINT
+# =============================================
+# Initialize DB when running with Gunicorn
+try:
+    with app.app_context():
+        init_db()
+except Exception as e:
+    print(f"Warning: DB init failed: {e}")
+
 if __name__ == '__main__':
+    # init_db() se llama arriba, pero no daña llamarlo aquí también (IF NOT EXISTS)
     init_db()
     port = int(os.getenv('PORT', '5000'))
     print(f"🚀 Iniciando servidor en puerto {port}")

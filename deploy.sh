@@ -67,12 +67,20 @@ echo "$LOG_PREFIX - 🔐 Setting permissions..."
 chmod -R 775 $SITE_DIR/other/BT/public/uploads 2>/dev/null || true
 
 # ============================================
-# 5. Reload Nginx (if config changed)
+# 5. Reload Nginx (Upgrade Config)
 # ============================================
-echo "$LOG_PREFIX - 🔄 Testing and reloading Nginx..."
+echo "$LOG_PREFIX - 🔄 updating Nginx configuration..."
+# Ensure database file exists for BT to avoid Docker creating it as a directory
+touch $SITE_DIR/other/BT/database.db 2>/dev/null || true
+
+# Copy config
+cp $SITE_DIR/api/nginx.conf /etc/nginx/sites-available/carlosperales.dev
+# symlink should already exist but ensure it
+ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/
+
 if nginx -t 2>/dev/null; then
     systemctl reload nginx
-    echo "$LOG_PREFIX - ✅ Nginx reloaded"
+    echo "$LOG_PREFIX - ✅ Nginx reloaded with new config"
 else
     echo "$LOG_PREFIX - ⚠️ Nginx config test failed, skipping reload"
 fi

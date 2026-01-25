@@ -3,10 +3,11 @@
  * Maneja el envío del formulario de contacto al backend API
  */
 
-// API URL - Detección dinámica basada en el entorno
-// En local: usa localhost:5000, en producción: usa la misma URL base del sitio
-const CONTACT_IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
-const CONTACT_API_BASE = CONTACT_IS_LOCAL ? 'http://localhost:5000' : window.location.origin;
+// API URL - Configuración para Local (Dev) y DigitalOcean (Prod)
+// En Local: localhost:5000 (Python API directa)
+// En DO: Misma URL de origen (Nginx maneja el proxy reverso)
+const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const CONTACT_API_BASE = IS_LOCAL ? 'http://localhost:5000' : window.location.origin;
 
 document.addEventListener('DOMContentLoaded', () => {
     const contactModal = document.getElementById('modal-contacto');

@@ -1,7 +1,8 @@
-// Detectar entorno local
+// Entorno: Local vs DigitalOcean
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+// En Prod (DO), Nginx debe mapear '/bt/' al contenedor de BT
 const API_URL = isLocal ? 'http://localhost:3000/api' : '/bt/api';
-const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';  // Base para assets (imágenes)
+const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';
 
 // Helper para resolver URLs de imágenes
 function resolveImageUrl(url) {
@@ -80,7 +81,7 @@ function setupModal() {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', data.username);
                 localStorage.setItem('token_expires_at', data.expires_at);
-                
+
                 const hoursRemaining = data.expires_in_hours || 24;
                 showToast(`Login exitoso. Sesión válida por ${hoursRemaining} horas.`);
                 setTimeout(() => window.location.href = 'admin.html', 1000);
