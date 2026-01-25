@@ -27,9 +27,9 @@ echo "$LOG_PREFIX - 🐳 Deploying Contact API..."
 cd $SITE_DIR/api
 
 # Rebuild and restart container
-docker-compose down --remove-orphans 2>/dev/null || true
-docker-compose build --no-cache
-docker-compose up -d
+docker compose down --remove-orphans 2>/dev/null || true
+docker compose build --no-cache
+docker compose up -d
 
 # Wait for health check
 echo "$LOG_PREFIX - ⏳ Waiting for Contact API health check..."
@@ -47,9 +47,9 @@ echo "$LOG_PREFIX - 🐳 Deploying Bruja Teatral..."
 cd $SITE_DIR/other/BT
 
 # Rebuild and restart container
-docker-compose down --remove-orphans 2>/dev/null || true
-docker-compose build --no-cache
-docker-compose up -d
+docker compose down --remove-orphans 2>/dev/null || true
+docker compose build --no-cache
+docker compose up -d
 
 # Wait for health check
 echo "$LOG_PREFIX - ⏳ Waiting for BT health check..."
