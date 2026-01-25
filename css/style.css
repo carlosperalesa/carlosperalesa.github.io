@@ -1532,6 +1532,7 @@ body.dark-mode .project-icon {
     /* Header arrastrables en móvil para modales de confirmación */
     .modal.modal-confirm .modal-header {
         cursor: grab !important;
+        touch-action: none;
     }
 
     .modal.modal-confirm.dragging {

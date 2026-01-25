@@ -8,14 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!datetimeEl) return;
 
         const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const day = now.getDate();
-        const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-        const month = months[now.getMonth()];
-        const year = now.getFullYear();
 
-        datetimeEl.textContent = `${hours}:${minutes} | ${day} ${month} ${year}`;
+        // Use Intl for cleaner formatting
+        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+        const dateOptions = { day: 'numeric', month: 'short', year: 'numeric' };
+
+        const timeStr = now.toLocaleTimeString('es-CL', timeOptions);
+        const dateStr = now.toLocaleDateString('es-CL', dateOptions);
+
+        // Remove dots from month (Ene. -> Ene) if browser adds them, for consistency
+        const cleanDateStr = dateStr.replace('.', '');
+
+        datetimeEl.textContent = `${timeStr} | ${cleanDateStr}`;
     }
 
     updateDateTime();

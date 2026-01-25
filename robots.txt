@@ -6,7 +6,6 @@ Disallow: /tmp/
 Disallow: /test/
 Disallow: /other/
 
-# Permitir el acceso a todo el resto del sitio
 Allow: /
 
 Sitemap: https://carlosperales.dev/sitemap.xml

@@ -1,19 +1,18 @@
-// Credenciales quemadas en cliente (Temporal/Solicitado)
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "admin003";
-
-// URL base de la API (ajustar dinámicamente según entorno)
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_BASE_URL = isLocal ? 'http://localhost:5000/api' : '/api';
+// URL base de la API
+const API_BASE_URL = App.api.getBaseUrl();
 
 /**
  * Abre el modal de login (se llama desde onclick en reloj)
  */
 function openLoginModal() {
     // Resetear campos
-    document.getElementById('login-user').value = '';
-    document.getElementById('login-pass').value = '';
-    document.getElementById('login-error').textContent = '';
+    const userInput = document.getElementById('login-user');
+    const passInput = document.getElementById('login-pass');
+    const errorMsg = document.getElementById('login-error');
+
+    if (userInput) userInput.value = '';
+    if (passInput) passInput.value = '';
+    if (errorMsg) errorMsg.textContent = '';
 
     // Función global de modals.js
     if (typeof openModal === 'function') {
@@ -22,24 +21,62 @@ function openLoginModal() {
 }
 
 /**
- * Intenta realizar login
+ * Intenta realizar login contra el backend
  */
-function attemptLogin() {
+async function attemptLogin() {
     const user = document.getElementById('login-user').value;
     const pass = document.getElementById('login-pass').value;
     const errorMsg = document.getElementById('login-error');
+    const loginBtn = document.querySelector('#modal-login .modal-btn-primary');
 
-    if (user === ADMIN_USER && pass === ADMIN_PASS) {
-        // Login exitoso
-        if (typeof closeModal === 'function') closeModal('login');
-        if (typeof openModal === 'function') openModal('admin');
+    if (!user || !pass) {
+        if (errorMsg) errorMsg.textContent = 'Por favor completa todos los campos';
+        return;
+    }
 
-        // Cargar mensajes
-        loadMessages();
-    } else {
-        errorMsg.textContent = 'Credenciales incorrectas';
-        errorMsg.style.animation = 'shake 0.3s ease-in-out';
-        setTimeout(() => errorMsg.style.animation = '', 300);
+    try {
+        if (loginBtn) {
+            loginBtn.textContent = 'Verificando...';
+            loginBtn.disabled = true;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: user, password: pass })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            // Login exitoso
+            // Guardar token si aplica (ej. sessionStorage)
+            if (data.token) {
+                sessionStorage.setItem('admin_token', data.token);
+            }
+
+            if (typeof closeModal === 'function') closeModal('login');
+            if (typeof openModal === 'function') openModal('admin');
+
+            // Cargar mensajes
+            loadMessages();
+        } else {
+            if (errorMsg) {
+                errorMsg.textContent = data.message || 'Credenciales incorrectas';
+                errorMsg.style.animation = 'shake 0.3s ease-in-out';
+                setTimeout(() => errorMsg.style.animation = '', 300);
+            }
+        }
+    } catch (error) {
+        console.error('Error durante login:', error);
+        if (errorMsg) errorMsg.textContent = 'Error de conexión con el servidor';
+    } finally {
+        if (loginBtn) {
+            loginBtn.textContent = 'Ingresar';
+            loginBtn.disabled = false;
+        }
     }
 }
 
@@ -53,12 +90,23 @@ async function loadMessages() {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">Cargando mensajes...</td></tr>';
 
     try {
-        // Usar la constante API_BASE_URL definida al inicio del archivo
-        const url = `${API_BASE_URL}/contacts`;
+        const token = sessionStorage.getItem('admin_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const response = await fetch(url);
+        const url = `${API_BASE_URL}/api/contacts`;
+
+        const response = await fetch(url, { headers });
 
         if (!response.ok) {
+            // Si es 401 o 403, probablemente expiró la sesión
+            if (response.status === 401 || response.status === 403) {
+                if (typeof closeModal === 'function') closeModal('admin');
+                if (typeof openModal === 'function') openModal('login');
+                const errorMsg = document.getElementById('login-error');
+                if (errorMsg) errorMsg.textContent = 'Sesión expirada';
+                return;
+            }
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
@@ -68,7 +116,7 @@ async function loadMessages() {
             tbody.innerHTML = '';
 
             if (!data.contacts || data.contacts.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">No hay mensajes registrados</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">No hay mensajes registrados</td></tr>';
                 return;
             }
 
@@ -138,18 +186,27 @@ async function deleteContact(id) {
     if (!confirm(`¿Estás seguro de eliminar el mensaje ID #${id}? Esta acción no se puede deshacer.`)) return;
 
     try {
-        // Usar la constante API_BASE_URL definida al inicio del archivo
-        const url = `${API_BASE_URL}/contacts/${id}`;
+        const token = sessionStorage.getItem('admin_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const url = `${API_BASE_URL}/api/contacts/${id}`;
 
         const response = await fetch(url, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: headers
         });
 
         const data = await response.json();
 
         if (data.success) {
             // Mostrar feedback visual
-            if (typeof showToast === 'function') showToast('Mensaje eliminado');
+            const toast = document.getElementById('welcomeToast');
+            if (toast) {
+                toast.textContent = 'Mensaje eliminado';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
             // Recargar tabla
             loadMessages();
         } else {

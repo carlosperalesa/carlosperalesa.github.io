@@ -5,8 +5,6 @@ let openModals = [];
 let zIndexCounter = 1;
 const modalPositions = {};
 
-const isMobile = () => window.innerWidth <= 768;
-
 document.addEventListener('DOMContentLoaded', () => {
     const dockItems = document.querySelectorAll('.dock-item');
     const modalOverlays = document.querySelectorAll('.modal-overlay');
@@ -50,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Click fuera del modal para cerrar (SOLO en móvil)
         overlay.addEventListener('click', (e) => {
-            if (e.target === overlay && isMobile()) {
+            if (e.target === overlay && App.isMobile()) {
                 closeModal(overlay.id.replace('modal-', ''));
             }
         });
@@ -59,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = overlay.querySelector('.modal');
         if (modal) {
             modal.addEventListener('mousedown', () => {
-                if (!isMobile()) {
+                if (!App.isMobile()) {
                     overlay.style.zIndex = 2000 + zIndexCounter++;
                 }
             });
@@ -97,14 +95,14 @@ function openModal(modalId) {
     if (typeof playTap === 'function') playTap();
 
     // En móvil, cerrar modal anterior
-    if (isMobile() && openModals.length > 0) {
+    if (App.isMobile() && openModals.length > 0) {
         closeModal(openModals[openModals.length - 1], false);
     }
 
     // Obtener posición del icono para transform-origin
     const iconPos = getDockIconPosition(modalId);
 
-    if (!isMobile() && iconPos) {
+    if (!App.isMobile() && iconPos) {
         // Calcular posición central (usamos tamaño fijo conocido del modal)
         const modalWidth = 600;
         const modalHeight = 400;
@@ -154,7 +152,7 @@ function closeModal(modalId, withSound = true) {
     if (withSound && typeof playTap === 'function') playTap();
 
     // Guardar posición actual en desktop
-    if (!isMobile()) {
+    if (!App.isMobile()) {
         const rect = modal.getBoundingClientRect();
         modalPositions[modalId] = {
             x: rect.left,
@@ -199,7 +197,7 @@ function minimizeAll() {
                 const modal = overlay.querySelector('.modal');
 
                 // Guardar posición
-                if (!isMobile()) {
+                if (!App.isMobile()) {
                     const rect = modal.getBoundingClientRect();
                     modalPositions[modalId] = { x: rect.left, y: rect.top };
 

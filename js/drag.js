@@ -21,7 +21,7 @@ function initDragging(modal, e) {
     const isConfirmModal = modalEl.classList.contains('modal-confirm');
 
     // En móvil solo permitir arrastre de modales de confirmación
-    if (isMobile() && !isConfirmModal) return;
+    if (App.isMobile() && !isConfirmModal) return;
 
     // Prevenir comportamiento por defecto en touch
     if (e.cancelable) {
@@ -41,7 +41,7 @@ function initDragging(modal, e) {
     modalEl.classList.add('dragging');
 
     // Habilitar posición absoluta para modales de confirmación en móvil
-    if (isMobile() && isConfirmModal) {
+    if (App.isMobile() && isConfirmModal) {
         modalEl.style.position = 'absolute';
         modalEl.style.margin = '0';
         modalEl.style.left = `${rect.left}px`;
@@ -67,8 +67,8 @@ function handleDrag(e) {
     // Limitar dentro del viewport
     const modalWidth = dragModal.offsetWidth;
     const modalHeight = dragModal.offsetHeight;
-    const minY = isMobile() ? 0 : 44;
-    const maxY = (isMobile() ? window.innerHeight - 80 - 44 : window.innerHeight) - modalHeight;
+    const minY = App.isMobile() ? 0 : 44;
+    const maxY = (App.isMobile() ? window.innerHeight - 80 - 44 : window.innerHeight) - modalHeight;
     const minX = 20 - modalWidth;
     const maxX = window.innerWidth - 20;
 
