@@ -504,7 +504,33 @@ th {
     transition: 0.3s;
 }
 
-.toast.show {
-    opacity: 1;
-    bottom: 30px;
+bottom: 30px;
+}
+
+/* --- ADMIN ACCORDION --- */
+.message-row {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.message-row:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.message-detail td {
+    background: #fdfdfd;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-bottom: 2px solid #ddd;
+}
+
+.message-detail div {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.selectable-text {
+    user-select: text;
+    cursor: text;
 }

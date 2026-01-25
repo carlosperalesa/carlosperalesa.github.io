@@ -53,6 +53,12 @@
 
     /* Indicador */
     --indicator-color: #6366f1;
+
+    /* Semantic & UI Colors */
+    --color-success: #10b981;
+    --color-danger: #ef4444;
+    --mac-green: #28c840;
+    --mac-red: #ff5f57;
 }
 
 /* Modo Oscuro - Más profundo y con acentos neón */
@@ -68,6 +74,15 @@ body.dark-mode {
     --indicator-color: #a5b4fc;
     --accent-color: #818cf8;
     --accent-light: #c4b5fd;
+}
+
+/* Utilidad Glass Global */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
 }
 
 /* ============================================
@@ -187,7 +202,7 @@ body.dark-mode .desktop-screen::before {
 }
 
 /* ============================================
-   5. TOP BAR (Estilo iOS)
+   5. TOP BAR
    ============================================ */
 .top-bar {
     position: fixed;
@@ -548,7 +563,7 @@ body.dark-mode .social-link:hover {
 }
 
 /* ============================================
-   7. DOCK (Estilo iOS)
+   7. DOCK
    ============================================ */
 .dock-container {
     position: fixed;
@@ -693,6 +708,38 @@ body.dark-mode .social-link:hover {
     text-align: center;
     display: none;
     /* Oculto en móvil */
+}
+
+/* Badge de Notificaciones */
+.dock-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--color-danger);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }
 
 /* Indicador de modal abierto */
@@ -865,32 +912,20 @@ body.dark-mode .home-profile {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: #ff5f56;
+    background: var(--mac-red);
     border: 1px solid rgba(0, 0, 0, 0.1);
     color: transparent;
     font-size: 0;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
     position: relative;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.modal-close::before {
-    content: '×';
-    position: absolute;
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: opacity 0.15s ease;
-    line-height: 1;
-}
-
-.modal-close:hover::before {
-    opacity: 1;
-}
-
+/* Botón cerrar estilo Mac (sin icono) */
 .modal-close:hover {
-    background: #ff4136;
+    background: var(--mac-red);
+    opacity: 0.9;
+    transform: scale(1.1);
 }
 
 .modal-close:active {
@@ -1174,7 +1209,7 @@ body.dark-mode .home-profile {
 }
 
 /* ============================================
-   10. MODAL PROYECTOS (Carpeta iOS)
+   10. MODAL PROYECTOS
    ============================================ */
 .projects-grid {
     display: grid;
@@ -1633,4 +1668,181 @@ body.dark-mode .form-input:focus,
 body.dark-mode .form-textarea:focus {
     background: rgba(0, 0, 0, 0.4);
     border-color: var(--accent-color);
+}
+
+/* ============================================
+   17. ADMIN & MODAL UI MEJORADA
+   ============================================ */
+
+/* Tamaños de modales */
+.modal-sm {
+    width: 320px;
+    max-width: 90%;
+    margin: auto;
+    /* Centrado vertical/horizontal */
+}
+
+.modal-lg {
+    width: 900px;
+    height: 600px;
+    max-width: 95%;
+    max-height: 90vh;
+}
+
+/* Botones de control ventana */
+.window-controls {
+    display: flex;
+    gap: 8px;
+    margin-right: 8px;
+    /* Espacio antes del botón cerrar normal */
+}
+
+.modal-maximize {
+    width: 14px;
+    height: 14px;
+    background: var(--mac-green);
+    /* Verde Mac */
+    border-radius: 50%;
+    /* Redondo por defecto */
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 8px;
+}
+
+.modal-maximize:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+/* Estado Maximizado */
+.modal.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    border: none;
+}
+
+.modal.maximized .modal-body {
+    height: calc(100vh - 60px);
+    /* Ajuste altura cuerpo */
+}
+
+/* Tabla Admin */
+.admin-table-container {
+    overflow-x: auto;
+    height: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--glass-bg);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.admin-table th {
+    background: var(--glass-border);
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(5px);
+    z-index: 10;
+}
+
+.admin-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--glass-border);
+    vertical-align: middle;
+}
+
+.admin-table tr:hover {
+    background: var(--glass-border);
+}
+
+.message-row {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.message-row:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.message-detail td {
+    border-bottom: none !important;
+    box-shadow: inset 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Acciones en tabla */
+.action-btn {
+    padding: 6px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+}
+
+.action-btn.delete {
+    color: #ef4444;
+}
+
+.action-btn.delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+/* Auth Login Styles */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-error {
+    color: #ef4444;
+    font-size: 12px;
+    text-align: center;
+    min-height: 18px;
+}
+
+/* Media Queries para Móvil */
+@media (max-width: 768px) {
+
+    .modal-maximize,
+    .window-controls {
+        display: none !important;
+        /* Ocultar en móvil */
+    }
+
+    /* En móvil, los modales ya ocupan casi todo por defecto o css base */
+    .modal-lg {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100vh !important;
+        border-radius: 0;
+        bottom: 0;
+        top: 0;
+    }
+
+    .modal-sm {
+        width: 90%;
+        height: auto;
+    }
 }

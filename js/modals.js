@@ -28,7 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Click en botón cerrar de modales y overlay
     modalOverlays.forEach(overlay => {
         const closeBtn = overlay.querySelector('.modal-close');
+        const maximizeBtn = overlay.querySelector('.modal-maximize');
         const cancelBtn = overlay.querySelector('[data-action="cancel"]');
+
+        if (maximizeBtn) {
+            maximizeBtn.addEventListener('click', (e) => {
+                const modal = overlay.querySelector('.modal');
+                modal.classList.toggle('maximized');
+                // Al maximizar/restaurar, evitar propagación
+                e.preventDefault();
+            });
+        }
 
         if (closeBtn) {
             closeBtn.addEventListener('click', () => closeModal(overlay.id.replace('modal-', '')));

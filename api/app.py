@@ -92,9 +92,27 @@ def contact():
             'error': 'Error interno del servidor'
         }), 500
 
+@app.route('/api/contacts/count', methods=['GET'])
+def count_contacts():
+    """Endpoint público para contar mensajes (badge de notificaciones)"""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute('SELECT COUNT(*) FROM contactos')
+        count = c.fetchone()[0]
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'count': count
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
     """Endpoint para obtener todos los contactos (proteger en producción)"""
+    # ... código existente ...
     try:
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
@@ -113,6 +131,30 @@ def get_contacts():
             'success': False,
             'error': str(e)
         }), 500
+
+@app.route('/api/contacts/<int:id>', methods=['DELETE'])
+def delete_contact(id):
+    """Endpoint para eliminar un contacto por ID"""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        
+        # Verificar si existe
+        c.execute('SELECT id FROM contactos WHERE id = ?', (id,))
+        if not c.fetchone():
+            conn.close()
+            return jsonify({'success': False, 'error': 'Contacto no encontrado'}), 404
+            
+        # Borrar
+        c.execute('DELETE FROM contactos WHERE id = ?', (id,))
+        conn.commit()
+        conn.close()
+        
+        print(f"✅ Contacto eliminado: ID={id}")
+        return jsonify({'success': True, 'message': 'Contacto eliminado correctamente'})
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 def send_notification_email(data):
     """

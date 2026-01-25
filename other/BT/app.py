@@ -4,10 +4,12 @@ import datetime
 import secrets
 import hashlib
 from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__, static_folder='public', static_url_path='')
+CORS(app) # Habilitar CORS para todas las rutas
 app.config['UPLOAD_FOLDER'] = os.path.join('public', 'uploads')
 app.config['DATABASE'] = 'database.db'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'bruja_teatral_secret_key_2024_CHANGE_IN_PRODUCTION')

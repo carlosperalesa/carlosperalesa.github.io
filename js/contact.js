@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearBtn = form.querySelector('.modal-btn-secondary');
 
     // API URL - Cambiar según el entorno
-    const API_URL = window.location.hostname === 'localhost'
+    const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
         ? 'http://localhost:5000/api/contact'
         : 'https://carlosperales.dev/api/contact';
 
@@ -166,3 +166,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('✅ Contact form handler initialized');
 });
+
+/* =================================
+   BADGE NOTIFICACIONES
+   ================================= */
+function updateContactBadge() {
+    let url = '/api/contacts/count';
+    // Soporte local
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
+        url = 'http://localhost:5000/api/contacts/count';
+    }
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const badge = document.getElementById('contact-badge');
+                if (badge) {
+                    if (data.count > 0) {
+                        badge.textContent = data.count > 99 ? '99+' : data.count;
+                        badge.style.display = 'flex';
+                        badge.classList.remove('popIn');
+                        void badge.offsetWidth; // Trigger reflow
+                        badge.style.animation = 'none';
+                        badge.style.animation = 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            }
+        })
+        .catch(err => console.log('Silently ignoring badge error:', err));
+}
+
+// Check al iniciar y cada 30 segundos
+document.addEventListener('DOMContentLoaded', () => {
+    updateContactBadge();
+    setInterval(updateContactBadge, 30000);
+});
+
+// Actualizar badge cuando se envía un mensaje exitoso
+const originalFetch = window.fetch;
+window.fetch = async (...args) => {
+    const response = await originalFetch(...args);
+    // Si es un POST a /contact exitoso, actualizar badge
+    if (args[0].includes && args[0].includes('/contact') && args[1] && args[1].method === 'POST' && response.ok) {
+        setTimeout(updateContactBadge, 1000);
+    }
+    return response;
+};

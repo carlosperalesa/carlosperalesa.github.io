@@ -1,4 +1,6 @@
-const API_URL = '/api';
+// Detectar entorno local (Live Server usa puerto distinto al backend)
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_URL = isLocal ? 'http://localhost:3000/api' : '/api';
 let quill;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -310,7 +312,7 @@ async function deleteImage(filename) {
 /* --- MESSAGES --- */
 async function loadMessages() {
     const tbody = document.getElementById('messagesTableBody');
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--color-purple);">⏳ Cargando mensajes, por favor espere...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: var(--color-purple);">⏳ Cargando mensajes, por favor espere...</td></tr>';
 
     try {
         const res = await fetch(`${API_URL}/messages`, {
@@ -318,33 +320,49 @@ async function loadMessages() {
         });
 
         if (!res.ok) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ff6b6b;">❌ Error al cargar mensajes. Intenta hacer logout y login de nuevo.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #ff6b6b;">❌ Error al cargar mensajes. Intenta hacer logout y login de nuevo.</td></tr>';
             return;
         }
 
         const messages = await res.json();
 
         if (messages.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #999;">No hay mensajes aún</td></tr>';
+            if (messages.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #999;">No hay mensajes aún</td></tr>';
+                return;
+            }
             return;
         }
 
         tbody.innerHTML = messages.map(m => `
-            <tr>
+            <tr class="message-row" onclick="toggleMessageDetail(${m.id}, event)">
                 <td>${new Date(m.created_at).toLocaleString()}</td>
                 <td>${m.name}</td>
                 <td>${m.phone || '-'}</td>
-                <td>${m.email}</td>
+                <td class="selectable-text" onclick="event.stopPropagation()">${m.email}</td>
                 <td>${m.subject || '-'}</td>
-                <td>${m.message}</td>
                 <td>
-                    <button class="delete-btn" onclick="deleteMessage(${m.id})">Borrar</button>
+                    <button class="delete-btn" onclick="event.stopPropagation(); deleteMessage(${m.id})">Borrar</button>
+                </td>
+            </tr>
+             <tr id="detail-${m.id}" class="message-detail" style="display:none;">
+                <td colspan="6" style="padding: 20px; background: #f9f9f9;">
+                    <div style="font-weight: bold; color: var(--color-blue); margin-bottom: 5px;">Mensaje Completo:</div>
+                    <div style="white-space: pre-wrap; line-height: 1.5;">${m.message}</div>
                 </td>
             </tr>
         `).join('');
     } catch (err) {
         console.error('Error loading messages:', err);
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ff6b6b;">❌ Error de conexión</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #ff6b6b;">❌ Error de conexión</td></tr>';
+    }
+}
+
+function toggleMessageDetail(id, event) {
+    if (event && event.target.closest('.delete-btn')) return;
+    const detailRow = document.getElementById(`detail-${id}`);
+    if (detailRow) {
+        detailRow.style.display = detailRow.style.display === 'none' ? 'table-row' : 'none';
     }
 }
 

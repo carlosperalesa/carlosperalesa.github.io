@@ -1,3 +1,7 @@
+// Detectar entorno local
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_URL = isLocal ? 'http://localhost:3000/api' : '/api';
+
 document.addEventListener('DOMContentLoaded', () => {
     loadPosts();
     setupModal();
@@ -8,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadPosts() {
     const grid = document.getElementById('blogGrid');
     try {
-        const res = await fetch('/api/posts');
+        const res = await fetch(`${API_URL}/posts`);
         const posts = await res.json();
 
         if (posts.length === 0) {
@@ -51,7 +55,7 @@ function setupModal() {
         const password = form.password.value;
 
         try {
-            const res = await fetch('/api/login', {
+            const res = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -90,7 +94,7 @@ function setupContactForm() {
         };
 
         try {
-            const res = await fetch('/api/messages', {
+            const res = await fetch(`${API_URL}/messages`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)

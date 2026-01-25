@@ -46,7 +46,8 @@
                 </span>
             </div>
 
-            <div class="top-bar-center" id="datetime">
+            <div class="top-bar-center" id="datetime" onclick="openLoginModal()"
+                style="cursor: pointer; user-select: none;">
                 <!-- Hora y fecha se actualizan con JS -->
             </div>
 
@@ -147,6 +148,7 @@
                         <i class="fas fa-envelope"></i>
                     </div>
                     <span class="dock-label">Contacto</span>
+                    <span class="dock-badge" id="contact-badge" style="display:none">0</span>
                     <div class="dock-indicator"></div>
                 </div>
 
@@ -175,10 +177,13 @@
 
     <!-- Modal: Formación -->
     <div class="modal-overlay" id="modal-formacion">
-        <div class="modal">
+        <div class="modal modal-lg">
             <div class="modal-header">
                 <h2 class="modal-title">Formación</h2>
-                <button class="modal-close" aria-label="Cerrar"></button>
+                <div class="window-controls">
+                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button class="modal-close" aria-label="Cerrar"></button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="timeline-item">
@@ -206,10 +211,13 @@
 
     <!-- Modal: Experiencia -->
     <div class="modal-overlay" id="modal-experiencia">
-        <div class="modal">
+        <div class="modal modal-lg">
             <div class="modal-header">
                 <h2 class="modal-title">Experiencia</h2>
-                <button class="modal-close" aria-label="Cerrar"></button>
+                <div class="window-controls">
+                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button class="modal-close" aria-label="Cerrar"></button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="timeline-item">
@@ -242,10 +250,13 @@
 
     <!-- Modal: Skills + Idiomas -->
     <div class="modal-overlay" id="modal-skills">
-        <div class="modal">
+        <div class="modal modal-lg">
             <div class="modal-header">
                 <h2 class="modal-title">Skills</h2>
-                <button class="modal-close" aria-label="Cerrar"></button>
+                <div class="window-controls">
+                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button class="modal-close" aria-label="Cerrar"></button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="skills-section">
@@ -293,10 +304,13 @@
 
     <!-- Modal: Proyectos -->
     <div class="modal-overlay" id="modal-proyectos">
-        <div class="modal">
+        <div class="modal modal-lg">
             <div class="modal-header">
                 <h2 class="modal-title">Proyectos</h2>
-                <button class="modal-close" aria-label="Cerrar"></button>
+                <div class="window-controls">
+                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button class="modal-close" aria-label="Cerrar"></button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="projects-grid">
@@ -369,10 +383,13 @@
 
     <!-- Modal: Contacto (Nuevo) -->
     <div class="modal-overlay" id="modal-contacto">
-        <div class="modal">
+        <div class="modal modal-lg">
             <div class="modal-header">
                 <h2 class="modal-title">Contacto</h2>
-                <button class="modal-close" aria-label="Cerrar"></button>
+                <div class="window-controls">
+                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button class="modal-close" aria-label="Cerrar"></button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -398,6 +415,68 @@
                 <div class="modal-confirm-actions" style="justify-content: flex-end; margin-top: 20px;">
                     <button class="modal-btn modal-btn-secondary">Limpiar</button>
                     <button class="modal-btn modal-btn-primary">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Login Admin -->
+    <div class="modal-overlay" id="modal-login">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2 class="modal-title">Admin Login</h2>
+                <button class="modal-close" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="login-container">
+                    <div class="form-group">
+                        <label class="form-label">Usuario</label>
+                        <input type="text" id="login-user" class="form-input" placeholder="Usuario">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" id="login-pass" class="form-input" placeholder="Contraseña">
+                    </div>
+                    <div class="login-error" id="login-error"></div>
+                    <button class="modal-btn modal-btn-primary" onclick="attemptLogin()">Ingresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Panel Admin -->
+    <div class="modal-overlay" id="modal-admin">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2 class="modal-title">Panel de Administración</h2>
+                <div class="window-controls">
+                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button class="modal-close" aria-label="Cerrar"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Mensajes Recibidos</h3>
+                    <button class="modal-btn modal-btn-secondary" onclick="loadMessages()"><i class="fas fa-sync"></i>
+                        Actualizar</button>
+                </div>
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Asunto</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-messages-body">
+                            <!-- Mensajes cargados aquí -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -464,6 +543,7 @@
     <script src="js/modals.js"></script>
     <script src="js/drag.js"></script>
     <script src="js/contact.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 
 </html>
