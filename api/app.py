@@ -1,18 +1,71 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import sqlite3
 import os
 from datetime import datetime
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from cryptography.fernet import Fernet
 
 app = Flask(__name__)
 CORS(app)  # Permitir requests desde tu dominio
 
+# =============================================
+# RATE LIMITING - Protección contra spam
+# =============================================
+# Límites:
+# - 10 mensajes por minuto por IP
+# - 50 mensajes por hora por IP  
+# - 200 mensajes por día por IP
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
+
 # Configuración
 DB_PATH = 'data/contactos.db'
 DATA_DIR = 'data'
+ENCRYPTION_KEY_FILE = 'data/.encryption_key'
+
+# =============================================
+# ENCRIPTACIÓN DE MENSAJES
+# =============================================
+def get_or_create_encryption_key():
+    """Obtiene o genera una clave de encriptación persistente"""
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
+    
+    if os.path.exists(ENCRYPTION_KEY_FILE):
+        with open(ENCRYPTION_KEY_FILE, 'rb') as f:
+            return f.read()
+    else:
+        key = Fernet.generate_key()
+        with open(ENCRYPTION_KEY_FILE, 'wb') as f:
+            f.write(key)
+        print("🔐 Nueva clave de encriptación generada")
+        return key
+
+# Inicializar encriptación
+ENCRYPTION_KEY = get_or_create_encryption_key()
+cipher = Fernet(ENCRYPTION_KEY)
+
+def encrypt_text(text):
+    """Encripta texto sensible"""
+    if not text:
+        return text
+    return cipher.encrypt(text.encode()).decode()
+
+def decrypt_text(encrypted_text):
+    """Desencripta texto"""
+    if not encrypted_text:
+        return encrypted_text
+    try:
+        return cipher.decrypt(encrypted_text.encode()).decode()
+    except Exception:
+        # Si falla la desencriptación, retornar el texto tal cual (legacy data)
+        return encrypted_text
 
 def init_db():
     """Inicializa la base de datos SQLite"""
@@ -45,6 +98,7 @@ def health():
     })
 
 @app.route('/api/contact', methods=['POST'])
+@limiter.limit("10 per minute")  # Máximo 10 mensajes por minuto por IP
 def contact():
     """Endpoint para recibir mensajes del formulario de contacto"""
     try:
@@ -57,27 +111,26 @@ def contact():
                 'error': 'Faltan campos obligatorios (nombre, email, mensaje)'
             }), 400
         
-        # Guardar en base de datos
+        # Encriptar datos sensibles antes de guardar
+        encrypted_phone = encrypt_text(data.get('phone', ''))
+        encrypted_email = encrypt_text(data.get('email'))
+        encrypted_message = encrypt_text(data.get('message'))
+        
+        # Guardar en base de datos (datos encriptados)
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
         c.execute('''INSERT INTO contactos (nombre, telefono, email, asunto, mensaje)
                      VALUES (?, ?, ?, ?, ?)''',
-                  (data.get('name'), 
-                   data.get('phone', ''),
-                   data.get('email'),
-                   data.get('subject', 'Sin asunto'),
-                   data.get('message')))
+                  (data.get('name'),  # Nombre no encriptado para identificación
+                   encrypted_phone,
+                   encrypted_email,
+                   data.get('subject', 'Sin asunto'),  # Asunto no encriptado
+                   encrypted_message))
         contact_id = c.lastrowid
         conn.commit()
         conn.close()
         
-        print(f"✅ Nuevo contacto guardado: ID={contact_id}, Email={data.get('email')}")
-        
-        # Opcional: Enviar notificación por email
-        try:
-            send_notification_email(data)
-        except Exception as e:
-            print(f"⚠️ No se pudo enviar email de notificación: {e}")
+        print(f"✅ Nuevo contacto guardado (encriptado): ID={contact_id}")
         
         return jsonify({
             'success': True,
@@ -111,15 +164,28 @@ def count_contacts():
 
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
-    """Endpoint para obtener todos los contactos (proteger en producción)"""
-    # ... código existente ...
+    """Endpoint para obtener todos los contactos (desencriptados para admin)"""
     try:
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
         c.execute('SELECT * FROM contactos ORDER BY fecha DESC')
-        contacts = [dict(row) for row in c.fetchall()]
+        raw_contacts = [dict(row) for row in c.fetchall()]
         conn.close()
+        
+        # Desencriptar datos sensibles para mostrar en admin
+        contacts = []
+        for contact in raw_contacts:
+            contacts.append({
+                'id': contact['id'],
+                'nombre': contact['nombre'],
+                'telefono': decrypt_text(contact['telefono']),
+                'email': decrypt_text(contact['email']),
+                'asunto': contact['asunto'],
+                'mensaje': decrypt_text(contact['mensaje']),
+                'fecha': contact['fecha'],
+                'leido': contact['leido']
+            })
         
         return jsonify({
             'success': True,
@@ -156,59 +222,22 @@ def delete_contact(id):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
-def send_notification_email(data):
-    """
-    Envía un email de notificación cuando llega un nuevo contacto
-    Configurar variables de entorno para usar esta función:
-    - SMTP_HOST
-    - SMTP_PORT
-    - SMTP_USER
-    - SMTP_PASSWORD
-    - NOTIFICATION_EMAIL
-    """
-    smtp_host = os.getenv('SMTP_HOST')
-    smtp_port = os.getenv('SMTP_PORT', 587)
-    smtp_user = os.getenv('SMTP_USER')
-    smtp_password = os.getenv('SMTP_PASSWORD')
-    notification_email = os.getenv('NOTIFICATION_EMAIL', smtp_user)
-    
-    # Si no hay configuración SMTP, simplemente retornar
-    if not all([smtp_host, smtp_user, smtp_password]):
-        return
-    
-    msg = MIMEMultipart()
-    msg['From'] = smtp_user
-    msg['To'] = notification_email
-    msg['Subject'] = f"Nuevo contacto: {data.get('subject', 'Sin asunto')}"
-    
-    body = f"""
-    Nuevo mensaje de contacto recibido:
-    
-    Nombre: {data.get('name')}
-    Email: {data.get('email')}
-    Teléfono: {data.get('phone', 'No proporcionado')}
-    Asunto: {data.get('subject', 'Sin asunto')}
-    
-    Mensaje:
-    {data.get('message')}
-    
-    ---
-    Enviado desde: carlosperales.dev
-    Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-    """
-    
-    msg.attach(MIMEText(body, 'plain'))
-    
-    server = smtplib.SMTP(smtp_host, smtp_port)
-    server.starttls()
-    server.login(smtp_user, smtp_password)
-    server.send_message(msg)
-    server.quit()
-    
-    print(f"📧 Email de notificación enviado a {notification_email}")
+# =============================================
+# HANDLER PARA ERRORES DE RATE LIMIT
+# =============================================
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    """Respuesta personalizada cuando se excede el rate limit"""
+    return jsonify({
+        'success': False,
+        'error': 'Demasiadas solicitudes. Por favor espera un momento antes de intentar de nuevo.',
+        'retry_after': e.description
+    }), 429
 
 if __name__ == '__main__':
     init_db()
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', '5000'))
     print(f"🚀 Iniciando servidor en puerto {port}")
+    print("🔐 Encriptación de mensajes: ACTIVA")
+    print("🛡️ Rate limiting: 10/min, 50/hora, 200/día por IP")
     app.run(host='0.0.0.0', port=port, debug=False)

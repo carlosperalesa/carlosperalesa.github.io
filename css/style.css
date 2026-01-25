@@ -1733,6 +1733,17 @@ body.dark-mode .form-textarea:focus {
     border: none;
 }
 
+/* En móvil, modales maximizados mantienen curvas */
+@media (max-width: 768px) {
+    .modal.maximized {
+        top: 10px !important;
+        left: 10px !important;
+        width: calc(100vw - 20px) !important;
+        height: calc(100vh - 100px) !important;
+        border-radius: var(--radius-lg) !important;
+    }
+}
+
 .modal.maximized .modal-body {
     height: calc(100vh - 60px);
     /* Ajuste altura cuerpo */

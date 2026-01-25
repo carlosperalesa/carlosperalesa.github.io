@@ -53,15 +53,8 @@ async function loadMessages() {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">Cargando mensajes...</td></tr>';
 
     try {
-        // En docker/producción usar la ruta relativa /api/contacts que pasa por Nginx
-        // En desarrollo local si no hay proxy, esto fallará si no se apunta al puerto 5000
-        // Asumimos que se prueba via web server que tiene proxy o cors habilitado
-
-        let url = '/api/contacts';
-        // Fallback para dev local (soporta localhost, 127.0.0.1 y file://)
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
-            url = 'http://localhost:5000/api/contacts';
-        }
+        // Usar la constante API_BASE_URL definida al inicio del archivo
+        const url = `${API_BASE_URL}/contacts`;
 
         const response = await fetch(url);
 
@@ -145,10 +138,8 @@ async function deleteContact(id) {
     if (!confirm(`¿Estás seguro de eliminar el mensaje ID #${id}? Esta acción no se puede deshacer.`)) return;
 
     try {
-        let url = `/api/contacts/${id}`;
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
-            url = `http://localhost:5000/api/contacts/${id}`;
-        }
+        // Usar la constante API_BASE_URL definida al inicio del archivo
+        const url = `${API_BASE_URL}/contacts/${id}`;
 
         const response = await fetch(url, {
             method: 'DELETE'

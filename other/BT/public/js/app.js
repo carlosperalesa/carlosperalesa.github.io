@@ -1,6 +1,16 @@
 // Detectar entorno local
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_URL = isLocal ? 'http://localhost:3000/api' : '/api';
+const API_URL = isLocal ? 'http://localhost:3000/api' : '/bt/api';
+const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';  // Base para assets (imágenes)
+
+// Helper para resolver URLs de imágenes
+function resolveImageUrl(url) {
+    if (!url) return 'img/logo_placeholder.png';
+    // Si ya es URL absoluta, retornar tal cual
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    // Si es ruta relativa, agregar base
+    return ASSETS_BASE + url;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     loadPosts();
@@ -22,7 +32,7 @@ async function loadPosts() {
 
         grid.innerHTML = posts.map(post => `
             <article class="post-card" onclick="window.location.href='post.html?id=${post.id}'">
-                <img src="${post.image_url || 'img/logo_placeholder.png'}" alt="${post.title}" class="post-img">
+                <img src="${resolveImageUrl(post.image_url)}" alt="${post.title}" class="post-img">
                 <div class="post-content">
                     <h3>${post.title}</h3>
                     <p>${post.summary}</p>
@@ -66,10 +76,13 @@ function setupModal() {
                 // Clear old tokens first
                 localStorage.clear();
 
-                // Store new token
+                // Store new token and expiration info
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', data.username);
-                showToast('Login exitoso. Redirigiendo...');
+                localStorage.setItem('token_expires_at', data.expires_at);
+                
+                const hoursRemaining = data.expires_in_hours || 24;
+                showToast(`Login exitoso. Sesión válida por ${hoursRemaining} horas.`);
                 setTimeout(() => window.location.href = 'admin.html', 1000);
             } else {
                 showToast(data.error || 'Error de login');

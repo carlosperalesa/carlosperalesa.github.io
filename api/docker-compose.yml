@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   contact-api:
     build: .
@@ -12,13 +10,14 @@ services:
     environment:
       - PORT=5000
       - FLASK_ENV=production
-      # Opcional: Configurar SMTP para notificaciones por email
-      # - SMTP_HOST=smtp.gmail.com
-      # - SMTP_PORT=587
-      # - SMTP_USER=tu_email@gmail.com
-      # - SMTP_PASSWORD=tu_contraseña_de_aplicación
-      # - NOTIFICATION_EMAIL=donde_recibir_notificaciones@email.com
     restart: unless-stopped
+    healthcheck:
+      # Usa el endpoint /api/health que ya existe
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     networks:
       - portfolio-network
 

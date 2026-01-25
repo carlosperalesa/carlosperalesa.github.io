@@ -1,6 +1,6 @@
 import os
 import sqlite3
-import datetime
+import time
 import secrets
 import hashlib
 from flask import Flask, request, jsonify, send_from_directory
@@ -13,6 +13,7 @@ CORS(app) # Habilitar CORS para todas las rutas
 app.config['UPLOAD_FOLDER'] = os.path.join('public', 'uploads')
 app.config['DATABASE'] = 'database.db'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'bruja_teatral_secret_key_2024_CHANGE_IN_PRODUCTION')
+app.config['TOKEN_EXPIRATION_HOURS'] = 24  # Tokens expiran después de 24 horas
 
 # Ensure upload dir exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -72,7 +73,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Token check helper - HMAC-based validation (stateless, survives restarts)
+# Token check helper - HMAC-based validation with expiration
 def check_auth(req):
     token = req.headers.get('Authorization')
     if not token or not token.startswith('Bearer '):
@@ -80,13 +81,30 @@ def check_auth(req):
     
     token_value = token.split(' ')[1]
     
-    # Verify token is valid HMAC of username with SECRET_KEY
+    # Verify token is valid HMAC of username with SECRET_KEY and timestamp
     try:
-        # Token format: {username}:{hmac_signature}
-        if ':' not in token_value:
+        # Token format: {username}:{timestamp}:{hmac_signature}
+        parts = token_value.split(':')
+        if len(parts) != 3:
+            # Fallback para tokens antiguos sin timestamp (formato: username:signature)
+            if len(parts) == 2:
+                username, signature = parts
+                expected_signature = hashlib.sha256((username + app.config['SECRET_KEY']).encode()).hexdigest()
+                return signature == expected_signature
             return False
-        username, signature = token_value.split(':', 1)
-        expected_signature = hashlib.sha256((username + app.config['SECRET_KEY']).encode()).hexdigest()
+        
+        username, timestamp_str, signature = parts
+        timestamp = int(timestamp_str)
+        
+        # Verificar expiración (24 horas por defecto)
+        expiration_seconds = app.config['TOKEN_EXPIRATION_HOURS'] * 3600
+        if time.time() - timestamp > expiration_seconds:
+            return False  # Token expirado
+        
+        # Verificar firma HMAC
+        expected_signature = hashlib.sha256(
+            (username + timestamp_str + app.config['SECRET_KEY']).encode()
+        ).hexdigest()
         return signature == expected_signature
     except:
         return False
@@ -112,10 +130,22 @@ def login():
     conn.close()
 
     if user and check_password_hash(user['password_hash'], password):
-        # Generate HMAC-based token: {username}:{signature}
-        signature = hashlib.sha256((username + app.config['SECRET_KEY']).encode()).hexdigest()
-        token = f"{username}:{signature}"
-        return jsonify({'token': token, 'username': username})
+        # Generate HMAC-based token with timestamp: {username}:{timestamp}:{signature}
+        timestamp = str(int(time.time()))
+        signature = hashlib.sha256(
+            (username + timestamp + app.config['SECRET_KEY']).encode()
+        ).hexdigest()
+        token = f"{username}:{timestamp}:{signature}"
+        
+        # Calcular tiempo de expiración para informar al cliente
+        expires_at = int(time.time()) + (app.config['TOKEN_EXPIRATION_HOURS'] * 3600)
+        
+        return jsonify({
+            'token': token, 
+            'username': username,
+            'expires_at': expires_at,
+            'expires_in_hours': app.config['TOKEN_EXPIRATION_HOURS']
+        })
     
     return jsonify({'error': 'Invalid credentials'}), 401
 

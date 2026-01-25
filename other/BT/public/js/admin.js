@@ -1,10 +1,20 @@
 // Detectar entorno local (Live Server usa puerto distinto al backend)
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_URL = isLocal ? 'http://localhost:3000/api' : '/api';
+const API_URL = isLocal ? 'http://localhost:3000/api' : '/bt/api';
+const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';  // Base para assets (imágenes)
 let quill;
 
+// Helper para resolver URLs de imágenes
+function resolveImageUrl(url) {
+    if (!url) return 'img/logo_placeholder.png';
+    // Si ya es URL absoluta, retornar tal cual
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    // Si es ruta relativa, agregar base
+    return ASSETS_BASE + url;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Check auth first (synchronous, redirects if no token)
+    // 1. Check auth first (synchronous, redirects if no token or expired)
     checkAuth();
 
     // 2. Initialize UI elements
@@ -23,10 +33,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function checkAuth() {
     const token = localStorage.getItem('token');
+    const expiresAt = localStorage.getItem('token_expires_at');
+    
+    // Verificar si hay token
     if (!token) {
         window.location.href = 'index.html';
         return;
     }
+    
+    // Verificar si el token ha expirado
+    if (expiresAt && Date.now() / 1000 > parseInt(expiresAt)) {
+        showToast('Tu sesión ha expirado. Por favor inicia sesión de nuevo.');
+        localStorage.clear();
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 2000);
+        return;
+    }
+    
     document.getElementById('welcomeUser').textContent = `Hola, ${localStorage.getItem('user')}`;
 }
 
@@ -68,7 +92,7 @@ async function loadPosts() {
         tbody.innerHTML = posts.map(p => `
             <tr>
                 <td>${p.id}</td>
-                <td><img src="${p.image_url || 'img/logo_placeholder.png'}" style="height:50px;"></td>
+                <td><img src="${resolveImageUrl(p.image_url)}" style="height:50px;"></td>
                 <td>${p.title}</td>
                 <td>${new Date(p.created_at).toLocaleString()}</td>
                 <td>
@@ -153,7 +177,7 @@ async function editPost(id) {
 
         if (post.image_url) {
             const preview = document.getElementById('imagePreview');
-            preview.src = post.image_url;
+            preview.src = resolveImageUrl(post.image_url);
             preview.style.display = 'block';
         }
 
@@ -200,9 +224,11 @@ async function handleImageUpload(e) {
         if (data.url) {
             document.getElementById('imageUrl').value = data.url;
             const preview = document.getElementById('imagePreview');
-            preview.src = data.url;
+            preview.src = resolveImageUrl(data.url);
             preview.style.display = 'block';
             showToast('Imagen subida correctamente');
+            // Recargar galería si existe
+            loadImageGallery();
         } else {
             showToast('Error: No se recibió URL de imagen');
         }
@@ -247,7 +273,7 @@ async function loadImageGallery() {
                 transition: all 0.2s;
             " onmouseover="this.style.borderColor='var(--color-purple)'; this.style.transform='scale(1.05)'" 
                onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)'">
-                <img src="${img.url}" onclick="selectImage('${img.url}')" style="width: 100%; height: 100px; object-fit: cover; display: block;" title="${img.filename}">
+                <img src="${resolveImageUrl(img.url)}" onclick="selectImage('${img.url}')" style="width: 100%; height: 100px; object-fit: cover; display: block;" title="${img.filename}">
                 <button type="button" onclick="event.stopPropagation(); deleteImage('${img.filename}')" style="
                     position: absolute;
                     top: 5px;
@@ -280,7 +306,7 @@ async function loadImageGallery() {
 function selectImage(url) {
     document.getElementById('imageUrl').value = url;
     const preview = document.getElementById('imagePreview');
-    preview.src = url;
+    preview.src = resolveImageUrl(url);
     preview.style.display = 'block';
     showToast('✅ Imagen seleccionada');
 }

@@ -130,8 +130,19 @@
                 return;
             }
 
+            // Detectar entorno local o producción
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const API_URL = isLocal ? 'http://localhost:3000/api' : '/bt/api';
+            const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';
+
+            function resolveImageUrl(url) {
+                if (!url) return 'img/logo_placeholder.png';
+                if (url.startsWith('http://') || url.startsWith('https://')) return url;
+                return ASSETS_BASE + url;
+            }
+
             try {
-                const res = await fetch(`/api/posts/${id}`);
+                const res = await fetch(`${API_URL}/posts/${id}`);
                 if (!res.ok) throw new Error('Post no encontrado');
                 const post = await res.json();
 
@@ -148,7 +159,7 @@
 
                 // Imagen
                 if (post.image_url) {
-                    document.getElementById('pImg').src = post.image_url;
+                    document.getElementById('pImg').src = resolveImageUrl(post.image_url);
                 } else {
                     document.getElementById('pImg').style.display = 'none';
                 }

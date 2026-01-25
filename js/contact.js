@@ -3,6 +3,11 @@
  * Maneja el envío del formulario de contacto al backend API
  */
 
+// API URL - Detección dinámica basada en el entorno
+// En local: usa localhost:5000, en producción: usa la misma URL base del sitio
+const CONTACT_IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+const CONTACT_API_BASE = CONTACT_IS_LOCAL ? 'http://localhost:5000' : window.location.origin;
+
 document.addEventListener('DOMContentLoaded', () => {
     const contactModal = document.getElementById('modal-contacto');
     if (!contactModal) return;
@@ -11,10 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = form.querySelector('.modal-btn-primary');
     const clearBtn = form.querySelector('.modal-btn-secondary');
 
-    // API URL - Cambiar según el entorno
-    const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
-        ? 'http://localhost:5000/api/contact'
-        : 'https://carlosperales.dev/api/contact';
+    const API_URL = `${CONTACT_API_BASE}/api/contact`;
 
     /**
      * Obtiene los valores del formulario
@@ -171,11 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
    BADGE NOTIFICACIONES
    ================================= */
 function updateContactBadge() {
-    let url = '/api/contacts/count';
-    // Soporte local
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
-        url = 'http://localhost:5000/api/contacts/count';
-    }
+    const url = `${CONTACT_API_BASE}/api/contacts/count`;
 
     fetch(url)
         .then(res => res.json())
