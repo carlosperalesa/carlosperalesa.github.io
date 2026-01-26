@@ -16,12 +16,8 @@ WHITELIST = {
 
 class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
-        # Solo permitir conexiones locales (localhost) por seguridad extra
-        if self.client_address[0] != '127.0.0.1' and self.client_address[0] != 'localhost':
-            self.send_response(403)
-            self.end_headers()
-            return
-
+        # Eliminamos la restricción de IP de origen para permitir que el contenedor Docker conecte,
+        # confiando en el RUNNER_SECRET y en que el puerto 5001 no esté abierto al mundo.
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         
@@ -76,5 +72,6 @@ class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
 if __name__ == "__main__":
     print(f"🕵️ Mayordomo (System Runner) activo en puerto {PORT}...")
     print(f"🔒 Whitelist: {list(WHITELIST.keys())}")
-    server = http.server.HTTPServer(('127.0.0.1', PORT), SystemRunnerHandler)
+    # Cambiado a 0.0.0.0 para que el contenedor Docker pueda conectar con el host
+    server = http.server.HTTPServer(('0.0.0.0', PORT), SystemRunnerHandler)
     server.serve_forever()
