@@ -132,8 +132,8 @@
 
             // Detectar entorno local o producción
             const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            const API_URL = isLocal ? 'http://localhost:3000/api' : '/bt/api';
-            const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';
+            const API_URL = isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
+            const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/other/BT';
 
             function resolveImageUrl(url) {
                 if (!url) return 'img/logo_placeholder.png';
