@@ -70,6 +70,29 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal(openModals[openModals.length - 1]);
         }
     });
+
+    // Manejo de clicks en proyectos para abrir detalle
+    document.querySelectorAll('.project-app').forEach(app => {
+        app.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const title = app.querySelector('.project-name').innerText;
+            const iconHtml = app.querySelector('.project-icon').innerHTML;
+            const description = app.dataset.description;
+            const url = app.href;
+
+            // Rellenar modal
+            document.getElementById('p-title').innerText = title;
+            document.getElementById('p-icon').innerHTML = iconHtml;
+            document.getElementById('p-desc').innerText = description;
+            const linkBtn = document.getElementById('p-link');
+            if (linkBtn) {
+                linkBtn.href = url;
+            }
+
+            openModal('proyecto-detalle');
+        });
+    });
 });
 
 // Obtener posición del icono del dock

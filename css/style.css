@@ -130,27 +130,51 @@ button {
 
 /* Scrollbar personalizado - pill blanca sobre transparente */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 12px;
+    height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(0, 0, 0, 0.05);
+    /* Un poco más visible el track */
+    border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.4);
+    /* Gris más oscuro para que se vea */
     border-radius: 100px;
+    border: 3px solid transparent;
+    /* Efecto pill flotante */
+    background-clip: padding-box;
+    box-shadow: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 1);
+    background: rgba(0, 0, 0, 0.6);
 }
 
-/* Firefox */
+/* Modo oscuro scroll */
+body.dark-mode ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* Firefox & Standard */
 * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.9) transparent;
+    scrollbar-color: rgba(0, 0, 0, 0.4) transparent;
+}
+
+body.dark-mode * {
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
 }
 
 /* ============================================
@@ -375,7 +399,7 @@ body.dark-mode .desktop-screen::before {
     justify-content: center;
     align-items: center;
     padding: 60px var(--spacing-lg) 100px;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .home-content {
@@ -935,7 +959,7 @@ body.dark-mode .home-profile {
 .modal-body {
     flex: 1;
     padding: var(--spacing-lg);
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 /* Modal de confirmación (más pequeño) */
@@ -1168,6 +1192,69 @@ body.dark-mode .home-profile {
     color: #336791;
 }
 
+.skill-tag.woocommerce {
+    background: rgba(150, 88, 138, 0.15);
+    color: #96588a;
+}
+
+.skill-tag.woocommerce i {
+    color: #96588a;
+}
+
+.skill-tag.elementor {
+    background: rgba(146, 34, 71, 0.15);
+    color: #922247;
+}
+
+.skill-tag.elementor i {
+    color: #922247;
+}
+
+.skill-tag.docker {
+    background: rgba(36, 150, 237, 0.15);
+    color: #2496ED;
+}
+
+.skill-tag.docker i {
+    color: #2496ED;
+}
+
+.skill-tag.linux {
+    background: rgba(252, 198, 36, 0.15);
+    color: #d1a100;
+}
+
+.skill-tag.linux i {
+    color: #d1a100;
+}
+
+.skill-tag.api {
+    background: rgba(8, 145, 178, 0.15);
+    color: #0891b2;
+}
+
+.skill-tag.api i {
+    color: #0891b2;
+}
+
+.skill-tag.util {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
+
+.skill-tag.util i {
+    color: #3b82f6;
+}
+
+.skill-tag.soft {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.skill-tag.soft i {
+    color: #10b981;
+}
+
 /* Idiomas */
 .lang-row {
     display: flex;
@@ -1244,65 +1331,6 @@ body.dark-mode .home-profile {
 
 .project-app:active {
     transform: scale(0.95) translateY(0);
-}
-
-/* Tooltip con descripción - glassmorphism style */
-.project-app[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 8px;
-    padding: 10px 14px;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #f1f5f9;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 1.4;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    max-width: 160px;
-    white-space: normal;
-    text-align: center;
-    z-index: 101;
-    opacity: 0;
-    animation: tooltipFade 0.2s ease 0.3s forwards;
-    pointer-events: none;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-/* Modo claro: tooltip oscuro se ve bien */
-/* Modo oscuro: tooltip también oscuro con borde más visible */
-body.dark-mode .project-app[data-tooltip]:hover::after {
-    background: rgba(30, 41, 59, 0.98);
-    border-color: rgba(148, 163, 184, 0.2);
-}
-
-/* Flecha del tooltip */
-.project-app[data-tooltip]:hover::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 6px solid transparent;
-    border-bottom-color: rgba(15, 23, 42, 0.95);
-    z-index: 102;
-    opacity: 0;
-    animation: tooltipFade 0.2s ease 0.3s forwards;
-}
-
-body.dark-mode .project-app[data-tooltip]:hover::before {
-    border-bottom-color: rgba(30, 41, 59, 0.98);
-}
-
-@keyframes tooltipFade {
-    to {
-        opacity: 1;
-    }
 }
 
 .project-icon {
@@ -1593,26 +1621,6 @@ body.dark-mode .project-icon {
 }
 
 /* ============================================
-   14. SCROLLBAR PERSONALIZADO
-   ============================================ */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(128, 128, 128, 0.3);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(128, 128, 128, 0.5);
-}
-
-/* ============================================
    15. SELECCIÓN DE TEXTO
    ============================================ */
 ::selection {
@@ -1687,8 +1695,8 @@ body.dark-mode .form-textarea:focus {
 }
 
 .modal-lg {
-    width: 900px;
-    height: 600px;
+    width: 600px;
+    height: 480px;
     max-width: 95%;
     max-height: 90vh;
 }
@@ -1837,6 +1845,49 @@ body.dark-mode .form-textarea:focus {
     min-height: 18px;
 }
 
+/* Proyecto Detalle */
+.project-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.project-detail-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: var(--glass-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+}
+
+.project-detail-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+}
+
+.project-detail-icon.emoji {
+    font-size: 28px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+}
+
+body.dark-mode .project-detail-icon.emoji {
+    background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.project-detail-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
 /* Media Queries para Móvil */
 @media (max-width: 768px) {
 
@@ -1860,4 +1911,9 @@ body.dark-mode .form-textarea:focus {
         width: 90%;
         height: auto;
     }
+}
+
+/* Modales pequeños sin scroll forzado */
+.modal-sm .modal-body {
+    overflow-y: auto !important;
 }
