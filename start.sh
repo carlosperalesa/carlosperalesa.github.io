@@ -79,6 +79,13 @@ run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teat
 
 # 5. Recargar Nginx (Importante para cambios de config)
 echo -e "\n🔄 Recargando configuración de proxy..."
+
+# Copy new config to Nginx folder
+echo -e "   📄 Copiando nueva configuración de Nginx..."
+cp "$API_DIR/nginx.conf" /etc/nginx/sites-available/carlosperales.dev 2>/dev/null || true
+# Ensure symlink exists
+ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/ 2>/dev/null || true
+
 run_task "nginx -t && systemctl reload nginx" "Recargando Nginx"
 
 echo "-----------------------------------"
