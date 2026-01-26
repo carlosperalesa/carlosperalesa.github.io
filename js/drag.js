@@ -45,7 +45,7 @@ function initDragging(modalHandle, e) {
         modalEl.style.position = 'absolute';
         modalEl.style.margin = '0';
         modalEl.style.left = `${rect.left}px`;
-        modalEl.style.top = `${rect.top - (window.scrollY || 0)}px`;
+        modalEl.style.top = `${rect.top}px`;
     }
 
     // Traer al frente

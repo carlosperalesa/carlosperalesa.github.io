@@ -1494,9 +1494,9 @@ body.dark-mode .project-icon {
     }
 
     .modal {
-        position: relative !important;
-        left: auto !important;
-        top: auto !important;
+        position: relative;
+        left: auto;
+        top: auto;
         width: calc(100% - 16px);
         max-width: calc(100% - 16px);
         height: calc(100% - 16px);
@@ -1526,7 +1526,7 @@ body.dark-mode .project-icon {
 
     /* Modales pequeños (Login/Confirm) - centrados en móvil */
     .modal.modal-sm {
-        position: relative !important;
+        position: relative;
         width: 300px;
         max-width: 300px;
         height: auto;
