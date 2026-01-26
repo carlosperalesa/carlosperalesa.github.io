@@ -8,7 +8,7 @@ async function openLoginModal() {
     const errorMsg = document.getElementById('login-error');
     const loginTitle = document.querySelector('#modal-login .modal-title');
     const loginBtn = document.querySelector('#modal-login .modal-btn-primary');
-    
+
     // Resetear campos
     document.getElementById('login-user').value = '';
     document.getElementById('login-pass').value = '';
@@ -223,6 +223,123 @@ function toggleMessageDetail(id) {
     if (detailRow) {
         detailRow.style.display = detailRow.style.display === 'none' ? 'table-row' : 'none';
     }
+}
+
+/**
+ * Gestiona el cambio de contraseña
+ */
+function openChangePasswordModal() {
+    document.getElementById('new-pass').value = '';
+    document.getElementById('confirm-pass').value = '';
+    document.getElementById('pass-error').textContent = '';
+    if (typeof openModal === 'function') openModal('change-password');
+}
+
+async function updatePassword() {
+    const newPass = document.getElementById('new-pass').value;
+    const confirmPass = document.getElementById('confirm-pass').value;
+    const errorMsg = document.getElementById('pass-error');
+
+    if (!newPass || newPass.length < 6) {
+        errorMsg.textContent = 'Mínimo 6 caracteres';
+        return;
+    }
+
+    if (newPass !== confirmPass) {
+        errorMsg.textContent = 'Las contraseñas no coinciden';
+        return;
+    }
+
+    try {
+        const token = sessionStorage.getItem('admin_token');
+        const response = await fetch(`${API_BASE_URL}/api/auth/profile`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ password: newPass })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Contraseña actualizada correctamente');
+            if (typeof closeModal === 'function') closeModal('change-password');
+        } else {
+            errorMsg.textContent = data.message || 'Error al actualizar';
+        }
+    } catch (error) {
+        errorMsg.textContent = 'Error de conexión';
+    }
+}
+
+/**
+ * Manejo de pestañas en el panel admin
+ */
+function switchAdminTab(tabName) {
+    // Actualizar botones de pestañas
+    document.querySelectorAll('.admin-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(tabName));
+    });
+
+    // Actualizar contenidos de pestañas
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === `tab-${tabName}`);
+    });
+
+    if (tabName === 'messages') loadMessages();
+}
+
+/**
+ * Ejecuta una acción de sistema y muestra el resultado en la consola
+ */
+async function runSystemAction(action) {
+    const consoleBody = document.getElementById('admin-console');
+    if (!consoleBody) return;
+
+    // Feedback visual
+    const timestamp = new Date().toLocaleTimeString();
+    appendConsoleLine(`\n[${timestamp}] 🚀 Iniciando acción: ${action.toUpperCase()}...`, 'command');
+    appendConsoleLine('⏳ Procesando, por favor espera...', 'working');
+
+    try {
+        const token = sessionStorage.getItem('admin_token');
+        const response = await fetch(`${API_BASE_URL}/api/system/execute`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ action: action })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            appendConsoleLine(`✅ Éxito: Acción ${action} completada.`, 'command');
+            if (data.output) appendConsoleLine(data.output);
+        } else {
+            appendConsoleLine(`❌ Error: ${data.message || 'Error desconocido'}`, 'error');
+            if (data.error) appendConsoleLine(data.error, 'error');
+        }
+    } catch (error) {
+        appendConsoleLine(`❌ Error de conexión con la API: ${error.message}`, 'error');
+    }
+
+    // Scroll al final
+    consoleBody.scrollTop = consoleBody.scrollHeight;
+}
+
+function appendConsoleLine(text, className = '') {
+    const consoleBody = document.getElementById('admin-console');
+    if (!consoleBody) return;
+
+    const div = document.createElement('div');
+    div.className = 'line ' + className;
+    div.textContent = text;
+    consoleBody.appendChild(div);
+    consoleBody.scrollTop = consoleBody.scrollHeight;
 }
 
 async function deleteContact(id) {

@@ -237,6 +237,43 @@ def update_profile():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/api/system/execute', methods=['POST'])
+@token_required
+def execute_system_action():
+    data = request.json
+    action = data.get('action')
+    
+    if not action:
+        return jsonify({'success': False, 'message': 'Acción no especificada'}), 400
+        
+    try:
+        # Hablar con el corredor externo (Mayordomo) en el host
+        import json
+        import urllib.request
+        
+        runner_url = "http://host.docker.internal:5001"
+        payload = {
+            "secret": os.getenv("RUNNER_SECRET"),
+            "action": action
+        }
+        
+        req = urllib.request.Request(
+            runner_url, 
+            data=json.dumps(payload).encode(),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        
+        with urllib.request.urlopen(req, timeout=60) as response:
+            result = json.loads(response.read().decode())
+            return jsonify(result)
+            
+    except Exception as e:
+        return jsonify({
+            'success': False, 
+            'message': f"Error conectando con el mayordomo: {str(e)}"
+        }), 500
+
 # =============================================
 # ENDPOINTS DE MENSAJES (PROTEGIDOS)
 # =============================================

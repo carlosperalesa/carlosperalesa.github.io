@@ -198,6 +198,45 @@ ports:
   - "5001:5000"  # Cambiar a otro puerto
 ```
 
+# Plan de Implementación: Dashboard de Control Total (Opción C)
+
+Este plan detalla la creación de un sistema de control de infraestructura directamente desde el modal de administración del portafolio.
+
+## 🎨 Diseño de la Interfaz Admin
+
+El modal de administración se dividirá en dos secciones principales mediante pestañas superiores:
+
+### 📱 Pestaña 1: Mensajes
+- Visualización de contactos recibidos (lo que ya tenemos).
+
+### ⚙️ Pestaña 2: Sistema (Nueva)
+- **Barra de Herramientas**: Tres botones premium alineados en la parte superior:
+    1.  `🚀 Deploy Total`: Ejecuta `start.sh` (Actualiza Git, rebuild containers, recarga Nginx).
+    2.  `🔍 Check Health`: Ejecuta `check.sh` (Analiza si todos los servicios están respondiendo).
+    3.  `💾 Backup DB`: Ejecuta `backup.sh` (Respalda las bases de datos SQLite).
+- **Terminal Integrada**: Un contenedor debajo de los botones con fondo negro profundo, fuente monoespaciada (tipo Matrix/Console) y scroll automático.
+
+---
+
+## 🛠️ Componentes Técnicos
+
+### 1. El "Mayordomo" (`system_runner.py`)
+Script en el host que recibe la orden y el `SECRET_KEY`. Ejecuta el comando y devuelve el flujo de texto.
+
+### 2. Puente API (`app.py`)
+Nuevo módulo `SystemActions` que valida al administrador y hace de puente hacia el corredor externo.
+
+### 3. Frontend Reactivo (`admin.js`)
+- Lógica de intercambio de pestañas (Tabs).
+- Función `streamCommandOutput()` para ir pintando el texto en la consola de la web a medida que llega.
+
+---
+
+## Plan de Verificación
+
+1. **Prueba Visual**: El administrador puede cambiar entre mensajes y sistema sin recargar.
+2. **Prueba de Acción**: Al presionar `Check Health`, la terminal en la web debe mostrar la salida del script `check.sh` de forma legible.
+3. **Prueba de Seguridad**: Verificar que el corredor externo rechace peticiones sin el `RUNNER_SECRET`.
 ### Error CORS en el frontend
 Verifica que `CORS` esté habilitado en `app.py` (ya está configurado)
 

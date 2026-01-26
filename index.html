@@ -568,28 +568,79 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Mensajes Recibidos</h3>
-                    <button class="modal-btn modal-btn-secondary" onclick="loadMessages()"><i class="fas fa-sync"></i>
-                        Actualizar</button>
+                <!-- TABS -->
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchAdminTab('messages')">
+                        <i class="fas fa-envelope"></i> Mensajes
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('system')">
+                        <i class="fas fa-cog"></i> Sistema
+                    </button>
                 </div>
-                <div class="admin-table-container">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Fecha</th>
-                                <th>Nombre</th>
-                                <th>Teléfono</th>
-                                <th>Email</th>
-                                <th>Asunto</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-messages-body">
-                            <!-- Mensajes cargados aquí -->
-                        </tbody>
-                    </table>
+
+                <!-- SECCIÓN MENSAJES -->
+                <div id="tab-messages" class="tab-content active">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>Mensajes Recibidos</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="modal-btn modal-btn-secondary" onclick="openChangePasswordModal()"
+                                title="Seguridad">
+                                <i class="fas fa-key"></i> Pass
+                            </button>
+                            <button class="modal-btn modal-btn-secondary" onclick="loadMessages()">
+                                <i class="fas fa-sync"></i> Actualizar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Nombre</th>
+                                    <th>Teléfono</th>
+                                    <th>Email</th>
+                                    <th>Asunto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-messages-body">
+                                <!-- Mensajes cargados aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN SISTEMA -->
+                <div id="tab-system" class="tab-content">
+                    <div class="system-actions-grid">
+                        <button class="system-btn deploy" onclick="runSystemAction('deploy')">
+                            <i class="fas fa-rocket"></i>
+                            <span>Deploy Total (GIT + Build)</span>
+                        </button>
+                        <button class="system-btn check" onclick="runSystemAction('check')">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>Check Health</span>
+                        </button>
+                        <button class="system-btn backup" onclick="runSystemAction('backup')">
+                            <i class="fas fa-database"></i>
+                            <span>Backup DB</span>
+                        </button>
+                    </div>
+
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                            <span class="terminal-title">bash — system_runner</span>
+                        </div>
+                        <div id="admin-console" class="terminal-body">
+                            <div class="line"># Esperando comandos...</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -609,6 +660,29 @@
                     <a id="p-link" href="#" target="_blank" class="modal-btn modal-btn-primary"
                         style="width: 100%; text-align: center;">Ir al proyecto</a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Cambiar Contraseña -->
+    <div class="modal-overlay" id="modal-change-password">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2 class="modal-title">Cambiar Contraseña</h2>
+                <button class="modal-close" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nueva Contraseña</label>
+                    <input type="password" id="new-pass" class="form-input" placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirmar Contraseña</label>
+                    <input type="password" id="confirm-pass" class="form-input" placeholder="Repite la contraseña">
+                </div>
+                <div id="pass-error" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 10px;"></div>
+                <button class="modal-btn modal-btn-primary" onclick="updatePassword()"
+                    style="width: 100%;">Actualizar</button>
             </div>
         </div>
     </div>
