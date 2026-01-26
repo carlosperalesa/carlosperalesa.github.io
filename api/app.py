@@ -8,7 +8,8 @@ from datetime import datetime
 from cryptography.fernet import Fernet
 
 app = Flask(__name__)
-CORS(app)  # Permitir requests desde tu dominio
+# Permitir CORS para desarrollo local y producción
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 # =============================================
 # RATE LIMITING - Protección contra spam
