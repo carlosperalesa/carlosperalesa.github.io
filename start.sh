@@ -53,6 +53,13 @@ if [ $? -ne 0 ]; then exit 1; fi
 
 # 3. Main API
 echo -e "\n⏳ Iniciando rebuild de Main API. Ten paciencia..."
+
+# Fix permissions for Main API (now running as user 1000)
+echo -e "   🔧 Ajustando permisos Main API para usuario 1000..."
+mkdir -p "$API_DIR/data"
+chown -R 1000:1000 "$API_DIR/data" 2>/dev/null || true
+chmod -R 775 "$API_DIR/data" 2>/dev/null || true
+
 run_task "cd $API_DIR && docker compose up -d --build" "Reconstruyendo Main API"
 
 # 4. Bruja Teatral (BT)
@@ -60,6 +67,14 @@ run_task "cd $API_DIR && docker compose up -d --build" "Reconstruyendo Main API"
 echo -e "\n⏳ Iniciando rebuild de Bruja Teatral. Ten paciencia..."
 # Ensure DB file exists to prevent Docker directory creation issue
 touch "$BT_DIR/database.db"
+
+# Fix permissions for BT container (running as user 1000)
+echo -e "   🔧 Ajustando permisos para usuario 1000..."
+chown 1000:1000 "$BT_DIR/database.db" 2>/dev/null || true
+mkdir -p "$BT_DIR/public/uploads"
+chown -R 1000:1000 "$BT_DIR/public/uploads" 2>/dev/null || true
+chmod -R 775 "$BT_DIR/public/uploads" 2>/dev/null || true
+
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
 # 5. Recargar Nginx (Importante para cambios de config)
