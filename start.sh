@@ -65,7 +65,11 @@ chmod -R 775 "$BT_DIR/public/uploads" 2>/dev/null || true
 
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
-# 5. Recargar Nginx (Importante para cambios de config)
+# 5. Limpieza
+echo -e "\n🧹 Limpiando imágenes antiguas..."
+docker image prune -f 2>/dev/null || true
+
+# 6. Recargar Nginx (Importante para cambios de config)
 echo -e "\n🔄 Actualizando configuración de Nginx..."
 cp "$API_DIR/nginx.conf" /etc/nginx/sites-available/carlosperales.dev
 ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/
