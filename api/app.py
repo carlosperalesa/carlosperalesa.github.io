@@ -10,6 +10,10 @@ import secrets
 from functools import wraps
 from datetime import datetime, timedelta
 from cryptography.fernet import Fernet
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 app = Flask(__name__)
 # Permitir CORS para desarrollo local y producción
