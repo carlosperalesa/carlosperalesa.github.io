@@ -17,7 +17,45 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPosts();
     setupModal();
     setupContactForm();
+    checkAuthState(); // New: update navbar based on login
 });
+
+// --- AUTH STATE & NAVIGATION ---
+function checkAuthState() {
+    const token = localStorage.getItem('token');
+    const expiresAt = localStorage.getItem('token_expires_at');
+
+    const loginLi = document.getElementById('loginLi');
+    const adminLi = document.getElementById('adminLi');
+    const logoutLi = document.getElementById('logoutLi');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Check if token exists and is not expired
+    const isLoggedIn = token && (!expiresAt || Date.now() / 1000 < parseInt(expiresAt));
+
+    if (isLoggedIn) {
+        if (loginLi) loginLi.style.display = 'none';
+        if (adminLi) adminLi.style.display = 'block';
+        if (logoutLi) {
+            logoutLi.style.display = 'block';
+            if (logoutBtn) logoutBtn.onclick = handleLogout;
+        }
+    } else {
+        if (loginLi) loginLi.style.display = 'block';
+        if (adminLi) adminLi.style.display = 'none';
+        if (logoutLi) logoutLi.style.display = 'none';
+        // If expired, clear it
+        if (token) localStorage.clear();
+    }
+}
+
+function handleLogout() {
+    localStorage.clear();
+    showToast('Sesión cerrada', 'success');
+    setTimeout(() => {
+        window.location.reload(); // Refresh to update navbar
+    }, 500);
+}
 
 // --- BLOG LOADING ---
 async function loadPosts() {
@@ -85,6 +123,10 @@ function setupModal() {
 
                     const hoursRemaining = data.expires_in_hours || 24;
                     showToast(`¡Bienvenido!`, 'success');
+                    checkAuthState(); // Update navbar immediately
+                    if (modal) modal.style.display = 'none'; // Close modal
+                    // Redirigimos para que el usuario vea el panel de admin si es lo que busca,
+                    // pero ahora ya tiene los botones arriba para volver.
                     setTimeout(() => window.location.href = 'admin.html', 1000);
                 } else {
                     showToast(data.error || 'Error de login', 'error');
