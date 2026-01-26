@@ -5,14 +5,18 @@ echo ========================================
 echo.
 
 set DROPLET_IP=64.23.156.112
-set DROPLET_PATH=/var/www/portfolio-api
+set DROPLET_PATH=/var/www/html-static/api
 
 echo [1/5] Creando directorio en el droplet...
 ssh root@%DROPLET_IP% "mkdir -p %DROPLET_PATH%"
 echo.
 
 echo [2/5] Copiando archivos al droplet...
-scp -r * root@%DROPLET_IP%:%DROPLET_PATH%/
+REM Copiamos archivos individualmente para evitar sobrescribir 'data/'
+scp Dockerfile docker-compose.yml requirements.txt app.py system_runner.py root@%DROPLET_IP%:%DROPLET_PATH%/
+scp -r .agent root@%DROPLET_IP%:%DROPLET_PATH%/
+echo Copiando .env explícitamente...
+scp .env root@%DROPLET_IP%:%DROPLET_PATH%/.env
 echo.
 
 echo [3/5] Construyendo imagen Docker en el droplet...

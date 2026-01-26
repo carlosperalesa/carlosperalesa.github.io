@@ -55,12 +55,10 @@ echo -e "\n⏳ Iniciando rebuild de Bruja Teatral..."
 touch "$BT_DIR/database.db"
 mkdir -p "$BT_DIR/public/uploads"
 
-# EXTREME PERM FIX: Recursively chown the directory to 1000
+# EXTREME PERM FIX: Recursively chown the directory to 33:33 (www-data)
 # This ensures SQLite can create journal files and manage the DB properly
-echo -e "   🔧 Ajustando permisos recursivos para usuario 1000..."
-chown -R 1000:1000 "$BT_DIR/database.db" "$BT_DIR/public/uploads" 2>/dev/null || true
-# Important: The app needs write access to the directory containing the DB for journals
-chown 1000:1000 "$BT_DIR" 2>/dev/null || true
+echo -e "   🔧 Ajustando permisos recursivos para usuario 33 (www-data)..."
+chown -R 33:33 "$BT_DIR" 2>/dev/null || true
 chmod -R 775 "$BT_DIR/public/uploads" 2>/dev/null || true
 
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
