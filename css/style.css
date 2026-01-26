@@ -1517,8 +1517,15 @@ body.dark-mode .project-icon {
         flex-shrink: 0;
     }
 
-    /* Modales de confirmación (WhatsApp/Teléfono) - centrados en móvil */
-    .modal.modal-confirm {
+    /* Forzar bordes redondeados en modales grandes incluso maximizados */
+    .modal.modal-lg {
+        border-radius: var(--radius-lg) !important;
+        overflow: hidden;
+        /* Evita que el contenido tape las esquinas */
+    }
+
+    /* Modales pequeños (Login/Confirm) - centrados en móvil */
+    .modal.modal-sm {
         position: relative !important;
         width: 300px;
         max-width: 300px;
@@ -1527,33 +1534,29 @@ body.dark-mode .project-icon {
         margin: auto;
         align-self: center;
         justify-self: center;
-    }
-
-    /* Header arrastrables en móvil para modales de confirmación */
-    .modal.modal-confirm .modal-header {
-        cursor: grab !important;
+        /* Permitir arrastre sin scroll */
         touch-action: none;
+        cursor: grab !important;
     }
 
-    .modal.modal-confirm.dragging {
+    .modal.modal-sm.dragging {
         position: absolute !important;
-    }
-
-    .modal.modal-confirm.dragging .modal-header {
         cursor: grabbing !important;
     }
 
     /* Overlay centrado para modales de confirmación */
     #modal-whatsapp,
-    #modal-telefono {
+    #modal-telefono,
+    #modal-login {
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    /* Overlay más sutil para modales de confirmación */
+    /* Overlay más sutil para modales pequeños */
     #modal-whatsapp.active,
-    #modal-telefono.active {
+    #modal-telefono.active,
+    #modal-login.active {
         background: rgba(0, 0, 0, 0.2);
     }
 

@@ -16,19 +16,19 @@ function getEventCoords(e) {
     return { x: e.clientX, y: e.clientY };
 }
 
-function initDragging(modal, e) {
-    const modalEl = modal.closest('.modal');
-    const isConfirmModal = modalEl.classList.contains('modal-confirm');
+function initDragging(modalHandle, e) {
+    const modalEl = modalHandle.closest('.modal');
+    const isSmallModal = modalEl.classList.contains('modal-sm');
 
-    // En móvil solo permitir arrastre de modales de confirmación
-    if (App.isMobile() && !isConfirmModal) return;
+    // En móvil solo permitir arrastre de modales pequeños (Login, WA, Tel)
+    if (App.isMobile() && !isSmallModal) return;
 
     // Prevenir comportamiento por defecto en touch
     if (e.cancelable) {
         e.preventDefault();
     }
 
-    const overlay = modal.closest('.modal-overlay');
+    const overlay = modalHandle.closest('.modal-overlay');
 
     isDragging = true;
     dragModal = modalEl;
@@ -40,12 +40,12 @@ function initDragging(modal, e) {
 
     modalEl.classList.add('dragging');
 
-    // Habilitar posición absoluta para modales de confirmación en móvil
-    if (App.isMobile() && isConfirmModal) {
+    // Habilitar posición absoluta para modales pequeños en móvil
+    if (App.isMobile() && isSmallModal) {
         modalEl.style.position = 'absolute';
         modalEl.style.margin = '0';
         modalEl.style.left = `${rect.left}px`;
-        modalEl.style.top = `${rect.top - 44}px`; // Restar top bar height
+        modalEl.style.top = `${rect.top - (window.scrollY || 0)}px`;
     }
 
     // Traer al frente
@@ -108,21 +108,34 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('touchend', endDrag);
     document.addEventListener('touchcancel', endDrag);
 
-    // Inicializar arrastre en headers de modales
+    // Inicializar arrastre en headers de modales (y cuerpo para modales pequeños en móvil)
     modalOverlays.forEach(overlay => {
+        const modal = overlay.querySelector('.modal');
         const header = overlay.querySelector('.modal-header');
+        const isSmall = modal && modal.classList.contains('modal-sm');
 
+        // Arrastre por Header (Comportamiento Desktop normal y Móvil para modales grandes si se habilitara)
         if (header) {
-            // Mouse
             header.addEventListener('mousedown', (e) => {
-                if (e.target.closest('.modal-close')) return;
+                if (e.target.closest('.modal-close, .modal-maximize')) return;
                 initDragging(header, e);
             });
 
-            // Touch - passive: false para poder prevenir scroll
             header.addEventListener('touchstart', (e) => {
-                if (e.target.closest('.modal-close')) return;
+                if (e.target.closest('.modal-close, .modal-maximize')) return;
                 initDragging(header, e);
+            }, { passive: false });
+        }
+
+        // En móvil, permitir arrastrar modales pequeños desde CUALQUIER punto
+        if (isSmall) {
+            modal.addEventListener('touchstart', (e) => {
+                // Si tocamos botones de acción o cierre, no iniciar drag
+                if (e.target.closest('button, a, .modal-close')) return;
+                // Si no estamos en móvil, el header ya se encarga
+                if (!App.isMobile()) return;
+
+                initDragging(modal, e);
             }, { passive: false });
         }
     });
