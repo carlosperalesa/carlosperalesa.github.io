@@ -54,49 +54,53 @@ function setupModal() {
     const close = document.getElementById('closeLogin');
     const form = document.getElementById('loginForm');
 
-    btn.onclick = () => modal.style.display = 'flex';
-    close.onclick = () => modal.style.display = 'none';
+    if (btn) btn.onclick = () => modal.style.display = 'flex';
+    if (close) close.onclick = () => modal.style.display = 'none';
     window.onclick = (e) => {
         if (e.target === modal) modal.style.display = 'none';
     }
 
-    form.onsubmit = async (e) => {
-        e.preventDefault();
-        const username = form.username.value;
-        const password = form.password.value;
+    if (form) {
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const username = form.username.value;
+            const password = form.password.value;
 
-        try {
-            const res = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            const data = await res.json();
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
 
-            if (res.ok) {
-                // Clear old tokens first
-                localStorage.clear();
+                if (res.ok) {
+                    // Clear old tokens first
+                    localStorage.clear();
 
-                // Store new token and expiration info
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', data.username);
-                localStorage.setItem('token_expires_at', data.expires_at);
+                    // Store new token and expiration info
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', data.username);
+                    localStorage.setItem('token_expires_at', data.expires_at);
 
-                const hoursRemaining = data.expires_in_hours || 24;
-                showToast(`Login exitoso. Sesión válida por ${hoursRemaining} horas.`);
-                setTimeout(() => window.location.href = 'admin.html', 1000);
-            } else {
-                showToast(data.error || 'Error de login');
+                    const hoursRemaining = data.expires_in_hours || 24;
+                    showToast(`Login exitoso. Sesión válida por ${hoursRemaining} horas.`, 'success');
+                    setTimeout(() => window.location.href = 'admin.html', 1000);
+                } else {
+                    showToast(data.error || 'Error de login', 'error');
+                }
+            } catch (err) {
+                showToast('Error de conexión', 'error');
             }
-        } catch (err) {
-            showToast('Error de conexión');
-        }
-    };
+        };
+    }
 }
 
 // --- CONTACT FORM ---
 function setupContactForm() {
     const form = document.getElementById('contactForm');
+    if (!form) return;
+
     form.onsubmit = async (e) => {
         e.preventDefault();
         const formData = {
@@ -115,21 +119,22 @@ function setupContactForm() {
             });
 
             if (res.ok) {
-                showToast('¡Mensaje enviado con éxito!');
+                showToast('¡Mensaje enviado con éxito!', 'success');
                 form.reset();
             } else {
-                showToast('Error al enviar el mensaje.');
+                showToast('Error al enviar el mensaje.', 'error');
             }
         } catch (err) {
-            showToast('Error al conectar con el servidor.');
+            showToast('Error al conectar con el servidor.', 'error');
         }
     };
 }
 
 // --- UTILS ---
-function showToast(msg) {
+function showToast(msg, type = 'success') {
     const toast = document.getElementById('toast');
+    if (!toast) return;
     toast.textContent = msg;
-    toast.classList.add('show');
+    toast.className = `toast show ${type}`;
     setTimeout(() => toast.classList.remove('show'), 3000);
 }

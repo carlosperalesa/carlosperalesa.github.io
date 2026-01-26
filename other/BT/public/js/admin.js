@@ -43,7 +43,7 @@ function checkAuth() {
 
     // Verificar si el token ha expirado
     if (expiresAt && Date.now() / 1000 > parseInt(expiresAt)) {
-        showToast('Tu sesión ha expirado. Por favor inicia sesión de nuevo.');
+        showToast('Tu sesión ha expirado. Por favor inicia sesión de nuevo.', 'error');
         localStorage.clear();
         setTimeout(() => {
             window.location.href = 'index.html';
@@ -57,7 +57,7 @@ function checkAuth() {
 function logout() {
     // Clear all auth data
     localStorage.clear(); // Clear everything to avoid conflicts
-    showToast('Sesión cerrada');
+    showToast('Sesión cerrada', 'success');
     setTimeout(() => {
         window.location.href = 'index.html';
     }, 500);
@@ -135,18 +135,18 @@ async function handlePostSubmit(e) {
         console.log('📥 Response status:', res.status, res.statusText);
 
         if (res.ok) {
-            showToast('✅ Post guardado correctamente');
+            showToast('✅ Post guardado correctamente', 'success');
             hidePostForm();
             loadPosts();
         } else {
             const errorData = await res.json();
             console.log('❌ Error data:', errorData);
-            showToast(`❌ Error al guardar: ${errorData.error || res.statusText}`);
+            showToast(`❌ Error al guardar: ${errorData.error || res.statusText}`, 'error');
             console.error('Save error:', errorData);
         }
     } catch (err) {
         console.error('Save exception:', err);
-        showToast('❌ Error de conexión: ' + err.message);
+        showToast('❌ Error de conexión: ' + err.message, 'error');
     }
 }
 
@@ -158,9 +158,9 @@ async function deletePost(id) {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         loadPosts();
-        showToast('Post eliminado');
+        showToast('Post eliminado', 'success');
     } catch (err) {
-        showToast('Error al eliminar');
+        showToast('Error al eliminar', 'error');
     }
 }
 
@@ -214,7 +214,7 @@ async function handleImageUpload(e) {
         if (!res.ok) {
             const errorData = await res.json();
             console.log('❌ Upload error data:', errorData);
-            showToast(`Error subiendo imagen: ${errorData.error || res.statusText}`);
+            showToast(`Error subiendo imagen: ${errorData.error || res.statusText}`, 'error');
             console.error('Upload error:', errorData);
             return;
         }
@@ -226,15 +226,15 @@ async function handleImageUpload(e) {
             const preview = document.getElementById('imagePreview');
             preview.src = resolveImageUrl(data.url);
             preview.style.display = 'block';
-            showToast('Imagen subida correctamente');
+            showToast('Imagen subida correctamente', 'success');
             // Recargar galería si existe
             loadImageGallery();
         } else {
-            showToast('Error: No se recibió URL de imagen');
+            showToast('Error: No se recibió URL de imagen', 'error');
         }
     } catch (err) {
         console.error('Upload exception:', err);
-        showToast('Error subiendo imagen: ' + err.message);
+        showToast('Error subiendo imagen: ' + err.message, 'error');
     }
 }
 
@@ -308,7 +308,7 @@ function selectImage(url) {
     const preview = document.getElementById('imagePreview');
     preview.src = resolveImageUrl(url);
     preview.style.display = 'block';
-    showToast('✅ Imagen seleccionada');
+    showToast('✅ Imagen seleccionada', 'success');
 }
 
 async function deleteImage(filename) {
@@ -323,15 +323,15 @@ async function deleteImage(filename) {
         });
 
         if (res.ok) {
-            showToast('🗑️ Imagen eliminada');
+            showToast('🗑️ Imagen eliminada', 'success');
             loadImageGallery(); // Reload gallery
         } else {
             const errorData = await res.json();
-            showToast(`❌ Error: ${errorData.error || 'No se pudo eliminar'}`);
+            showToast(`❌ Error: ${errorData.error || 'No se pudo eliminar'}`, 'error');
         }
     } catch (err) {
         console.error('Delete error:', err);
-        showToast('❌ Error al eliminar imagen');
+        showToast('❌ Error al eliminar imagen', 'error');
     }
 }
 
@@ -400,9 +400,9 @@ async function deleteMessage(id) {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         loadMessages();
-        showToast('Mensaje borrado');
+        showToast('Mensaje borrado', 'success');
     } catch (err) {
-        showToast('Error al borrar');
+        showToast('Error al borrar', 'error');
     }
 }
 
@@ -424,9 +424,9 @@ function hidePostForm() {
     document.getElementById('postsTableContainer').style.display = 'block';
 }
 
-function showToast(msg) {
+function showToast(msg, type = 'success') {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
-    toast.classList.add('show');
+    toast.className = `toast show ${type}`;
     setTimeout(() => toast.classList.remove('show'), 3000);
 }
