@@ -11,7 +11,8 @@ RUNNER_SECRET = "secreto_interno_para_comandos_98765"
 WHITELIST = {
     "deploy": "/var/www/html-static/start.sh",
     "check": "/var/www/html-static/check.sh",
-    "backup": "/var/www/html-static/backup.sh"
+    "backup": "/var/www/html-static/backup.sh",
+    "restore": "/var/www/html-static/restore.sh"
 }
 
 class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):

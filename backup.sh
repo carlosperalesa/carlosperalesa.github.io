@@ -17,7 +17,7 @@ echo "[$(date)] Starting backup..."
 mkdir -p "$BACKUP_DIR"
 
 # ============================================
-# 1. Backup Contact API Database
+# 1. Backup Contact API Database (Main)
 # ============================================
 echo "📦 Backing up Contact API database..."
 CONTACT_DB="/var/www/html-static/api/data/contactos.db"
@@ -29,38 +29,14 @@ else
 fi
 
 # ============================================
-# 2. Backup Bruja Teatral Database
-# ============================================
-echo "📦 Backing up Bruja Teatral database..."
-BT_DB="/var/www/html-static/other/BT/database.db"
-if [ -f "$BT_DB" ]; then
-    cp "$BT_DB" "$BACKUP_DIR/bruja_teatral_$DATE.db"
-    echo "✅ Bruja Teatral database backed up"
-else
-    echo "⚠️ Bruja Teatral database not found"
-fi
-
-# ============================================
-# 3. Backup Bruja Teatral Uploads
-# ============================================
-echo "📦 Backing up Bruja Teatral uploads..."
-BT_UPLOADS="/var/www/html-static/other/BT/public/uploads"
-if [ -d "$BT_UPLOADS" ]; then
-    tar -czf "$BACKUP_DIR/bt_uploads_$DATE.tar.gz" -C "$BT_UPLOADS" .
-    echo "✅ Bruja Teatral uploads backed up"
-else
-    echo "⚠️ Bruja Teatral uploads folder not found"
-fi
-
-# ============================================
-# 4. Cleanup old backups
+# 2. Cleanup old backups
 # ============================================
 echo "🧹 Cleaning up old backups (older than $RETENTION_DAYS days)..."
 find "$BACKUP_DIR" -type f -mtime +$RETENTION_DAYS -delete
 echo "✅ Old backups cleaned up"
 
 # ============================================
-# 5. Summary
+# 3. Summary
 # ============================================
 echo ""
 echo "============================================"
@@ -69,5 +45,3 @@ echo "============================================"
 echo "Location: $BACKUP_DIR"
 ls -lh "$BACKUP_DIR" | tail -5
 echo ""
-echo "Total backup size:"
-du -sh "$BACKUP_DIR"
