@@ -78,7 +78,11 @@ chmod -R 775 "$BT_DIR/public/uploads" 2>/dev/null || true
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
 # 5. Recargar Nginx (Importante para cambios de config)
-echo -e "\n🔄 Recargando configuración de proxy..."
+echo -e "\n🔄 Actualizando configuración de Nginx..."
+# Copiamos la config del repo a la carpeta de sistema
+cp "$API_DIR/nginx.conf" /etc/nginx/sites-available/carlosperales.dev
+ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/
+
 run_task "nginx -t && systemctl reload nginx" "Recargando Nginx"
 
 echo "-----------------------------------"

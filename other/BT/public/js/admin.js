@@ -1,7 +1,7 @@
 // Detectar entorno local (Live Server usa puerto distinto al backend)
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_URL = isLocal ? 'http://localhost:3000/api' : '/bt/api';
-const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';  // Base para assets (imágenes)
+const API_URL = isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
+const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/other/BT';  // Base para assets (imágenes)
 let quill;
 
 // Helper para resolver URLs de imágenes
@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 function checkAuth() {
     const token = localStorage.getItem('token');
     const expiresAt = localStorage.getItem('token_expires_at');
-    
+
     // Verificar si hay token
     if (!token) {
         window.location.href = 'index.html';
         return;
     }
-    
+
     // Verificar si el token ha expirado
     if (expiresAt && Date.now() / 1000 > parseInt(expiresAt)) {
         showToast('Tu sesión ha expirado. Por favor inicia sesión de nuevo.');
@@ -50,7 +50,7 @@ function checkAuth() {
         }, 2000);
         return;
     }
-    
+
     document.getElementById('welcomeUser').textContent = `Hola, ${localStorage.getItem('user')}`;
 }
 
