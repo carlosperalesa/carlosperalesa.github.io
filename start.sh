@@ -53,6 +53,13 @@ if [ $? -ne 0 ]; then exit 1; fi
 
 # 3. Main API
 echo -e "\n⏳ Iniciando rebuild de Main API. Ten paciencia..."
+
+# Fix permissions for Main API (now running as user 1000)
+echo -e "   🔧 Ajustando permisos Main API para usuario 1000..."
+mkdir -p "$API_DIR/data"
+chown -R 1000:1000 "$API_DIR/data" 2>/dev/null || true
+chmod -R 775 "$API_DIR/data" 2>/dev/null || true
+
 run_task "cd $API_DIR && docker compose up -d --build" "Reconstruyendo Main API"
 
 # 4. Bruja Teatral (BT)

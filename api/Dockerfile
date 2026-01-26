@@ -17,7 +17,13 @@ COPY . .
 # Crear directorio para la base de datos
 RUN mkdir -p data
 
-# Exponer puerto
+# Create non-root user for security (Best Practice)
+RUN useradd -m -u 1000 appuser && \
+    chown -R appuser:appuser /app
+
+USER appuser
+
+# Expose port
 EXPOSE 5000
 
 # Variables de entorno por defecto
