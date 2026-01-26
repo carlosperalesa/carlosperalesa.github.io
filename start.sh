@@ -17,7 +17,6 @@ run_task() {
     echo -e "${BLUE}▶ ${msg}${NC}"
     echo -e "${BLUE}----------------------------------------------${NC}"
     
-    # Ejecutar comando mostrando output en tiempo real
     eval "$cmd"
     local exit_code=$?
     
@@ -30,17 +29,7 @@ run_task() {
     fi
 }
 
-echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v3.1\n"
-
-# Resumen de tareas
-echo -e "${BLUE}Plan de ejecución:${NC}"
-echo "1. Actualizar código (git pull)"
-echo "2. Reconstruir Main API (Puede tardar 1-2 mins)"
-echo "3. Reconstruir Bruja Teatral API (Puede tardar 1-2 mins)"
-echo "4. Recargar Nginx (Aplicar cambios de proxy)"
-echo "5. Verificar Salud del Sistema"
-echo -e "\n⚠️  Nota: Si ves 'Building...' o 'Waiting', por favor ESPERA. No está pegado, está trabajando."
-echo -e "----------------------------------------------\n"
+echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v3.2\n"
 
 # 1. Rutas
 MAIN_DIR="/var/www/html-static"
@@ -52,10 +41,8 @@ run_task "cd $MAIN_DIR && git pull" "Actualizando repositorio ($MAIN_DIR)"
 if [ $? -ne 0 ]; then exit 1; fi
 
 # 3. Main API
-echo -e "\n⏳ Iniciando rebuild de Main API. Ten paciencia..."
-
-# Fix permissions for Main API (now running as user 1000)
-echo -e "   🔧 Ajustando permisos Main API para usuario 1000..."
+echo -e "\n⏳ Iniciando rebuild de Main API..."
+# Fix permissions for Main API (running as user 1000)
 mkdir -p "$API_DIR/data"
 chown -R 1000:1000 "$API_DIR/data" 2>/dev/null || true
 chmod -R 775 "$API_DIR/data" 2>/dev/null || true
@@ -63,49 +50,32 @@ chmod -R 775 "$API_DIR/data" 2>/dev/null || true
 run_task "cd $API_DIR && docker compose up -d --build" "Reconstruyendo Main API"
 
 # 4. Bruja Teatral (BT)
-# 4. Bruja Teatral (BT)
-echo -e "\n⏳ Iniciando rebuild de Bruja Teatral. Ten paciencia..."
-# Ensure DB file exists to prevent Docker directory creation issue
+echo -e "\n⏳ Iniciando rebuild de Bruja Teatral..."
+# Ensure essential files/dirs exist
 touch "$BT_DIR/database.db"
-
-# Fix permissions for BT container (running as user 1000)
-echo -e "   🔧 Ajustando permisos para usuario 1000..."
-chown 1000:1000 "$BT_DIR/database.db" 2>/dev/null || true
 mkdir -p "$BT_DIR/public/uploads"
-chown -R 1000:1000 "$BT_DIR/public/uploads" 2>/dev/null || true
+
+# EXTREME PERM FIX: Recursively chown the directory to 1000
+# This ensures SQLite can create journal files and manage the DB properly
+echo -e "   🔧 Ajustando permisos recursivos para usuario 1000..."
+chown -R 1000:1000 "$BT_DIR/database.db" "$BT_DIR/public/uploads" 2>/dev/null || true
+# Important: The app needs write access to the directory containing the DB for journals
+chown 1000:1000 "$BT_DIR" 2>/dev/null || true
 chmod -R 775 "$BT_DIR/public/uploads" 2>/dev/null || true
 
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
 # 5. Recargar Nginx (Importante para cambios de config)
 echo -e "\n🔄 Actualizando configuración de Nginx..."
-# Copiamos la config del repo a la carpeta de sistema
 cp "$API_DIR/nginx.conf" /etc/nginx/sites-available/carlosperales.dev
 ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/
 
 run_task "nginx -t && systemctl reload nginx" "Recargando Nginx"
 
 echo "-----------------------------------"
-echo -e "\n🔍 VERIFICACIÓN DE SALUD (HEALTH CHECKS)\n"
-
-# Wait
-echo -e "\n⏳ Esperando 5 segundos para arranque de servicios..."
+echo -e "\n🔍 VERIFICACIÓN DE SALUD\n"
 sleep 5
+chmod +x "$MAIN_DIR/check.sh"
+"$MAIN_DIR/check.sh"
 
-# Check Main API
-HTTP_STATUS=$(curl -o /dev/null -s -w "%{http_code}\n" https://carlosperales.dev/api/health)
-if [ "$HTTP_STATUS" == "200" ]; then
-    echo -e "${GREEN}${CHECK} MAIN API: ONLINE${NC}"
-else
-    echo -e "${RED}${CROSS} MAIN API: OFFLINE ($HTTP_STATUS)${NC}"
-fi
-
-# Check BT API
-HTTP_STATUS_BT=$(curl -o /dev/null -s -w "%{http_code}\n" https://carlosperales.dev/other/BT/api/posts)
-if [ "$HTTP_STATUS_BT" == "200" ]; then
-    echo -e "${GREEN}${CHECK} BT API:   ONLINE${NC}"
-else
-    echo -e "${RED}${CROSS} BT API:   WARN/OFFLINE ($HTTP_STATUS_BT)${NC}"
-fi
-
-echo -e "\n✨ PROCESO COMPLETADO Ver detalles: /tmp/deploy.log ✨\n"
+echo -e "\n✨ PROCESO COMPLETADO ✨\n"

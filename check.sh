@@ -10,7 +10,7 @@ CHECK="✅"
 CROSS="❌"
 
 # Contador
-TOTAL_STEPS=6
+TOTAL_STEPS=7
 CURRENT_STEP=1
 
 print_step() {
@@ -29,72 +29,69 @@ check_service() {
     fi
 }
 
-echo -e "\n🔍 SYSTEM HEALTH CHECK\n"
+echo -e "\n🔍 SYSTEM HEALTH CHECK & DIAGNOSIS v4.0\n"
 HAS_ERROR=0
 
 # 1. NGINX
 print_step "Verificando Servidor Web (Nginx)"
 check_service "Nginx Service" "systemctl is-active --quiet nginx"
-check_service "Config Syntax" "nginx -t > /dev/null 2>&1"
+check_service "Config Syntax" "nginx -t"
 
-# 2. DOCKER DAEMON
+# 2. DOCKER
 print_step "Verificando Motor Docker"
 check_service "Docker Service" "systemctl is-active --quiet docker"
-check_service "Docker Compose" "docker compose version > /dev/null 2>&1"
 
 # 3. CONTENEDORES
-print_step "Verificando Contenedores Activos"
-# Verifica que existan y estén running
+print_step "Verificando Contenedores"
 check_service "Main API Container" "docker ps --format '{{.Names}}' | grep -q 'portfolio-contact-api'"
 check_service "BT API Container" "docker ps --format '{{.Names}}' | grep -q 'bruja-teatral'"
 
-# 4. BASES DE DATOS (Check file existence or process)
-print_step "Verificando Persistencia (DBs)"
+# 4. PERSISTENCIA Y PERMISOS (Integrado de diagnosis)
+print_step "Verificando Persistencia y Permisos"
+# Check DB file
 if [ -f "/var/www/html-static/other/BT/database.db" ]; then
-    echo -e "   ${GREEN}${CHECK} BT Database: OK (File exists)${NC}"
+    DB_OWNER=$(stat -c '%u:%g' /var/www/html-static/other/BT/database.db)
+    if [ "$DB_OWNER" == "1000:1000" ]; then
+        echo -e "   ${GREEN}${CHECK} BT Database: OK (1000:1000)${NC}"
+    else
+        echo -e "   ${RED}${CROSS} BT Database: WRONG OWNER ($DB_OWNER)${NC}"
+        HAS_ERROR=1
+    fi
 else
     echo -e "   ${RED}${CROSS} BT Database: MISSING${NC}"
-fi
-# Main API usa SQLite interno en ./api/instance o similar? O data json?
-# Asumiremos JSON en data/
-if [ -d "/var/www/html-static/api/data" ]; then
-    echo -e "   ${GREEN}${CHECK} Main API Data Dir: OK${NC}"
-else
-    echo -e "   ${YELLOW}⚠️  Main API Data Dir: Not found${NC}"
+    HAS_ERROR=1
 fi
 
 # 5. RECURSOS
 print_step "Verificando Recursos del Sistema"
-# Disco (Alertar si > 90%)
 DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
-if [ "$DISK_USAGE" -lt 90 ]; then
-    echo -e "   ${GREEN}${CHECK} Disk Usage: ${DISK_USAGE}% (OK)${NC}"
-else
-    echo -e "   ${RED}${CROSS} Disk Usage: ${DISK_USAGE}% (CRITICAL)${NC}"
-fi
-
-# Memoria
+echo -e "   Disk Usage: ${DISK_USAGE}%"
 MEM_FREE=$(free -m | awk 'NR==2 {print $4}')
-if [ "$MEM_FREE" -gt 50 ]; then
-    echo -e "   ${GREEN}${CHECK} Free RAM: ${MEM_FREE}MB (OK)${NC}"
-else
-    echo -e "   ${YELLOW}⚠️  Free RAM: ${MEM_FREE}MB (Low)${NC}"
-fi
+echo -e "   Free RAM: ${MEM_FREE}MB"
 
-# 6. ENDPOINTS PÚBLICOS
-print_step "Verificando Respuesta HTTP (Public)"
+# 6. CONECTIVIDAD INTERNA (Deep Diagnosis)
+print_step "Verificando Conectividad Interna (Bridge)"
+# Test Main API Port
+check_service "Internal Port 5000 (Main)" "curl -s -o /dev/null -w '%{http_code}' http://localhost:5000/api/health | grep -q '200'"
+# Test BT Port
+check_service "Internal Port 3000 (BT)" "curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/api/posts | grep -q '200'"
+
+# 7. ENDPOINTS PÚBLICOS
+print_step "Verificando Respuesta HTTP (Public URL)"
 HTTP_MAIN=$(curl -o /dev/null -s -w "%{http_code}" https://carlosperales.dev/api/health)
 if [ "$HTTP_MAIN" == "200" ]; then
-     echo -e "   ${GREEN}${CHECK} Main API: 200 OK${NC}"
+     echo -e "   ${GREEN}${CHECK} Main API Public: 200 OK${NC}"
 else
-     echo -e "   ${RED}${CROSS} Main API: ${HTTP_MAIN}${NC}"
+     echo -e "   ${RED}${CROSS} Main API Public: ${HTTP_MAIN}${NC}"
+     HAS_ERROR=1
 fi
 
 HTTP_BT=$(curl -o /dev/null -s -w "%{http_code}" https://carlosperales.dev/other/BT/api/posts)
 if [ "$HTTP_BT" == "200" ]; then
-     echo -e "   ${GREEN}${CHECK} BT API: 200 OK${NC}"
+     echo -e "   ${GREEN}${CHECK} BT API Public: 200 OK${NC}"
 else
-     echo -e "   ${RED}${CROSS} BT API: ${HTTP_BT}${NC}"
+     echo -e "   ${RED}${CROSS} BT API Public: ${HTTP_BT}${NC}"
+     HAS_ERROR=1
 fi
 
 echo -e "\n-----------------------------------"
@@ -102,5 +99,6 @@ if [ $HAS_ERROR -eq 0 ]; then
     echo -e "${GREEN}✅ SISTEMA OPERATIVO Y SALUDABLE${NC}"
 else
     echo -e "${RED}❌ SE DETECTARON ERRORES${NC}"
+    echo -e "${YELLOW}👉 Revisa logs con: docker logs bruja-teatral${NC}"
 fi
 echo -e "-----------------------------------\n"

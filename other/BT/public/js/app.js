@@ -84,7 +84,7 @@ function setupModal() {
                     localStorage.setItem('token_expires_at', data.expires_at);
 
                     const hoursRemaining = data.expires_in_hours || 24;
-                    showToast(`Login exitoso. Sesión válida por ${hoursRemaining} horas.`, 'success');
+                    showToast(`¡Bienvenido!`, 'success');
                     setTimeout(() => window.location.href = 'admin.html', 1000);
                 } else {
                     showToast(data.error || 'Error de login', 'error');

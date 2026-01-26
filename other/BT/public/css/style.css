@@ -497,11 +497,11 @@ th {
     transform: translateX(-50%) translateY(20px);
     background: rgba(0, 0, 0, 0.9);
     color: var(--color-white);
-    padding: 12px 30px;
-    border-radius: 50px;
+    padding: 8px 20px;
+    border-radius: 30px;
     font-family: var(--font-title);
-    font-size: 1.4rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    font-size: 1.1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     opacity: 0;
     pointer-events: none;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
