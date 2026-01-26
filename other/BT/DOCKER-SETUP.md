@@ -83,7 +83,7 @@ Accede a: http://localhost:3000
 ## 🌐 Instalación en DigitalOcean
 
 ### Requisitos Previos
-- Acceso SSH a tu droplet (138.197.215.59)
+- Acceso SSH a tu droplet (64.23.156.112)
 - Ubuntu/Debian instalado en el droplet
 
 ### Método 1: Instalación Manual (Paso a Paso)
@@ -98,7 +98,7 @@ Accede a: http://localhost:3000
 
 En **otra terminal local** (sin cerrar el SSH):
 ```powershell
-scp c:\Users\carlo\OneDrive\GitHub\carlosperalesa.github.io\other\BT\install-docker-droplet.sh root@138.197.215.59:/root/
+scp c:\Users\carlo\OneDrive\GitHub\carlosperalesa.github.io\other\BT\install-docker-droplet.sh root@64.23.156.112:/root/
 ```
 
 #### 3. Ejecutar Script en el Droplet
@@ -137,7 +137,7 @@ En tu **terminal local de Windows**:
 cd c:\Users\carlo\OneDrive\GitHub\carlosperalesa.github.io\other\BT
 
 # Copiar todo el contenido
-scp -r * root@138.197.215.59:/var/www/bruja-teatral/
+scp -r * root@64.23.156.112:/var/www/bruja-teatral/
 ```
 
 #### 6. Configurar Variables de Entorno
@@ -226,7 +226,7 @@ sudo docker compose ps
 ```
 
 Accede desde tu navegador a:
-- Por IP: http://138.197.215.59:3000
+- Por IP: http://64.23.156.112:3000
 - Por dominio (si configuras Nginx): https://carlosperales.dev/api
 
 ---
@@ -312,7 +312,7 @@ sudo kill -9 PID
 **Solución**:
 ```bash
 # Verifica tu clave SSH
-ssh -v root@138.197.215.59
+ssh -v root@64.23.156.112
 
 # Si falla, puede que necesites usar la consola de DigitalOcean
 # https://cloud.digitalocean.com/droplets
@@ -325,7 +325,7 @@ ssh -v root@138.197.215.59
 | Entorno | URL | Uso |
 |---------|-----|-----|
 | Local | http://localhost:3000 | Desarrollo/Testing |
-| Producción (IP) | http://138.197.215.59:3000 | Testing directo |
+| Producción (IP) | http://64.23.156.112:3000 | Testing directo |
 | Producción (Dominio) | https://carlosperales.dev/api | Producción final † |
 
 † Requiere configuración de Nginx como proxy reverso (paso siguiente)

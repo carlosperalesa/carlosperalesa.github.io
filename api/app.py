@@ -4,7 +4,11 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import sqlite3
 import os
-from datetime import datetime
+import jwt
+import bcrypt
+import secrets
+from functools import wraps
+from datetime import datetime, timedelta
 from cryptography.fernet import Fernet
 
 app = Flask(__name__)
@@ -14,10 +18,6 @@ CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 # =============================================
 # RATE LIMITING - Protección contra spam
 # =============================================
-# Límites:
-# - 10 mensajes por minuto por IP
-# - 50 mensajes por hora por IP  
-# - 200 mensajes por día por IP
 limiter = Limiter(
     key_func=get_remote_address,
     app=app,
@@ -29,9 +29,11 @@ limiter = Limiter(
 DB_PATH = 'data/contactos.db'
 DATA_DIR = 'data'
 ENCRYPTION_KEY_FILE = 'data/.encryption_key'
+# Secret key para JWT (se lee de .env o se genera una aleatoria)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(32))
 
 # =============================================
-# ENCRIPTACIÓN DE MENSAJES
+# ENCRIPTACIÓN DE MENSAJES (DATOS DEL FORM)
 # =============================================
 def get_or_create_encryption_key():
     """Obtiene o genera una clave de encriptación persistente"""
@@ -53,28 +55,28 @@ ENCRYPTION_KEY = get_or_create_encryption_key()
 cipher = Fernet(ENCRYPTION_KEY)
 
 def encrypt_text(text):
-    """Encripta texto sensible"""
-    if not text:
-        return text
+    if not text: return text
     return cipher.encrypt(text.encode()).decode()
 
 def decrypt_text(encrypted_text):
-    """Desencripta texto"""
-    if not encrypted_text:
-        return encrypted_text
+    if not encrypted_text: return encrypted_text
     try:
         return cipher.decrypt(encrypted_text.encode()).decode()
     except Exception:
-        # Si falla la desencriptación, retornar el texto tal cual (legacy data)
         return encrypted_text
 
+# =============================================
+# BASE DE DATOS E INICIALIZACIÓN
+# =============================================
 def init_db():
-    """Inicializa la base de datos SQLite"""
+    """Inicializa la base de datos SQLite con tablas de mensajes y usuarios"""
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
     
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
+    
+    # Tabla de contactos
     c.execute('''CREATE TABLE IF NOT EXISTS contactos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
@@ -85,14 +87,163 @@ def init_db():
         fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         leido BOOLEAN DEFAULT 0
     )''')
+    
+    # Tabla de usuarios (Administradores)
+    c.execute('''CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )''')
+    
     conn.commit()
     conn.close()
     print(f"✅ Base de datos inicializada en {DB_PATH}")
 
+# =============================================
+# DECORADOR PARA AUTENTICACIÓN JWT
+# =============================================
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'Authorization' in request.headers:
+            auth_header = request.headers['Authorization']
+            if auth_header.startswith('Bearer '):
+                token = auth_header.split(" ")[1]
+        
+        if not token:
+            return jsonify({'success': False, 'message': 'Token ausente'}), 401
+        
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            return jsonify({'success': False, 'message': 'Sesión expirada'}), 401
+        except Exception:
+            return jsonify({'success': False, 'message': 'Token inválido'}), 401
+            
+        return f(*args, **kwargs)
+    return decorated
+
+# =============================================
+# ENDPOINTS DE AUTENTICACIÓN
+# =============================================
+
+@app.route('/api/auth/status', methods=['GET'])
+@limiter.exempt
+def auth_status():
+    """Verifica si existe al menos un administrador configurado"""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute('SELECT COUNT(*) FROM usuarios')
+        count = c.fetchone()[0]
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'has_admin': count > 0
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/register', methods=['POST'])
+@limiter.limit("5 per hour")
+def register():
+    """Permite crear el primer usuario administrador"""
+    try:
+        data = request.json
+        username = data.get('username')
+        password = data.get('password')
+        
+        if not username or not password:
+            return jsonify({'success': False, 'message': 'Faltan campos'}), 400
+            
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        
+        # Verificar si ya existe algún usuario
+        c.execute('SELECT COUNT(*) FROM usuarios')
+        if c.fetchone()[0] > 0:
+            conn.close()
+            return jsonify({'success': False, 'message': 'Ya existe un administrador'}), 403
+            
+        # Hashear password
+        pwd_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        c.execute('INSERT INTO usuarios (username, password_hash) VALUES (?, ?)', (username, pwd_hash))
+        conn.commit()
+        conn.close()
+        
+        print(f"👤 Primer administrador creado: {username}")
+        return jsonify({'success': True, 'message': 'Administrador creado correctamente'}), 201
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/login', methods=['POST'])
+@limiter.limit("20 per hour")
+def login():
+    """Valida credenciales y devuelve un token JWT"""
+    try:
+        data = request.json
+        username = data.get('username')
+        password = data.get('password')
+        
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute('SELECT * FROM usuarios WHERE username = ?', (username,))
+        user = c.fetchone()
+        conn.close()
+        
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
+            token = jwt.encode({
+                'user_id': user['id'],
+                'user': user['username'],
+                'exp': datetime.utcnow() + timedelta(hours=8)
+            }, app.config['SECRET_KEY'], algorithm="HS256")
+            
+            return jsonify({
+                'success': True,
+                'token': token,
+                'user': user['username']
+            })
+            
+        return jsonify({'success': False, 'message': 'Credenciales inválidas'}), 401
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/auth/profile', methods=['PUT'])
+@token_required
+def update_profile():
+    """Permite cambiar la contraseña del usuario logueado"""
+    try:
+        data = request.json
+        new_password = data.get('password')
+        if not new_password:
+            return jsonify({'success': False, 'message': 'Nueva contraseña requerida'}), 400
+            
+        pwd_hash = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute('UPDATE usuarios SET password_hash = ?', (pwd_hash,))
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'Contraseña actualizada'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# =============================================
+# ENDPOINTS DE MENSAJES (PROTEGIDOS)
+# =============================================
+
 @app.route('/api/health', methods=['GET'])
-@limiter.exempt  # Excluir health check del rate limiting
+@limiter.exempt
 def health():
-    """Endpoint para verificar que la API está funcionando"""
     return jsonify({
         'status': 'ok',
         'message': 'Contact API is running',
@@ -100,73 +251,47 @@ def health():
     })
 
 @app.route('/api/contact', methods=['POST'])
-@limiter.limit("10 per minute")  # Máximo 10 mensajes por minuto por IP
+@limiter.limit("10 per minute")
 def contact():
-    """Endpoint para recibir mensajes del formulario de contacto"""
     try:
         data = request.json
-        
-        # Validación básica
         if not data.get('name') or not data.get('email') or not data.get('message'):
-            return jsonify({
-                'success': False,
-                'error': 'Faltan campos obligatorios (nombre, email, mensaje)'
-            }), 400
+            return jsonify({'success': False, 'error': 'Faltan campos obligatorios'}), 400
         
-        # Encriptar datos sensibles antes de guardar
         encrypted_phone = encrypt_text(data.get('phone', ''))
         encrypted_email = encrypt_text(data.get('email'))
         encrypted_message = encrypt_text(data.get('message'))
         
-        # Guardar en base de datos (datos encriptados)
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
         c.execute('''INSERT INTO contactos (nombre, telefono, email, asunto, mensaje)
                      VALUES (?, ?, ?, ?, ?)''',
-                  (data.get('name'),  # Nombre no encriptado para identificación
-                   encrypted_phone,
-                   encrypted_email,
-                   data.get('subject', 'Sin asunto'),  # Asunto no encriptado
-                   encrypted_message))
+                  (data.get('name'), encrypted_phone, encrypted_email, 
+                   data.get('subject', 'Sin asunto'), encrypted_message))
         contact_id = c.lastrowid
         conn.commit()
         conn.close()
         
-        print(f"✅ Nuevo contacto guardado (encriptado): ID={contact_id}")
-        
-        return jsonify({
-            'success': True,
-            'message': 'Mensaje recibido correctamente',
-            'id': contact_id
-        }), 201
-        
+        return jsonify({'success': True, 'message': 'Mensaje recibido', 'id': contact_id}), 201
     except Exception as e:
-        print(f"❌ Error al procesar contacto: {e}")
-        return jsonify({
-            'success': False,
-            'error': 'Error interno del servidor'
-        }), 500
+        return jsonify({'success': False, 'error': 'Error interno'}), 500
 
 @app.route('/api/contacts/count', methods=['GET'])
 def count_contacts():
-    """Endpoint público para contar mensajes (badge de notificaciones)"""
+    # Este se mantiene público para el badge
     try:
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
         c.execute('SELECT COUNT(*) FROM contactos')
         count = c.fetchone()[0]
         conn.close()
-        
-        return jsonify({
-            'success': True,
-            'count': count
-        })
+        return jsonify({'success': True, 'count': count})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/contacts', methods=['GET'])
+@token_required
 def get_contacts():
-    """Endpoint para obtener todos los contactos (desencriptados para admin)"""
     try:
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
@@ -175,7 +300,6 @@ def get_contacts():
         raw_contacts = [dict(row) for row in c.fetchall()]
         conn.close()
         
-        # Desencriptar datos sensibles para mostrar en admin
         contacts = []
         for contact in raw_contacts:
             contacts.append({
@@ -189,68 +313,37 @@ def get_contacts():
                 'leido': contact['leido']
             })
         
-        return jsonify({
-            'success': True,
-            'count': len(contacts),
-            'contacts': contacts
-        })
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-@app.route('/api/contacts/<int:id>', methods=['DELETE'])
-def delete_contact(id):
-    """Endpoint para eliminar un contacto por ID"""
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        c = conn.cursor()
-        
-        # Verificar si existe
-        c.execute('SELECT id FROM contactos WHERE id = ?', (id,))
-        if not c.fetchone():
-            conn.close()
-            return jsonify({'success': False, 'error': 'Contacto no encontrado'}), 404
-            
-        # Borrar
-        c.execute('DELETE FROM contactos WHERE id = ?', (id,))
-        conn.commit()
-        conn.close()
-        
-        print(f"✅ Contacto eliminado: ID={id}")
-        return jsonify({'success': True, 'message': 'Contacto eliminado correctamente'})
-        
+        return jsonify({'success': True, 'count': len(contacts), 'contacts': contacts})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
-# =============================================
-# HANDLER PARA ERRORES DE RATE LIMIT
-# =============================================
+@app.route('/api/contacts/<int:id>', methods=['DELETE'])
+@token_required
+def delete_contact(id):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute('DELETE FROM contactos WHERE id = ?', (id,))
+        conn.commit()
+        conn.close()
+        return jsonify({'success': True, 'message': 'Contacto eliminado'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @app.errorhandler(429)
 def ratelimit_handler(e):
-    """Respuesta personalizada cuando se excede el rate limit"""
     return jsonify({
         'success': False,
-        'error': 'Demasiadas solicitudes. Por favor espera un momento antes de intentar de nuevo.',
+        'error': 'Demasiadas solicitudes. Por favor espera.',
         'retry_after': e.description
     }), 429
 
-# =============================================
-# GUNICORN ENTRY POINT
-# =============================================
-# Initialize DB when running with Gunicorn
+# Inicializar DB y App
 try:
-    with app.app_context():
-        init_db()
+    init_db()
 except Exception as e:
-    print(f"Warning: DB init failed: {e}")
+    print(f"DB init failed: {e}")
 
 if __name__ == '__main__':
-    # init_db() se llama arriba, pero no daña llamarlo aquí también (IF NOT EXISTS)
-    init_db()
     port = int(os.getenv('PORT', '5000'))
-    print(f"🚀 Iniciando servidor en puerto {port}")
-    print("🔐 Encriptación de mensajes: ACTIVA")
-    print("🛡️ Rate limiting: 10/min, 50/hora, 200/día por IP")
     app.run(host='0.0.0.0', port=port, debug=False)

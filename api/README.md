@@ -6,6 +6,8 @@ Backend API para el formulario de contacto de carlosperales.dev
 
 - ✅ API REST con Flask
 - ✅ Base de datos SQLite
+- ✅ Autenticación JWT + BCrypt
+- ✅ Gestión de usuarios dinámica (Setup Inicial asistido)
 - ✅ Dockerizado para fácil deployment
 - ✅ CORS habilitado para comunicación con frontend
 - ✅ Validación de datos
@@ -129,7 +131,7 @@ Obtiene todos los mensajes guardados
 ### 1. Conectar al droplet
 
 ```bash
-ssh root@138.197.215.59
+ssh root@64.23.156.112
 ```
 
 ### 2. Crear directorio para la API
@@ -147,7 +149,7 @@ En tu **máquina local (Windows)**:
 cd c:\Users\carlo\OneDrive\GitHub\carlosperalesa.github.io
 
 # Copiar carpeta api completa
-scp -r api/* root@138.197.215.59:/var/www/portfolio-api/
+scp -r api/* root@64.23.156.112:/var/www/portfolio-api/
 ```
 
 ### 4. Construir y levantar en el droplet
@@ -216,8 +218,20 @@ sudo systemctl reload nginx
 # Desde el droplet
 curl https://carlosperales.dev/api/health
 
-# O desde tu navegador
-https://carlosperales.dev/api/health
+### 7. Recuperación de Acceso (Consola)
+
+Si olvidas tu contraseña o quieres resetear el administrador, puedes hacerlo directamente en la base de datos desde el contenedor o el servidor:
+
+**Opción A: Borrar usuario para forzar re-registro (Recomendado)**
+```bash
+# Entrar al contenedor y borrar la tabla de usuarios
+docker compose exec contact-api sqlite3 data/contactos.db "DELETE FROM usuarios;"
+```
+*Al hacer esto, la próxima vez que abras el modal de login en la web, el sistema te pedirá crear un nuevo administrador.*
+
+**Opción B: Resetear contraseña via SQL (Si tienes un hash)**
+```bash
+docker compose exec contact-api sqlite3 data/contactos.db "UPDATE usuarios SET password_hash = 'NUEVO_HASH' WHERE username = 'admin';"
 ```
 
 ## 📧 Configurar Notificaciones por Email (Opcional)

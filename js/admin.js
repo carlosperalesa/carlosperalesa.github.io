@@ -2,26 +2,97 @@
 const API_BASE_URL = App.api.getBaseUrl();
 
 /**
- * Abre el modal de login (se llama desde onclick en reloj)
+ * Abre el modal de login y verifica el estado del servidor
  */
-function openLoginModal() {
-    // Resetear campos
-    const userInput = document.getElementById('login-user');
-    const passInput = document.getElementById('login-pass');
+async function openLoginModal() {
     const errorMsg = document.getElementById('login-error');
-
-    if (userInput) userInput.value = '';
-    if (passInput) passInput.value = '';
+    const loginTitle = document.querySelector('#modal-login .modal-title');
+    const loginBtn = document.querySelector('#modal-login .modal-btn-primary');
+    
+    // Resetear campos
+    document.getElementById('login-user').value = '';
+    document.getElementById('login-pass').value = '';
     if (errorMsg) errorMsg.textContent = '';
 
-    // Función global de modals.js
+    try {
+        // Verificar si existe administrador
+        const response = await fetch(`${API_BASE_URL}/api/auth/status`);
+        const data = await response.json();
+
+        if (data.success) {
+            if (!data.has_admin) {
+                // Modo Setup Inicial
+                if (loginTitle) loginTitle.textContent = 'Configuración Inicial Admin';
+                if (loginBtn) {
+                    loginBtn.textContent = 'Crear Administrador';
+                    loginBtn.onclick = createInitialAdmin;
+                }
+                if (errorMsg) {
+                    errorMsg.style.color = 'var(--accent-color)';
+                    errorMsg.textContent = 'No hay administrador. Crea uno para empezar.';
+                }
+            } else {
+                // Modo Login Normal
+                if (loginTitle) loginTitle.textContent = 'Admin Login';
+                if (loginBtn) {
+                    loginBtn.textContent = 'Ingresar';
+                    loginBtn.onclick = attemptLogin;
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error verificando estado:', error);
+    }
+
     if (typeof openModal === 'function') {
         openModal('login');
     }
 }
 
 /**
- * Intenta realizar login contra el backend
+ * Crea el primer administrador
+ */
+async function createInitialAdmin() {
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value;
+    const errorMsg = document.getElementById('login-error');
+    const loginBtn = document.querySelector('#modal-login .modal-btn-primary');
+
+    if (!user || !pass) {
+        if (errorMsg) errorMsg.textContent = 'Completa ambos campos';
+        return;
+    }
+
+    if (pass.length < 6) {
+        if (errorMsg) errorMsg.textContent = 'Mínimo 6 caracteres para la clave';
+        return;
+    }
+
+    try {
+        loginBtn.disabled = true;
+        const response = await fetch(`${API_BASE_URL}/api/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: user, password: pass })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            alert('¡Administrador creado con éxito! Ahora puedes ingresar.');
+            openLoginModal(); // Recargar modal en modo login
+        } else {
+            if (errorMsg) errorMsg.textContent = data.message || 'Error al crear admin';
+        }
+    } catch (error) {
+        if (errorMsg) errorMsg.textContent = 'Error de conexión';
+    } finally {
+        loginBtn.disabled = false;
+    }
+}
+
+/**
+ * Login normal
  */
 async function attemptLogin() {
     const user = document.getElementById('login-user').value;
@@ -29,10 +100,7 @@ async function attemptLogin() {
     const errorMsg = document.getElementById('login-error');
     const loginBtn = document.querySelector('#modal-login .modal-btn-primary');
 
-    if (!user || !pass) {
-        if (errorMsg) errorMsg.textContent = 'Por favor completa todos los campos';
-        return;
-    }
+    if (!user || !pass) return;
 
     try {
         if (loginBtn) {
@@ -42,36 +110,29 @@ async function attemptLogin() {
 
         const response = await fetch(`${API_BASE_URL}/api/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: user, password: pass })
         });
 
         const data = await response.json();
 
         if (response.ok && data.success) {
-            // Login exitoso
-            // Guardar token si aplica (ej. sessionStorage)
             if (data.token) {
                 sessionStorage.setItem('admin_token', data.token);
             }
-
             if (typeof closeModal === 'function') closeModal('login');
             if (typeof openModal === 'function') openModal('admin');
-
-            // Cargar mensajes
             loadMessages();
         } else {
             if (errorMsg) {
+                errorMsg.style.color = '#ef4444';
                 errorMsg.textContent = data.message || 'Credenciales incorrectas';
                 errorMsg.style.animation = 'shake 0.3s ease-in-out';
                 setTimeout(() => errorMsg.style.animation = '', 300);
             }
         }
     } catch (error) {
-        console.error('Error durante login:', error);
-        if (errorMsg) errorMsg.textContent = 'Error de conexión con el servidor';
+        if (errorMsg) errorMsg.textContent = 'Error de conexión';
     } finally {
         if (loginBtn) {
             loginBtn.textContent = 'Ingresar';
@@ -91,20 +152,14 @@ async function loadMessages() {
 
     try {
         const token = sessionStorage.getItem('admin_token');
-        const headers = {};
-        if (token) headers['Authorization'] = `Bearer ${token}`;
+        const headers = { 'Authorization': `Bearer ${token}` };
 
-        const url = `${API_BASE_URL}/api/contacts`;
-
-        const response = await fetch(url, { headers });
+        const response = await fetch(`${API_BASE_URL}/api/contacts`, { headers });
 
         if (!response.ok) {
-            // Si es 401 o 403, probablemente expiró la sesión
             if (response.status === 401 || response.status === 403) {
                 if (typeof closeModal === 'function') closeModal('admin');
-                if (typeof openModal === 'function') openModal('login');
-                const errorMsg = document.getElementById('login-error');
-                if (errorMsg) errorMsg.textContent = 'Sesión expirada';
+                openLoginModal();
                 return;
             }
             throw new Error(`Error HTTP: ${response.status}`);
@@ -120,14 +175,11 @@ async function loadMessages() {
                 return;
             }
 
-            // Renderizar filas
             data.contacts.forEach(msg => {
-                // Fila Principal
                 const tr = document.createElement('tr');
                 const fecha = new Date(msg.fecha).toLocaleString();
                 tr.className = 'message-row';
                 tr.onclick = (e) => {
-                    // Si el click fue en el botón de borrar, no expandir
                     if (e.target.closest('.action-btn')) return;
                     toggleMessageDetail(msg.id);
                 };
@@ -147,7 +199,6 @@ async function loadMessages() {
                 `;
                 tbody.appendChild(tr);
 
-                // Fila Detalle (Oculta)
                 const trDetail = document.createElement('tr');
                 trDetail.id = `detail-${msg.id}`;
                 trDetail.style.display = 'none';
@@ -160,15 +211,10 @@ async function loadMessages() {
                 `;
                 tbody.appendChild(trDetail);
             });
-        } else {
-            tbody.innerHTML = `<tr><td colspan="7" style="color:red; text-align:center;">Error API: ${data.message || 'Desconocido'}</td></tr>`;
         }
     } catch (error) {
         console.error('Error cargando mensajes:', error);
-        tbody.innerHTML = `<tr><td colspan="7" style="color: #ef4444; text-align:center;">
-            Error de conexión. Asegúrate que la API está corriendo.<br>
-            <small>${error.message}</small>
-        </td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="color: #ef4444; text-align:center;">Error de conexión.</td></tr>`;
     }
 }
 
@@ -179,46 +225,27 @@ function toggleMessageDetail(id) {
     }
 }
 
-/**
- * Elimina un contacto
- */
 async function deleteContact(id) {
-    if (!confirm(`¿Estás seguro de eliminar el mensaje ID #${id}? Esta acción no se puede deshacer.`)) return;
+    if (!confirm(`¿Borrar mensaje #${id}?`)) return;
 
     try {
         const token = sessionStorage.getItem('admin_token');
-        const headers = {};
-        if (token) headers['Authorization'] = `Bearer ${token}`;
-
-        const url = `${API_BASE_URL}/api/contacts/${id}`;
-
-        const response = await fetch(url, {
+        const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
             method: 'DELETE',
-            headers: headers
+            headers: { 'Authorization': `Bearer ${token}` }
         });
 
         const data = await response.json();
-
         if (data.success) {
-            // Mostrar feedback visual
-            const toast = document.getElementById('welcomeToast');
-            if (toast) {
-                toast.textContent = 'Mensaje eliminado';
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
-            }
-            // Recargar tabla
             loadMessages();
         } else {
-            alert('Error al eliminar: ' + (data.error || 'Error desconocido'));
+            alert('Error: ' + data.error);
         }
     } catch (error) {
-        console.error('Error borrando:', error);
-        alert('Error de conexión al intentar borrar');
+        alert('Error de conexión');
     }
 }
 
-// Utilidad para escapar HTML y prevenir XSS
 function escapeHtml(text) {
     if (!text) return '';
     return String(text)
@@ -229,12 +256,14 @@ function escapeHtml(text) {
         .replace(/'/g, "&#039;");
 }
 
-// Event listener para tecla Enter en login
 document.addEventListener('DOMContentLoaded', () => {
     const loginPass = document.getElementById('login-pass');
     if (loginPass) {
         loginPass.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') attemptLogin();
+            if (e.key === 'Enter') {
+                const btn = document.querySelector('#modal-login .modal-btn-primary');
+                if (btn) btn.click();
+            }
         });
     }
 });

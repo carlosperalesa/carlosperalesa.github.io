@@ -4,7 +4,7 @@ echo   DEPLOY CONTACT API TO DROPLET
 echo ========================================
 echo.
 
-set DROPLET_IP=138.197.215.59
+set DROPLET_IP=64.23.156.112
 set DROPLET_PATH=/var/www/portfolio-api
 
 echo [1/5] Creando directorio en el droplet...

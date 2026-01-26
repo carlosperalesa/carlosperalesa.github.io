@@ -6,7 +6,7 @@ echo "========================================"
 echo ""
 
 # Variables - MODIFICA ESTAS
-DROPLET_IP="138.197.215.59"
+DROPLET_IP="64.23.156.112"
 DROPLET_USER="root"
 PROJECT_DIR="/var/www/bruja-teatral"
 DOMAIN="carlosperales.dev"  # Tu dominio actual
