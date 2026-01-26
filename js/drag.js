@@ -130,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // En móvil, permitir arrastrar modales pequeños desde CUALQUIER punto
         if (isSmall) {
             modal.addEventListener('touchstart', (e) => {
-                // Si tocamos botones de acción o cierre, no iniciar drag
-                if (e.target.closest('button, a, .modal-close')) return;
+                // Si tocamos botones de acción, cierre o campos de entrada, no iniciar drag
+                if (e.target.closest('button, a, .modal-close, input, textarea, select')) return;
                 // Si no estamos en móvil, el header ya se encarga
                 if (!App.isMobile()) return;
 

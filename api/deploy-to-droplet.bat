@@ -11,12 +11,18 @@ echo [1/5] Creando directorio en el droplet...
 ssh root@%DROPLET_IP% "mkdir -p %DROPLET_PATH%"
 echo.
 
-echo [2/5] Copiando archivos al droplet...
-REM Copiamos archivos individualmente para evitar sobrescribir 'data/'
-scp Dockerfile docker-compose.yml requirements.txt app.py system_runner.py root@%DROPLET_IP%:%DROPLET_PATH%/
+echo [2/5] Copiando archivos API al droplet...
+REM Copiamos archivos API
+scp Dockerfile docker-compose.yml requirements.txt app.py system_runner.py backup.sh restore.sh root@%DROPLET_IP%:%DROPLET_PATH%/
 scp -r .agent root@%DROPLET_IP%:%DROPLET_PATH%/
 echo Copiando .env explícitamente...
 scp .env root@%DROPLET_IP%:%DROPLET_PATH%/.env
+
+echo [2.5/5] Copiando archivos Frontend (HTML/CSS/JS)...
+REM Subimos un nivel para ir a /var/www/html-static/
+scp ..\index.html root@%DROPLET_IP%:/var/www/html-static/
+scp -r ..\css root@%DROPLET_IP%:/var/www/html-static/
+scp -r ..\js root@%DROPLET_IP%:/var/www/html-static/
 echo.
 
 echo [3/5] Construyendo imagen Docker en el droplet...
