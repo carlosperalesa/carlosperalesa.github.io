@@ -51,8 +51,9 @@ print_step "Verificando Persistencia y Permisos"
 # Check DB file
 if [ -f "/var/www/html-static/other/BT/database.db" ]; then
     DB_OWNER=$(stat -c '%u:%g' /var/www/html-static/other/BT/database.db)
-    if [ "$DB_OWNER" == "1000:1000" ]; then
-        echo -e "   ${GREEN}${CHECK} BT Database: OK (1000:1000)${NC}"
+    # Aceptamos tanto usuario 1000 (standard user) como 33 (www-data)
+    if [ "$DB_OWNER" == "1000:1000" ] || [ "$DB_OWNER" == "33:33" ]; then
+        echo -e "   ${GREEN}${CHECK} BT Database: OK ($DB_OWNER)${NC}"
     else
         echo -e "   ${RED}${CROSS} BT Database: WRONG OWNER ($DB_OWNER)${NC}"
         HAS_ERROR=1
