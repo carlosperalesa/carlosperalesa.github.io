@@ -97,7 +97,7 @@ else
 fi
 
 # Check BT API
-HTTP_STATUS_BT=$(curl -o /dev/null -s -w "%{http_code}\n" https://carlosperales.dev/bt/api/posts)
+HTTP_STATUS_BT=$(curl -o /dev/null -s -w "%{http_code}\n" https://carlosperales.dev/other/BT/api/posts)
 if [ "$HTTP_STATUS_BT" == "200" ]; then
     echo -e "${GREEN}${CHECK} BT API:   ONLINE${NC}"
 else

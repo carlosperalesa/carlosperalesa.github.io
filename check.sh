@@ -90,7 +90,7 @@ else
      echo -e "   ${RED}${CROSS} Main API: ${HTTP_MAIN}${NC}"
 fi
 
-HTTP_BT=$(curl -o /dev/null -s -w "%{http_code}" https://carlosperales.dev/bt/api/posts)
+HTTP_BT=$(curl -o /dev/null -s -w "%{http_code}" https://carlosperales.dev/other/BT/api/posts)
 if [ "$HTTP_BT" == "200" ]; then
      echo -e "   ${GREEN}${CHECK} BT API: 200 OK${NC}"
 else
