@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             header.addEventListener('touchstart', (e) => {
-                if (e.target.closest('.modal-close, .modal-maximize')) return;
+                if (e.target.closest('.modal-close, .modal-maximize, button')) return;
                 initDragging(header, e);
             }, { passive: false });
         }
