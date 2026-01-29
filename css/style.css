@@ -1548,8 +1548,21 @@ body.dark-mode .project-icon {
     /* Forzar bordes redondeados en modales grandes incluso maximizados */
     .modal.modal-lg {
         border-radius: var(--radius-lg) !important;
-        overflow: hidden;
-        /* Evita que el contenido tape las esquinas */
+        /* Quitar overflow:hidden para que el header y el botón cerrar sean visibles en móvil */
+        /* overflow: hidden; */
+    }
+
+    /* Asegurar que el header y el botón cerrar estén siempre encima en móvil */
+    @media (max-width: 768px) {
+        .modal-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--modal-bg);
+        }
+        .modal-close {
+            z-index: 20;
+        }
     }
 
     /* Modales pequeños (Login/Confirm) - centrados en móvil */
