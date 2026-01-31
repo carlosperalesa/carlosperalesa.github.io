@@ -31,6 +31,7 @@ run_task() {
 
 echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v3.2\n"
 
+
 # 1. Rutas
 MAIN_DIR="/var/www/html-static"
 API_DIR="$MAIN_DIR/api"
@@ -39,6 +40,15 @@ BT_DIR="$MAIN_DIR/other/BT"
 # 2. Git Pull Global
 run_task "cd $MAIN_DIR && git pull" "Actualizando repositorio ($MAIN_DIR)"
 if [ $? -ne 0 ]; then exit 1; fi
+
+# 2.1. Ajustar permisos de carpetas estáticas para evitar errores 403
+echo -e "\n🔧 Corrigiendo permisos de carpetas estáticas (css, js, img, fonts)..."
+for dir in css js img fonts; do
+    if [ -d "$MAIN_DIR/$dir" ]; then
+        chown -R www-data:www-data "$MAIN_DIR/$dir" 2>/dev/null || true
+        chmod -R 755 "$MAIN_DIR/$dir" 2>/dev/null || true
+    fi
+done
 
 # 3. Main API
 echo -e "\n⏳ Iniciando rebuild de Main API..."

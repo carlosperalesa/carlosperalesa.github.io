@@ -1,3 +1,15 @@
+/* Fix: Siempre mostrar header y botón cerrar en móvil */
+@media (max-width: 768px) {
+
+    .modal-header,
+    .modal-close {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+}
+
 /* ============================================
    1. VARIABLES Y TEMA
    ============================================ */
@@ -1694,7 +1706,9 @@ body.dark-mode .project-icon {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.system-btn i { font-size: 1.5rem; }
+.system-btn i {
+    font-size: 1.5rem;
+}
 
 .system-btn:hover {
     transform: translateY(-4px);
@@ -1703,16 +1717,27 @@ body.dark-mode .project-icon {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.system-btn.deploy:hover { border-color: #f59e0b; color: #f59e0b; }
-.system-btn.check:hover { border-color: #10b981; color: #10b981; }
-.system-btn.backup:hover { border-color: #3b82f6; color: #3b82f6; }
+.system-btn.deploy:hover {
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+.system-btn.check:hover {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.system-btn.backup:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
 
 .terminal-container {
     background: #0d0d0d;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     margin-top: 10px;
 }
 
@@ -1725,10 +1750,23 @@ body.dark-mode .project-icon {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-.terminal-dot.red { background: #ff5f56; }
-.terminal-dot.yellow { background: #ffbd2e; }
-.terminal-dot.green { background: #27c93f; }
+.terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.terminal-dot.red {
+    background: #ff5f56;
+}
+
+.terminal-dot.yellow {
+    background: #ffbd2e;
+}
+
+.terminal-dot.green {
+    background: #27c93f;
+}
 
 .terminal-title {
     color: #666;
@@ -1748,14 +1786,33 @@ body.dark-mode .project-icon {
     background: #0a0a0a;
 }
 
-.terminal-body .line { margin-bottom: 3px; white-space: pre-wrap; }
-.line.command { color: #34d399; }
-.line.error { color: #f87171; }
-.line.working { color: #fbbf24; }
+.terminal-body .line {
+    margin-bottom: 3px;
+    white-space: pre-wrap;
+}
+
+.line.command {
+    color: #34d399;
+}
+
+.line.error {
+    color: #f87171;
+}
+
+.line.working {
+    color: #fbbf24;
+}
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ============================================
