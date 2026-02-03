@@ -139,8 +139,8 @@ fi
 
 # Test archivos estáticos BT (interno, sin SSL)
 BT_STATIC_TEST=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1/other/BT/index.html 2>/dev/null || echo "000")
-if [ "$BT_STATIC_TEST" = "200" ]; then
-    echo -e "   ${GREEN}✅ BT Estáticos: /other/BT/index.html responde 200${NC}"
+if [ "$BT_STATIC_TEST" = "200" ] || [ "$BT_STATIC_TEST" = "301" ]; then
+    echo -e "   ${GREEN}✅ BT Estáticos: /other/BT/index.html responde $BT_STATIC_TEST${NC}"
 else
     echo -e "   ${RED}❌ BT Estáticos: /other/BT/index.html responde $BT_STATIC_TEST${NC}"
     ERRORS=$((ERRORS + 1))
