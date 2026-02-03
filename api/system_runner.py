@@ -15,13 +15,14 @@ WHITELIST = {
     "restore": "/var/www/html-static/restore.sh"
 }
 
+
 class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         # Eliminamos la restricción de IP de origen para permitir que el contenedor Docker conecte,
         # confiando en el RUNNER_SECRET y en que el puerto 5001 no esté abierto al mundo.
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
-        
+
         try:
             data = json.loads(post_data)
             secret = data.get('secret')
@@ -42,7 +43,17 @@ class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
             # Ejecutar el comando
             script_path = WHITELIST[action]
             print(f"🚀 Ejecutando acción: {action} ({script_path})")
-            
+
+            # IMPORTANTE: Dar permisos de ejecución ANTES de ejecutar
+            print(f"🔐 Dando permisos de ejecución al script...")
+            chmod_result = subprocess.run(
+                ["chmod", "+x", script_path],
+                capture_output=True,
+                text=True
+            )
+            if chmod_result.returncode != 0:
+                print(f"⚠️ Warning al dar permisos: {chmod_result.stderr}")
+
             # Usamos Popen para capturar salida en vivo o al menos no bloquear todo si tarda
             process = subprocess.Popen(
                 ["bash", script_path],
@@ -50,9 +61,9 @@ class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
                 stderr=subprocess.PIPE,
                 text=True
             )
-            
+
             stdout, stderr = process.communicate()
-            
+
             response = {
                 "success": process.returncode == 0,
                 "output": stdout,
@@ -69,6 +80,7 @@ class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(500)
             self.end_headers()
             self.wfile.write(str(e).encode())
+
 
 if __name__ == "__main__":
     print(f"🕵️ Mayordomo (System Runner) activo en puerto {PORT}...")
