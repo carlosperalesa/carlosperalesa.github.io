@@ -131,6 +131,9 @@ class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
                 "message": f"Job {job_id} iniciado. Puedes verificar su estado con /status/{job_id}"
             }
 
+            print(f"✅ [POST] Job creado: {job_id}")
+            print(f"📋 [POST] Jobs activos: {list(JOBS.keys())}")
+
             self.send_response(202)  # 202 Accepted
             self.send_header('Content-type', 'application/json')
             self.end_headers()
@@ -148,8 +151,11 @@ class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
 
         if path.startswith('/status/'):
             job_id = path.replace('/status/', '')
+            print(f"🔍 [GET] Consultando estado de job: {job_id}")
+            print(f"📋 [GET] Jobs disponibles: {list(JOBS.keys())}")
 
             if job_id not in JOBS:
+                print(f"❌ [GET] Job {job_id} no encontrado")
                 self.send_response(404)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
