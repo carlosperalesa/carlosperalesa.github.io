@@ -152,14 +152,21 @@
 
     <script>
         // Definir API_URL y resolveImageUrl para este script (en caso de que no estén disponibles)
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const API_URL = isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
-        const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/other/BT';
+        // Usar let en lugar de const para evitar conflictos si app.js ya las definió
+        if (typeof isLocal === 'undefined') {
+            window.isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        }
+        if (typeof API_URL === 'undefined') {
+            window.API_URL = window.isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
+        }
+        if (typeof ASSETS_BASE === 'undefined') {
+            window.ASSETS_BASE = window.isLocal ? 'http://localhost:3000' : '/other/BT';
+        }
 
         function resolveImageUrl(url) {
             if (!url) return 'img/logo_placeholder.png';
             if (url.startsWith('http://') || url.startsWith('https://')) return url;
-            return ASSETS_BASE + url;
+            return (window.ASSETS_BASE || '/other/BT') + url;
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -172,9 +179,7 @@
             }
 
             try {
-                const res = await fetch(`${API_URL}/posts/${id}`);
-                if (!res.ok) throw new Error('Post no encontrado');
-                const post = await res.json();
+                const res = await fetch(`${window.API_URL}/posts/${id}`);
 
                 // Título y fecha
                 document.getElementById('pTitle').textContent = post.title;

@@ -73,6 +73,24 @@ chmod -R 775 "$BT_DIR/public/uploads" 2>/dev/null || true
 
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
+# ⚠️ CRITICAL: Fix permissions INSIDE containers after rebuild
+echo -e "\n🔒 ARREGLANDO PERMISOS DENTRO DE CONTENEDORES..."
+sleep 3  # Esperar a que los contenedores inicien
+
+# Fix BT uploads folder
+if docker ps | grep -q bruja-teatral; then
+    echo -e "   🔧 Arreglando permisos en bruja-teatral..."
+    docker exec bruja-teatral chmod -R 777 /app/public/uploads 2>/dev/null || echo "      ⚠️ No se pudo arreglar uploads (puede estar iniciando)"
+    docker exec bruja-teatral chmod -R 755 /app/public 2>/dev/null || true
+    docker exec bruja-teatral chmod -R 666 /app/database.db 2>/dev/null || true
+fi
+
+# Fix Main API data folder
+if docker ps | grep -q portfolio-contact-api; then
+    echo -e "   🔧 Arreglando permisos en portfolio-contact-api..."
+    docker exec portfolio-contact-api chmod -R 777 /app/data 2>/dev/null || true
+fi
+
 # 5. Limpieza
 echo -e "\n🧹 Limpiando imágenes antiguas..."
 docker image prune -f 2>/dev/null || true
