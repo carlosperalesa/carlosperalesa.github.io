@@ -1,8 +1,8 @@
 // Entorno: Local vs DigitalOcean
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+window.isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 // En Prod (DO), Nginx debe mapear '/other/BT/api/' al contenedor de BT
-const API_URL = isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
-const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/other/BT';
+window.API_URL = window.isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
+window.ASSETS_BASE = window.isLocal ? 'http://localhost:3000' : '/other/BT';
 
 // Helper para resolver URLs de imágenes
 function resolveImageUrl(url) {
@@ -10,7 +10,7 @@ function resolveImageUrl(url) {
     // Si ya es URL absoluta, retornar tal cual
     if (url.startsWith('http://') || url.startsWith('https://')) return url;
     // Si es ruta relativa, agregar base
-    return ASSETS_BASE + url;
+    return window.ASSETS_BASE + url;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,7 +65,7 @@ async function loadPosts() {
         return;
     }
     try {
-        const res = await fetch(`${API_URL}/posts`);
+        const res = await fetch(`${window.API_URL}/posts`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const posts = await res.json();
 
@@ -110,7 +110,7 @@ function setupModal() {
             const password = form.password.value;
 
             try {
-                const res = await fetch(`${API_URL}/login`, {
+                const res = await fetch(`${window.API_URL}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
@@ -159,7 +159,7 @@ function setupContactForm() {
         };
 
         try {
-            const res = await fetch(`${API_URL}/messages`, {
+            const res = await fetch(`${window.API_URL}/messages`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)

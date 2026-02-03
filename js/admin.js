@@ -430,52 +430,76 @@ async function pollJobStatus(jobId, action) {
                 setTimeout(poll, 2000); // Reintentar en 2 segundos
             } else {
                 appendConsoleLine(`❌ Error: No se pudo conectar al servidor después de ${attempts} intentos`, 'error');
-                const div = document.createElement('div');
-                div.className = 'line ' + className;
-                div.textContent = text;
-                consoleBody.appendChild(div);
-                consoleBody.scrollTop = consoleBody.scrollHeight;
             }
+        }
+    };
 
-            async function deleteContact(id) {
-                if (!confirm(`¿Borrar mensaje #${id}?`)) return;
+    // Iniciar el polling
+    poll();
+}
 
-                try {
-                    const token = sessionStorage.getItem('admin_token');
-                    const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
-                        method: 'DELETE',
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
+/**
+ * Agrega una línea a la consola del admin
+ */
+function appendConsoleLine(text, className = '') {
+    const consoleBody = document.getElementById('admin-console');
+    if (!consoleBody) return;
 
-                    const data = await response.json();
-                    if (data.success) {
-                        loadMessages();
-                    } else {
-                        alert('Error: ' + data.error);
-                    }
-                } catch (error) {
-                    alert('Error de conexión');
-                }
+    const div = document.createElement('div');
+    div.className = 'line ' + className;
+    div.textContent = text;
+    consoleBody.appendChild(div);
+    consoleBody.scrollTop = consoleBody.scrollHeight;
+}
+
+/**
+ * Elimina un mensaje de contacto
+ */
+async function deleteContact(id) {
+    if (!confirm(`¿Borrar mensaje #${id}?`)) return;
+
+    try {
+        const token = sessionStorage.getItem('admin_token');
+        const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            loadMessages();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error de conexión');
+    }
+}
+
+/**
+ * Escapa HTML para prevenir XSS
+ */
+function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+/**
+ * Event listener para Enter en campo de password
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const loginPass = document.getElementById('login-pass');
+    if (loginPass) {
+        loginPass.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const btn = document.querySelector('#modal-login .modal-btn-primary');
+                if (btn) btn.click();
             }
-
-            function escapeHtml(text) {
-                if (!text) return '';
-                return String(text)
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#039;");
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                const loginPass = document.getElementById('login-pass');
-                if (loginPass) {
-                    loginPass.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            const btn = document.querySelector('#modal-login .modal-btn-primary');
-                            if (btn) btn.click();
-                        }
-                    });
-                }
-            });
+        });
+    }
+});
