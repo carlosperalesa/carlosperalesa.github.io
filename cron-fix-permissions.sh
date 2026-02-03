@@ -6,6 +6,13 @@
 # ============================================
 
 # Cargar variables de entorno del sistema
+if [ -f /etc/environment ]; then
+    set -a
+    source /etc/environment
+    set +a
+fi
+
+# Exportar valores por defecto si no existen
 export DEPLOY_ROOT="${DEPLOY_ROOT:-/var/www/html-static}"
 export PERM_API_DATA="${PERM_API_DATA:-777}"
 export PERM_BT_UPLOADS="${PERM_BT_UPLOADS:-777}"

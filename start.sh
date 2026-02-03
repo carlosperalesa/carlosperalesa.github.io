@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Cargar variables de entorno del sistema
+if [ -f /etc/environment ]; then
+    set -a
+    source /etc/environment
+    set +a
+fi
+
 # Colores e Iconos
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
