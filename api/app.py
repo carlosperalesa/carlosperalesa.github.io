@@ -39,11 +39,13 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(32))
 # =============================================
 # ENCRIPTACIÓN DE MENSAJES (DATOS DEL FORM)
 # =============================================
+
+
 def get_or_create_encryption_key():
     """Obtiene o genera una clave de encriptación persistente"""
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
-    
+
     if os.path.exists(ENCRYPTION_KEY_FILE):
         with open(ENCRYPTION_KEY_FILE, 'rb') as f:
             return f.read()
@@ -54,16 +56,21 @@ def get_or_create_encryption_key():
         print("🔐 Nueva clave de encriptación generada")
         return key
 
+
 # Inicializar encriptación
 ENCRYPTION_KEY = get_or_create_encryption_key()
 cipher = Fernet(ENCRYPTION_KEY)
 
+
 def encrypt_text(text):
-    if not text: return text
+    if not text:
+        return text
     return cipher.encrypt(text.encode()).decode()
 
+
 def decrypt_text(encrypted_text):
-    if not encrypted_text: return encrypted_text
+    if not encrypted_text:
+        return encrypted_text
     try:
         return cipher.decrypt(encrypted_text.encode()).decode()
     except Exception:
@@ -72,14 +79,16 @@ def decrypt_text(encrypted_text):
 # =============================================
 # BASE DE DATOS E INICIALIZACIÓN
 # =============================================
+
+
 def init_db():
     """Inicializa la base de datos SQLite con tablas de mensajes y usuarios"""
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
-    
+
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    
+
     # Tabla de contactos
     c.execute('''CREATE TABLE IF NOT EXISTS contactos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,7 +100,7 @@ def init_db():
         fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         leido BOOLEAN DEFAULT 0
     )''')
-    
+
     # Tabla de usuarios (Administradores)
     c.execute('''CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -99,7 +108,7 @@ def init_db():
         password_hash TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
-    
+
     conn.commit()
     conn.close()
     print(f"✅ Base de datos inicializada en {DB_PATH}")
@@ -107,6 +116,8 @@ def init_db():
 # =============================================
 # DECORADOR PARA AUTENTICACIÓN JWT
 # =============================================
+
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -115,23 +126,25 @@ def token_required(f):
             auth_header = request.headers['Authorization']
             if auth_header.startswith('Bearer '):
                 token = auth_header.split(" ")[1]
-        
+
         if not token:
             return jsonify({'success': False, 'message': 'Token ausente'}), 401
-        
+
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(
+                token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             return jsonify({'success': False, 'message': 'Sesión expirada'}), 401
         except Exception:
             return jsonify({'success': False, 'message': 'Token inválido'}), 401
-            
+
         return f(*args, **kwargs)
     return decorated
 
 # =============================================
 # ENDPOINTS DE AUTENTICACIÓN
 # =============================================
+
 
 @app.route('/api/auth/status', methods=['GET'])
 @limiter.exempt
@@ -143,13 +156,14 @@ def auth_status():
         c.execute('SELECT COUNT(*) FROM usuarios')
         count = c.fetchone()[0]
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'has_admin': count > 0
         })
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/register', methods=['POST'])
 @limiter.limit("5 per hour")
@@ -159,31 +173,34 @@ def register():
         data = request.json
         username = data.get('username')
         password = data.get('password')
-        
+
         if not username or not password:
             return jsonify({'success': False, 'message': 'Faltan campos'}), 400
-            
+
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
-        
+
         # Verificar si ya existe algún usuario
         c.execute('SELECT COUNT(*) FROM usuarios')
         if c.fetchone()[0] > 0:
             conn.close()
             return jsonify({'success': False, 'message': 'Ya existe un administrador'}), 403
-            
+
         # Hashear password
-        pwd_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        
-        c.execute('INSERT INTO usuarios (username, password_hash) VALUES (?, ?)', (username, pwd_hash))
+        pwd_hash = bcrypt.hashpw(password.encode(
+            'utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        c.execute(
+            'INSERT INTO usuarios (username, password_hash) VALUES (?, ?)', (username, pwd_hash))
         conn.commit()
         conn.close()
-        
+
         print(f"👤 Primer administrador creado: {username}")
         return jsonify({'success': True, 'message': 'Administrador creado correctamente'}), 201
-        
+
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/login', methods=['POST'])
 @limiter.limit("20 per hour")
@@ -193,31 +210,32 @@ def login():
         data = request.json
         username = data.get('username')
         password = data.get('password')
-        
+
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
         c.execute('SELECT * FROM usuarios WHERE username = ?', (username,))
         user = c.fetchone()
         conn.close()
-        
+
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
             token = jwt.encode({
                 'user_id': user['id'],
                 'user': user['username'],
                 'exp': datetime.utcnow() + timedelta(hours=8)
             }, app.config['SECRET_KEY'], algorithm="HS256")
-            
+
             return jsonify({
                 'success': True,
                 'token': token,
                 'user': user['username']
             })
-            
+
         return jsonify({'success': False, 'message': 'Credenciales inválidas'}), 401
-        
+
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/auth/profile', methods=['PUT'])
 @token_required
@@ -228,59 +246,96 @@ def update_profile():
         new_password = data.get('password')
         if not new_password:
             return jsonify({'success': False, 'message': 'Nueva contraseña requerida'}), 400
-            
-        pwd_hash = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        
+
+        pwd_hash = bcrypt.hashpw(new_password.encode(
+            'utf-8'), bcrypt.gensalt()).decode('utf-8')
+
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
         c.execute('UPDATE usuarios SET password_hash = ?', (pwd_hash,))
         conn.commit()
         conn.close()
-        
+
         return jsonify({'success': True, 'message': 'Contraseña actualizada'})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/system/execute', methods=['POST'])
 @token_required
 def execute_system_action():
     data = request.json
     action = data.get('action')
-    
+
     if not action:
         return jsonify({'success': False, 'message': 'Acción no especificada'}), 400
-        
+
     try:
         # Hablar con el corredor externo (Mayordomo) en el host
         import json
         import urllib.request
-        
+
         runner_url = "http://host.docker.internal:5001"
         payload = {
             "secret": os.getenv("RUNNER_SECRET"),
             "action": action
         }
-        
+
         req = urllib.request.Request(
-            runner_url, 
+            runner_url,
             data=json.dumps(payload).encode(),
             headers={'Content-Type': 'application/json'},
             method='POST'
         )
-        
+
         with urllib.request.urlopen(req, timeout=60) as response:
             result = json.loads(response.read().decode())
             return jsonify(result)
-            
+
     except Exception as e:
         return jsonify({
-            'success': False, 
+            'success': False,
             'message': f"Error conectando con el mayordomo: {str(e)}"
         }), 500
+
+
+@app.route('/api/system/status/<job_id>', methods=['GET'])
+@token_required
+def get_system_status(job_id):
+    """
+    Proxy endpoint para consultar el estado de un job en el mayordomo
+    """
+    try:
+        import json
+        import urllib.request
+
+        runner_url = f"http://host.docker.internal:5001/status/{job_id}"
+
+        req = urllib.request.Request(
+            runner_url,
+            headers={'Content-Type': 'application/json'},
+            method='GET'
+        )
+
+        with urllib.request.urlopen(req, timeout=10) as response:
+            result = json.loads(response.read().decode())
+            return jsonify(result)
+
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return jsonify({'error': 'Job not found'}), 404
+        return jsonify({
+            'error': f'Error consultando estado: {e.reason}'
+        }), e.code
+    except Exception as e:
+        return jsonify({
+            'error': f'Error conectando con el mayordomo: {str(e)}'
+        }), 503
 
 # =============================================
 # ENDPOINTS DE MENSAJES (PROTEGIDOS)
 # =============================================
+
 
 @app.route('/api/health', methods=['GET'])
 @limiter.exempt
@@ -291,6 +346,7 @@ def health():
         'timestamp': datetime.now().isoformat()
     })
 
+
 @app.route('/api/contact', methods=['POST'])
 @limiter.limit("10 per minute")
 def contact():
@@ -298,24 +354,25 @@ def contact():
         data = request.json
         if not data.get('name') or not data.get('email') or not data.get('message'):
             return jsonify({'success': False, 'error': 'Faltan campos obligatorios'}), 400
-        
+
         encrypted_phone = encrypt_text(data.get('phone', ''))
         encrypted_email = encrypt_text(data.get('email'))
         encrypted_message = encrypt_text(data.get('message'))
-        
+
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
         c.execute('''INSERT INTO contactos (nombre, telefono, email, asunto, mensaje)
                      VALUES (?, ?, ?, ?, ?)''',
-                  (data.get('name'), encrypted_phone, encrypted_email, 
+                  (data.get('name'), encrypted_phone, encrypted_email,
                    data.get('subject', 'Sin asunto'), encrypted_message))
         contact_id = c.lastrowid
         conn.commit()
         conn.close()
-        
+
         return jsonify({'success': True, 'message': 'Mensaje recibido', 'id': contact_id}), 201
     except Exception as e:
         return jsonify({'success': False, 'error': 'Error interno'}), 500
+
 
 @app.route('/api/contacts/count', methods=['GET'])
 def count_contacts():
@@ -330,6 +387,7 @@ def count_contacts():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/contacts', methods=['GET'])
 @token_required
 def get_contacts():
@@ -340,7 +398,7 @@ def get_contacts():
         c.execute('SELECT * FROM contactos ORDER BY fecha DESC')
         raw_contacts = [dict(row) for row in c.fetchall()]
         conn.close()
-        
+
         contacts = []
         for contact in raw_contacts:
             contacts.append({
@@ -353,10 +411,11 @@ def get_contacts():
                 'fecha': contact['fecha'],
                 'leido': contact['leido']
             })
-        
+
         return jsonify({'success': True, 'count': len(contacts), 'contacts': contacts})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/contacts/<int:id>', methods=['DELETE'])
 @token_required
@@ -371,6 +430,7 @@ def delete_contact(id):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.errorhandler(429)
 def ratelimit_handler(e):
     return jsonify({
@@ -378,6 +438,7 @@ def ratelimit_handler(e):
         'error': 'Demasiadas solicitudes. Por favor espera.',
         'retry_after': e.description
     }), 429
+
 
 # Inicializar DB y App
 try:

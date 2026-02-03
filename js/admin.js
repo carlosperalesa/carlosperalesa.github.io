@@ -352,9 +352,14 @@ async function pollJobStatus(jobId, action) {
         attempts++;
 
         try {
-            // Intentar obtener el estado del mayordomo
-            const response = await fetch(`http://host.docker.internal:5001/status/${jobId}`, {
-                method: 'GET'
+            const token = sessionStorage.getItem('admin_token');
+
+            // Usar el endpoint proxy en la API principal
+            const response = await fetch(`${API_BASE_URL}/api/system/status/${jobId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
 
             if (response.ok) {
@@ -390,14 +395,31 @@ async function pollJobStatus(jobId, action) {
                     }
                     consoleBody.scrollTop = consoleBody.scrollHeight;
                 }
-            } else {
-                // El mayordomo no respondió, probablemente porque el servidor se está reiniciando
+            } else if (response.status === 404) {
+                // Job no encontrado - esperar y reintentar
+                appendConsoleLine(`⏳ Job pendiente (intento ${attempts}/${maxAttempts})...`, 'working');
+
+                if (attempts < maxAttempts) {
+                    setTimeout(poll, 2000);
+                } else {
+                    appendConsoleLine('❌ Timeout: No se encontró el estado del job', 'error');
+                }
+            } else if (response.status === 503) {
+                // Mayordomo no disponible - probablemente reiniciándose
                 appendConsoleLine(`⏳ Servidor reiniciándose... (intento ${attempts}/${maxAttempts})`, 'working');
 
                 if (attempts < maxAttempts) {
-                    setTimeout(poll, 2000); // Reintentar en 2 segundos
+                    setTimeout(poll, 2000);
                 } else {
-                    appendConsoleLine('❌ Timeout: No se pudo obtener el estado del job', 'error');
+                    appendConsoleLine('❌ Timeout: El servidor tardó demasiado en reiniciar', 'error');
+                }
+            } else {
+                appendConsoleLine(`⏳ Aguardando... HTTP ${response.status} (intento ${attempts}/${maxAttempts})`, 'working');
+
+                if (attempts < maxAttempts) {
+                    setTimeout(poll, 2000);
+                } else {
+                    appendConsoleLine('❌ Timeout: Error consultando estado del job', 'error');
                 }
             }
         } catch (error) {
@@ -407,65 +429,53 @@ async function pollJobStatus(jobId, action) {
             if (attempts < maxAttempts) {
                 setTimeout(poll, 2000); // Reintentar en 2 segundos
             } else {
-                appendConsoleLine(`❌ Error: No se pudo conectar al mayordomo después de ${attempts} intentos`, 'error');
+                appendConsoleLine(`❌ Error: No se pudo conectar al servidor después de ${attempts} intentos`, 'error');
+                const div = document.createElement('div');
+                div.className = 'line ' + className;
+                div.textContent = text;
+                consoleBody.appendChild(div);
+                consoleBody.scrollTop = consoleBody.scrollHeight;
             }
-        }
-    };
 
-    // Iniciar el polling
-    poll();
-}
+            async function deleteContact(id) {
+                if (!confirm(`¿Borrar mensaje #${id}?`)) return;
 
-function appendConsoleLine(text, className = '') {
-    const consoleBody = document.getElementById('admin-console');
-    if (!consoleBody) return;
+                try {
+                    const token = sessionStorage.getItem('admin_token');
+                    const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
 
-    const div = document.createElement('div');
-    div.className = 'line ' + className;
-    div.textContent = text;
-    consoleBody.appendChild(div);
-    consoleBody.scrollTop = consoleBody.scrollHeight;
-}
-
-async function deleteContact(id) {
-    if (!confirm(`¿Borrar mensaje #${id}?`)) return;
-
-    try {
-        const token = sessionStorage.getItem('admin_token');
-        const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        const data = await response.json();
-        if (data.success) {
-            loadMessages();
-        } else {
-            alert('Error: ' + data.error);
-        }
-    } catch (error) {
-        alert('Error de conexión');
-    }
-}
-
-function escapeHtml(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const loginPass = document.getElementById('login-pass');
-    if (loginPass) {
-        loginPass.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const btn = document.querySelector('#modal-login .modal-btn-primary');
-                if (btn) btn.click();
+                    const data = await response.json();
+                    if (data.success) {
+                        loadMessages();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('Error de conexión');
+                }
             }
-        });
-    }
-});
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                return String(text)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const loginPass = document.getElementById('login-pass');
+                if (loginPass) {
+                    loginPass.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            const btn = document.querySelector('#modal-login .modal-btn-primary');
+                            if (btn) btn.click();
+                        }
+                    });
+                }
+            });
