@@ -48,19 +48,61 @@ check_service "BT API Container" "docker ps --format '{{.Names}}' | grep -q 'bru
 
 # 4. PERSISTENCIA Y PERMISOS (Integrado de diagnosis)
 print_step "Verificando Persistencia y Permisos"
-# Check DB file
+
+# Check BT Database file
 if [ -f "/var/www/html-static/other/BT/database.db" ]; then
-    DB_OWNER=$(stat -c '%u:%g' /var/www/html-static/other/BT/database.db)
-    # Aceptamos tanto usuario 1000 (standard user) como 33 (www-data)
-    if [ "$DB_OWNER" == "1000:1000" ] || [ "$DB_OWNER" == "33:33" ]; then
-        echo -e "   ${GREEN}${CHECK} BT Database: OK ($DB_OWNER)${NC}"
+    DB_OWNER=$(stat -c '%u:%g' /var/www/html-static/other/BT/database.db 2>/dev/null || stat -f '%u:%g' /var/www/html-static/other/BT/database.db)
+    DB_PERMS=$(stat -c '%a' /var/www/html-static/other/BT/database.db 2>/dev/null || stat -f '%OLp' /var/www/html-static/other/BT/database.db | tail -c 4)
+    
+    if [ "$DB_PERMS" == "666" ] || [ "$DB_PERMS" == "664" ]; then
+        echo -e "   ${GREEN}${CHECK} BT Database Perms: OK ($DB_PERMS)${NC}"
     else
-        echo -e "   ${RED}${CROSS} BT Database: WRONG OWNER ($DB_OWNER)${NC}"
+        echo -e "   ${RED}${CROSS} BT Database Perms: WRONG ($DB_PERMS, expected 666)${NC}"
         HAS_ERROR=1
     fi
 else
     echo -e "   ${RED}${CROSS} BT Database: MISSING${NC}"
     HAS_ERROR=1
+fi
+
+# Check BT uploads folder
+if [ -d "/var/www/html-static/other/BT/public/uploads" ]; then
+    UPLOADS_PERMS=$(stat -c '%a' /var/www/html-static/other/BT/public/uploads 2>/dev/null || stat -f '%OLp' /var/www/html-static/other/BT/public/uploads | tail -c 4)
+    
+    if [ "$UPLOADS_PERMS" == "777" ]; then
+        echo -e "   ${GREEN}${CHECK} BT Uploads Folder: OK (777)${NC}"
+    else
+        echo -e "   ${RED}${CROSS} BT Uploads Folder: WRONG ($UPLOADS_PERMS, expected 777)${NC}"
+        HAS_ERROR=1
+    fi
+else
+    echo -e "   ${RED}${CROSS} BT Uploads Folder: MISSING${NC}"
+    HAS_ERROR=1
+fi
+
+# Check API data folder
+if [ -d "/var/www/html-static/api/data" ]; then
+    API_DATA_PERMS=$(stat -c '%a' /var/www/html-static/api/data 2>/dev/null || stat -f '%OLp' /var/www/html-static/api/data | tail -c 4)
+    
+    if [ "$API_DATA_PERMS" == "777" ] || [ "$API_DATA_PERMS" == "775" ]; then
+        echo -e "   ${GREEN}${CHECK} API Data Folder: OK ($API_DATA_PERMS)${NC}"
+    else
+        echo -e "   ${RED}${CROSS} API Data Folder: WRONG ($API_DATA_PERMS, expected 777)${NC}"
+        HAS_ERROR=1
+    fi
+else
+    echo -e "   ${YELLOW}⚠️ API Data Folder: Not created yet${NC}"
+fi
+
+# Check if BT container can write to uploads
+if docker ps --format '{{.Names}}' | grep -q 'bruja-teatral'; then
+    CONTAINER_WRITE=$(docker exec bruja-teatral test -w /app/public/uploads && echo "OK" || echo "FAIL")
+    if [ "$CONTAINER_WRITE" == "OK" ]; then
+        echo -e "   ${GREEN}${CHECK} BT Container Write Access: OK${NC}"
+    else
+        echo -e "   ${RED}${CROSS} BT Container Write Access: DENIED${NC}"
+        HAS_ERROR=1
+    fi
 fi
 
 # 5. RECURSOS
