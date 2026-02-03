@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
     healthcheck:
       # Usa /api/posts que siempre responde JSON (no requiere auth)
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/posts"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/api/posts" ]
       interval: 30s
       timeout: 10s
       retries: 3
