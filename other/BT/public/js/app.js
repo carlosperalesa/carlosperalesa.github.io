@@ -60,11 +60,16 @@ function handleLogout() {
 // --- BLOG LOADING ---
 async function loadPosts() {
     const grid = document.getElementById('blogGrid');
+    if (!grid) {
+        console.warn('blogGrid element not found');
+        return;
+    }
     try {
         const res = await fetch(`${API_URL}/posts`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const posts = await res.json();
 
-        if (posts.length === 0) {
+        if (!Array.isArray(posts) || posts.length === 0) {
             grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay publicaciones aún.</p>';
             return;
         }
