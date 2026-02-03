@@ -38,10 +38,12 @@ fix_all_permissions() {
     
     # 1. Archivos estáticos (siempre)
     echo -e "   ${WRENCH} Archivos estáticos (css, js, img, fonts)..."
-    for dir in css js img fonts; do
+    for dir in css js img fonts sounds other; do
         if [ -d "$MAIN_DIR/$dir" ]; then
             chown -R www-data:www-data "$MAIN_DIR/$dir" 2>/dev/null || true
-            chmod -R ${PERM_STATIC_FILES:-755} "$MAIN_DIR/$dir" 2>/dev/null || true
+            # Directorios: 755, Archivos: 644
+            find "$MAIN_DIR/$dir" -type d -exec chmod 755 {} \; 2>/dev/null || true
+            find "$MAIN_DIR/$dir" -type f -exec chmod 644 {} \; 2>/dev/null || true
         fi
     done
     
