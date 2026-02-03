@@ -1,0 +1,21 @@
+[Unit]
+Description=Mayordomo - Sistema de Ejecución de Comandos Privilegiados
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/html-static/api
+EnvironmentFile=/etc/environment
+ExecStart=/usr/bin/python3 /var/www/html-static/api/system_runner.py
+Restart=always
+RestartSec=3
+StandardOutput=append:/var/log/mayordomo.log
+StandardError=append:/var/log/mayordomo.log
+
+# Security
+NoNewPrivileges=false
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target
