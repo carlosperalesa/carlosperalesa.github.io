@@ -195,14 +195,32 @@ async function handleImageUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Validaciones en cliente
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_SIZE) {
+        showToast('❌ La imagen es muy grande (máx 5MB)', 'error');
+        return;
+    }
+
+    const allowed_types = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp'];
+    if (!allowed_types.includes(file.type)) {
+        showToast('❌ Formato de archivo no permitido. Solo imágenes.', 'error');
+        return;
+    }
+
     const formData = new FormData();
     formData.append('image', file);
 
     // DEBUG: Log token status
     const token = localStorage.getItem('token');
-    console.log('🖼️ IMAGE UPLOAD - Token:', token ? 'EXISTS (' + token.substring(0, 10) + '...)' : 'NULL/MISSING');
+    console.log('🖼️ IMAGE UPLOAD START');
+    console.log('   Token:', token ? 'EXISTS (' + token.substring(0, 10) + '...)' : 'NULL/MISSING');
+    console.log('   File:', file.name, '(' + (file.size / 1024).toFixed(2) + 'KB)');
+    console.log('   Type:', file.type);
+    console.log('   API_URL:', API_URL);
 
     try {
+        console.log('📤 Enviando solicitud de upload...');
         const res = await fetch(`${API_URL}/upload`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` },
@@ -212,7 +230,12 @@ async function handleImageUpload(e) {
         console.log('📥 Upload response status:', res.status, res.statusText);
 
         if (!res.ok) {
-            const errorData = await res.json();
+            let errorData = {};
+            try {
+                errorData = await res.json();
+            } catch {
+                errorData = { error: res.statusText };
+            }
             console.log('❌ Upload error data:', errorData);
             showToast(`Error subiendo imagen: ${errorData.error || res.statusText}`, 'error');
             console.error('Upload error:', errorData);
