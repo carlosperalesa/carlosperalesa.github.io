@@ -151,6 +151,17 @@
 
 
     <script>
+        // Definir API_URL y resolveImageUrl para este script (en caso de que no estén disponibles)
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const API_URL = isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
+        const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/other/BT';
+
+        function resolveImageUrl(url) {
+            if (!url) return 'img/logo_placeholder.png';
+            if (url.startsWith('http://') || url.startsWith('https://')) return url;
+            return ASSETS_BASE + url;
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');

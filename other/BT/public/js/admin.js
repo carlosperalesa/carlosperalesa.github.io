@@ -317,7 +317,10 @@ async function deleteImage(filename) {
     }
 
     try {
-        const res = await fetch(`${API_URL}/images/${encodeURIComponent(filename)}`, {
+        // Extraer solo el nombre del archivo si viene con ruta completa
+        const filenameOnly = filename.includes('/') ? filename.split('/').pop() : filename;
+
+        const res = await fetch(`${API_URL}/images/${encodeURIComponent(filenameOnly)}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
@@ -328,6 +331,7 @@ async function deleteImage(filename) {
         } else {
             const errorData = await res.json();
             showToast(`❌ Error: ${errorData.error || 'No se pudo eliminar'}`, 'error');
+            console.error('Delete error details:', errorData);
         }
     } catch (err) {
         console.error('Delete error:', err);
