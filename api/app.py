@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 
-# Cargar variables de entorno desde el archivo .env
+# Cargar .env local del API (si existe, para desarrollo)
 load_dotenv()
 
 app = Flask(__name__)

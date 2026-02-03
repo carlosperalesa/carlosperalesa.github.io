@@ -7,10 +7,16 @@ import time
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime
 
-# CONFIGURACIÓN
-PORT = 5001
-# IMPORTANTE: Cambia esto por el mismo valor que pongas en el .env de la API
-RUNNER_SECRET = "secreto_interno_para_comandos_98765"
+# CONFIGURACIÓN desde variables de entorno del sistema
+PORT = int(os.getenv('RUNNER_PORT', 5001))
+RUNNER_SECRET = os.getenv('RUNNER_SECRET')
+
+if not RUNNER_SECRET:
+    print("❌ ERROR FATAL: Variable de entorno RUNNER_SECRET no está configurada")
+    print("   Configúrala con: export RUNNER_SECRET=$(openssl rand -hex 32)")
+    print("   O agrégala a /etc/environment para persistencia")
+    exit(1)
+
 WHITELIST = {
     "deploy": "/var/www/html-static/start.sh",
     "check": "/var/www/html-static/check.sh",
