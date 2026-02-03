@@ -2,7 +2,10 @@ import http.server
 import json
 import subprocess
 import os
+import threading
+import time
 from urllib.parse import urlparse, parse_qs
+from datetime import datetime
 
 # CONFIGURACIÓN
 PORT = 5001
@@ -15,13 +18,60 @@ WHITELIST = {
     "restore": "/var/www/html-static/restore.sh"
 }
 
+# Estado de los jobs ejecutándose
+JOBS = {}
+
+
+def execute_script_async(action, script_path, job_id):
+    """Ejecuta un script en background y guarda el resultado"""
+    try:
+        JOBS[job_id]["status"] = "running"
+        JOBS[job_id]["start_time"] = datetime.now().isoformat()
+
+        print(f"🚀 [Job {job_id}] Ejecutando acción: {action} ({script_path})")
+
+        # Dar permisos de ejecución
+        print(f"🔐 [Job {job_id}] Dando permisos de ejecución al script...")
+        chmod_result = subprocess.run(
+            ["chmod", "+x", script_path],
+            capture_output=True,
+            text=True
+        )
+        if chmod_result.returncode != 0:
+            print(
+                f"⚠️ [Job {job_id}] Warning al dar permisos: {chmod_result.stderr}")
+
+        # Ejecutar el script
+        process = subprocess.Popen(
+            ["bash", script_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        stdout, stderr = process.communicate()
+
+        # Guardar resultado
+        JOBS[job_id]["status"] = "completed" if process.returncode == 0 else "failed"
+        JOBS[job_id]["output"] = stdout
+        JOBS[job_id]["error"] = stderr
+        JOBS[job_id]["return_code"] = process.returncode
+        JOBS[job_id]["end_time"] = datetime.now().isoformat()
+
+        print(f"✅ [Job {job_id}] Completado con código {process.returncode}")
+
+    except Exception as e:
+        JOBS[job_id]["status"] = "error"
+        JOBS[job_id]["error"] = str(e)
+        JOBS[job_id]["end_time"] = datetime.now().isoformat()
+        print(f"❌ [Job {job_id}] Error: {e}")
+
 
 class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
-        # Eliminamos la restricción de IP de origen para permitir que el contenedor Docker conecte,
-        # confiando en el RUNNER_SECRET y en que el puerto 5001 no esté abierto al mundo.
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
+        content_length = int(self.headers.get('Content-Length', 0))
+        post_data = self.rfile.read(
+            content_length) if content_length > 0 else b"{}"
 
         try:
             data = json.loads(post_data)
@@ -30,56 +80,84 @@ class SystemRunnerHandler(http.server.BaseHTTPRequestHandler):
 
             if secret != RUNNER_SECRET:
                 self.send_response(401)
+                self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(b"Unauthorized: Invalid Secret")
+                self.wfile.write(json.dumps(
+                    {"error": "Unauthorized"}).encode())
                 return
 
             if action not in WHITELIST:
                 self.send_response(400)
+                self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(b"Bad Request: Action not in whitelist")
+                self.wfile.write(json.dumps(
+                    {"error": "Action not in whitelist"}).encode())
                 return
 
-            # Ejecutar el comando
+            # Crear un job ID único
+            job_id = f"{action}_{int(time.time() * 1000)}"
             script_path = WHITELIST[action]
-            print(f"🚀 Ejecutando acción: {action} ({script_path})")
 
-            # IMPORTANTE: Dar permisos de ejecución ANTES de ejecutar
-            print(f"🔐 Dando permisos de ejecución al script...")
-            chmod_result = subprocess.run(
-                ["chmod", "+x", script_path],
-                capture_output=True,
-                text=True
-            )
-            if chmod_result.returncode != 0:
-                print(f"⚠️ Warning al dar permisos: {chmod_result.stderr}")
-
-            # Usamos Popen para capturar salida en vivo o al menos no bloquear todo si tarda
-            process = subprocess.Popen(
-                ["bash", script_path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True
-            )
-
-            stdout, stderr = process.communicate()
-
-            response = {
-                "success": process.returncode == 0,
-                "output": stdout,
-                "error": stderr,
-                "return_code": process.returncode
+            # Inicializar el job
+            JOBS[job_id] = {
+                "action": action,
+                "status": "pending",
+                "output": "",
+                "error": "",
+                "return_code": None,
+                "start_time": None,
+                "end_time": None
             }
 
-            self.send_response(200)
+            # Ejecutar en background usando threading
+            thread = threading.Thread(
+                target=execute_script_async,
+                args=(action, script_path, job_id),
+                daemon=True
+            )
+            thread.start()
+
+            # Responder inmediatamente con el job ID
+            response = {
+                "success": True,
+                "job_id": job_id,
+                "message": f"Job {job_id} iniciado. Puedes verificar su estado con /status/{job_id}"
+            }
+
+            self.send_response(202)  # 202 Accepted
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps(response).encode())
 
         except Exception as e:
             self.send_response(500)
+            self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(str(e).encode())
+            self.wfile.write(json.dumps({"error": str(e)}).encode())
+
+    def do_GET(self):
+        """GET para verificar el estado de un job"""
+        path = self.path
+
+        if path.startswith('/status/'):
+            job_id = path.replace('/status/', '')
+
+            if job_id not in JOBS:
+                self.send_response(404)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(
+                    {"error": "Job not found"}).encode())
+                return
+
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(JOBS[job_id]).encode())
+            return
+
+        self.send_response(404)
+        self.end_headers()
 
 
 if __name__ == "__main__":

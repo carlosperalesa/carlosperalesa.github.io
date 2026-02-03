@@ -301,10 +301,11 @@ async function runSystemAction(action) {
     // Feedback visual
     const timestamp = new Date().toLocaleTimeString();
     appendConsoleLine(`\n[${timestamp}] 🚀 Iniciando acción: ${action.toUpperCase()}...`, 'command');
-    appendConsoleLine('⏳ Procesando, por favor espera...', 'working');
 
     try {
         const token = sessionStorage.getItem('admin_token');
+
+        // 1. Iniciar el job
         const response = await fetch(`${API_BASE_URL}/api/system/execute`, {
             method: 'POST',
             headers: {
@@ -314,21 +315,105 @@ async function runSystemAction(action) {
             body: JSON.stringify({ action: action })
         });
 
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
         const data = await response.json();
 
-        if (data.success) {
-            appendConsoleLine(`✅ Éxito: Acción ${action} completada.`, 'command');
-            if (data.output) appendConsoleLine(data.output);
-        } else {
-            appendConsoleLine(`❌ Error: ${data.message || 'Error desconocido'}`, 'error');
-            if (data.error) appendConsoleLine(data.error, 'error');
+        if (!data.job_id) {
+            appendConsoleLine(`❌ Error: No se recibió job_id`, 'error');
+            return;
         }
+
+        appendConsoleLine(`📋 Job ID: ${data.job_id}`, 'info');
+        appendConsoleLine('⏳ Procesando, aguardando resultado...', 'working');
+
+        // 2. Hacer polling del estado
+        await pollJobStatus(data.job_id, action);
+
     } catch (error) {
-        appendConsoleLine(`❌ Error de conexión con la API: ${error.message}`, 'error');
+        appendConsoleLine(`❌ Error: ${error.message}`, 'error');
     }
 
     // Scroll al final
     consoleBody.scrollTop = consoleBody.scrollHeight;
+}
+
+/**
+ * Hace polling al estado de un job cada 2 segundos
+ */
+async function pollJobStatus(jobId, action) {
+    const consoleBody = document.getElementById('admin-console');
+    const maxAttempts = 300; // 10 minutos máximo
+    let attempts = 0;
+
+    const poll = async () => {
+        attempts++;
+
+        try {
+            // Intentar obtener el estado del mayordomo
+            const response = await fetch(`http://host.docker.internal:5001/status/${jobId}`, {
+                method: 'GET'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                if (data.status === 'running') {
+                    // Aún en ejecución
+                    appendConsoleLine(`⏳ Ejecutando (intento ${attempts}/${maxAttempts})...`, 'working');
+
+                    if (attempts < maxAttempts) {
+                        setTimeout(poll, 2000); // Reintentar en 2 segundos
+                    } else {
+                        appendConsoleLine('❌ Timeout: El job tardó demasiado', 'error');
+                    }
+                } else if (data.status === 'completed') {
+                    // Completado exitosamente
+                    appendConsoleLine('✅ Job completado exitosamente!', 'success');
+                    if (data.output) {
+                        appendConsoleLine('📤 Salida:', 'info');
+                        appendConsoleLine(data.output, '');
+                    }
+                    consoleBody.scrollTop = consoleBody.scrollHeight;
+                } else if (data.status === 'failed') {
+                    // Falló
+                    appendConsoleLine('❌ Job falló!', 'error');
+                    if (data.error) {
+                        appendConsoleLine('Error:', 'error');
+                        appendConsoleLine(data.error, 'error');
+                    }
+                    if (data.output) {
+                        appendConsoleLine('Salida:', 'info');
+                        appendConsoleLine(data.output, '');
+                    }
+                    consoleBody.scrollTop = consoleBody.scrollHeight;
+                }
+            } else {
+                // El mayordomo no respondió, probablemente porque el servidor se está reiniciando
+                appendConsoleLine(`⏳ Servidor reiniciándose... (intento ${attempts}/${maxAttempts})`, 'working');
+
+                if (attempts < maxAttempts) {
+                    setTimeout(poll, 2000); // Reintentar en 2 segundos
+                } else {
+                    appendConsoleLine('❌ Timeout: No se pudo obtener el estado del job', 'error');
+                }
+            }
+        } catch (error) {
+            // Error de conexión - normal durante reinicio
+            appendConsoleLine(`⏳ Aguardando... (intento ${attempts}/${maxAttempts})`, 'working');
+
+            if (attempts < maxAttempts) {
+                setTimeout(poll, 2000); // Reintentar en 2 segundos
+            } else {
+                appendConsoleLine(`❌ Error: No se pudo conectar al mayordomo después de ${attempts} intentos`, 'error');
+            }
+        }
+    };
+
+    // Iniciar el polling
+    poll();
 }
 
 function appendConsoleLine(text, className = '') {

@@ -1572,6 +1572,7 @@ body.dark-mode .project-icon {
             z-index: 10;
             background: var(--modal-bg);
         }
+
         .modal-close {
             z-index: 20;
         }
@@ -1814,6 +1815,14 @@ body.dark-mode .project-icon {
 
 .line.working {
     color: #fbbf24;
+}
+
+.line.success {
+    color: #10b981;
+}
+
+.line.info {
+    color: #60a5fa;
 }
 
 @keyframes fadeIn {
