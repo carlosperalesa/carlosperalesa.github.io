@@ -18,14 +18,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Create necessary directories with proper permissions
-RUN mkdir -p public/uploads && \
-    chmod 755 public && \
-    chmod 777 public/uploads
+# Create non-root user for security FIRST
+RUN useradd -m -u 1000 appuser
 
-# Create non-root user for security
-RUN useradd -m -u 1000 appuser && \
-    chown -R appuser:appuser /app
+# Create necessary directories and set proper permissions
+RUN mkdir -p public/uploads && \
+    chown -R appuser:appuser /app && \
+    chmod 755 /app && \
+    chmod 755 /app/public && \
+    chmod 777 /app/public/uploads
 
 USER appuser
 
