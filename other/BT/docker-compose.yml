@@ -13,6 +13,7 @@ services:
       - FLASK_ENV=${FLASK_ENV:-production}
       - SECRET_KEY=${SECRET_KEY:-bruja_teatral_secret_key_2024_CHANGE_IN_PRODUCTION}
       - PORT=${PORT:-3000}
+      - RUNNER_SECRET=${RUNNER_SECRET}
     restart: unless-stopped
     healthcheck:
       # Usa /api/posts que siempre responde JSON (no requiere auth)
