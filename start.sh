@@ -81,7 +81,6 @@ sleep 3  # Esperar a que los contenedores inicien
 if docker ps | grep -q bruja-teatral; then
     echo -e "   🔧 Arreglando permisos en bruja-teatral..."
     docker exec bruja-teatral chmod -R 777 /app/public/uploads 2>/dev/null || echo "      ⚠️ No se pudo arreglar uploads (puede estar iniciando)"
-    docker exec bruja-teatral chmod -R 755 /app/public 2>/dev/null || true
     docker exec bruja-teatral chmod -R 666 /app/database.db 2>/dev/null || true
 fi
 

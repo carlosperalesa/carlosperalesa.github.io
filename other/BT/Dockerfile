@@ -20,7 +20,6 @@ COPY . .
 
 # Create necessary directories with world-writable permissions
 RUN mkdir -p public/uploads && \
-    chmod 755 public && \
     chmod 777 public/uploads
 
 # Expose port
