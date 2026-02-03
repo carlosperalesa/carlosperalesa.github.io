@@ -18,15 +18,19 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Create non-root user for security FIRST
+# Create necessary directories BEFORE changing ownership
+RUN mkdir -p public/uploads
+
+# Set proper permissions on directories (as root, before changing user)
+RUN chmod -R 755 public && \
+    chmod -R 777 public/uploads && \
+    chmod -R 666 public/uploads/* 2>/dev/null || true
+
+# Create non-root user for security
 RUN useradd -m -u 1000 appuser
 
-# Create necessary directories and set proper permissions
-RUN mkdir -p public/uploads && \
-    chown -R appuser:appuser /app && \
-    chmod 755 /app && \
-    chmod 755 /app/public && \
-    chmod 777 /app/public/uploads
+# Change ownership to appuser
+RUN chown -R appuser:appuser /app
 
 USER appuser
 
