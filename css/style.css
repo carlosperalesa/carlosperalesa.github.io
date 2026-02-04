@@ -209,7 +209,11 @@ body.dark-mode * {
     display: flex;
     flex-direction: column;
     z-index: 1;
-    background: transparent;
+    /* Fondo de Bing */
+    background-image: url('../img/gradient.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Overlay sutil para legibilidad */
@@ -238,7 +242,8 @@ body.dark-mode .desktop-screen::before {
 /* 4. FONDO RESPONSIVE */
 @media (max-width: 768px) {
     .desktop-screen {
-        background-image: none;
+        /* Resolución menor para móvil - carga más rápido */
+        background-image: url('../img/gradient.svg');
     }
 }
 
@@ -329,8 +334,10 @@ body.dark-mode .desktop-screen::before {
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 55px; /* Increased for padding */
-    height: 35px; /* Increased for padding */
+    width: 55px;
+    /* Increased for padding */
+    height: 35px;
+    /* Increased for padding */
     padding: 5px;
     border-radius: 50px;
 
@@ -356,10 +363,14 @@ body.dark-mode .desktop-screen::before {
     position: absolute;
     cursor: pointer;
     overflow: hidden;
-    top: 5px;   /* Match padding */
-    left: 5px;  /* Match padding */
-    right: 5px; /* Match padding */
-    bottom: 5px;/* Match padding */
+    top: 5px;
+    /* Match padding */
+    left: 5px;
+    /* Match padding */
+    right: 5px;
+    /* Match padding */
+    bottom: 5px;
+    /* Match padding */
     transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
     border-radius: 34px;
     background: #83D8FF;
@@ -982,7 +993,7 @@ body.dark-mode .home-profile {
     transition: all 0.2s ease;
     position: relative;
     /* Neomorphism Button */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2), -1px -1px 3px rgba(255,255,255,0.4);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
 }
 
 /* Botón cerrar estilo Mac (sin icono) */
@@ -1963,7 +1974,7 @@ body.dark-mode .form-textarea:focus {
     color: transparent;
     font-size: 8px;
     /* Neomorphism Button */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2), -1px -1px 3px rgba(255,255,255,0.4);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
 }
 
 .modal-maximize:hover {
