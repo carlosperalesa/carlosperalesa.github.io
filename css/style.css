@@ -204,6 +204,8 @@ body.dark-mode * {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    /* Force light mode background initially */
+    background-color: #f8fafc;
 }
 
 /* Overlay sutil para legibilidad */
@@ -218,15 +220,15 @@ body.dark-mode * {
             rgba(0, 0, 0, 0.25) 100%);
     z-index: -1;
     pointer-events: none;
+    transition: background 0.3s ease;
 }
 
-/* En modo oscuro, overlay más pronunciado */
+/* En modo oscuro, overlay mucho más pronunciado para oscurecer el SVG */
 body.dark-mode .desktop-screen::before {
     background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0.35) 0%,
-            rgba(0, 0, 0, 0.1) 20%,
-            rgba(0, 0, 0, 0.1) 80%,
-            rgba(0, 0, 0, 0.45) 100%);
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.75) 50%,
+            rgba(0, 0, 0, 0.85) 100%);
 }
 
 /* 4. FONDO RESPONSIVE */
@@ -272,14 +274,22 @@ body.dark-mode .desktop-screen::before {
 }
 
 .top-bar-name:hover {
-    background: rgba(128, 128, 128, 0.15);
-    border-color: var(--glass-border);
     color: var(--accent-color);
+    box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.8), 4px 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
 }
 
 .top-bar-name:active {
     transform: scale(0.98);
-    background: rgba(128, 128, 128, 0.2);
+    box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.7), inset 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .top-bar-name:hover {
+    box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.05), 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .top-bar-name:active {
+    box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.05), inset 2px 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Nombre completo en desktop, abreviado en móvil */
@@ -414,188 +424,213 @@ body.dark-mode .desktop-screen::before {
     overflow-y: scroll;
 }
 
-.home-content {
+/* Glass Card Unificada - Neumorphism Style */
+.glass-card {
     width: 100%;
-    max-width: 800px;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 0.5px rgba(255, 255, 255, 0.4);
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--spacing-xl);
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
-    box-shadow: var(--glass-shadow);
+    flex-direction: column;
+    gap: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+body.dark-mode .glass-card {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Header de la tarjeta */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 30px;
+}
+
+body.dark-mode .card-header {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Avatar con indicador */
 .home-avatar {
+    position: relative;
     flex-shrink: 0;
 }
 
 .avatar-img {
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
-    border: 3px solid var(--glass-border);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     object-fit: cover;
 }
 
-.home-info {
-    flex: 1;
+body.dark-mode .avatar-img {
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-.profile-name {
-    font-size: var(--font-xxl);
-    font-weight: 500;
-    margin-bottom: var(--spacing-xs);
-}
-
-.profile-role {
-    font-size: var(--font-lg);
-    color: var(--accent-color);
-    font-weight: 400;
-    margin-bottom: var(--spacing-sm);
-}
-
-.profile-status {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: var(--font-sm);
-    color: var(--text-muted);
-    margin-bottom: var(--spacing-md);
-}
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: var(--radius-sm);
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
-    font-weight: 500;
-    font-size: var(--font-xs);
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
+.status-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
     background: #10b981;
+    border: 3px solid #ffffff;
     border-radius: 50%;
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-    }
-
-    70% {
-        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-    }
+body.dark-mode .status-indicator {
+    border-color: #1e293b;
 }
 
-.status-separator {
-    color: var(--glass-border);
+/* Info del Header */
+.header-info {
+    flex: 1;
 }
 
-.location-text {
+.profile-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, var(--text-color) 0%, var(--text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+
+body.dark-mode .profile-name {
+    background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+}
+
+.profile-role {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.location-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+body.dark-mode .location-pill {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     opacity: 0.8;
 }
 
-.contact-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: var(--font-sm);
+.profile-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
     color: var(--text-muted);
 }
 
-.contact-item i {
-    width: 16px;
-    color: var(--accent-color);
-}
-
-/* Social Link Icons (For Main Card) */
-.social-links-container {
+.tags-container {
     display: flex;
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
     margin-top: 10px;
 }
 
-.social-link {
+.tag {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
     color: var(--text-color);
-    font-size: 1.5rem;
-    transition: all 0.2s ease;
-    opacity: 0.7;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+body.dark-mode .tag {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+/* Footer & Redes */
+.card-footer {
+    padding-top: 10px;
+}
+
+.social-links-container {
+    display: flex;
+    gap: 15px;
+}
+
+.social-btn {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.social-link:hover {
-    transform: translateY(-2px);
-    color: var(--accent-color);
-    background: rgba(120, 120, 120, 0.15);
-    opacity: 1;
-}
-
-body.dark-mode .social-link {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-body.dark-mode .social-link:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-
-.home-profile {
-    width: 100%;
-    max-width: 800px;
-    margin-top: var(--spacing-lg);
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    box-shadow: var(--glass-shadow);
-}
-
-.profile-title {
-    font-size: var(--font-md);
-    font-weight: 500;
-    margin-bottom: var(--spacing-sm);
-    color: var(--accent-color);
-}
-
-.profile-text {
-    font-size: var(--font-sm);
-    line-height: 1.6;
-    color: var(--text-muted);
-}
-
-.profile-text strong {
+    gap: 10px;
+    padding: 12px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 16px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05),
+        -5px -5px 15px rgba(255, 255, 255, 0.8);
     color: var(--text-color);
-    font-weight: 500;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+body.dark-mode .social-btn {
+    background: linear-gradient(145deg, #1e293b, #162030);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2),
+        -5px -5px 15px rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    color: var(--accent-color);
+}
+
+.social-btn ion-icon {
+    font-size: 1.4rem;
 }
 
 /* ============================================
@@ -1442,46 +1477,42 @@ body.dark-mode .project-icon {
         overflow-x: hidden;
     }
 
-    .home-content {
-        flex-direction: column;
-        text-align: center;
-        padding: var(--spacing-lg);
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: var(--spacing-sm);
-        width: calc(100vw - 32px);
-        max-width: calc(100vw - 32px);
-        box-sizing: border-box;
+    /* Ajustes Mobile para la Card Unificada */
+    .glass-card {
+        padding: 25px;
+        gap: 25px;
     }
 
-    .home-profile {
-        padding: var(--spacing-lg);
-        margin: 0 auto;
-        width: calc(100vw - 32px);
-        max-width: calc(100vw - 32px);
-        box-sizing: border-box;
+    .card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        padding-bottom: 20px;
     }
 
     .avatar-img {
-        width: 100px;
-        height: 100px;
+        width: 110px;
+        height: 110px;
     }
 
     .profile-name {
-        font-size: var(--font-lg);
+        font-size: 1.8rem;
     }
 
     .profile-role {
-        font-size: var(--font-sm);
+        font-size: 1rem;
     }
 
-    .contact-list {
-        align-items: center;
-        font-size: var(--font-sm);
+    .card-body {
+        text-align: center;
     }
 
-    .contact-item {
-        font-size: var(--font-xs);
+    .tags-container {
+        justify-content: center;
+    }
+
+    .social-links-container {
+        flex-direction: row; /* Mantener en fila si caben */
     }
 
     /* Dock - mismo ancho que cards */
