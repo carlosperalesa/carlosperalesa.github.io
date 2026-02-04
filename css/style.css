@@ -200,7 +200,7 @@ body.dark-mode * {
     flex-direction: column;
     z-index: 1;
     /* Fondo de Bing */
-    background-image: url('https://bing.biturl.top/?format=image&index=random&resolution=1920');
+    background-image: url('../img/gradient.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -233,7 +233,7 @@ body.dark-mode .desktop-screen::before {
 @media (max-width: 768px) {
     .desktop-screen {
         /* Resolución menor para móvil - carga más rápido */
-        background-image: url('https://bing.biturl.top/?format=image&index=random&resolution=1920&image_format=webp');
+        background-image: url('../img/gradient.svg');
     }
 }
 
