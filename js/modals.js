@@ -154,6 +154,9 @@ function openModal(modalId) {
     overlay.classList.add('active');
     overlay.style.zIndex = 2000 + zIndexCounter++;
 
+    // Dispatch event for other scripts (e.g., Skills Graph)
+    document.dispatchEvent(new CustomEvent('modal:opened', { detail: { id: modalId } }));
+
     // Agregar a lista de modales abiertos
     if (!openModals.includes(modalId)) {
         openModals.push(modalId);

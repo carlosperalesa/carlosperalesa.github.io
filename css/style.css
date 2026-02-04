@@ -71,6 +71,11 @@
     --color-danger: #ef4444;
     --mac-green: #28c840;
     --mac-red: #ff5f57;
+
+    /* Neomorphism Shadows (Light Mode) */
+    --neo-shadow-light: -5px -5px 12px #ffffff, 5px 5px 12px rgba(0, 0, 0, 0.1);
+    --neo-shadow-inset: inset 5px 5px 10px rgba(0, 0, 0, 0.1), inset -5px -5px 10px #ffffff;
+    --neo-bg: #f8fafc;
 }
 
 /* Modo Oscuro - Más profundo y con acentos neón */
@@ -86,6 +91,11 @@ body.dark-mode {
     --indicator-color: #a5b4fc;
     --accent-color: #818cf8;
     --accent-light: #c4b5fd;
+
+    /* Neomorphism Shadows (Dark Mode) */
+    --neo-shadow-light: -4px -4px 10px rgba(255, 255, 255, 0.05), 4px 4px 10px rgba(0, 0, 0, 0.5);
+    --neo-shadow-inset: inset 4px 4px 10px rgba(0, 0, 0, 0.5), inset -4px -4px 10px rgba(255, 255, 255, 0.05);
+    --neo-bg: #030712;
 }
 
 /* Utilidad Glass Global */
@@ -117,7 +127,7 @@ body {
 body {
     font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 450;
-    background: var(--bg-gradient);
+    background: transparent;
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -190,7 +200,7 @@ body.dark-mode * {
 }
 
 /* ============================================
-   3. FONDO DE PANTALLA (Bing Daily fallback)
+   3. FONDO DE PANTALLA (Three.js Cyber Grid)
    ============================================ */
 .desktop-screen {
     position: relative;
@@ -199,11 +209,7 @@ body.dark-mode * {
     display: flex;
     flex-direction: column;
     z-index: 1;
-    /* Fondo de Bing */
-    background-image: url('https://bing.biturl.top/?format=image&index=random&resolution=1920');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: transparent;
 }
 
 /* Overlay sutil para legibilidad */
@@ -232,8 +238,7 @@ body.dark-mode .desktop-screen::before {
 /* 4. FONDO RESPONSIVE */
 @media (max-width: 768px) {
     .desktop-screen {
-        /* Resolución menor para móvil - carga más rápido */
-        background-image: url('https://bing.biturl.top/?format=image&index=random&resolution=1920&image_format=webp');
+        background-image: none;
     }
 }
 
@@ -297,7 +302,19 @@ body.dark-mode .desktop-screen::before {
     transform: translateX(-50%);
     font-size: var(--font-sm);
     color: var(--text-muted);
-    font-weight: 400;
+    font-weight: 500;
+
+    /* Neomorphism Pill */
+    padding: 6px 18px;
+    border-radius: 20px;
+    background: var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for clock */
+.top-bar-center:hover {
+    box-shadow: var(--neo-shadow-inset);
 }
 
 .top-bar-right {
@@ -308,10 +325,19 @@ body.dark-mode .desktop-screen::before {
 
 /* Toggle Tema (Sol/Luna con estrellas y nubes) */
 .theme-toggle {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    width: 45px;
-    height: 25px;
+    width: 55px; /* Increased for padding */
+    height: 35px; /* Increased for padding */
+    padding: 5px;
+    border-radius: 50px;
+
+    /* Neomorphism Border */
+    background: var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
+    transition: all 0.3s ease;
 }
 
 .theme-toggle input {
@@ -330,10 +356,10 @@ body.dark-mode .desktop-screen::before {
     position: absolute;
     cursor: pointer;
     overflow: hidden;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 5px;   /* Match padding */
+    left: 5px;  /* Match padding */
+    right: 5px; /* Match padding */
+    bottom: 5px;/* Match padding */
     transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
     border-radius: 34px;
     background: #83D8FF;
@@ -438,9 +464,10 @@ body.dark-mode .desktop-screen::before {
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    border: 3px solid var(--glass-border);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border: 4px solid var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
     object-fit: cover;
+    transition: all 0.3s ease;
 }
 
 .home-info {
@@ -949,12 +976,13 @@ body.dark-mode .home-profile {
     justify-content: center;
     border-radius: 50%;
     background: var(--mac-red);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: transparent;
     font-size: 0;
     transition: all 0.2s ease;
     position: relative;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    /* Neomorphism Button */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2), -1px -1px 3px rgba(255,255,255,0.4);
 }
 
 /* Botón cerrar estilo Mac (sin icono) */
@@ -1926,7 +1954,7 @@ body.dark-mode .form-textarea:focus {
     border-radius: 50%;
     /* Redondo por defecto */
     cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     transition: transform 0.2s;
     display: flex;
@@ -1934,6 +1962,8 @@ body.dark-mode .form-textarea:focus {
     justify-content: center;
     color: transparent;
     font-size: 8px;
+    /* Neomorphism Button */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2), -1px -1px 3px rgba(255,255,255,0.4);
 }
 
 .modal-maximize:hover {

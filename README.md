@@ -17,7 +17,10 @@
 
 ## ✨ Características
 
-- 🎨 **Diseño Glassmorphism** — Interfaz moderna con efectos de cristal y blur
+- 🎨 **Diseño Glassmorphism + Neomorphism** — Interfaz moderna con efectos de cristal, blur y relieve suave
+- 🌌 **Cyber Grid 3D** — Fondo animado interactivo estilo Retro Wave (Three.js)
+- 🕸️ **Skills Graph Interactivo** — Visualización de red de habilidades con física (D3.js)
+- ⌨️ **Efecto Typewriter** — Presentación dinámica de roles
 - 🌗 **Modo Oscuro/Claro** — Toggle de tema con transiciones suaves
 - 🎭 **Animaciones Premium** — Orbs flotantes, efectos de hover y micro-animaciones
 - 📱 **Totalmente Responsive** — Optimizado para desktop, tablet y móvil
@@ -32,6 +35,7 @@
 | Categoría | Tecnologías |
 |-----------|-------------|
 | **Frontend** | HTML5, CSS3, JavaScript (Vanilla) |
+| **Gráficos & Data** | Three.js, D3.js |
 | **Tipografía** | Google Fonts (Outfit, Calibri) |
 | **Iconos** | Ionicons, Font Awesome 6 |
 | **Hosting** | GitHub Pages |
