@@ -100,6 +100,8 @@ El repositorio incluye scripts automatizados en la raíz para facilitar la opera
 El frontend (`js/`) está construido con JavaScript Vanilla modular.
 
 *   **`app.js`**: Configuración global y detección de entorno.
+*   **`background.js`**: Renderizado de fondo animado (Cyber Grid) usando Three.js.
+*   **`skills-graph.js`**: Visualización de grafo de habilidades usando D3.js con simulación de fuerzas.
 *   **`modals.js` & `drag.js`**: Gestor de ventanas y sistema de arrastre (Desktop/Mobile logic).
 *   **`admin.js`**: Lógica del panel de control. Se comunica con el Mayordomo para ejecutar scripts de servidor.
 *   **`contact.js`**: Formulario de contacto con encriptación y validación.
