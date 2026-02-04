@@ -15,15 +15,21 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Create non-root user (UID 1000) for security
+RUN useradd -m -u 1000 appuser
+
 # Copy application code
 COPY . .
 
-# Create necessary directories with world-writable permissions
+# Ensure directories exist and permissions are set
 RUN mkdir -p public/uploads && \
-    chmod 777 public/uploads
+    chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
 
 # Expose port
 EXPOSE 3000
 
-# Run with gunicorn in production (as root to maintain permissions)
+# Run with gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:3000", "--workers", "4", "--timeout", "120", "app:app"]
