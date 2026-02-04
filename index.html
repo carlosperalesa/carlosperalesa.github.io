@@ -62,46 +62,60 @@
         <!-- Pantalla de inicio -->
         <main class="home-screen">
             <div class="glass-card">
-                <div class="card-header">
+                <!-- Left Column: Avatar -->
+                <div class="glass-card-left">
                     <div class="home-avatar">
                         <img src="./img/avatar.webp" alt="Carlos Perales" class="avatar-img">
-                        <div class="status-indicator" title="Disponible"></div>
                     </div>
+                </div>
+
+                <!-- Right Column: Content -->
+                <div class="glass-card-right">
+                    <!-- Header Info -->
                     <div class="header-info">
                         <h1 class="profile-name">Carlos Perales A.</h1>
                         <p class="profile-role">Full Stack Developer & Data Engineer</p>
-                        <div class="location-pill">
-                            <i class="fas fa-map-marker-alt"></i> Santiago, Chile
+                    </div>
+
+                    <!-- Bio & Text -->
+                    <div class="card-body">
+                        <p class="profile-text">
+                            Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de
+                            cliente
+                            y traducirlas en soluciones técnicas eficientes. Mi background en ventas me permite
+                            construir
+                            productos con una fuerte orientación al usuario final y comunicación efectiva.
+                        </p>
+
+                        <div class="tags-container">
+                            <span class="tag">🤝 Team Player</span>
+                            <span class="tag">🧩 Resolución</span>
+                            <span class="tag">⚡ Adaptabilidad</span>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-body">
-                    <h2 class="section-title">Perfil Profesional</h2>
-                    <p class="profile-text">
-                        Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de cliente
-                        y traducirlas en soluciones técnicas eficientes. Mi background en ventas me permite construir
-                        productos con una fuerte orientación al usuario final y comunicación efectiva.
-                    </p>
+                    <!-- Footer: Image Stuff (Status, Location, Icons) -->
+                    <div class="card-footer-compact">
+                        <div class="status-location-row">
+                            <span class="status-badge">
+                                <span class="status-dot-inline"></span> Disponible
+                            </span>
+                            <span class="separator">·</span>
+                            <div class="location-text">
+                                <i class="fas fa-map-marker-alt"></i> Santiago, Chile
+                            </div>
+                        </div>
 
-                    <div class="tags-container">
-                        <span class="tag">🤝 Team Player</span>
-                        <span class="tag">🧩 Resolución</span>
-                        <span class="tag">⚡ Adaptabilidad</span>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <div class="social-links-container">
-                        <a href="https://github.com/carlosperalesa/" target="_blank" class="social-btn" title="GitHub">
-                            <ion-icon name="logo-github"></ion-icon>
-                            <span>GitHub</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-btn"
-                            title="LinkedIn">
-                            <ion-icon name="logo-linkedin"></ion-icon>
-                            <span>LinkedIn</span>
-                        </a>
+                        <div class="social-links-compact">
+                            <a href="https://github.com/carlosperalesa/" target="_blank" class="social-circle"
+                                title="GitHub">
+                                <ion-icon name="logo-github"></ion-icon>
+                            </a>
+                            <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-circle"
+                                title="LinkedIn">
+                                <ion-icon name="logo-linkedin"></ion-icon>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

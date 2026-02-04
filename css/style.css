@@ -427,7 +427,7 @@ body.dark-mode .top-bar-name:active {
 /* Glass Card Unificada - Compact & Professional */
 .glass-card {
     width: 100%;
-    max-width: 480px; /* Reduced width for compactness */
+    max-width: 480px; /* Default width (mobile) */
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
@@ -437,9 +437,9 @@ body.dark-mode .top-bar-name:active {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1),
         inset 0 0 0 0.5px rgba(255, 255, 255, 0.4);
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Default stack */
     gap: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 body.dark-mode .glass-card {
@@ -449,23 +449,12 @@ body.dark-mode .glass-card {
         inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Header de la tarjeta */
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding-bottom: 20px;
-}
-
-body.dark-mode .card-header {
-    border-bottom-color: rgba(255, 255, 255, 0.05);
-}
-
 /* Avatar con indicador */
 .home-avatar {
     position: relative;
     flex-shrink: 0;
+    display: flex;
+    justify-content: center; /* Center on mobile */
 }
 
 .avatar-img {
@@ -481,26 +470,10 @@ body.dark-mode .avatar-img {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-.status-indicator {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 16px;
-    height: 16px;
-    background: #10b981;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-    animation: pulse 2s infinite;
-}
-
-body.dark-mode .status-indicator {
-    border-color: #1e293b;
-}
-
 /* Info del Header */
 .header-info {
     flex: 1;
+    text-align: center; /* Center on mobile */
 }
 
 .profile-name {
@@ -523,23 +496,6 @@ body.dark-mode .profile-name {
     color: var(--accent-color);
     font-weight: 500;
     margin-bottom: 10px;
-}
-
-.location-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background: rgba(0, 0, 0, 0.04);
-    border-radius: 16px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-body.dark-mode .location-pill {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-muted);
 }
 
 /* Cuerpo de la tarjeta */
@@ -569,6 +525,7 @@ body.dark-mode .location-pill {
     gap: 8px;
     flex-wrap: wrap;
     margin-top: 8px;
+    justify-content: center; /* Center on mobile */
 }
 
 .tag {
@@ -588,51 +545,153 @@ body.dark-mode .tag {
     color: var(--text-color);
 }
 
-/* Footer & Redes */
-.card-footer {
-    padding-top: 8px;
+
+/* ============================================
+   DESKTOP SPLIT LAYOUT
+   ============================================ */
+@media (min-width: 769px) {
+    .glass-card {
+        max-width: 750px; /* Wider for 2 cols */
+        flex-direction: row; /* Horizontal layout */
+        align-items: flex-start;
+        padding: 32px;
+    }
+
+    .glass-card-left {
+        margin-right: 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .home-avatar {
+        justify-content: flex-start;
+    }
+
+    .avatar-img {
+        width: 120px; /* Larger avatar on desktop */
+        height: 120px;
+    }
+
+    .glass-card-right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header-info {
+        text-align: left;
+    }
+
+    .profile-name {
+        font-size: 1.75rem;
+    }
+
+    .tags-container {
+        justify-content: flex-start;
+    }
 }
 
-.social-links-container {
+/* ============================================
+   COMPACT FOOTER (Status, Location, Icons)
+   ============================================ */
+.card-footer-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+body.dark-mode .card-footer-compact {
+    border-top-color: rgba(255,255,255,0.05);
+}
+
+.status-location-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: rgba(16, 185, 129, 0.1); /* Light green bg */
+    color: var(--color-success);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+body.dark-mode .status-badge {
+    background: rgba(16, 185, 129, 0.2);
+}
+
+.status-dot-inline {
+    width: 8px;
+    height: 8px;
+    background: var(--color-success);
+    border-radius: 50%;
+}
+
+.separator {
+    color: rgba(0,0,0,0.2);
+}
+body.dark-mode .separator {
+    color: rgba(255,255,255,0.2);
+}
+
+.location-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+.location-text i {
+    color: #e11d48; /* Red/Pink pin */
+}
+
+/* Circular Social Icons */
+.social-links-compact {
     display: flex;
     gap: 12px;
 }
 
-.social-btn {
-    flex: 1;
+.social-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 10px;
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border-radius: 12px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05),
-        -3px -3px 10px rgba(255, 255, 255, 0.8);
-    color: var(--text-color);
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
-}
-
-body.dark-mode .social-btn {
-    background: linear-gradient(145deg, #1e293b, #162030);
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2),
-        -3px -3px 10px rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.05);
-    color: #fff;
-}
-
-.social-btn:hover {
-    transform: translateY(-2px);
-    color: var(--accent-color);
-}
-
-.social-btn ion-icon {
     font-size: 1.2rem;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
 }
+
+body.dark-mode .social-circle {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-color);
+}
+
+.social-circle:hover {
+    background: var(--text-color);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+body.dark-mode .social-circle:hover {
+    background: #fff;
+    color: #000;
+}
+
 
 /* ============================================
    7. DOCK
