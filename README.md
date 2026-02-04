@@ -66,8 +66,11 @@ carlosperalesa.github.io/
 ├── 📄 backup.sh           # Script de backup
 ├── 📄 robots.txt          # Configuración para crawlers
 ├── 📄 sitemap.xml         # Mapa del sitio para SEO
+├── 📄 SYSTEM_MANUAL.md    # 📘 Manual técnico y de despliegue
 └── 📄 README.md           # Este archivo
 ```
+
+> **Nota:** Para detalles profundos sobre arquitectura, configuración de servidores y scripts, consulta el [**Manual del Sistema**](SYSTEM_MANUAL.md).
 
 ---
 

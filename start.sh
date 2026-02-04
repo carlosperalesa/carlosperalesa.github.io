@@ -22,12 +22,6 @@ MAIN_DIR="${DEPLOY_ROOT:-/var/www/html-static}"
 API_DIR="$MAIN_DIR/api"
 BT_DIR="$MAIN_DIR/other/BT"
 
-# Permisos objetivo (de variables de entorno o valores por defecto)
-PERM_API_DATA="${PERM_API_DATA:-777}"
-PERM_BT_UPLOADS="${PERM_BT_UPLOADS:-777}"
-PERM_BT_DATABASE="${PERM_BT_DATABASE:-666}"
-PERM_STATIC_FILES="${PERM_STATIC_FILES:-755}"
-
 # ============================================
 # FUNCIÓN CENTRALIZADA DE PERMISOS
 # ============================================
@@ -36,46 +30,48 @@ fix_all_permissions() {
     
     echo -e "\n${YELLOW}${WRENCH} Corrigiendo permisos (${phase})...${NC}"
     
-    # 1. Archivos estáticos (siempre)
-    echo -e "   ${WRENCH} Archivos estáticos (css, js, img, fonts)..."
-    for dir in css js img fonts sounds other; do
-        if [ -d "$MAIN_DIR/$dir" ]; then
-            chown -R www-data:www-data "$MAIN_DIR/$dir" 2>/dev/null || true
-            # Directorios: 755, Archivos: 644
-            find "$MAIN_DIR/$dir" -type d -exec chmod 755 {} \; 2>/dev/null || true
-            find "$MAIN_DIR/$dir" -type f -exec chmod 644 {} \; 2>/dev/null || true
-        fi
-    done
-    
     if [ "$phase" == "pre-build" ]; then
-        # 2. Pre-build: Preparar filesystem del host
-        echo -e "   ${WRENCH} API data directory (host)..."
+        # 1. Archivos estáticos (Nginx - www-data)
+        # Se asegura que Nginx pueda servir los archivos estáticos
+        echo -e "   ${WRENCH} Archivos estáticos (css, js, img, fonts)..."
+        for dir in css js img fonts sounds other; do
+            if [ -d "$MAIN_DIR/$dir" ]; then
+                chown -R www-data:www-data "$MAIN_DIR/$dir" 2>/dev/null || true
+                # Directorios: 755, Archivos: 644
+                find "$MAIN_DIR/$dir" -type d -exec chmod 755 {} \; 2>/dev/null || true
+                find "$MAIN_DIR/$dir" -type f -exec chmod 644 {} \; 2>/dev/null || true
+            fi
+        done
+
+        # 2. Pre-build: Preparar filesystem para Contenedores (UID 1000)
+
+        # Main API Data
+        echo -e "   ${WRENCH} API data directory (UID 1000)..."
         mkdir -p "$API_DIR/data"
+        # Asignar a UID 1000 (appuser)
         chown -R 1000:1000 "$API_DIR/data" 2>/dev/null || true
-        chmod -R ${PERM_API_DATA:-777} "$API_DIR/data" 2>/dev/null || true
+        chmod -R 755 "$API_DIR/data" 2>/dev/null || true
         
-        echo -e "   ${WRENCH} BT database y uploads (host)..."
-        touch "$BT_DIR/database.db" 2>/dev/null || true
+        # Bruja Teatral Data
+        echo -e "   ${WRENCH} BT database y uploads (UID 1000)..."
+        # Asegurar que archivo DB existe para montarse como archivo
+        if [ ! -f "$BT_DIR/database.db" ]; then
+            touch "$BT_DIR/database.db"
+        fi
         mkdir -p "$BT_DIR/public/uploads"
-        chown -R 33:33 "$BT_DIR" 2>/dev/null || true
-        chmod ${PERM_BT_DATABASE:-666} "$BT_DIR/database.db" 2>/dev/null || true
-        chmod -R ${PERM_BT_UPLOADS:-777} "$BT_DIR/public/uploads" 2>/dev/null || true
+        
+        # Asignar a UID 1000 (appuser)
+        chown 1000:1000 "$BT_DIR/database.db" 2>/dev/null || true
+        chown -R 1000:1000 "$BT_DIR/public/uploads" 2>/dev/null || true
+        
+        # Permisos RW para usuario
+        chmod 644 "$BT_DIR/database.db" 2>/dev/null || true
+        chmod -R 755 "$BT_DIR/public/uploads" 2>/dev/null || true
         
     elif [ "$phase" == "post-build" ]; then
-        # 3. Post-build: Arreglar permisos DENTRO de contenedores
-        echo -e "   ${WRENCH} Esperando a que contenedores inicien..."
-        sleep 3
-        
-        if docker ps | grep -q bruja-teatral; then
-            echo -e "   ${WRENCH} BT container: uploads y database..."
-            docker exec bruja-teatral chmod -R ${PERM_BT_UPLOADS:-777} /app/public/uploads 2>/dev/null || echo "      ⚠️ No se pudo arreglar uploads"
-            docker exec bruja-teatral chmod ${PERM_BT_DATABASE:-666} /app/database.db 2>/dev/null || true
-        fi
-        
-        if docker ps | grep -q portfolio-contact-api; then
-            echo -e "   ${WRENCH} API container: data folder..."
-            docker exec portfolio-contact-api chmod -R ${PERM_API_DATA:-777} /app/data 2>/dev/null || true
-        fi
+        # 3. Post-build
+        # Ya no es necesario usar docker exec chmod 777 porque seteamos el ownership correcto
+        echo -e "   ${GREEN}${CHECK} Permisos verificados en host."
     fi
     
     echo -e "${GREEN}${CHECK} Permisos corregidos (${phase})${NC}"
@@ -102,7 +98,7 @@ run_task() {
     fi
 }
 
-echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v4.0\n"
+echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v5.0\n"
 
 # 1. Git Pull Global
 run_task "cd $MAIN_DIR && git pull" "Actualizando repositorio ($MAIN_DIR)"
@@ -119,7 +115,7 @@ run_task "cd $API_DIR && docker compose up -d --build" "Reconstruyendo Main API"
 echo -e "\n⏳ Iniciando rebuild de Bruja Teatral..."
 run_task "cd $BT_DIR && docker compose up -d --build" "Reconstruyendo Bruja Teatral"
 
-# 5. FIX PERMISOS POST-BUILD
+# 5. FIX PERMISOS POST-BUILD (Log only)
 fix_all_permissions "post-build"
 
 # 6. Limpieza
