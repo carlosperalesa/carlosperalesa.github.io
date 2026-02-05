@@ -30,7 +30,6 @@ WRENCH="🔧"
 # Variables de Directorios
 MAIN_DIR="${DEPLOY_ROOT:-/var/www/html-static}"
 API_DIR="$MAIN_DIR/api"
-BT_DIR="$MAIN_DIR/other/BT"
 
 # Función auxiliar para ejecutar comandos con log visual
 run_step() {
@@ -66,10 +65,7 @@ run_step "cd $MAIN_DIR && git pull" "1. Actualizando Repositorio (Git Pull)"
 echo -e "\n⏳ Desplegando servicios..."
 
 # Main API
-run_step "cd $API_DIR && docker compose up -d --build" "2.1 Reconstruyendo Main API"
-
-# Bruja Teatral
-run_step "cd $BT_DIR && docker compose up -d --build" "2.2 Reconstruyendo Bruja Teatral"
+run_step "cd $API_DIR && docker compose up -d --build" "2. Reconstruyendo Main API"
 
 # ==============================================================================
 # 3. PERMISOS
@@ -91,23 +87,6 @@ echo -e "   -> Configurando Main API Data (UID 1000)..."
 mkdir -p "$API_DIR/data"
 chown -R 1000:1000 "$API_DIR/data" 2>/dev/null || true
 chmod -R 755 "$API_DIR/data" 2>/dev/null || true
-
-# 3.3 Bruja Teatral Data (UID 1000)
-echo -e "   -> Configurando Bruja Teatral (Database & Uploads)..."
-# Asegurar existencia de archivos clave
-if [ ! -f "$BT_DIR/database.db" ]; then
-    touch "$BT_DIR/database.db"
-    echo "      (Creado database.db vacío)"
-fi
-mkdir -p "$BT_DIR/public/uploads"
-
-# Asignar permisos UID 1000 (Usuario contenedor)
-chown 1000:1000 "$BT_DIR/database.db" 2>/dev/null || true
-chown -R 1000:1000 "$BT_DIR/public/uploads" 2>/dev/null || true
-
-# Permisos de lectura/escritura
-chmod 644 "$BT_DIR/database.db" 2>/dev/null || true
-chmod -R 755 "$BT_DIR/public/uploads" 2>/dev/null || true
 
 echo -e "${GREEN}${CHECK} Permisos aplicados.${NC}"
 

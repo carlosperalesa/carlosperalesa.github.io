@@ -1,7 +1,7 @@
 // Detectar entorno local (Live Server usa puerto distinto al backend)
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_URL = isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
-const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/other/BT';  // Base para assets (imágenes)
+const API_URL = isLocal ? 'http://localhost:3000/api' : '/bt/api';
+const ASSETS_BASE = isLocal ? 'http://localhost:3000' : '/bt';  // Base para assets (imágenes)
 let quill;
 
 // Helper para resolver URLs de imágenes

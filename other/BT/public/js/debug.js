@@ -8,8 +8,8 @@ const DEBUG = {
     ASSETS_BASE: null,
 
     init() {
-        this.API_URL = this.isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
-        this.ASSETS_BASE = this.isLocal ? 'http://localhost:3000' : '/other/BT';
+        this.API_URL = this.isLocal ? 'http://localhost:3000/api' : '/bt/api';
+        this.ASSETS_BASE = this.isLocal ? 'http://localhost:3000' : '/bt';
         console.log('🔧 DEBUG INITIALIZED', {
             isLocal: this.isLocal,
             API_URL: this.API_URL,

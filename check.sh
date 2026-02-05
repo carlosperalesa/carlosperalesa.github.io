@@ -23,7 +23,6 @@ LOG_FILE="/var/log/check.log"
 # Usar variables de entorno del sistema con valores por defecto
 MAIN_DIR="${DEPLOY_ROOT:-/var/www/html-static}"
 API_DIR="$MAIN_DIR/api"
-BT_DIR="$MAIN_DIR/other/BT"
 
 # Función de logging
 log() {
@@ -72,7 +71,6 @@ check_service "Docker Service" "systemctl is-active --quiet docker"
 # 3. CONTENEDORES
 print_step "Verificando Contenedores Activos"
 check_service "Main API Container" "docker ps --format '{{.Names}}' | grep -q 'portfolio-contact-api'"
-check_service "BT API Container" "docker ps --format '{{.Names}}' | grep -q 'bruja-teatral'"
 
 # 4. CREDENCIALES
 print_step "Verificando Credenciales"
@@ -110,8 +108,6 @@ check_owner() {
     fi
 }
 
-check_owner "$BT_DIR/database.db" "BT Database"
-check_owner "$BT_DIR/public/uploads" "BT Uploads"
 check_owner "$API_DIR/data" "API Data"
 
 # 6. RECURSOS
@@ -158,9 +154,6 @@ check_endpoint() {
 
 # Main API (Port 5000 vs carlosperales.dev/api/health)
 check_endpoint "Main API" "http://localhost:5000/api/health" "https://carlosperales.dev/api/health"
-
-# BT API (Port 3000 vs carlosperales.dev/other/BT/api/posts)
-check_endpoint "BT API" "http://localhost:3000/api/posts" "https://carlosperales.dev/other/BT/api/posts"
 
 
 echo -e "\n-----------------------------------"

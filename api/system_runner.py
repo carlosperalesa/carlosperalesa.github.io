@@ -19,8 +19,7 @@ if not RUNNER_SECRET:
 
 WHITELIST = {
     "deploy": "/var/www/html-static/start.sh",
-    "check": "/var/www/html-static/check.sh",
-    "fix-bt-permissions": "/var/www/html-static/other/BT/fix-permissions.sh"
+    "check": "/var/www/html-static/check.sh"
 }
 
 # Estado de los jobs ejecutándose

@@ -1,8 +1,8 @@
 // Entorno: Local vs DigitalOcean
 window.isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-// En Prod (DO), Nginx debe mapear '/other/BT/api/' al contenedor de BT
-window.API_URL = window.isLocal ? 'http://localhost:3000/api' : '/other/BT/api';
-window.ASSETS_BASE = window.isLocal ? 'http://localhost:3000' : '/other/BT';
+// En Prod, Nginx mapea '/bt/api/' al contenedor de BT
+window.API_URL = window.isLocal ? 'http://localhost:3000/api' : '/bt/api';
+window.ASSETS_BASE = window.isLocal ? 'http://localhost:3000' : '/bt';
 
 // Helper para resolver URLs de imágenes
 function resolveImageUrl(url) {
