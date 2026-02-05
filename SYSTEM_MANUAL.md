@@ -37,7 +37,7 @@ El sistema se compone de tres entidades principales que interactúan entre sí:
 2.  **Main API (Backend & Mayordomo)**:
     *   Ubicado en `api/`.
     *   Maneja formulario de contacto, autenticación y base de datos de mensajes.
-    *   **Mayordomo (`system_runner.py`)**: Ejecuta tareas privilegiadas en el host (Deploy, Backup, Check) invocadas desde el panel de admin.
+    *   **Mayordomo (`system_runner.py`)**: Ejecuta tareas privilegiadas en el host (Deploy, Check) invocadas desde el panel de admin.
 3.  **Bruja Teatral (Sub-proyecto)**:
     *   Ubicado en `other/BT/`.
     *   Sistema CMS independiente para una compañía de teatro.
@@ -81,6 +81,7 @@ El repositorio incluye scripts automatizados en la raíz para facilitar la opera
     *   Construye y levanta los contenedores (Main API y BT).
     *   **Corrige permisos** automáticamente para asegurar que los contenedores (que corren como usuario 1000) puedan escribir en los volúmenes.
     *   Recarga Nginx.
+    *   Verifica e instala el servicio **Mayordomo** si no existe.
     *   Ejecuta: `bash start.sh`
 
 *   **`check.sh`**:

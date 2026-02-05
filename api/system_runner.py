@@ -20,8 +20,6 @@ if not RUNNER_SECRET:
 WHITELIST = {
     "deploy": "/var/www/html-static/start.sh",
     "check": "/var/www/html-static/check.sh",
-    "backup": "/var/www/html-static/backup.sh",
-    "restore": "/var/www/html-static/restore.sh",
     "fix-bt-permissions": "/var/www/html-static/other/BT/fix-permissions.sh"
 }
 

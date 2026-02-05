@@ -63,7 +63,6 @@ carlosperalesa.github.io/
 ├── 📄 deploy.sh           # Script de deploy automático
 ├── 📄 start.sh            # Deploy + rebuild de contenedores
 ├── 📄 check.sh            # Health check del sistema
-├── 📄 backup.sh           # Script de backup
 ├── 📄 robots.txt          # Configuración para crawlers
 ├── 📄 sitemap.xml         # Mapa del sitio para SEO
 ├── 📄 SYSTEM_MANUAL.md    # 📘 Manual técnico y de despliegue
@@ -129,9 +128,6 @@ start
 
 # Health check del sistema
 check
-
-# Backup de bases de datos y uploads
-bash /var/www/html-static/backup.sh
 ```
 
 ### Setup Inicial del Servidor
@@ -162,16 +158,6 @@ start
 cd /var/www/html-static
 git pull origin main
 bash deploy.sh
-```
-
-### Backups
-
-```bash
-# Ejecutar backup manual
-bash /var/www/html-static/backup.sh
-
-# Programar backup diario (agregar a crontab)
-0 2 * * * /var/www/html-static/backup.sh >> /var/log/backup.log 2>&1
 ```
 
 ---

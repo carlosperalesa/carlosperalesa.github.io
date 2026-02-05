@@ -210,10 +210,9 @@ El modal de administración se dividirá en dos secciones principales mediante p
 - Visualización de contactos recibidos (lo que ya tenemos).
 
 ### ⚙️ Pestaña 2: Sistema (Nueva)
-- **Barra de Herramientas**: Tres botones premium alineados en la parte superior:
-    1.  `🚀 Deploy Total`: Ejecuta `start.sh` (Actualiza Git, rebuild containers, recarga Nginx).
-    2.  `🔍 Check Health`: Ejecuta `check.sh` (Analiza si todos los servicios están respondiendo).
-    3.  `💾 Backup DB`: Ejecuta `backup.sh` (Respalda las bases de datos SQLite).
+- **Barra de Herramientas**: Dos botones premium alineados en la parte superior:
+   1.  `🚀 Deploy Total`: Ejecuta `start.sh` (Actualiza Git, rebuild containers, recarga Nginx).
+   2.  `🔍 Check Health`: Ejecuta `check.sh` (Analiza si todos los servicios están respondiendo).
 - **Terminal Integrada**: Un contenedor debajo de los botones con fondo negro profundo, fuente monoespaciada (tipo Matrix/Console) y scroll automático.
 
 ---
@@ -252,7 +251,6 @@ Verifica que `CORS` esté habilitado en `app.py` (ya está configurado)
 ### 💾 Base de Datos
 - **Ubicación**: `api/data/contactos.db`
 - **Persistencia**: ✅ Configurada con Docker volumes
-- **Backup**: Copia regularmente el archivo `.db`
 
 ### 🔄 Updates
 Si haces cambios en `app.py`:
