@@ -57,8 +57,8 @@
     --radius-xl: 32px;
 
     /* Dock */
-    --dock-bg: rgba(255, 255, 255, 0.6);
-    --dock-icon-size: 48px;
+    --dock-bg: rgba(255, 255, 255, 0.95);
+    --dock-icon-size: 52px;
 
     /* Modal */
     --modal-bg: rgba(255, 255, 255, 0.98);
@@ -71,6 +71,11 @@
     --color-danger: #ef4444;
     --mac-green: #28c840;
     --mac-red: #ff5f57;
+
+    /* Neomorphism Shadows (Light Mode) */
+    --neo-shadow-light: -5px -5px 12px #ffffff, 5px 5px 12px rgba(0, 0, 0, 0.1);
+    --neo-shadow-inset: inset 5px 5px 10px rgba(0, 0, 0, 0.1), inset -5px -5px 10px #ffffff;
+    --neo-bg: #f8fafc;
 }
 
 /* Modo Oscuro - Más profundo y con acentos neón */
@@ -81,11 +86,16 @@ body.dark-mode {
     --glass-bg: rgba(15, 23, 42, 0.8);
     --glass-border: rgba(148, 163, 184, 0.1);
     --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(148, 163, 184, 0.05);
-    --dock-bg: rgba(15, 23, 42, 0.5);
+    --dock-bg: rgba(15, 23, 42, 0.9);
     --modal-bg: rgba(15, 23, 42, 0.95);
     --indicator-color: #a5b4fc;
     --accent-color: #818cf8;
     --accent-light: #c4b5fd;
+
+    /* Neomorphism Shadows (Dark Mode) */
+    --neo-shadow-light: -4px -4px 10px rgba(255, 255, 255, 0.05), 4px 4px 10px rgba(0, 0, 0, 0.5);
+    --neo-shadow-inset: inset 4px 4px 10px rgba(0, 0, 0, 0.5), inset -4px -4px 10px rgba(255, 255, 255, 0.05);
+    --neo-bg: #030712;
 }
 
 /* Utilidad Glass Global */
@@ -117,7 +127,7 @@ body {
 body {
     font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 450;
-    background: var(--bg-gradient);
+    background: transparent;
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -190,7 +200,7 @@ body.dark-mode * {
 }
 
 /* ============================================
-   3. FONDO DE PANTALLA (Bing Daily fallback)
+   3. FONDO DE PANTALLA (Three.js Cyber Grid)
    ============================================ */
 .desktop-screen {
     position: relative;
@@ -204,8 +214,6 @@ body.dark-mode * {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /* Force light mode background initially */
-    background-color: #f8fafc;
 }
 
 /* Overlay sutil para legibilidad */
@@ -220,15 +228,15 @@ body.dark-mode * {
             rgba(0, 0, 0, 0.25) 100%);
     z-index: -1;
     pointer-events: none;
-    transition: background 0.3s ease;
 }
 
-/* En modo oscuro, overlay mucho más pronunciado para oscurecer el SVG */
+/* En modo oscuro, overlay más pronunciado */
 body.dark-mode .desktop-screen::before {
     background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0.85) 0%,
-            rgba(0, 0, 0, 0.75) 50%,
-            rgba(0, 0, 0, 0.85) 100%);
+            rgba(0, 0, 0, 0.35) 0%,
+            rgba(0, 0, 0, 0.1) 20%,
+            rgba(0, 0, 0, 0.1) 80%,
+            rgba(0, 0, 0, 0.45) 100%);
 }
 
 /* 4. FONDO RESPONSIVE */
@@ -254,7 +262,7 @@ body.dark-mode .desktop-screen::before {
     padding: 0 var(--spacing-md);
     background: #ffffff;
     border-bottom: 1px solid var(--glass-border);
-    z-index: 3000; /* Always on top */
+    z-index: 1000;
 }
 
 .top-bar-left {
@@ -274,22 +282,14 @@ body.dark-mode .desktop-screen::before {
 }
 
 .top-bar-name:hover {
+    background: rgba(128, 128, 128, 0.15);
+    border-color: var(--glass-border);
     color: var(--accent-color);
-    box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.8), 4px 4px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
 }
 
 .top-bar-name:active {
     transform: scale(0.98);
-    box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.7), inset 2px 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-body.dark-mode .top-bar-name:hover {
-    box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.05), 4px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-body.dark-mode .top-bar-name:active {
-    box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.05), inset 2px 2px 6px rgba(0, 0, 0, 0.3);
+    background: rgba(128, 128, 128, 0.2);
 }
 
 /* Nombre completo en desktop, abreviado en móvil */
@@ -307,7 +307,19 @@ body.dark-mode .top-bar-name:active {
     transform: translateX(-50%);
     font-size: var(--font-sm);
     color: var(--text-muted);
-    font-weight: 400;
+    font-weight: 500;
+
+    /* Neomorphism Pill */
+    padding: 6px 18px;
+    border-radius: 20px;
+    background: var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for clock */
+.top-bar-center:hover {
+    box-shadow: var(--neo-shadow-inset);
 }
 
 .top-bar-right {
@@ -318,10 +330,21 @@ body.dark-mode .top-bar-name:active {
 
 /* Toggle Tema (Sol/Luna con estrellas y nubes) */
 .theme-toggle {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    width: 45px;
-    height: 25px;
+    width: 55px;
+    /* Increased for padding */
+    height: 35px;
+    /* Increased for padding */
+    padding: 5px;
+    border-radius: 50px;
+
+    /* Neomorphism Border */
+    background: var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
+    transition: all 0.3s ease;
 }
 
 .theme-toggle input {
@@ -340,10 +363,14 @@ body.dark-mode .top-bar-name:active {
     position: absolute;
     cursor: pointer;
     overflow: hidden;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 5px;
+    /* Match padding */
+    left: 5px;
+    /* Match padding */
+    right: 5px;
+    /* Match padding */
+    bottom: 5px;
+    /* Match padding */
     transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
     border-radius: 34px;
     background: #83D8FF;
@@ -420,307 +447,219 @@ body.dark-mode .top-bar-name:active {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 60px var(--spacing-lg) 120px; /* Increased bottom padding for floating dock */
-    overflow-y: auto; /* Changed from scroll to auto */
+    padding: 60px var(--spacing-lg) 100px;
+    overflow-y: scroll;
 }
 
-/* Glass Card Unificada - Compact & Professional */
-.glass-card {
+.home-content {
     width: 100%;
-    max-width: 480px; /* Default width (mobile) */
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
-    padding: 24px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1),
-        inset 0 0 0 0.5px rgba(255, 255, 255, 0.4);
+    max-width: 800px;
     display: flex;
-    flex-direction: column; /* Default stack */
-    gap: 20px;
-    transition: all 0.3s ease;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-xl);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: var(--glass-shadow);
 }
 
-body.dark-mode .glass-card {
-    background: rgba(30, 41, 59, 0.7);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
-/* Avatar con indicador */
 .home-avatar {
-    position: relative;
     flex-shrink: 0;
-    display: flex;
-    justify-content: center; /* Center on mobile */
 }
 
 .avatar-img {
-    width: 80px;
-    height: 80px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border: 4px solid var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
     object-fit: cover;
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .avatar-img {
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Info del Header */
-.header-info {
+.home-info {
     flex: 1;
-    text-align: center; /* Center on mobile */
 }
 
 .profile-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-    background: linear-gradient(135deg, var(--text-color) 0%, var(--text-muted) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -0.02em;
-}
-
-body.dark-mode .profile-name {
-    background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-    -webkit-background-clip: text;
+    font-size: var(--font-xxl);
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
 }
 
 .profile-role {
-    font-size: 0.9rem;
+    font-size: var(--font-lg);
     color: var(--accent-color);
-    font-weight: 500;
-    margin-bottom: 10px;
+    font-weight: 400;
+    margin-bottom: var(--spacing-sm);
 }
 
-/* Cuerpo de la tarjeta */
-.card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.section-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-color);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.7;
-}
-
-.profile-text {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-muted);
-}
-
-.tags-container {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-    justify-content: center; /* Center on mobile */
-}
-
-.tag {
-    padding: 4px 10px;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-}
-
-body.dark-mode .tag {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: var(--text-color);
-}
-
-
-/* ============================================
-   DESKTOP SPLIT LAYOUT
-   ============================================ */
-@media (min-width: 769px) {
-    .glass-card {
-        max-width: 750px; /* Wider for 2 cols */
-        flex-direction: row; /* Horizontal layout */
-        align-items: flex-start;
-        padding: 32px;
-    }
-
-    .glass-card-left {
-        margin-right: 32px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
-    .home-avatar {
-        justify-content: flex-start;
-    }
-
-    .avatar-img {
-        width: 120px; /* Larger avatar on desktop */
-        height: 120px;
-    }
-
-    .glass-card-right {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .header-info {
-        text-align: left;
-    }
-
-    .profile-name {
-        font-size: 1.75rem;
-    }
-
-    .tags-container {
-        justify-content: flex-start;
-    }
-}
-
-/* ============================================
-   COMPACT FOOTER (Status, Location, Icons)
-   ============================================ */
-.card-footer-compact {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(0,0,0,0.05);
-}
-
-body.dark-mode .card-footer-compact {
-    border-top-color: rgba(255,255,255,0.05);
-}
-
-.status-location-row {
+.profile-status {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    font-size: 0.9rem;
+    gap: var(--spacing-sm);
+    font-size: var(--font-sm);
     color: var(--text-muted);
+    margin-bottom: var(--spacing-md);
 }
 
 .status-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 12px;
-    background: rgba(16, 185, 129, 0.1); /* Light green bg */
-    color: var(--color-success);
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    font-weight: 500;
+    font-size: var(--font-xs);
 }
 
-body.dark-mode .status-badge {
-    background: rgba(16, 185, 129, 0.2);
-}
-
-.status-dot-inline {
+.status-dot {
     width: 8px;
     height: 8px;
-    background: var(--color-success);
+    background: #10b981;
     border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    animation: pulse 2s infinite;
 }
 
-.separator {
-    color: rgba(0,0,0,0.2);
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
 }
-body.dark-mode .separator {
-    color: rgba(255,255,255,0.2);
+
+.status-separator {
+    color: var(--glass-border);
 }
 
 .location-text {
+    opacity: 0.8;
+}
+
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.contact-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-weight: 500;
-}
-.location-text i {
-    color: #e11d48; /* Red/Pink pin */
+    gap: var(--spacing-sm);
+    font-size: var(--font-sm);
+    color: var(--text-muted);
 }
 
-/* Circular Social Icons */
-.social-links-compact {
+.contact-item i {
+    width: 16px;
+    color: var(--accent-color);
+}
+
+/* Social Link Icons (For Main Card) */
+.social-links-container {
     display: flex;
     gap: 12px;
+    margin-top: 10px;
 }
 
-.social-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.05);
+.social-link {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+    opacity: 0.7;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    transition: all 0.2s ease;
+    padding: 8px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
 }
 
-body.dark-mode .social-circle {
-    background: rgba(255,255,255,0.1);
-    color: var(--text-color);
-}
-
-.social-circle:hover {
-    background: var(--text-color);
-    color: #fff;
+.social-link:hover {
     transform: translateY(-2px);
+    color: var(--accent-color);
+    background: rgba(120, 120, 120, 0.15);
+    opacity: 1;
 }
 
-body.dark-mode .social-circle:hover {
-    background: #fff;
-    color: #000;
+body.dark-mode .social-link {
+    background: rgba(255, 255, 255, 0.05);
 }
 
+body.dark-mode .social-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+.home-profile {
+    width: 100%;
+    max-width: 800px;
+    margin-top: var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--glass-shadow);
+}
+
+.profile-title {
+    font-size: var(--font-md);
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    color: var(--accent-color);
+}
+
+.profile-text {
+    font-size: var(--font-sm);
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.profile-text strong {
+    color: var(--text-color);
+    font-weight: 500;
+}
 
 /* ============================================
    7. DOCK
    ============================================ */
 .dock-container {
     position: fixed;
-    bottom: 20px; /* Floating above bottom */
+    bottom: 0;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
-    padding: 0 var(--spacing-md);
-    padding-bottom: env(safe-area-inset-bottom);
-    z-index: 3000; /* Always on top */
-    pointer-events: none; /* Allow clicks through container */
+    padding: var(--spacing-sm) var(--spacing-md);
+    padding-bottom: max(var(--spacing-sm), env(safe-area-inset-bottom));
+    z-index: 1000;
 }
 
 .dock {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--dock-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 0.5px rgba(255, 255, 255, 0.2);
-    pointer-events: auto; /* Re-enable clicks on dock */
+    align-items: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: #ffffff;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--glass-shadow);
 }
 
 .dock-item {
@@ -765,18 +704,18 @@ body.dark-mode .social-circle:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    /* Fondo sólido - App Icon Style */
+    font-size: 22px;
+    /* Fondo sólido - mejor rendimiento */
     background: #ffffff;
     color: var(--accent-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .dock-icon svg {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
 }
 
 /* Iconos con colores sobre fondo blanco */
@@ -838,25 +777,11 @@ body.dark-mode .social-circle:hover {
 
 
 .dock-label {
-    position: absolute;
-    top: -35px;
-    background: rgba(0, 0, 0, 0.75);
-    color: white;
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    transform: translateY(5px);
-    backdrop-filter: blur(4px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.dock-item:hover .dock-label {
-    opacity: 1;
-    transform: translateY(0);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    display: none;
+    /* Oculto en móvil */
 }
 
 /* Badge de Notificaciones */
@@ -894,9 +819,9 @@ body.dark-mode .social-circle:hover {
 /* Indicador de modal abierto */
 .dock-indicator {
     position: absolute;
-    bottom: -6px;
-    width: 4px;
-    height: 4px;
+    bottom: -8px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: var(--indicator-color);
     opacity: 0;
@@ -910,16 +835,16 @@ body.dark-mode .social-circle:hover {
 /* Separador en el dock */
 .dock-separator {
     width: 1px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 0 4px;
+    height: 40px;
+    background: var(--glass-border);
+    margin: 0 var(--spacing-xs);
 }
 
 /* Hover efecto magnify (desktop) */
 @media (hover: hover) {
     .dock-item:hover .dock-icon {
-        transform: scale(1.15) translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        transform: scale(1.12) translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.12);
     }
 }
 
@@ -930,13 +855,11 @@ body.dark-mode .dock-icon {
 }
 
 body.dark-mode .top-bar {
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(20px);
+    background: #0f172a;
 }
 
 body.dark-mode .dock {
-    background: var(--dock-bg);
-    border-color: rgba(255, 255, 255, 0.05);
+    background: #0f172a;
 }
 
 body.dark-mode .home-content,
@@ -1064,12 +987,13 @@ body.dark-mode .home-profile {
     justify-content: center;
     border-radius: 50%;
     background: var(--mac-red);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: transparent;
     font-size: 0;
     transition: all 0.2s ease;
     position: relative;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    /* Neomorphism Button */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
 }
 
 /* Botón cerrar estilo Mac (sin icono) */
@@ -1474,6 +1398,725 @@ body.dark-mode .home-profile {
 }
 
 .project-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Cambiado de cover a contain */
+    padding: 8px;
+    /* Espacio interno para logos */
+}
+
+.project-icon.emoji {
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+}
+
+body.dark-mode .project-icon.emoji {
+    background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+body.dark-mode .project-icon {
+    background: rgba(30, 41, 59, 0.8);
+}
+
+.project-name {
+    font-size: 11px;
+    text-align: center;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ============================================
+   11. TOAST DE BIENVENIDA
+   ============================================ */
+.toast {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+    font-size: var(--font-sm);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 3000;
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   12. RESPONSIVE - MÓVIL
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Top Bar */
+    .name-full {
+        display: none;
+    }
+
+    .name-short {
+        display: inline;
+    }
+
+    .top-bar-center {
+        font-size: var(--font-xs);
+    }
+
+    /* Home Screen - Cards centradas */
+    .home-screen {
+        padding: 60px 16px 100px 16px;
+        justify-content: flex-start;
+        align-items: center;
+        overflow-x: hidden;
+    }
+
+    .home-content {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-lg);
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: var(--spacing-sm);
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        box-sizing: border-box;
+    }
+
+    .home-profile {
+        padding: var(--spacing-lg);
+        margin: 0 auto;
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        box-sizing: border-box;
+    }
+
+    .avatar-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-name {
+        font-size: var(--font-lg);
+    }
+
+    .profile-role {
+        font-size: var(--font-sm);
+    }
+
+    .contact-list {
+        align-items: center;
+        font-size: var(--font-sm);
+    }
+
+    .contact-item {
+        font-size: var(--font-xs);
+    }
+
+    /* Dock - mismo ancho que cards */
+    .dock {
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        justify-content: space-around;
+        padding: var(--spacing-sm);
+    }
+
+    /* Top bar y Dock siempre por encima del overlay en móvil */
+    .top-bar {
+        z-index: 3000 !important;
+    }
+
+    .dock-container {
+        z-index: 3000 !important;
+    }
+
+    .dock-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    .dock-separator {
+        display: none;
+    }
+
+    /* Modales - ocupan el área entre top bar y dock */
+    .modal-overlay {
+        padding: 0;
+        /* Posicionar entre top bar (44px) y dock (~80px) */
+        top: 44px;
+        bottom: 80px;
+        left: 0;
+        right: 0;
+        height: auto;
+        align-items: stretch;
+        justify-content: stretch;
+        /* Sin fondo por defecto - NO bloquea dock ni top bar */
+        background: transparent;
+        pointer-events: none;
+    }
+
+    /* SOLO cuando está activo mostrar fondo */
+    .modal-overlay.active {
+        background: rgba(0, 0, 0, 0.3);
+        pointer-events: auto;
+    }
+
+    .modal {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: calc(100% - 16px);
+        max-width: calc(100% - 16px);
+        height: calc(100% - 16px);
+        max-height: calc(100% - 16px);
+        margin: 8px;
+        border-radius: var(--radius-lg);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        cursor: default !important;
+        flex-shrink: 0;
+    }
+
+    /* Forzar bordes redondeados en modales grandes incluso maximizados */
+    .modal.modal-lg {
+        border-radius: var(--radius-lg) !important;
+        /* Quitar overflow:hidden para que el header y el botón cerrar sean visibles en móvil */
+        /* overflow: hidden; */
+    }
+
+    /* Asegurar que el header y el botón cerrar estén siempre encima en móvil */
+    @media (max-width: 768px) {
+        .modal-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--modal-bg);
+        }
+
+        .modal-close {
+            z-index: 20;
+        }
+    }
+
+    /* Modales pequeños (Login/Confirm) - centrados en móvil */
+    .modal.modal-sm {
+        position: relative;
+        width: 300px;
+        max-width: 300px;
+        height: auto;
+        max-height: fit-content;
+        margin: auto;
+        align-self: center;
+        justify-self: center;
+        /* Permitir arrastre sin scroll */
+        touch-action: none;
+        cursor: grab !important;
+    }
+
+    .modal.modal-sm.dragging {
+        position: absolute !important;
+        cursor: grabbing !important;
+    }
+
+    /* Overlay centrado para modales de confirmación */
+    #modal-whatsapp,
+    #modal-telefono,
+    #modal-login {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Overlay más sutil para modales pequeños */
+    #modal-whatsapp.active,
+    #modal-telefono.active,
+    #modal-login.active {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Proyectos grid */
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablet y Desktop - Mostrar labels del dock */
+@media (min-width: 769px) {
+    .dock-label {
+        display: block;
+    }
+
+    .dock-icon {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+/* ============================================
+   13. ANIMACIONES REDUCIDAS
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   15. SELECCIÓN DE TEXTO
+   ============================================ */
+::selection {
+    background: var(--accent-color);
+    color: white;
+}
+
+/* ============================================
+   ADMIN DASHBOARD ENHANCEMENTS (Tabs & Terminal)
+   ============================================ */
+
+.admin-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.admin-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.admin-tab:hover {
+    background: rgba(128, 128, 128, 0.1);
+    color: var(--text-color);
+}
+
+.admin-tab.active {
+    background: var(--accent-color);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.system-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.system-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.system-btn i {
+    font-size: 1.5rem;
+}
+
+.system-btn:hover {
+    transform: translateY(-4px);
+    background: var(--glass-border);
+    border-color: var(--accent-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.system-btn.deploy:hover {
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+.system-btn.check:hover {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.system-btn.backup:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.terminal-container {
+    background: #0d0d0d;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    margin-top: 10px;
+}
+
+.terminal-header {
+    background: #1a1a1a;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.terminal-dot.red {
+    background: #ff5f56;
+}
+
+.terminal-dot.yellow {
+    background: #ffbd2e;
+}
+
+.terminal-dot.green {
+    background: #27c93f;
+}
+
+.terminal-title {
+    color: #666;
+    font-size: 11px;
+    font-family: monospace;
+    margin-left: 5px;
+}
+
+.terminal-body {
+    padding: 12px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.4;
+    background: #0a0a0a;
+}
+
+.terminal-body .line {
+    margin-bottom: 3px;
+    white-space: pre-wrap;
+}
+
+.line.command {
+    color: #34d399;
+}
+
+.line.error {
+    color: #f87171;
+}
+
+.line.working {
+    color: #fbbf24;
+}
+
+.line.success {
+    color: #10b981;
+}
+
+.line.info {
+    color: #60a5fa;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   16. FORMULARIO CONTACTO (Modal)
+   ============================================ */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.5);
+    font-family: inherit;
+    font-size: var(--font-sm);
+    transition: all 0.2s ease;
+    color: var(--text-color);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+body.dark-mode .form-input,
+body.dark-mode .form-textarea {
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .form-input:focus,
+body.dark-mode .form-textarea:focus {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--accent-color);
+}
+
+/* ============================================
+   17. ADMIN & MODAL UI MEJORADA
+   ============================================ */
+
+/* Tamaños de modales */
+.modal-sm {
+    width: 320px;
+    max-width: 90%;
+    margin: auto;
+    /* Centrado vertical/horizontal */
+}
+
+.modal-lg {
+    width: 600px;
+    height: 480px;
+    max-width: 95%;
+    max-height: 90vh;
+}
+
+/* Botones de control ventana */
+.window-controls {
+    display: flex;
+    gap: 8px;
+    margin-right: 8px;
+    /* Espacio antes del botón cerrar normal */
+}
+
+.modal-maximize {
+    width: 14px;
+    height: 14px;
+    background: var(--mac-green);
+    /* Verde Mac */
+    border-radius: 50%;
+    /* Redondo por defecto */
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 8px;
+    /* Neomorphism Button */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
+}
+
+.modal-maximize:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+/* Estado Maximizado */
+.modal.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    border: none;
+}
+
+/* En móvil, modales maximizados mantienen curvas */
+@media (max-width: 768px) {
+    .modal.maximized {
+        top: 10px !important;
+        left: 10px !important;
+        width: calc(100vw - 20px) !important;
+        height: calc(100vh - 100px) !important;
+        border-radius: var(--radius-lg) !important;
+    }
+}
+
+.modal.maximized .modal-body {
+    height: calc(100vh - 60px);
+    /* Ajuste altura cuerpo */
+}
+
+/* Tabla Admin */
+.admin-table-container {
+    overflow-x: auto;
+    height: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--glass-bg);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.admin-table th {
+    background: var(--glass-border);
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(5px);
+    z-index: 10;
+}
+
+.admin-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--glass-border);
+    vertical-align: middle;
+}
+
+.admin-table tr:hover {
+    background: var(--glass-border);
+}
+
+.message-row {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.message-row:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.message-detail td {
+    border-bottom: none !important;
+    box-shadow: inset 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Acciones en tabla */
+.action-btn {
+    padding: 6px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+}
+
+.action-btn.delete {
+    color: #ef4444;
+}
+
+.action-btn.delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+/* Auth Login Styles */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-error {
+    color: #ef4444;
+    font-size: 12px;
+    text-align: center;
+    min-height: 18px;
+}
+
+/* Proyecto Detalle */
+.project-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.project-detail-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: var(--glass-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+}
+
+.project-detail-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
