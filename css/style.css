@@ -467,9 +467,7 @@ body.dark-mode .desktop-screen::before {
     gap: var(--spacing-xl);
 
     /* Glass Effect */
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.5);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     padding: var(--spacing-xl);
@@ -483,7 +481,7 @@ body.dark-mode .desktop-screen::before {
     align-items: center;
     gap: var(--spacing-md);
     flex-shrink: 0;
-    width: 160px; /* Fixed width for alignment */
+    width: 160px;
 }
 
 /* Right Section: Info & Profile Text */
@@ -511,7 +509,7 @@ body.dark-mode .desktop-screen::before {
 .home-info {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align text left */
+    align-items: flex-start;
 }
 
 .profile-name {
@@ -636,7 +634,7 @@ body.dark-mode .social-link:hover {
 
 /* Re-use home-profile styles but remove container props as it's now inside the card */
 .home-profile {
-    margin-top: 0; /* Removed margin */
+    margin-top: 0;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -681,7 +679,7 @@ body.dark-mode .social-link:hover {
     align-items: flex-end;
     gap: var(--spacing-sm);
     padding: var(--spacing-sm) var(--spacing-md);
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.5);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     box-shadow: var(--glass-shadow);
@@ -884,12 +882,12 @@ body.dark-mode .top-bar {
 }
 
 body.dark-mode .dock {
-    background: #0f172a;
+    background: rgba(255, 255, 255, 0.5);
 }
 
 body.dark-mode .home-content,
 body.dark-mode .home-profile {
-    background: rgba(15, 23, 42, 0.85);
+    background: transparent;
 }
 
 /* ============================================
@@ -1522,17 +1520,20 @@ body.dark-mode .project-icon {
 
     .glass-card-left-section {
         width: 100%;
-        order: 1; /* Avatar first */
+        order: 1;
+        /* Avatar first */
     }
 
     .glass-card-right-section {
         width: 100%;
         align-items: center;
-        order: 2; /* Info second */
+        order: 2;
+        /* Info second */
     }
 
     .home-info {
-        align-items: center; /* Center text on mobile */
+        align-items: center;
+        /* Center text on mobile */
     }
 
     /* Ensure Social Icons are centered in Mobile */

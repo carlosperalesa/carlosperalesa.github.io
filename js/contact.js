@@ -162,8 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    console.log('✅ Contact form handler initialized');
 });
 
 /* =================================
