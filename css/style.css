@@ -1,19 +1,6 @@
-/* Fix: Siempre mostrar header y botón cerrar en móvil */
-@media (max-width: 768px) {
-
-    .modal-header,
-    .modal-close {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-    }
-}
-
 /* ============================================
-   1. VARIABLES Y TEMA
+   FUENTE PERSONALIZADA
    ============================================ */
-/* FUENTE LOCAL */
 @font-face {
     font-family: 'Geist';
     src: url('../fonts/Geist.woff2') format('woff2');
@@ -22,15 +9,18 @@
     font-display: swap;
 }
 
+/* ============================================
+   VARIABLES CSS - ROOT Y DARK MODE
+   ============================================ */
 :root {
-    /* Colores - Alta legibilidad */
+    /* Colores principales */
     --accent-color: #4f46e5;
     --accent-light: #818cf8;
     --text-color: #000000;
     --text-muted: #374151;
     --bg-gradient: #f8fafc;
 
-    /* Glassmorphism - Más opaco para mejor contraste */
+    /* Glassmorphism */
     --glass-bg: rgba(255, 255, 255, 0.92);
     --glass-border: rgba(0, 0, 0, 0.08);
     --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -50,35 +40,40 @@
     --spacing-lg: 24px;
     --spacing-xl: 32px;
 
-    /* Bordes - Más redondeados, tendencia actual */
+    /* Bordes */
     --radius-sm: 10px;
     --radius-md: 14px;
-    --radius-lg: 22px;
-    --radius-xl: 32px;
+    --radius-lg: 18px;
+    --radius-xl: 20px;
 
-    /* Dock */
+    /* Componentes */
     --dock-bg: rgba(255, 255, 255, 0.95);
     --dock-icon-size: 52px;
-
-    /* Modal */
     --modal-bg: rgba(255, 255, 255, 0.98);
-
-    /* Indicador */
     --indicator-color: #6366f1;
 
-    /* Semantic & UI Colors */
+    /* Colores semánticos */
     --color-success: #10b981;
     --color-danger: #ef4444;
     --mac-green: #28c840;
     --mac-red: #ff5f57;
 
-    /* Neomorphism Shadows (Light Mode) */
+    /* Neomorphism */
     --neo-shadow-light: -5px -5px 12px #ffffff, 5px 5px 12px rgba(0, 0, 0, 0.1);
     --neo-shadow-inset: inset 5px 5px 10px rgba(0, 0, 0, 0.1), inset -5px -5px 10px #ffffff;
     --neo-bg: #f8fafc;
+
+    /* Tamaños de elementos */
+    --top-bar-height: 44px;
+    --modal-header-height: 34px;
+    --dock-bottom-spacing: 80px;
+
+    /* Transiciones comunes */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.2s ease;
+    --transition-smooth: 0.3s ease;
 }
 
-/* Modo Oscuro - Más profundo y con acentos neón */
 body.dark-mode {
     --bg-gradient: #030712;
     --text-color: #f1f5f9;
@@ -91,24 +86,13 @@ body.dark-mode {
     --indicator-color: #a5b4fc;
     --accent-color: #818cf8;
     --accent-light: #c4b5fd;
-
-    /* Neomorphism Shadows (Dark Mode) */
     --neo-shadow-light: -4px -4px 10px rgba(255, 255, 255, 0.05), 4px 4px 10px rgba(0, 0, 0, 0.5);
     --neo-shadow-inset: inset 4px 4px 10px rgba(0, 0, 0, 0.5), inset -4px -4px 10px rgba(255, 255, 255, 0.05);
     --neo-bg: #030712;
 }
 
-/* Utilidad Glass Global */
-.glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-}
-
 /* ============================================
-   2. RESET Y BASE
+   RESET Y BASE
    ============================================ */
 *,
 *::before,
@@ -129,7 +113,7 @@ body {
     font-weight: 450;
     background: transparent;
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--transition-smooth), color var(--transition-smooth);
 }
 
 a {
@@ -138,19 +122,19 @@ a {
 }
 
 button {
-    border: none;
     background: none;
     cursor: pointer;
     font-family: inherit;
 }
 
-/* Focus visible */
 :focus-visible {
     outline: 2px solid var(--accent-color);
     outline-offset: 2px;
 }
 
-/* Scrollbar personalizado - pill blanca sobre transparente */
+/* ============================================
+   SCROLLBAR PERSONALIZADO
+   ============================================ */
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
@@ -158,25 +142,19 @@ button {
 
 ::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
-    /* Un poco más visible el track */
-    border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.4);
-    /* Gris más oscuro para que se vea */
     border-radius: 100px;
     border: 3px solid transparent;
-    /* Efecto pill flotante */
     background-clip: padding-box;
-    box-shadow: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.6);
 }
 
-/* Modo oscuro scroll */
 body.dark-mode ::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
 }
@@ -189,7 +167,6 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.7);
 }
 
-/* Firefox & Standard */
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.4) transparent;
@@ -200,7 +177,7 @@ body.dark-mode * {
 }
 
 /* ============================================
-   3. FONDO DE PANTALLA (Three.js Cyber Grid)
+   PANTALLA PRINCIPAL Y FONDO
    ============================================ */
 .desktop-screen {
     position: relative;
@@ -209,14 +186,11 @@ body.dark-mode * {
     display: flex;
     flex-direction: column;
     z-index: 1;
-    /* Fondo de Bing */
     background-image: url('../img/gradient.svg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
 }
 
-/* Overlay sutil para legibilidad */
 .desktop-screen::before {
     content: '';
     position: absolute;
@@ -230,7 +204,10 @@ body.dark-mode * {
     pointer-events: none;
 }
 
-/* En modo oscuro, overlay más pronunciado */
+body.dark-mode .desktop-screen {
+    background-image: none;
+}
+
 body.dark-mode .desktop-screen::before {
     background: linear-gradient(to bottom,
             rgba(0, 0, 0, 0.35) 0%,
@@ -239,23 +216,15 @@ body.dark-mode .desktop-screen::before {
             rgba(0, 0, 0, 0.45) 100%);
 }
 
-/* 4. FONDO RESPONSIVE */
-@media (max-width: 768px) {
-    .desktop-screen {
-        /* Resolución menor para móvil - carga más rápido */
-        background-image: url('../img/gradient.svg');
-    }
-}
-
 /* ============================================
-   5. TOP BAR
+   TOP BAR
    ============================================ */
 .top-bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 44px;
+    height: var(--top-bar-height);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -265,7 +234,12 @@ body.dark-mode .desktop-screen::before {
     z-index: 1000;
 }
 
-.top-bar-left {
+body.dark-mode .top-bar {
+    background: #0f172a;
+}
+
+.top-bar-left,
+.top-bar-right {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
@@ -277,17 +251,13 @@ body.dark-mode .desktop-screen::before {
     cursor: pointer;
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-sm);
-    transition: all 0.2s ease;
-
-    /* Neomorphism Effect */
+    transition: all var(--transition-normal);
     background: var(--neo-bg);
     box-shadow: var(--neo-shadow-light);
     color: var(--text-color);
-    border: 1px solid transparent;
 }
 
 .top-bar-name:hover {
-    /* Pressed Effect on Hover */
     box-shadow: var(--neo-shadow-inset);
     color: var(--accent-color);
     transform: translateY(1px);
@@ -298,7 +268,6 @@ body.dark-mode .desktop-screen::before {
     transform: scale(0.98);
 }
 
-/* Nombre completo en desktop, abreviado en móvil */
 .name-full {
     display: inline;
 }
@@ -314,43 +283,37 @@ body.dark-mode .desktop-screen::before {
     font-size: var(--font-sm);
     color: var(--text-muted);
     font-weight: 500;
-
-    /* Neomorphism Pill */
     padding: 6px 18px;
     border-radius: 20px;
     background: var(--neo-bg);
     box-shadow: var(--neo-shadow-light);
-    transition: all 0.3s ease;
+    transition: all var(--transition-smooth);
 }
 
-/* Hover effect for clock */
 .top-bar-center:hover {
     box-shadow: var(--neo-shadow-inset);
 }
 
-.top-bar-right {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-/* Toggle Tema (Sol/Luna con estrellas y nubes) */
+/* ============================================
+   THEME TOGGLE (SOL/LUNA)
+   ============================================ */
 .theme-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     width: 55px;
-    /* Increased for padding */
     height: 35px;
-    /* Increased for padding */
     padding: 5px;
     border-radius: 50px;
+    background: #f8fafc;
+    box-shadow: -5px -5px 12px #ffffff, 5px 5px 12px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-smooth);
+}
 
-    /* Neomorphism Border */
-    background: var(--neo-bg);
-    box-shadow: var(--neo-shadow-light);
-    transition: all 0.3s ease;
+body.dark-mode .theme-toggle {
+    background: #0f172a;
+    box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.05), 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .theme-toggle input {
@@ -359,7 +322,6 @@ body.dark-mode .desktop-screen::before {
     height: 0;
 }
 
-/* Accesibilidad: Mostrar foco al seleccionar */
 .theme-toggle input:focus-visible+.slider {
     outline: 3px solid var(--accent-color);
     outline-offset: 2px;
@@ -370,20 +332,15 @@ body.dark-mode .desktop-screen::before {
     cursor: pointer;
     overflow: hidden;
     top: 5px;
-    /* Match padding */
     left: 5px;
-    /* Match padding */
     right: 5px;
-    /* Match padding */
     bottom: 5px;
-    /* Match padding */
     transition: .5s cubic-bezier(0.77, 0, 0.175, 1);
     border-radius: 34px;
     background: #83D8FF;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
-/* Sun/Moon Knob */
 .theme-toggle .slider::before {
     position: absolute;
     content: "";
@@ -398,7 +355,6 @@ body.dark-mode .desktop-screen::before {
     z-index: 2;
 }
 
-/* Cloud */
 .theme-toggle .slider::after {
     content: "";
     position: absolute;
@@ -414,23 +370,17 @@ body.dark-mode .desktop-screen::before {
     opacity: 1;
 }
 
-/* Dark Mode State - Moon with stars */
 .theme-toggle input:checked+.slider {
     background: #1C233E;
-    /* 3 Estrellas */
     background-image:
         radial-gradient(circle, white 1px, transparent 1.5px),
         radial-gradient(circle, white 1px, transparent 1.5px),
         radial-gradient(circle, white 1px, transparent 1.5px);
-    background-position:
-        6px 6px,
-        14px 12px,
-        8px 18px;
+    background-position: 6px 6px, 14px 12px, 8px 18px;
     background-size: 4px 4px;
     background-repeat: no-repeat;
 }
 
-/* Moon with craters */
 .theme-toggle input:checked+.slider::before {
     transform: translateX(20px);
     background: #D9D9D9;
@@ -438,14 +388,13 @@ body.dark-mode .desktop-screen::before {
     background-image: radial-gradient(circle at 35% 35%, #999 1px, transparent 1.5px), radial-gradient(circle at 60% 60%, #999 1.5px, transparent 2px);
 }
 
-/* Hide clouds in dark mode */
 .theme-toggle input:checked+.slider::after {
     transform: translateY(20px);
     opacity: 0;
 }
 
 /* ============================================
-   6. PANTALLA DE INICIO (Home Screen)
+   HOME SCREEN - CARD PRINCIPAL
    ============================================ */
 .home-screen {
     flex: 1;
@@ -457,7 +406,6 @@ body.dark-mode .desktop-screen::before {
     overflow-y: scroll;
 }
 
-/* Unified Glass Card */
 .glass-card-main {
     width: 100%;
     max-width: 900px;
@@ -465,16 +413,13 @@ body.dark-mode .desktop-screen::before {
     flex-direction: row;
     align-items: flex-start;
     gap: var(--spacing-xl);
-
-    /* Glass Effect */
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-lg);
     padding: var(--spacing-xl);
     box-shadow: var(--glass-shadow);
 }
 
-/* Left Section: Avatar & Icons */
 .glass-card-left-section {
     display: flex;
     flex-direction: column;
@@ -484,16 +429,11 @@ body.dark-mode .desktop-screen::before {
     width: 160px;
 }
 
-/* Right Section: Info & Profile Text */
 .glass-card-right-section {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-}
-
-.home-avatar {
-    flex-shrink: 0;
 }
 
 .avatar-img {
@@ -503,7 +443,7 @@ body.dark-mode .desktop-screen::before {
     border: 4px solid var(--neo-bg);
     box-shadow: var(--neo-shadow-light);
     object-fit: cover;
-    transition: all 0.3s ease;
+    transition: all var(--transition-smooth);
 }
 
 .home-info {
@@ -523,6 +463,7 @@ body.dark-mode .desktop-screen::before {
     color: var(--accent-color);
     font-weight: 400;
     margin-bottom: var(--spacing-sm);
+    min-height: 1.875rem;
 }
 
 .profile-status {
@@ -577,26 +518,6 @@ body.dark-mode .desktop-screen::before {
     opacity: 0.8;
 }
 
-.contact-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: var(--font-sm);
-    color: var(--text-muted);
-}
-
-.contact-item i {
-    width: 16px;
-    color: var(--accent-color);
-}
-
-/* Social Link Icons (For Main Card) */
 .social-links-container {
     display: flex;
     gap: 12px;
@@ -606,38 +527,31 @@ body.dark-mode .desktop-screen::before {
 .social-link {
     color: var(--text-color);
     font-size: 1.5rem;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal);
     opacity: 0.7;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 8px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
 }
 
 .social-link:hover {
     transform: translateY(-2px);
     color: var(--accent-color);
-    background: rgba(120, 120, 120, 0.15);
+    box-shadow: var(--neo-shadow-inset);
     opacity: 1;
 }
 
-body.dark-mode .social-link {
-    background: rgba(255, 255, 255, 0.05);
-}
-
 body.dark-mode .social-link:hover {
-    background: rgba(255, 255, 255, 0.15);
+    color: var(--accent-light);
 }
 
-
-/* Re-use home-profile styles but remove container props as it's now inside the card */
 .home-profile {
     margin-top: 0;
     background: transparent;
-    border: none;
-    box-shadow: none;
     padding: 0;
 }
 
@@ -659,8 +573,27 @@ body.dark-mode .social-link:hover {
     font-weight: 500;
 }
 
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+.contact-item i {
+    width: 16px;
+    color: var(--accent-color);
+}
+
 /* ============================================
-   7. DOCK
+   DOCK
    ============================================ */
 .dock-container {
     position: fixed;
@@ -679,9 +612,9 @@ body.dark-mode .social-link:hover {
     align-items: flex-end;
     gap: var(--spacing-sm);
     padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-lg);
     box-shadow: var(--glass-shadow);
 }
 
@@ -691,7 +624,7 @@ body.dark-mode .social-link:hover {
     align-items: center;
     gap: 4px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform var(--transition-normal);
     position: relative;
 }
 
@@ -728,12 +661,11 @@ body.dark-mode .social-link:hover {
     align-items: center;
     justify-content: center;
     font-size: 22px;
-    /* Fondo sólido - mejor rendimiento */
-    background: #ffffff;
+    background: var(--neo-bg);
     color: var(--accent-color);
     border-radius: var(--radius-md);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: var(--neo-shadow-light);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .dock-icon svg {
@@ -741,7 +673,6 @@ body.dark-mode .social-link:hover {
     height: 28px;
 }
 
-/* Iconos con colores sobre fondo blanco */
 .dock-icon.formacion {
     color: #7c3aed;
 }
@@ -798,16 +729,17 @@ body.dark-mode .social-link:hover {
     fill: #ef4444;
 }
 
+body.dark-mode .dock-icon svg {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2));
+}
 
 .dock-label {
     font-size: 10px;
     color: var(--text-muted);
     text-align: center;
     display: none;
-    /* Oculto en móvil */
 }
 
-/* Badge de Notificaciones */
 .dock-badge {
     position: absolute;
     top: -5px;
@@ -839,7 +771,6 @@ body.dark-mode .social-link:hover {
     }
 }
 
-/* Indicador de modal abierto */
 .dock-indicator {
     position: absolute;
     bottom: -8px;
@@ -848,14 +779,13 @@ body.dark-mode .social-link:hover {
     border-radius: 50%;
     background: var(--indicator-color);
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transition-normal);
 }
 
 .dock-item.active .dock-indicator {
     opacity: 1;
 }
 
-/* Separador en el dock */
 .dock-separator {
     width: 1px;
     height: 40px;
@@ -863,7 +793,6 @@ body.dark-mode .social-link:hover {
     margin: 0 var(--spacing-xs);
 }
 
-/* Hover efecto magnify (desktop) */
 @media (hover: hover) {
     .dock-item:hover .dock-icon {
         transform: scale(1.12) translateY(-3px);
@@ -871,27 +800,8 @@ body.dark-mode .social-link:hover {
     }
 }
 
-/* Modo oscuro - fondos sólidos oscuros */
-body.dark-mode .dock-icon {
-    background: #1e293b;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-body.dark-mode .top-bar {
-    background: #0f172a;
-}
-
-body.dark-mode .dock {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-body.dark-mode .home-content,
-body.dark-mode .home-profile {
-    background: transparent;
-}
-
 /* ============================================
-   8. SISTEMA DE MODALES
+   MODALES - SISTEMA BASE
    ============================================ */
 .modal-overlay {
     position: fixed;
@@ -901,13 +811,7 @@ body.dark-mode .home-profile {
     justify-content: center;
     align-items: center;
     padding: var(--spacing-lg);
-    /* En desktop: no bloquear el fondo */
     pointer-events: none;
-}
-
-.modal-overlay.active {
-    pointer-events: none;
-    /* El overlay no bloquea, solo el modal */
 }
 
 .modal {
@@ -915,36 +819,27 @@ body.dark-mode .home-profile {
     width: 100%;
     max-width: 600px;
     max-height: 85vh;
-    background: var(--modal-bg);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    background: transparent;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    /* Animación desde icono */
+    overflow: visible;
     transform: scale(0);
     opacity: 0;
     visibility: hidden;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-        opacity 0.2s ease,
-        visibility 0.2s ease,
+        opacity var(--transition-normal),
+        visibility var(--transition-normal),
         left 0.01s,
         top 0.01s;
     pointer-events: auto;
-    /* Solo el modal recibe clicks */
 }
 
-/* Modal de proyectos más grande para tooltips */
 #modal-proyectos .modal {
     max-height: 90vh;
 }
 
 #modal-proyectos .modal-body {
     padding-bottom: 80px;
-    /* Espacio extra para tooltips de la última fila */
 }
 
 .modal-overlay.active .modal {
@@ -953,29 +848,36 @@ body.dark-mode .home-profile {
     visibility: visible;
 }
 
-/* Estado de cierre (animación hacia el icono) */
 .modal-overlay.closing .modal {
     transform: scale(0);
     opacity: 0;
     transition: transform 0.18s cubic-bezier(0.6, -0.28, 0.74, 0.05),
-        opacity 0.15s ease;
+        opacity var(--transition-fast);
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border-bottom: 1px solid var(--glass-border);
-    background: transparent;
-    min-height: 40px;
-    /* Arrastrable en desktop */
+    align-items: flex-end;
+    padding: 0 15px 0 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    min-height: var(--modal-header-height);
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
+    position: relative;
+    z-index: 2;
+    overflow: visible;
 }
 
-/* Cursor de arrastre solo en desktop */
+body.dark-mode .modal-header {
+    background: rgba(0, 0, 0, 0.2);
+}
+
 @media (min-width: 769px) {
     .modal-header {
         cursor: grab;
@@ -986,7 +888,6 @@ body.dark-mode .home-profile {
     }
 
     .modal.dragging {
-        transition: none !important;
         user-select: none;
     }
 
@@ -996,10 +897,52 @@ body.dark-mode .home-profile {
 }
 
 .modal-title {
-    font-size: var(--font-md);
+    flex: 0 0 auto;
+    width: 85%;
+    max-width: 85%;
+    font-size: var(--font-sm);
     font-weight: 500;
     pointer-events: none;
-    color: var(--text-muted);
+    color: var(--text-color);
+    background: var(--modal-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 6px 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 12px 20px 0 0;
+    border: 1px solid var(--glass-border);
+    position: relative;
+    z-index: 10;
+    margin-bottom: -1px;
+    margin-left: -1px;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.modal-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -20px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-bottom-left-radius: 16px;
+    box-shadow: -4px 4px 0 0 var(--modal-bg);
+    z-index: 10;
+}
+
+.modal-title::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -21px;
+    width: 21px;
+    height: 21px;
+    border-bottom-left-radius: 17px;
+    box-shadow: -4px 4px 0 0 var(--glass-border);
+    z-index: 9;
 }
 
 .modal-close {
@@ -1013,15 +956,12 @@ body.dark-mode .home-profile {
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: transparent;
     font-size: 0;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal);
     position: relative;
-    /* Neomorphism Button */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
 }
 
-/* Botón cerrar estilo Mac (sin icono) */
 .modal-close:hover {
-    background: var(--mac-red);
     opacity: 0.9;
     transform: scale(1.1);
 }
@@ -1034,18 +974,81 @@ body.dark-mode .home-profile {
     flex: 1;
     padding: var(--spacing-lg);
     overflow-y: scroll;
+    background: var(--modal-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    z-index: 1;
 }
 
-/* Modal de confirmación (más pequeño) */
-.modal.modal-confirm {
-    max-width: 320px;
-    text-align: center;
+.window-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    z-index: 4;
+    padding-bottom: 5px;
 }
 
-.modal-confirm .modal-body {
-    padding: var(--spacing-xl);
+.modal-maximize {
+    width: 14px;
+    height: 14px;
+    background: var(--mac-green);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    transition: transform var(--transition-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
 }
 
+.modal-maximize:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+.modal.maximized {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+.modal.maximized .modal-body {
+    border-radius: 0;
+}
+
+.modal.maximized .modal-title {
+    border-radius: 0;
+}
+
+.modal-sm {
+    width: 320px;
+    max-width: 90%;
+    margin: auto;
+}
+
+.modal-lg {
+    width: 600px;
+    height: 480px;
+    max-width: 95%;
+    max-height: 90vh;
+}
+
+.modal-sm .modal-title {
+    padding: 4px 15px;
+    font-size: var(--font-xs);
+}
+
+/* ============================================
+   MODALES - CONFIRMACIÓN Y BOTONES
+   ============================================ */
 .modal-confirm-icon {
     font-size: 48px;
     margin-bottom: var(--spacing-md);
@@ -1076,7 +1079,7 @@ body.dark-mode .home-profile {
     border-radius: var(--radius-md);
     font-size: var(--font-sm);
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal);
 }
 
 .modal-btn-primary {
@@ -1097,15 +1100,9 @@ body.dark-mode .home-profile {
     background: rgba(128, 128, 128, 0.25);
 }
 
-/* Z-index base para modales - se aplica dinámicamente con style */
-.modal-overlay {
-    z-index: 2000;
-}
-
 /* ============================================
-   9. CONTENIDO DE MODALES
+   MODALES - CONTENIDO (TIMELINE, SKILLS, ETC)
    ============================================ */
-/* Timeline */
 .timeline-item {
     margin-bottom: var(--spacing-lg);
     padding-bottom: var(--spacing-md);
@@ -1115,7 +1112,6 @@ body.dark-mode .home-profile {
 .timeline-item:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
-    border-bottom: none;
 }
 
 .timeline-title {
@@ -1136,7 +1132,6 @@ body.dark-mode .home-profile {
     line-height: 1.5;
 }
 
-/* Skills */
 .skills-section {
     margin-bottom: var(--spacing-lg);
 }
@@ -1162,7 +1157,7 @@ body.dark-mode .home-profile {
     border-radius: var(--radius-sm);
     font-size: var(--font-xs);
     font-weight: 500;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
     cursor: default;
 }
 
@@ -1175,7 +1170,6 @@ body.dark-mode .home-profile {
     font-size: 14px;
 }
 
-/* Colores persistentes de skills (sin hover) */
 .skill-tag.html {
     background: rgba(228, 77, 38, 0.15);
     color: #E44D26;
@@ -1329,23 +1323,6 @@ body.dark-mode .home-profile {
     color: #10b981;
 }
 
-/* Idiomas */
-.lang-row {
-    display: flex;
-    justify-content: space-between;
-    padding: var(--spacing-sm) 0;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.lang-row:last-child {
-    border-bottom: none;
-}
-
-.lang-level {
-    color: var(--text-muted);
-}
-
-/* Certificaciones */
 .cert-list {
     list-style: none;
 }
@@ -1366,11 +1343,11 @@ body.dark-mode .home-profile {
 }
 
 .cert-list li:last-child {
-    border-bottom: none;
+    padding-bottom: 0;
 }
 
 /* ============================================
-   10. MODAL PROYECTOS
+   MODALES - PROYECTOS
    ============================================ */
 .projects-grid {
     display: grid;
@@ -1395,7 +1372,6 @@ body.dark-mode .home-profile {
 .project-app:hover {
     transform: translateY(-4px);
     z-index: 100;
-    /* Elevar el item completo al hacer hover */
 }
 
 .project-app:hover .project-icon {
@@ -1424,9 +1400,7 @@ body.dark-mode .home-profile {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* Cambiado de cover a contain */
     padding: 8px;
-    /* Espacio interno para logos */
 }
 
 .project-icon.emoji {
@@ -1450,8 +1424,50 @@ body.dark-mode .project-icon {
     white-space: nowrap;
 }
 
+.project-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.project-detail-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: var(--glass-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+}
+
+.project-detail-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+}
+
+.project-detail-icon.emoji {
+    font-size: 28px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+}
+
+body.dark-mode .project-detail-icon.emoji {
+    background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.project-detail-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
 /* ============================================
-   11. TOAST DE BIENVENIDA
+   TOAST DE BIENVENIDA
    ============================================ */
 .toast {
     position: fixed;
@@ -1468,7 +1484,7 @@ body.dark-mode .project-icon {
     font-size: var(--font-sm);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--transition-smooth);
     z-index: 3000;
 }
 
@@ -1479,264 +1495,74 @@ body.dark-mode .project-icon {
 }
 
 /* ============================================
-   12. RESPONSIVE - MÓVIL
+   FORMULARIOS
    ============================================ */
-@media (max-width: 768px) {
-
-    /* Top Bar */
-    .name-full {
-        display: none;
-    }
-
-    .name-short {
-        display: inline;
-    }
-
-    .top-bar-center {
-        font-size: var(--font-xs);
-    }
-
-    /* Home Screen - Cards centradas */
-    .home-screen {
-        padding: 60px 16px 100px 16px;
-        justify-content: flex-start;
-        align-items: center;
-        overflow-x: hidden;
-    }
-
-    /* Mobile: Stack Vertically */
-    .glass-card-main {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: var(--spacing-lg);
-        margin-left: auto;
-        margin-right: auto;
-        width: calc(100vw - 32px);
-        max-width: calc(100vw - 32px);
-        box-sizing: border-box;
-        gap: var(--spacing-lg);
-    }
-
-    .glass-card-left-section {
-        width: 100%;
-        order: 1;
-        /* Avatar first */
-    }
-
-    .glass-card-right-section {
-        width: 100%;
-        align-items: center;
-        order: 2;
-        /* Info second */
-    }
-
-    .home-info {
-        align-items: center;
-        /* Center text on mobile */
-    }
-
-    /* Ensure Social Icons are centered in Mobile */
-    .glass-card-left-section .social-links-container {
-        justify-content: center;
-    }
-
-    .avatar-img {
-        width: 100px;
-        height: 100px;
-    }
-
-    .profile-name {
-        font-size: var(--font-lg);
-    }
-
-    .profile-role {
-        font-size: var(--font-sm);
-    }
-
-    .contact-list {
-        align-items: center;
-        font-size: var(--font-sm);
-    }
-
-    .contact-item {
-        font-size: var(--font-xs);
-    }
-
-    /* Dock - mismo ancho que cards */
-    .dock {
-        width: calc(100vw - 32px);
-        max-width: calc(100vw - 32px);
-        justify-content: space-around;
-        padding: var(--spacing-sm);
-    }
-
-    /* Top bar y Dock siempre por encima del overlay en móvil */
-    .top-bar {
-        z-index: 3000 !important;
-    }
-
-    .dock-container {
-        z-index: 3000 !important;
-    }
-
-    .dock-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 20px;
-    }
-
-    .dock-separator {
-        display: none;
-    }
-
-    /* Modales - ocupan el área entre top bar y dock */
-    .modal-overlay {
-        padding: 0;
-        /* Posicionar entre top bar (44px) y dock (~80px) */
-        top: 44px;
-        bottom: 80px;
-        left: 0;
-        right: 0;
-        height: auto;
-        align-items: stretch;
-        justify-content: stretch;
-        /* Sin fondo por defecto - NO bloquea dock ni top bar */
-        background: transparent;
-        pointer-events: none;
-    }
-
-    /* SOLO cuando está activo mostrar fondo */
-    .modal-overlay.active {
-        background: rgba(0, 0, 0, 0.3);
-        pointer-events: auto;
-    }
-
-    .modal {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: calc(100% - 16px);
-        max-width: calc(100% - 16px);
-        height: calc(100% - 16px);
-        max-height: calc(100% - 16px);
-        margin: 8px;
-        border-radius: var(--radius-lg);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .modal-body {
-        flex: 1;
-        overflow-y: auto;
-    }
-
-    .modal-header {
-        cursor: default !important;
-        flex-shrink: 0;
-    }
-
-    /* Forzar bordes redondeados en modales grandes incluso maximizados */
-    .modal.modal-lg {
-        border-radius: var(--radius-lg) !important;
-        /* Quitar overflow:hidden para que el header y el botón cerrar sean visibles en móvil */
-        /* overflow: hidden; */
-    }
-
-    /* Asegurar que el header y el botón cerrar estén siempre encima en móvil */
-    @media (max-width: 768px) {
-        .modal-header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: var(--modal-bg);
-        }
-
-        .modal-close {
-            z-index: 20;
-        }
-    }
-
-    /* Modales pequeños (Login/Confirm) - centrados en móvil */
-    .modal.modal-sm {
-        position: relative;
-        width: 300px;
-        max-width: 300px;
-        height: auto;
-        max-height: fit-content;
-        margin: auto;
-        align-self: center;
-        justify-self: center;
-        /* Permitir arrastre sin scroll */
-        touch-action: none;
-        cursor: grab !important;
-    }
-
-    .modal.modal-sm.dragging {
-        position: absolute !important;
-        cursor: grabbing !important;
-    }
-
-    /* Overlay centrado para modales de confirmación */
-    #modal-whatsapp,
-    #modal-telefono,
-    #modal-login {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Overlay más sutil para modales pequeños */
-    #modal-whatsapp.active,
-    #modal-telefono.active,
-    #modal-login.active {
-        background: rgba(0, 0, 0, 0.2);
-    }
-
-    /* Proyectos grid */
-    .projects-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+.form-group {
+    margin-bottom: var(--spacing-md);
 }
 
-/* Tablet y Desktop - Mostrar labels del dock */
-@media (min-width: 769px) {
-    .dock-label {
-        display: block;
-    }
-
-    .dock-icon {
-        width: 52px;
-        height: 52px;
-    }
+.form-label {
+    display: block;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
 }
 
-/* ============================================
-   13. ANIMACIONES REDUCIDAS
-   ============================================ */
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.5);
+    font-family: inherit;
+    font-size: var(--font-sm);
+    transition: all var(--transition-normal);
+    color: var(--text-color);
 }
 
-/* ============================================
-   15. SELECCIÓN DE TEXTO
-   ============================================ */
-::selection {
-    background: var(--accent-color);
+.form-input:focus,
+.form-textarea:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+body.dark-mode .form-input,
+body.dark-mode .form-textarea {
+    background: rgba(0, 0, 0, 0.2);
     color: white;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .form-input:focus,
+body.dark-mode .form-textarea:focus {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--accent-color);
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-error {
+    color: #ef4444;
+    font-size: 12px;
+    text-align: center;
+    min-height: 18px;
 }
 
 /* ============================================
-   ADMIN DASHBOARD ENHANCEMENTS (Tabs & Terminal)
+   ADMIN - TABS Y TERMINAL
    ============================================ */
-
 .admin-tabs {
     display: flex;
     gap: 10px;
@@ -1747,12 +1573,11 @@ body.dark-mode .project-icon {
 
 .admin-tab {
     background: transparent;
-    border: none;
     color: var(--text-muted);
     padding: 8px 16px;
     cursor: pointer;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-smooth);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -1776,6 +1601,18 @@ body.dark-mode .project-icon {
 .tab-content.active {
     display: block;
     animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .system-actions-grid {
@@ -1904,154 +1741,6 @@ body.dark-mode .project-icon {
     color: #60a5fa;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ============================================
-   16. FORMULARIO CONTACTO (Modal)
-   ============================================ */
-.form-group {
-    margin-bottom: var(--spacing-md);
-}
-
-.form-label {
-    display: block;
-    font-size: var(--font-sm);
-    color: var(--text-muted);
-    margin-bottom: var(--spacing-xs);
-    font-weight: 500;
-}
-
-.form-input,
-.form-textarea {
-    width: 100%;
-    padding: 10px 14px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--glass-border);
-    background: rgba(255, 255, 255, 0.5);
-    font-family: inherit;
-    font-size: var(--font-sm);
-    transition: all 0.2s ease;
-    color: var(--text-color);
-}
-
-.form-input:focus,
-.form-textarea:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.9);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.form-textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-body.dark-mode .form-input,
-body.dark-mode .form-textarea {
-    background: rgba(0, 0, 0, 0.2);
-    color: white;
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-body.dark-mode .form-input:focus,
-body.dark-mode .form-textarea:focus {
-    background: rgba(0, 0, 0, 0.4);
-    border-color: var(--accent-color);
-}
-
-/* ============================================
-   17. ADMIN & MODAL UI MEJORADA
-   ============================================ */
-
-/* Tamaños de modales */
-.modal-sm {
-    width: 320px;
-    max-width: 90%;
-    margin: auto;
-    /* Centrado vertical/horizontal */
-}
-
-.modal-lg {
-    width: 600px;
-    height: 480px;
-    max-width: 95%;
-    max-height: 90vh;
-}
-
-/* Botones de control ventana */
-.window-controls {
-    display: flex;
-    gap: 8px;
-    margin-right: 8px;
-    /* Espacio antes del botón cerrar normal */
-}
-
-.modal-maximize {
-    width: 14px;
-    height: 14px;
-    background: var(--mac-green);
-    /* Verde Mac */
-    border-radius: 50%;
-    /* Redondo por defecto */
-    cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    transition: transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: transparent;
-    font-size: 8px;
-    /* Neomorphism Button */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
-}
-
-.modal-maximize:hover {
-    transform: scale(1.1);
-    opacity: 0.9;
-}
-
-/* Estado Maximizado */
-.modal.maximized {
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    max-width: 100vw !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-    transform: none !important;
-    border: none;
-}
-
-/* En móvil, modales maximizados mantienen curvas */
-@media (max-width: 768px) {
-    .modal.maximized {
-        top: 10px !important;
-        left: 10px !important;
-        width: calc(100vw - 20px) !important;
-        height: calc(100vh - 100px) !important;
-        border-radius: var(--radius-lg) !important;
-    }
-}
-
-.modal.maximized .modal-body {
-    height: calc(100vh - 60px);
-    /* Ajuste altura cuerpo */
-}
-
-/* Tabla Admin */
 .admin-table-container {
     overflow-x: auto;
     height: 100%;
@@ -2090,25 +1779,18 @@ body.dark-mode .form-textarea:focus {
 
 .message-row {
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background var(--transition-normal);
 }
 
 .message-row:hover {
-    background: rgba(0, 0, 0, 0.05) !important;
+    background: rgba(0, 0, 0, 0.05);
 }
 
-.message-detail td {
-    border-bottom: none !important;
-    box-shadow: inset 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-}
-
-/* Acciones en tabla */
 .action-btn {
     padding: 6px;
     border-radius: 4px;
-    border: none;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-normal);
     background: transparent;
 }
 
@@ -2121,77 +1803,212 @@ body.dark-mode .form-textarea:focus {
     transform: scale(1.1);
 }
 
-/* Auth Login Styles */
-.login-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.login-error {
-    color: #ef4444;
-    font-size: 12px;
-    text-align: center;
-    min-height: 18px;
-}
-
-/* Proyecto Detalle */
-.project-detail-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-}
-
-.project-detail-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 12px;
-    background: var(--glass-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--glass-shadow);
-    overflow: hidden;
-}
-
-.project-detail-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 8px;
-}
-
-.project-detail-icon.emoji {
-    font-size: 28px;
-    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-}
-
-body.dark-mode .project-detail-icon.emoji {
-    background: linear-gradient(135deg, #1e293b, #334155);
-}
-
-.project-detail-desc {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-}
-
-/* Media Queries para Móvil */
+/* ============================================
+   RESPONSIVE - MÓVIL
+   ============================================ */
 @media (max-width: 768px) {
+
+    .modal-header,
+    .modal-close {
+        display: flex;
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .name-full {
+        display: none;
+    }
+
+    .name-short {
+        display: inline;
+    }
+
+    .top-bar-center {
+        font-size: var(--font-xs);
+    }
+
+    .home-screen {
+        padding: 60px 16px 100px 16px;
+        justify-content: flex-start;
+        align-items: center;
+        overflow-x: hidden;
+    }
+
+    .glass-card-main {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: var(--spacing-lg);
+        margin-left: auto;
+        margin-right: auto;
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        box-sizing: border-box;
+        gap: var(--spacing-lg);
+    }
+
+    .glass-card-left-section {
+        width: 100%;
+        order: 1;
+    }
+
+    .glass-card-right-section {
+        width: 100%;
+        align-items: center;
+        order: 2;
+    }
+
+    .home-info {
+        align-items: center;
+    }
+
+    .glass-card-left-section .social-links-container {
+        justify-content: center;
+    }
+
+    .avatar-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-name {
+        font-size: var(--font-lg);
+    }
+
+    .profile-role {
+        font-size: var(--font-sm);
+    }
+
+    .contact-list {
+        align-items: center;
+        font-size: var(--font-sm);
+    }
+
+    .contact-item {
+        font-size: var(--font-xs);
+    }
+
+    .dock {
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        justify-content: space-around;
+        padding: var(--spacing-sm);
+    }
+
+    .top-bar {
+        z-index: 3000;
+    }
+
+    .dock-container {
+        z-index: 3000;
+    }
+
+    .dock-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    .dock-separator {
+        display: none;
+    }
+
+    .modal-overlay {
+        padding: 0;
+        top: var(--top-bar-height);
+        bottom: var(--dock-bottom-spacing);
+        left: 0;
+        right: 0;
+        height: auto;
+        align-items: stretch;
+        justify-content: stretch;
+        background: transparent;
+        pointer-events: none;
+    }
+
+    .modal-overlay.active {
+        background: rgba(0, 0, 0, 0.3);
+        pointer-events: auto;
+    }
+
+    .modal {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: calc(100% - 16px);
+        max-width: calc(100% - 16px);
+        height: calc(100% - 16px);
+        max-height: calc(100% - 16px);
+        margin: 8px;
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        cursor: default;
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: transparent;
+    }
+
+    .modal-close {
+        z-index: 20;
+    }
+
+    .modal-sm {
+        position: relative;
+        width: 300px;
+        max-width: 300px;
+        height: auto;
+        max-height: fit-content;
+        margin: auto;
+        align-self: center;
+        justify-self: center;
+        touch-action: none;
+        cursor: grab;
+    }
+
+    .modal-sm.dragging {
+        position: absolute;
+        cursor: grabbing;
+    }
+
+    #modal-whatsapp,
+    #modal-telefono,
+    #modal-login {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #modal-whatsapp.active,
+    #modal-telefono.active,
+    #modal-login.active {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 
     .modal-maximize,
     .window-controls {
-        display: none !important;
-        /* Ocultar en móvil */
+        display: none;
     }
 
-    /* En móvil, los modales ya ocupan casi todo por defecto o css base */
     .modal-lg {
-        width: 100% !important;
-        height: 100% !important;
-        max-height: 100vh !important;
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
         border-radius: 0;
         bottom: 0;
         top: 0;
@@ -2201,9 +2018,52 @@ body.dark-mode .project-detail-icon.emoji {
         width: 90%;
         height: auto;
     }
+
+    .modal-sm .modal-body {
+        overflow-y: auto;
+    }
+
+    .modal.maximized {
+        top: 10px;
+        left: 10px;
+        width: calc(100vw - 20px);
+        height: calc(100vh - 100px);
+        border-radius: var(--radius-lg);
+    }
 }
 
-/* Modales pequeños sin scroll forzado */
-.modal-sm .modal-body {
-    overflow-y: auto !important;
+/* ============================================
+   RESPONSIVE - DESKTOP
+   ============================================ */
+@media (min-width: 769px) {
+    .dock-label {
+        display: block;
+    }
+
+    .dock-icon {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+/* ============================================
+   ACCESIBILIDAD - ANIMACIONES REDUCIDAS
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
+        transition-duration: 0.01ms;
+    }
+}
+
+/* ============================================
+   SELECCIÓN DE TEXTO
+   ============================================ */
+::selection {
+    background: var(--accent-color);
+    color: white;
 }

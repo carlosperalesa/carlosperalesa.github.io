@@ -59,12 +59,20 @@ class RetroGridBackground {
         // Event Listeners
         window.addEventListener('resize', () => this.onResize());
 
-        // Watch for theme changes
+        // Check initial theme
         this.checkTheme();
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('change', () => this.checkTheme());
-        }
+
+        // Watch for theme class changes on body using MutationObserver
+        // This avoids race conditions where the 'change' event fires before the class is toggled
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    this.checkTheme();
+                }
+            });
+        });
+
+        observer.observe(document.body, { attributes: true });
 
         // Start Loop
         this.animate();
@@ -97,7 +105,7 @@ class RetroGridBackground {
             // We modify Z here because Plane is created on XY plane, then we rotate it.
             // Actually PlaneGeometry is on XY. We will rotate -90 deg on X.
             // So Z in local space becomes Y in world space (height).
-             positionAttribute.setZ(i, zHeight);
+            positionAttribute.setZ(i, zHeight);
         }
 
         geometry.computeVertexNormals();
@@ -150,7 +158,8 @@ class RetroGridBackground {
     }
 
     checkTheme() {
-        const isDark = document.body.classList.contains('dark-mode');
+        // Check localstorage for initial load speed, or classList for runtime toggles
+        const isDark = document.body.classList.contains('dark-mode') || localStorage.getItem('theme') === 'dark';
 
         if (isDark) {
             // Dark Mode / Cyber settings
