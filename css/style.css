@@ -278,18 +278,24 @@ body.dark-mode .desktop-screen::before {
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-sm);
     transition: all 0.2s ease;
+
+    /* Neomorphism Effect */
+    background: var(--neo-bg);
+    box-shadow: var(--neo-shadow-light);
+    color: var(--text-color);
     border: 1px solid transparent;
 }
 
 .top-bar-name:hover {
-    background: rgba(128, 128, 128, 0.15);
-    border-color: var(--glass-border);
+    /* Pressed Effect on Hover */
+    box-shadow: var(--neo-shadow-inset);
     color: var(--accent-color);
+    transform: translateY(1px);
 }
 
 .top-bar-name:active {
+    box-shadow: var(--neo-shadow-inset);
     transform: scale(0.98);
-    background: rgba(128, 128, 128, 0.2);
 }
 
 /* Nombre completo en desktop, abreviado en móvil */
@@ -451,13 +457,16 @@ body.dark-mode .desktop-screen::before {
     overflow-y: scroll;
 }
 
-.home-content {
+/* Unified Glass Card */
+.glass-card-main {
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--spacing-xl);
+
+    /* Glass Effect */
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -465,6 +474,24 @@ body.dark-mode .desktop-screen::before {
     border-radius: var(--radius-xl);
     padding: var(--spacing-xl);
     box-shadow: var(--glass-shadow);
+}
+
+/* Left Section: Avatar & Icons */
+.glass-card-left-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-shrink: 0;
+    width: 160px; /* Fixed width for alignment */
+}
+
+/* Right Section: Info & Profile Text */
+.glass-card-right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
 }
 
 .home-avatar {
@@ -482,7 +509,9 @@ body.dark-mode .desktop-screen::before {
 }
 
 .home-info {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text left */
 }
 
 .profile-name {
@@ -605,17 +634,13 @@ body.dark-mode .social-link:hover {
 }
 
 
+/* Re-use home-profile styles but remove container props as it's now inside the card */
 .home-profile {
-    width: 100%;
-    max-width: 800px;
-    margin-top: var(--spacing-lg);
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    box-shadow: var(--glass-shadow);
+    margin-top: 0; /* Removed margin */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
 }
 
 .profile-title {
@@ -1481,24 +1506,38 @@ body.dark-mode .project-icon {
         overflow-x: hidden;
     }
 
-    .home-content {
+    /* Mobile: Stack Vertically */
+    .glass-card-main {
         flex-direction: column;
+        align-items: center;
         text-align: center;
         padding: var(--spacing-lg);
         margin-left: auto;
         margin-right: auto;
-        margin-bottom: var(--spacing-sm);
         width: calc(100vw - 32px);
         max-width: calc(100vw - 32px);
         box-sizing: border-box;
+        gap: var(--spacing-lg);
     }
 
-    .home-profile {
-        padding: var(--spacing-lg);
-        margin: 0 auto;
-        width: calc(100vw - 32px);
-        max-width: calc(100vw - 32px);
-        box-sizing: border-box;
+    .glass-card-left-section {
+        width: 100%;
+        order: 1; /* Avatar first */
+    }
+
+    .glass-card-right-section {
+        width: 100%;
+        align-items: center;
+        order: 2; /* Info second */
+    }
+
+    .home-info {
+        align-items: center; /* Center text on mobile */
+    }
+
+    /* Ensure Social Icons are centered in Mobile */
+    .glass-card-left-section .social-links-container {
+        justify-content: center;
     }
 
     .avatar-img {
