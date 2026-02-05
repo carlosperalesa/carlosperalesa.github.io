@@ -61,47 +61,63 @@
 
         <!-- Pantalla de inicio -->
         <main class="home-screen">
-            <div class="home-content">
-                <div class="home-avatar">
-                    <img src="./img/avatar.webp" alt="Carlos Perales" class="avatar-img">
-                </div>
-                <div class="home-info">
-                    <h1 class="profile-name">Carlos Perales A.</h1>
-                    <p class="profile-role">Full Stack Developer & Data Engineer</p>
-
-                    <div class="profile-status">
-                        <span class="status-badge available">
-                            <span class="status-dot"></span> Disponible
-                        </span>
-                        <span class="status-separator">•</span>
-                        <span class="location-text">📍 Santiago, Chile</span>
-                    </div>
-
-                    <!-- Redes Sociales (Reemplazo de lista de contacto texto) -->
-                    <div class="social-links-container">
-                        <a href="https://github.com/carlosperalesa/" target="_blank" class="social-link" title="GitHub">
-                            <ion-icon name="logo-github"></ion-icon>
-                        </a>
-                        <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-link"
-                            title="LinkedIn">
-                            <ion-icon name="logo-linkedin"></ion-icon>
-                        </a>
+            <div class="glass-card">
+                <!-- Left Column: Avatar -->
+                <div class="glass-card-left">
+                    <div class="home-avatar">
+                        <img src="./img/avatar.webp" alt="Carlos Perales" class="avatar-img">
                     </div>
                 </div>
-            </div>
 
-            <div class="home-profile">
-                <h2 class="profile-title">Perfil Profesional</h2>
-                <p class="profile-text">
-                    Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de cliente
-                    y traducirlas en soluciones técnicas eficientes. Mi background en ventas me permite construir
-                    productos con una fuerte orientación al usuario final y comunicación efectiva.
-                </p>
-                <p class="profile-text" style="margin-top: var(--spacing-sm);">
-                    <strong>Team Player:</strong> Me desempeño mejor en estructuras colaborativas.
-                    <strong>Resolución:</strong> Enfoque pragmático para solucionar problemas bajo presión.
-                    <strong>Adaptabilidad:</strong> Rápida integración a nuevos stacks y metodologías ágiles.
-                </p>
+                <!-- Right Column: Content -->
+                <div class="glass-card-right">
+                    <!-- Header Info -->
+                    <div class="header-info">
+                        <h1 class="profile-name">Carlos Perales A.</h1>
+                        <p class="profile-role">Full Stack Developer & Data Engineer</p>
+                    </div>
+
+                    <!-- Bio & Text -->
+                    <div class="card-body">
+                        <p class="profile-text">
+                            Desarrollador con sólida experiencia comercial. Especialista en entender necesidades de
+                            cliente
+                            y traducirlas en soluciones técnicas eficientes. Mi background en ventas me permite
+                            construir
+                            productos con una fuerte orientación al usuario final y comunicación efectiva.
+                        </p>
+
+                        <div class="tags-container">
+                            <span class="tag">🤝 Team Player</span>
+                            <span class="tag">🧩 Resolución</span>
+                            <span class="tag">⚡ Adaptabilidad</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer: Image Stuff (Status, Location, Icons) -->
+                    <div class="card-footer-compact">
+                        <div class="status-location-row">
+                            <span class="status-badge">
+                                <span class="status-dot-inline"></span> Disponible
+                            </span>
+                            <span class="separator">·</span>
+                            <div class="location-text">
+                                <i class="fas fa-map-marker-alt"></i> Santiago, Chile
+                            </div>
+                        </div>
+
+                        <div class="social-links-compact">
+                            <a href="https://github.com/carlosperalesa/" target="_blank" class="social-circle"
+                                title="GitHub">
+                                <ion-icon name="logo-github"></ion-icon>
+                            </a>
+                            <a href="https://www.linkedin.com/in/carlosperalesa" target="_blank" class="social-circle"
+                                title="LinkedIn">
+                                <ion-icon name="logo-linkedin"></ion-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -295,28 +311,104 @@
         </div>
     </div>
 
-        <!-- Modal: Skills -->
+    <!-- Modal: Skills -->
     <div class="modal-overlay" id="modal-skills">
         <div class="modal modal-lg">
             <div class="modal-header">
-                <h2 class="modal-title">Skills Interactive Graph</h2>
+                <h2 class="modal-title">Skills</h2>
                 <div class="window-controls">
                     <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
                     <button class="modal-close" aria-label="Cerrar"></button>
                 </div>
             </div>
 
-            <div class="modal-body" style="padding: 0; overflow: hidden; height: 100%;">
-                <div id="skills-graph" style="width: 100%; height: 100%;"></div>
+            <div class="modal-body">
+                <!-- Stack Web Principal -->
+                <div class="skills-section">
+                    <h3 class="skills-section-title">Stack Web Principal</h3>
+                    <div class="skills-container">
+                        <span class="skill-tag html"><i class="fab fa-html5"></i> HTML5</span>
+                        <span class="skill-tag css"><i class="fab fa-css3-alt"></i> CSS3</span>
+                        <span class="skill-tag js"><i class="fab fa-js"></i> JavaScript</span>
+                        <span class="skill-tag react"><i class="fab fa-react"></i> React (básico)</span>
+                        <span class="skill-tag git"><i class="fab fa-git-alt"></i> Git</span>
+                    </div>
+                </div>
 
-                <div style="position: absolute; bottom: 15px; left: 20px; font-size: 0.8rem; color: var(--text-muted); pointer-events: none; z-index: 10;">
-                    <i class="fas fa-mouse-pointer"></i> Drag nodes • <i class="fas fa-search-plus"></i> Scroll Zoom
+                <!-- Backend & Datos -->
+                <div class="skills-section">
+                    <h3 class="skills-section-title">Backend & Datos</h3>
+                    <div class="skills-container">
+                        <span class="skill-tag python"><i class="fab fa-python"></i> Python</span>
+                        <span class="skill-tag django"><i class="fab fa-python"></i> Django</span>
+                        <span class="skill-tag sql"><i class="fas fa-database"></i> SQL</span>
+                        <span class="skill-tag postgres"><i class="fas fa-database"></i> PostgreSQL</span>
+                        <span class="skill-tag api"><i class="fas fa-network-wired"></i> APIs REST</span>
+                    </div>
+                </div>
+
+                <!-- CMS & E-commerce -->
+                <div class="skills-section">
+                    <h3 class="skills-section-title">CMS & E-commerce</h3>
+                    <div class="skills-container">
+                        <span class="skill-tag wordpress"><i class="fab fa-wordpress"></i> WordPress</span>
+                        <span class="skill-tag woocommerce"><i class="fas fa-shopping-cart"></i> WooCommerce</span>
+                        <span class="skill-tag elementor"><i class="fab fa-elementor"></i> Elementor</span>
+                        <span class="skill-tag util"><i class="fas fa-cubes"></i> Avada / Fusion Builder</span>
+                        <span class="skill-tag util"><i class="fas fa-plug"></i> Themes & Plugins Custom</span>
+                    </div>
+                </div>
+
+                <!-- Infraestructura & Deploy -->
+                <div class="skills-section">
+                    <h3 class="skills-section-title">Infraestructura & Deploy</h3>
+                    <div class="skills-container">
+                        <span class="skill-tag linux"><i class="fab fa-linux"></i> VPS Linux</span>
+                        <span class="skill-tag docker"><i class="fab fa-docker"></i> Docker</span>
+                        <span class="skill-tag docker"><i class="fas fa-layer-group"></i> Docker Compose</span>
+                        <span class="skill-tag util"><i class="fas fa-globe"></i> DNS</span>
+                        <span class="skill-tag util"><i class="fas fa-lock"></i> SSL/TLS</span>
+                        <span class="skill-tag util"><i class="fas fa-save"></i> Backups</span>
+                        <span class="skill-tag util"><i class="fas fa-rocket"></i> Deploy</span>
+                        <span class="skill-tag util"><i class="fas fa-shield-alt"></i> Hardening WP</span>
+                    </div>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="skills-section">
+                    <h3 class="skills-section-title">Soft Skills</h3>
+                    <div class="skills-container">
+                        <span class="skill-tag soft"><i class="fas fa-comments"></i> Comunicación</span>
+                        <span class="skill-tag soft"><i class="fas fa-chart-line"></i> Análisis</span>
+                        <span class="skill-tag soft"><i class="fas fa-users"></i> Trabajo con clientes</span>
+                        <span class="skill-tag soft"><i class="fas fa-lightbulb"></i> Proactividad</span>
+                        <span class="skill-tag soft"><i class="fas fa-bullseye"></i> Atención al detalle</span>
+                    </div>
+                </div>
+
+                <!-- Idiomas -->
+                <div class="skills-section">
+                    <h3 class="skills-section-title">Idiomas</h3>
+                    <div class="lang-row">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="https://flagcdn.com/cl.svg" width="20" alt="Chile">
+                            <span>Español</span>
+                        </div>
+                        <span class="lang-level">Nativo</span>
+                    </div>
+                    <div class="lang-row">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="https://flagcdn.com/us.svg" width="20" alt="USA">
+                            <span>Inglés</span>
+                        </div>
+                        <span class="lang-level">C1 (Avanzado)</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- Modal: Proyectos -->
+    <!-- Modal: Proyectos -->
     <div class="modal-overlay" id="modal-proyectos">
         <div class="modal modal-lg">
             <div class="modal-header">
@@ -548,15 +640,6 @@
                             <i class="fas fa-heartbeat"></i>
                             <span>Check Health</span>
                         </button>
-                        <button class="system-btn backup" onclick="runSystemAction('backup')">
-                            <i class="fas fa-database"></i>
-                            <span>Backup DB</span>
-                        </button>
-                        <button class="system-btn restore" onclick="runSystemAction('restore')"
-                            style="border-color: #ef4444; color: #f87171;">
-                            <i class="fas fa-history"></i>
-                            <span>Restore DB</span>
-                        </button>
                     </div>
 
                     <div class="terminal-container">
@@ -668,13 +751,7 @@
         <source src="sounds/tap.wav" type="audio/wav">
     </audio>
 
-    <!-- External Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-
     <!-- Scripts -->
-    <script src="js/background.js"></script> <!-- Cyber Grid Background -->
-    <script src="js/skills-graph.js"></script> <!-- D3 Skills Graph -->
     <script src="js/app.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/time.js"></script>

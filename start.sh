@@ -98,6 +98,51 @@ run_task() {
     fi
 }
 
+# ============================================
+# MAYORDOMO (SYSTEM RUNNER)
+# ============================================
+ensure_mayordomo_service() {
+    if ! command -v systemctl >/dev/null 2>&1; then
+        echo -e "   ${YELLOW}⚠️ systemd no disponible. Omitiendo Mayordomo.${NC}"
+        return 0
+    fi
+
+    if ! systemctl list-unit-files | grep -q "^mayordomo\.service"; then
+        if [ -f "$MAIN_DIR/mayordomo.service" ]; then
+            cp "$MAIN_DIR/mayordomo.service" /etc/systemd/system/mayordomo.service
+            systemctl daemon-reload
+            systemctl enable mayordomo
+        else
+            echo -e "   ${YELLOW}⚠️ mayordomo.service no encontrado en $MAIN_DIR.${NC}"
+            return 0
+        fi
+    fi
+
+    systemctl start mayordomo
+    systemctl status mayordomo --no-pager >/dev/null 2>&1 || true
+}
+
+# ============================================
+# CRON FIX PERMISSIONS (MODE)
+# ============================================
+if [ "$1" == "--cron-fix-permissions" ]; then
+    LOG_FILE="/var/log/check.log"
+    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+
+    echo "[$TIMESTAMP] [CRON] INFO: Iniciando mantenimiento automático de permisos" >> "$LOG_FILE"
+    fix_all_permissions "post-build" >> "$LOG_FILE" 2>&1
+    echo "[$TIMESTAMP] [CRON] INFO: Mantenimiento completado" >> "$LOG_FILE"
+
+    # Rotar log si supera 10MB
+    LOG_SIZE=$(stat -c%s "$LOG_FILE" 2>/dev/null || echo 0)
+    if [ "$LOG_SIZE" -gt 10485760 ]; then
+        mv "$LOG_FILE" "$LOG_FILE.old"
+        echo "[$TIMESTAMP] [CRON] INFO: Log rotado (tamaño: $LOG_SIZE bytes)" > "$LOG_FILE"
+    fi
+
+    exit 0
+fi
+
 echo -e "\n🚀 INICIANDO DESPLIEGUE AUTOMÁTICO v5.0\n"
 
 # 1. Git Pull Global
@@ -129,7 +174,10 @@ ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/
 
 run_task "nginx -t && systemctl reload nginx" "Recargando Nginx"
 
-# 8. Health Check
+# 8. Verificar servicio Mayordomo
+run_task "ensure_mayordomo_service" "Verificando servicio Mayordomo"
+
+# 9. Health Check
 echo "-----------------------------------"
 echo -e "\n🔍 VERIFICACIÓN DE SALUD\n"
 sleep 5
