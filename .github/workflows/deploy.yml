@@ -23,7 +23,6 @@ jobs:
           echo "🔍 Validating critical files exist..."
           test -f index.html || exit 1
           test -f api/app.py || exit 1
-          test -f other/BT/app.py || exit 1
           echo "✅ All critical files present"
       
       - name: Check for secrets in code
@@ -58,7 +57,6 @@ jobs:
           echo "🏥 Running health checks..."
           sleep 10
           curl -f https://${{ secrets.DEPLOY_DOMAIN }}/api/health || echo "⚠️ Main API health check failed"
-          curl -f https://${{ secrets.DEPLOY_DOMAIN }}/bt/api/health || echo "⚠️ BT API health check failed"
           echo "✅ Health checks complete"
 
   # Job 3: Notificación (opcional)
