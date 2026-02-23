@@ -55,12 +55,7 @@ carlosperalesa.github.io/
 │   ├── cards/             # Imágenes de proyectos
 │   ├── cert/              # Certificaciones
 │   └── lenguajes/         # Iconos de tecnologías
-├── 📂 api/                # Backend Contact API (Docker)
-│   ├── app.py             # Flask API
-│   ├── docker-compose.yml # Docker config
-│   └── nginx.conf         # Nginx site config
 ├── 📂 other/              # Proyectos adicionales
-│   ├── BT/                # Bruja Teatral (Docker)
 │   ├── cv/                # Currículum en diferentes formatos
 │   ├── pokedex/           # Proyecto Pokédex
 │   └── hootiehoo/         # Proyecto HootieHoo
@@ -91,15 +86,44 @@ carlosperalesa.github.io/
 │  └───────────┬─────────────────────────┬───────────────┘   │
 │              │                         │                    │
 │              ▼                         ▼                    │
-│  ┌─────────────────────┐   ┌─────────────────────┐        │
-│  │  Contact API        │   │  Bruja Teatral      │        │
-│  │  Docker :5000       │   │  Docker :3000       │        │
-│  │  • Flask            │   │  • Flask + Gunicorn │        │
-│  │  • SQLite + Encrypt │   │  • SQLite           │        │
-│  │  • Rate Limiting    │   │  • JWT Auth         │        │
-│  └─────────────────────┘   └─────────────────────┘        │
+│  ┌─────────────────────┐                                  │
+│  │  PocketBase         │                                  │
+│  │  :8090              │                                  │
+│  │  • Auth + Admin UI  │                                  │
+│  │  • Messages (CRUD)  │                                  │
+│  │  • REST API         │                                  │
+│  └─────────────────────┘                                  │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🧾 Inventario Backend Actual (PocketBase)
+
+### 1) Backend activo
+
+- **PocketBase** sirve como backend para CRUD de usuarios y mensajes.
+- **Admin UI**: `https://carlosperales.dev/_/` (acceso a gestion de usuarios y mensajes).
+
+### 2) Consumo desde el frontend
+
+**Formulario de contacto**
+- `POST /api/collections/messages/records` (crea mensaje)
+
+**Badge de notificaciones**
+- `GET /api/collections/messages/records?page=1&perPage=1` (usa `totalItems` para contar)
+
+Implementacion en [js/contact.js](js/contact.js) y base URL en [js/app.js](js/app.js).
+
+### 3) Colecciones y reglas minimas
+
+**Coleccion `messages`**
+- Campos sugeridos: `name`, `phone`, `email`, `subject`, `message`
+- Reglas publicas necesarias:
+	- Create rule: `true`
+	- List rule: `true` (para el badge)
+
+> El CRUD de usuarios se gestiona desde el Admin UI de PocketBase.
 
 ---
 
@@ -110,7 +134,7 @@ carlosperalesa.github.io/
 El sitio se despliega automáticamente con cada push a `main`:
 
 ```
-GitHub Push → GitHub Actions → SSH → DigitalOcean → Docker Rebuild
+GitHub Push → GitHub Actions → SSH → DigitalOcean → Deploy
 ```
 
 ### GitHub Secrets Requeridos
@@ -127,7 +151,7 @@ GitHub Push → GitHub Actions → SSH → DigitalOcean → Docker Rebuild
 Los scripts están en la raíz del repo y se copian a `/bin/` en el servidor:
 
 ```bash
-# Deploy completo + rebuild contenedores
+# Deploy completo (reinicia PocketBase via systemd)
 start
 
 # Health check del sistema
@@ -136,7 +160,7 @@ check
 
 ### Setup Inicial del Servidor
 
-Requisitos: Ubuntu 22.04+, Docker, Nginx, Certbot
+Requisitos: Ubuntu 22.04+, Nginx, Certbot, PocketBase
 
 ```bash
 # 1. Clonar repo
@@ -153,6 +177,28 @@ certbot --nginx -d carlosperales.dev -d www.carlosperales.dev
 
 # 4. Deploy inicial
 start
+```
+
+### PocketBase (instalacion sugerida)
+
+```bash
+sudo useradd -r -s /usr/sbin/nologin pocketbase || true
+sudo mkdir -p /opt/pocketbase
+
+PB_VERSION="0.22.12"
+cd /opt/pocketbase
+sudo curl -L -o pocketbase.zip "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip"
+sudo apt-get install -y unzip
+sudo unzip pocketbase.zip
+sudo rm pocketbase.zip
+
+sudo chown -R pocketbase:pocketbase /opt/pocketbase
+sudo chmod +x /opt/pocketbase/pocketbase
+
+sudo cp /var/www/html-static/pocketbase.service /etc/systemd/system/pocketbase.service
+sudo systemctl daemon-reload
+sudo systemctl enable pocketbase
+sudo systemctl restart pocketbase
 ```
 
 ### Deploy Manual
@@ -173,13 +219,12 @@ bash deploy.sh
 git clone https://github.com/carlosperalesa/carlosperalesa.github.io.git
 cd carlosperalesa.github.io
 
-# Levantar Contact API
-cd api
-docker-compose up -d
+# Levantar PocketBase (default :8090)
+# Descarga binario desde https://pocketbase.io/docs/
+./pocketbase serve
 
-# Levantar Bruja Teatral
-cd ../other/BT
-docker-compose up -d
+# Admin UI (crear coleccion messages)
+# http://127.0.0.1:8090/_/
 
 # Abrir index.html en navegador o usar Live Server
 ```

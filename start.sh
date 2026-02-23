@@ -5,9 +5,9 @@
 # ==============================================================================
 # Orden de ejecución:
 # 1. Git Pull (Actualizar código)
-# 2. Deploy (Construir y levantar contenedores)
+# 2. Deploy (Servicios opcionales)
 # 3. Permisos (Ajustar ownership y permisos)
-# 4. Configuración del Sistema (Nginx, Mayordomo)
+# 4. Configuración del Sistema (Nginx)
 # ==============================================================================
 
 # Cargar variables de entorno del sistema
@@ -29,7 +29,6 @@ WRENCH="🔧"
 
 # Variables de Directorios
 MAIN_DIR="${DEPLOY_ROOT:-/var/www/html-static}"
-API_DIR="$MAIN_DIR/api"
 
 # Función auxiliar para ejecutar comandos con log visual
 run_step() {
@@ -60,12 +59,28 @@ echo -e "\n🚀 INICIANDO DESPLIEGUE v6.0\n"
 run_step "cd $MAIN_DIR && git pull" "1. Actualizando Repositorio (Git Pull)"
 
 # ==============================================================================
-# 2. DEPLOY (Docker Compose Build & Up)
+# 2. DEPLOY (Servicios)
 # ==============================================================================
 echo -e "\n⏳ Desplegando servicios..."
 
-# Main API
-run_step "cd $API_DIR && docker compose up -d --build" "2. Reconstruyendo Main API"
+# PocketBase (systemd)
+if command -v systemctl >/dev/null 2>&1; then
+    if [ -f "$MAIN_DIR/pocketbase.service" ]; then
+        run_step "cp $MAIN_DIR/pocketbase.service /etc/systemd/system/pocketbase.service" "2. Instalando pocketbase.service"
+        run_step "systemctl daemon-reload" "2. Recargando systemd"
+    else
+        echo -e "${YELLOW}⚠️  pocketbase.service no encontrado en el repo.${NC}"
+    fi
+
+    if [ -x "/opt/pocketbase/pocketbase" ]; then
+        run_step "systemctl enable pocketbase >/dev/null 2>&1 || true" "2. Habilitando PocketBase"
+        run_step "systemctl restart pocketbase" "2. Reiniciando PocketBase"
+    else
+        echo -e "${YELLOW}⚠️  Binario de PocketBase no encontrado en /opt/pocketbase/pocketbase.${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠️  Systemd no disponible. Inicia PocketBase manualmente.${NC}"
+fi
 
 # ==============================================================================
 # 3. PERMISOS
@@ -82,12 +97,6 @@ for dir in css js img fonts sounds other; do
     fi
 done
 
-# 3.2 Main API Data (UID 1000)
-echo -e "   -> Configurando Main API Data (UID 1000)..."
-mkdir -p "$API_DIR/data"
-chown -R 1000:1000 "$API_DIR/data" 2>/dev/null || true
-chmod -R 755 "$API_DIR/data" 2>/dev/null || true
-
 echo -e "${GREEN}${CHECK} Permisos aplicados.${NC}"
 
 # ==============================================================================
@@ -96,32 +105,12 @@ echo -e "${GREEN}${CHECK} Permisos aplicados.${NC}"
 echo -e "\n${YELLOW}⚙️  4. Configuración del Sistema...${NC}"
 
 # 4.1 Nginx
-echo -e "   -> Actualizando Nginx..."
-cp "$API_DIR/nginx.conf" /etc/nginx/sites-available/carlosperales.dev
-ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/
+echo -e "   -> Recargando Nginx..."
 nginx -t && systemctl reload nginx
 if [ $? -eq 0 ]; then
     echo -e "      ${GREEN}Nginx recargado correctamente.${NC}"
 else
     echo -e "      ${RED}Error al recargar Nginx.${NC}"
-fi
-
-# 4.2 Mayordomo Service
-echo -e "   -> Verificando servicio Mayordomo..."
-if command -v systemctl >/dev/null 2>&1; then
-    # Verificar si el archivo de servicio existe en el repo y copiarlo
-    if [ -f "$MAIN_DIR/mayordomo.service" ]; then
-        # Copiar siempre para asegurar que actualizaciones al archivo .service se apliquen
-        cp "$MAIN_DIR/mayordomo.service" /etc/systemd/system/mayordomo.service
-        systemctl daemon-reload
-        systemctl enable mayordomo
-        systemctl restart mayordomo
-        echo -e "      ${GREEN}Mayordomo actualizado y reiniciado.${NC}"
-    else
-        echo -e "      ${YELLOW}Archivo mayordomo.service no encontrado en origen.${NC}"
-    fi
-else
-    echo -e "      ${YELLOW}Systemd no disponible (entorno no compatible).${NC}"
 fi
 
 # ==============================================================================

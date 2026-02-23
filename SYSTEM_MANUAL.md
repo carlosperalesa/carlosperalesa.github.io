@@ -6,7 +6,7 @@ Este documento consolida la información técnica, lógica de arquitectura, conf
 
 ## 🏗️ 1. Arquitectura del Sistema
 
-El sistema se compone de tres entidades principales que interactúan entre sí:
+El sistema se compone de dos entidades principales que interactúan entre sí:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -19,12 +19,12 @@ El sistema se compone de tres entidades principales que interactúan entre sí:
 │  └───────────┬─────────────────────────┬───────────────┘   │
 │              │                         │                    │
 │              ▼                         ▼                    │
-│  ┌─────────────────────┐   ┌─────────────────────┐        │
-│  │  Main API (Admin)   │   │  Bruja Teatral      │        │
-│  │  Docker :5000       │   │  Docker :3000       │        │
-│  │  • Flask            │   │  • Flask + Gunicorn │        │
-│  │  • Mayordomo (Jobs) │   │  • SQLite           │        │
-│  └─────────────────────┘   └─────────────────────┘        │
+│  ┌─────────────────────┐                                  │
+│  │  PocketBase         │                                  │
+│  │  :8090              │                                  │
+│  │  • Auth + Admin UI  │                                  │
+│  │  • Messages (CRUD)  │                                  │
+│  └─────────────────────┘                                  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -33,15 +33,10 @@ El sistema se compone de tres entidades principales que interactúan entre sí:
 1.  **Main System (Frontend Estático)**:
     *   Ubicado en la raíz.
     *   Simula un sistema operativo de escritorio (JS Vanilla).
-    *   Se comunica con `Main API` para contacto y administración.
-2.  **Main API (Backend & Mayordomo)**:
-    *   Ubicado en `api/`.
-    *   Maneja formulario de contacto, autenticación y base de datos de mensajes.
-    *   **Mayordomo (`system_runner.py`)**: Ejecuta tareas privilegiadas en el host (Deploy, Check) invocadas desde el panel de admin.
-3.  **Bruja Teatral (Sub-proyecto)**:
-    *   Ubicado en `other/BT/`.
-    *   Sistema CMS independiente para una compañía de teatro.
-    *   Tiene su propio contenedor Docker y base de datos.
+    *   Se comunica con **PocketBase** para el CRUD de mensajes.
+2.  **PocketBase (Backend)**:
+    *   Backend para mensajes y usuarios.
+    *   Admin UI disponible en `/_/`.
 
 ---
 
@@ -53,8 +48,6 @@ El sistema utiliza **variables de entorno del sistema** (`/etc/environment`) par
 
 | Variable | Descripción | Ejemplo / Generación |
 |----------|-------------|----------------------|
-| `RUNNER_SECRET` | Token para comunicación API ↔ Mayordomo | `openssl rand -hex 32` |
-| `SECRET_KEY` | Clave para tokens JWT | `openssl rand -hex 32` |
 | `DEPLOY_ROOT` | Ruta raíz del proyecto | `/var/www/html-static` |
 
 ### Configuración en Servidor (Ubuntu)
@@ -62,8 +55,6 @@ El sistema utiliza **variables de entorno del sistema** (`/etc/environment`) par
 1.  Editar archivo: `sudo nano /etc/environment`
 2.  Agregar las variables:
     ```bash
-    RUNNER_SECRET="<tu_hash_generado>"
-    SECRET_KEY="<tu_hash_generado>"
     DEPLOY_ROOT="/var/www/html-static"
     ```
 3.  Reiniciar servidor o recargar variables.
@@ -77,22 +68,53 @@ El repositorio incluye scripts automatizados en la raíz para facilitar la opera
 ### Scripts Principales
 
 *   **`start.sh`**:
-    *   Realiza `git pull`.
-    *   Construye y levanta los contenedores (Main API y BT).
-    *   **Corrige permisos** automáticamente para asegurar que los contenedores (que corren como usuario 1000) puedan escribir en los volúmenes.
-    *   Recarga Nginx.
-    *   Verifica e instala el servicio **Mayordomo** si no existe.
-    *   Ejecuta: `bash start.sh`
+*   Realiza `git pull`.
+*   Reinicia el servicio `pocketbase` (systemd).
+*   Recarga Nginx.
+*   Ejecuta: `bash start.sh`
 
 *   **`check.sh`**:
-    *   Realiza un diagnóstico completo del sistema (Health Check).
-    *   Verifica: Nginx, Docker, Contenedores, Permisos, Espacio en disco y Endpoints HTTP.
-    *   Ejecuta: `bash check.sh`
+*   Realiza un diagnóstico básico del sistema (Health Check).
+*   Verifica: Nginx, Docker, Permisos y Espacio en disco.
+*   Ejecuta: `bash check.sh`
 
 ### Docker y Seguridad
 
 *   Los contenedores corren como **usuario no-root (UID 1000)** para mayor seguridad.
-*   El script `start.sh` se encarga de asignar el ownership correcto (`chown 1000:1000`) a las carpetas de datos persistentes (`api/data`, `other/BT/database.db`, `other/BT/public/uploads`).
+
+---
+
+## 🧩 3.1 PocketBase (Instalacion en servidor)
+
+Recomendado: instalar en `/opt/pocketbase` y correrlo con un usuario dedicado `pocketbase`.
+
+```bash
+# Crear usuario sin login
+sudo useradd -r -s /usr/sbin/nologin pocketbase || true
+
+# Crear directorio
+sudo mkdir -p /opt/pocketbase
+
+# Descargar binario (elige version)
+PB_VERSION="0.22.12"
+cd /opt/pocketbase
+sudo curl -L -o pocketbase.zip "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip"
+sudo apt-get install -y unzip
+sudo unzip pocketbase.zip
+sudo rm pocketbase.zip
+
+# Permisos
+sudo chown -R pocketbase:pocketbase /opt/pocketbase
+sudo chmod +x /opt/pocketbase/pocketbase
+
+# Instalar servicio
+sudo cp /var/www/html-static/pocketbase.service /etc/systemd/system/pocketbase.service
+sudo systemctl daemon-reload
+sudo systemctl enable pocketbase
+sudo systemctl restart pocketbase
+```
+
+Nginx debe tener proxy para `/_/` y `/api/` apuntando a `http://127.0.0.1:8090`.
 
 ---
 
@@ -104,24 +126,15 @@ El frontend (`js/`) está construido con JavaScript Vanilla modular.
 *   **`background.js`**: Renderizado de fondo animado (Cyber Grid) usando Three.js.
 *   **`skills-graph.js`**: Visualización de grafo de habilidades usando D3.js con simulación de fuerzas.
 *   **`modals.js` & `drag.js`**: Gestor de ventanas y sistema de arrastre (Desktop/Mobile logic).
-*   **`admin.js`**: Lógica del panel de control. Se comunica con el Mayordomo para ejecutar scripts de servidor.
-*   **`contact.js`**: Formulario de contacto con encriptación y validación.
+*   **`contact.js`**: Formulario de contacto y badge de notificaciones (PocketBase).
 
 ### Integración Backend
-El frontend detecta si está en `localhost` o producción para apuntar a la API correcta (Puerto 5000 en local, dominio raíz en prod).
+El frontend detecta si está en `localhost` o producción para apuntar a PocketBase (Puerto 8090 en local, dominio raíz en prod).
 
 ---
 
 ## 🔧 5. Troubleshooting Común
 
-**Problema: "Check Health" se queda cargando**
-*   Causa: Posible bloqueo de red al intentar consultar el dominio público desde dentro del servidor.
-*   Solución: El script `check.sh` ha sido optimizado para probar primero conectividad local.
-
 **Problema: Error de permisos en uploads/db**
 *   Causa: Los contenedores no tienen permiso de escritura en el host.
 *   Solución: Ejecutar `bash start.sh` nuevamente para reaplicar permisos (`chown 1000:1000`).
-
-**Problema: "Job falló" en panel admin**
-*   Causa: El `system_runner` no pudo ejecutar el script bash.
-*   Solución: Revisar logs con `journalctl -u mayordomo -f` o verificar `/var/log/mayordomo.log`.

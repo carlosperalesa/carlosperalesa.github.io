@@ -22,7 +22,6 @@ LOG_FILE="/var/log/check.log"
 
 # Usar variables de entorno del sistema con valores por defecto
 MAIN_DIR="${DEPLOY_ROOT:-/var/www/html-static}"
-API_DIR="$MAIN_DIR/api"
 
 # Función de logging
 log() {
@@ -33,7 +32,7 @@ log() {
 }
 
 # Contador
-TOTAL_STEPS=7
+TOTAL_STEPS=4
 CURRENT_STEP=1
 
 print_step() {
@@ -68,49 +67,7 @@ check_service "Config Syntax" "nginx -t"
 print_step "Verificando Motor Docker"
 check_service "Docker Service" "systemctl is-active --quiet docker"
 
-# 3. CONTENEDORES
-print_step "Verificando Contenedores Activos"
-check_service "Main API Container" "docker ps --format '{{.Names}}' | grep -q 'portfolio-contact-api'"
-
-# 4. CREDENCIALES
-print_step "Verificando Credenciales"
-if [ -n "$RUNNER_SECRET" ]; then
-    echo -e "   ${GREEN}${CHECK} RUNNER_SECRET: Configurado${NC}"
-else
-    echo -e "   ${RED}${CROSS} RUNNER_SECRET: NO CONFIGURADO${NC}"
-    HAS_ERROR=1
-fi
-
-if [ -n "$SECRET_KEY" ]; then
-    echo -e "   ${GREEN}${CHECK} SECRET_KEY: Configurado${NC}"
-else
-    echo -e "   ${YELLOW}⚠️  SECRET_KEY: No configurado (usando default)${NC}"
-fi
-
-# 5. PERMISOS Y OWNERSHIP (UID 1000)
-print_step "Verificando Permisos (UID 1000)"
-
-check_owner() {
-    local file=$1
-    local name=$2
-    if [ -e "$file" ]; then
-        OWNER=$(stat -c '%u' "$file" 2>/dev/null || echo "0")
-        if [ "$OWNER" == "1000" ]; then
-             echo -e "   ${GREEN}${CHECK} ${name}: OK (Owner 1000)${NC}"
-        else
-             echo -e "   ${RED}${CROSS} ${name}: WRONG OWNER ($OWNER). Expected 1000.${NC}"
-             echo -e "      👉 Ejecuta 'start.sh' para corregir."
-             HAS_ERROR=1
-        fi
-    else
-        echo -e "   ${RED}${CROSS} ${name}: No encontrado${NC}"
-        HAS_ERROR=1
-    fi
-}
-
-check_owner "$API_DIR/data" "API Data"
-
-# 6. RECURSOS
+# 3. RECURSOS
 print_step "Verificando Recursos del Sistema"
 DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
 echo -e "   Disk Usage: ${DISK_USAGE}%"
@@ -122,7 +79,7 @@ if [ "$DISK_USAGE" -gt 90 ]; then
     HAS_ERROR=1
 fi
 
-# 7. CONECTIVIDAD (Local & Public)
+# 4. CONECTIVIDAD (Local & Public)
 print_step "Verificando Endpoints HTTP (Timeout 5s)"
 
 check_endpoint() {
@@ -130,14 +87,12 @@ check_endpoint() {
     local local_url=$2
     local public_url=$3
 
-    # 1. Intentar Localhost primero
     CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$local_url" 2>/dev/null || echo "000")
 
     if [ "$CODE" == "200" ] || [ "$CODE" == "301" ]; then
         echo -e "   ${GREEN}${CHECK} ${name}: OK (Local)${NC}"
         log "OK" "${name} OK on Local ($CODE)"
     else
-        # 2. Si falla local, intentar Público (solo si estamos en prod)
         echo -e "   ${YELLOW}⚠️  ${name} Local ($CODE) - Probando Público...${NC}"
         CODE_PUB=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$public_url" 2>/dev/null || echo "000")
 
@@ -152,10 +107,7 @@ check_endpoint() {
     fi
 }
 
-# Main API (Port 5000 vs carlosperales.dev/api/health)
-check_endpoint "Main API" "http://localhost:5000/api/health" "https://carlosperales.dev/api/health"
-
-
+check_endpoint "PocketBase" "http://127.0.0.1:8090/_/" "https://carlosperales.dev/_/"
 echo -e "\n-----------------------------------"
 if [ $HAS_ERROR -eq 0 ]; then
     echo -e "${GREEN}✅ SISTEMA OPERATIVO Y SALUDABLE${NC}"

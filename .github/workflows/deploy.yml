@@ -22,7 +22,6 @@ jobs:
         run: |
           echo "🔍 Validating critical files exist..."
           test -f index.html || exit 1
-          test -f api/app.py || exit 1
           echo "✅ All critical files present"
       
       - name: Check for secrets in code
@@ -49,14 +48,14 @@ jobs:
       - name: Deploy to server
         run: |
           echo "🚀 Starting deployment..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'bash /home/deploy.sh'
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'bash /var/www/html-static/start.sh'
           echo "✅ Deployment complete"
       
       - name: Health check
         run: |
           echo "🏥 Running health checks..."
           sleep 10
-          curl -f https://${{ secrets.DEPLOY_DOMAIN }}/api/health || echo "⚠️ Main API health check failed"
+          curl -f https://${{ secrets.DEPLOY_DOMAIN }}/_/ || echo "⚠️ PocketBase health check failed"
           echo "✅ Health checks complete"
 
   # Job 3: Notificación (opcional)

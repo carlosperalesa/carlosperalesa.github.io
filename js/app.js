@@ -7,22 +7,16 @@ const App = {
     // Check if device is mobile
     isMobile: () => window.innerWidth <= 768,
 
-    // API Configuration
-    api: {
+    // PocketBase Configuration
+    pocketbase: {
         getBaseUrl: () => {
             const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            // In local dev, we point to the Flask API port (5000)
-            // In production, we use the same origin (Nginx proxy handles /api requests)
-            return isLocal ? 'http://localhost:5000' : window.location.origin;
+            const localDefault = 'http://127.0.0.1:8090';
+            const prodDefault = 'https://carlosperales.dev';
+            return window.PB_BASE_URL || (isLocal ? localDefault : prodDefault);
         },
-
-        // Endpoints
-        endpoints: {
-            contact: '/api/contact', // POST
-            contacts: '/api/contacts', // GET (Private)
-            count: '/api/contacts/count', // GET (badge)
-            login: '/api/login', // POST (Auth)
-            verify: '/api/verify' // GET (Check Session)
+        collections: {
+            messages: 'messages'
         }
     },
 
@@ -32,6 +26,12 @@ const App = {
         // Expose global helpers if needed
     }
 };
+
+function openPocketBaseAdmin() {
+    const baseUrl = App.pocketbase.getBaseUrl();
+    const adminUrl = `${baseUrl}/_/`;
+    window.open(adminUrl, '_blank', 'noopener');
+}
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', App.init);

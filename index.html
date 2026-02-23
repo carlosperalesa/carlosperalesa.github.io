@@ -47,7 +47,7 @@
                 </span>
             </div>
 
-            <div class="top-bar-center" id="datetime" onclick="openLoginModal()"
+            <div class="top-bar-center" id="datetime" onclick="openPocketBaseAdmin()"
                 style="cursor: pointer; user-select: none;">
                 <!-- Hora y fecha se actualizan con JS -->
             </div>
@@ -260,7 +260,7 @@
                         Desarrollo y mantención de sitios web para clientes finales de la agencia, incluyendo proyectos
                         corporativos, institucionales y catálogos de productos (ej: GHIVS, Las Triple Negativas Siempre
                         Positivas,
-                        ProdQuim, Bruja Teatral).
+                        ProdQuim).
                         <br><br>
                         Implementación de WordPress con temas personalizados y builders (Elementor, Avada / Fusion
                         Builder),
@@ -411,14 +411,6 @@
                         <span class="project-name">Calc. Honorarios</span>
                     </a>
 
-                    <!-- Bruja Teatral (cliente Hootie Hoo - en desarrollo) -->
-                    <a href="/bt/" target="_blank" class="project-app"
-                        data-description="Proyecto en desarrollo. Plataforma artística con blog y panel admin. Entorno Docker, HTML, CSS y JavaScript.">
-                        <div class="project-icon">
-                            <img src="./img/cards/bt_logo.png" alt="Bruja Teatral">
-                        </div>
-                        <span class="project-name">Bruja Teatral</span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -463,116 +455,6 @@
         </div>
     </div>
 
-    <!-- Modal: Login Admin -->
-    <div class="modal-overlay" id="modal-login">
-        <div class="modal modal-sm">
-            <div class="modal-header">
-                <h2 class="modal-title">Admin Login</h2>
-                <button class="modal-close" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <div class="login-container">
-                    <div class="form-group">
-                        <label class="form-label">Usuario</label>
-                        <input type="text" id="login-user" class="form-input" placeholder="Usuario">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Contraseña</label>
-                        <input type="password" id="login-pass" class="form-input" placeholder="Contraseña">
-                    </div>
-                    <div class="login-error" id="login-error"></div>
-                    <button class="modal-btn modal-btn-primary" onclick="attemptLogin()">Ingresar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Panel Admin -->
-    <div class="modal-overlay" id="modal-admin">
-        <div class="modal modal-lg">
-            <div class="modal-header">
-                <h2 class="modal-title">Panel de Administración</h2>
-                <div class="window-controls">
-                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
-                    <button class="modal-close" aria-label="Cerrar"></button>
-                </div>
-            </div>
-            <div class="modal-body">
-                <!-- TABS -->
-                <div class="admin-tabs">
-                    <button class="admin-tab active" onclick="switchAdminTab('messages')">
-                        <i class="fas fa-envelope"></i> Mensajes
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('system')">
-                        <i class="fas fa-cog"></i> Sistema
-                    </button>
-                </div>
-
-                <!-- SECCIÓN MENSAJES -->
-                <div id="tab-messages" class="tab-content active">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3>Mensajes Recibidos</h3>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="modal-btn modal-btn-secondary" onclick="openChangePasswordModal()"
-                                title="Seguridad">
-                                <i class="fas fa-key"></i> Pass
-                            </button>
-                            <button class="modal-btn modal-btn-secondary" onclick="loadMessages()">
-                                <i class="fas fa-sync"></i> Actualizar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="admin-table-container">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Fecha</th>
-                                    <th>Nombre</th>
-                                    <th>Teléfono</th>
-                                    <th>Email</th>
-                                    <th>Asunto</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-messages-body">
-                                <!-- Mensajes cargados aquí -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SECCIÓN SISTEMA -->
-                <div id="tab-system" class="tab-content">
-                    <div class="system-actions-grid">
-                        <button class="system-btn deploy" onclick="runSystemAction('deploy')">
-                            <i class="fas fa-rocket"></i>
-                            <span>Deploy Total (GIT + Build)</span>
-                        </button>
-                        <button class="system-btn check" onclick="runSystemAction('check')">
-                            <i class="fas fa-heartbeat"></i>
-                            <span>Check Health</span>
-                        </button>
-
-                    </div>
-
-                    <div class="terminal-container">
-                        <div class="terminal-header">
-                            <span class="terminal-dot red"></span>
-                            <span class="terminal-dot yellow"></span>
-                            <span class="terminal-dot green"></span>
-                            <span class="terminal-title">bash — system_runner</span>
-                        </div>
-                        <div id="admin-console" class="terminal-body">
-                            <div class="line"># Esperando comandos...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal: Detalle de Proyecto (Template Único) -->
     <div class="modal-overlay" id="modal-proyecto-detalle">
         <div class="modal modal-sm">
@@ -587,29 +469,6 @@
                     <a id="p-link" href="#" target="_blank" class="modal-btn modal-btn-primary"
                         style="width: 100%; text-align: center;">Ir al proyecto</a>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Cambiar Contraseña -->
-    <div class="modal-overlay" id="modal-change-password">
-        <div class="modal modal-sm">
-            <div class="modal-header">
-                <h2 class="modal-title">Cambiar Contraseña</h2>
-                <button class="modal-close" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Nueva Contraseña</label>
-                    <input type="password" id="new-pass" class="form-input" placeholder="Mínimo 6 caracteres">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Confirmar Contraseña</label>
-                    <input type="password" id="confirm-pass" class="form-input" placeholder="Repite la contraseña">
-                </div>
-                <div id="pass-error" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 10px;"></div>
-                <button class="modal-btn modal-btn-primary" onclick="updatePassword()"
-                    style="width: 100%;">Actualizar</button>
             </div>
         </div>
     </div>
@@ -681,7 +540,6 @@
     <script src="js/modals.js"></script>
     <script src="js/drag.js"></script>
     <script src="js/contact.js"></script>
-    <script src="js/admin.js"></script>
 </body>
 
 </html>

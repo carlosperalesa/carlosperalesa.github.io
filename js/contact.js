@@ -3,7 +3,7 @@
  * Maneja el envío del formulario de contacto al backend API
  */
 
-const CONTACT_API_BASE = App.api.getBaseUrl();
+const CONTACT_API_BASE = App.pocketbase.getBaseUrl();
 
 document.addEventListener('DOMContentLoaded', () => {
     const contactModal = document.getElementById('modal-contacto');
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = form.querySelector('.modal-btn-primary');
     const clearBtn = form.querySelector('.modal-btn-secondary');
 
-    const API_URL = `${CONTACT_API_BASE}/api/contact`;
+    const API_URL = `${CONTACT_API_BASE}/api/collections/${App.pocketbase.collections.messages}/records`;
 
     /**
      * Obtiene los valores del formulario
@@ -121,9 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
 
-            if (response.ok && result.success) {
+            if (response.ok) {
                 showToast('✅ Mensaje enviado correctamente. Te contactaré pronto!', 'success');
                 clearForm();
+                updateContactBadge();
 
                 // Cerrar modal después de 2 segundos
                 setTimeout(() => {
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (closeBtn) closeBtn.click();
                 }, 2000);
             } else {
-                throw new Error(result.error || 'Error al enviar el mensaje');
+                throw new Error(result.message || 'Error al enviar el mensaje');
             }
 
         } catch (error) {
@@ -168,16 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
    BADGE NOTIFICACIONES
    ================================= */
 function updateContactBadge() {
-    const url = `${CONTACT_API_BASE}/api/contacts/count`;
+    const url = `${CONTACT_API_BASE}/api/collections/${App.pocketbase.collections.messages}/records?page=1&perPage=1`;
 
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            if (data.success) {
+            if (typeof data.totalItems === 'number') {
                 const badge = document.getElementById('contact-badge');
                 if (badge) {
-                    if (data.count > 0) {
-                        badge.textContent = data.count > 99 ? '99+' : data.count;
+                    if (data.totalItems > 0) {
+                        badge.textContent = data.totalItems > 99 ? '99+' : data.totalItems;
                         badge.style.display = 'flex';
                         badge.classList.remove('popIn');
                         void badge.offsetWidth; // Trigger reflow
@@ -197,14 +198,3 @@ document.addEventListener('DOMContentLoaded', () => {
     updateContactBadge();
     setInterval(updateContactBadge, 30000);
 });
-
-// Actualizar badge cuando se envía un mensaje exitoso
-const originalFetch = window.fetch;
-window.fetch = async (...args) => {
-    const response = await originalFetch(...args);
-    // Si es un POST a /contact exitoso, actualizar badge
-    if (args[0].includes && args[0].includes('/contact') && args[1] && args[1].method === 'POST' && response.ok) {
-        setTimeout(updateContactBadge, 1000);
-    }
-    return response;
-};
