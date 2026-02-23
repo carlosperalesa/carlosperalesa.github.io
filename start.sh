@@ -106,6 +106,10 @@ echo -e "\n${YELLOW}⚙️  4. Configuración del Sistema...${NC}"
 
 # 4.1 Nginx
 echo -e "   -> Recargando Nginx..."
+if [ -f "$MAIN_DIR/nginx/carlosperales.dev.conf" ]; then
+    cp "$MAIN_DIR/nginx/carlosperales.dev.conf" /etc/nginx/sites-available/carlosperales.dev
+    ln -sf /etc/nginx/sites-available/carlosperales.dev /etc/nginx/sites-enabled/
+fi
 nginx -t && systemctl reload nginx
 if [ $? -eq 0 ]; then
     echo -e "      ${GREEN}Nginx recargado correctamente.${NC}"
