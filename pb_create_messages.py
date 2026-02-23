@@ -1,8 +1,10 @@
 import json
 import getpass
+import os
+import urllib.error
 import urllib.request
 
-PB_URL = "http://127.0.0.1:8090"
+PB_URL = os.getenv("PB_URL", "http://127.0.0.1:8090")
 
 email = input("PB admin email: ").strip()
 password = getpass.getpass("PB admin password: ").strip()
@@ -14,8 +16,12 @@ auth_req = urllib.request.Request(
     method="POST",
 )
 
-with urllib.request.urlopen(auth_req) as resp:
-    data = json.loads(resp.read().decode())
+try:
+    with urllib.request.urlopen(auth_req) as resp:
+        data = json.loads(resp.read().decode())
+except urllib.error.HTTPError as exc:
+    body = exc.read().decode()
+    raise SystemExit(f"Auth failed ({exc.code}): {body}")
 
 token = data["token"]
 
@@ -46,5 +52,9 @@ create_req = urllib.request.Request(
     method="POST",
 )
 
-with urllib.request.urlopen(create_req) as resp:
-    print(resp.read().decode())
+try:
+    with urllib.request.urlopen(create_req) as resp:
+        print(resp.read().decode())
+except urllib.error.HTTPError as exc:
+    body = exc.read().decode()
+    raise SystemExit(f"Create failed ({exc.code}): {body}")
