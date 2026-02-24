@@ -40,9 +40,6 @@ Una vez que los contenedores están definidos, el script corrige los permisos de
 Aplica configuraciones a nivel de servidor (Host).
 *   **Nginx**: Valida configuración y recarga el servicio Nginx.
 
-### 5. Limpieza
-*   Ejecuta `docker image prune` para eliminar imágenes antiguas y liberar espacio en disco.
-
 ## Uso
 
 Simplemente ejecutar desde la raíz del proyecto:

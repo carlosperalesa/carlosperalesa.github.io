@@ -118,11 +118,8 @@ else
 fi
 
 # ==============================================================================
-# 5. LIMPIEZA Y FINALIZACIÓN
+# 5. FINALIZACIÓN
 # ==============================================================================
-echo -e "\n🧹 Limpiando imágenes Docker antiguas..."
-docker image prune -f >/dev/null 2>&1
-
 echo -e "\n✨ DESPLIEGUE COMPLETADO EXITOSAMENTE ✨"
 echo -e "   Recuerda visitar: https://carlosperales.dev"
 echo -e "   Para verificar estado: ./check.sh\n"

@@ -75,12 +75,8 @@ El repositorio incluye scripts automatizados en la raíz para facilitar la opera
 
 *   **`check.sh`**:
 *   Realiza un diagnóstico básico del sistema (Health Check).
-*   Verifica: Nginx, Docker, Permisos y Espacio en disco.
+*   Verifica: Nginx, Permisos y Espacio en disco.
 *   Ejecuta: `bash check.sh`
-
-### Docker y Seguridad
-
-*   Los contenedores corren como **usuario no-root (UID 1000)** para mayor seguridad.
 
 ---
 

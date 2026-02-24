@@ -59,8 +59,7 @@ carlosperalesa.github.io/
 │   ├── cv/                # Currículum en diferentes formatos
 │   ├── pokedex/           # Proyecto Pokédex
 │   └── hootiehoo/         # Proyecto HootieHoo
-├── 📄 deploy.sh           # Script de deploy automático
-├── 📄 start.sh            # Deploy + rebuild de contenedores
+├── 📄 start.sh            # Deploy y recarga servicios
 ├── 📄 check.sh            # Health check del sistema
 ├── 📄 robots.txt          # Configuración para crawlers
 ├── 📄 sitemap.xml         # Mapa del sitio para SEO
@@ -120,8 +119,8 @@ Implementacion en [js/contact.js](js/contact.js) y base URL en [js/app.js](js/ap
 **Coleccion `messages`**
 - Campos sugeridos: `name`, `phone`, `email`, `subject`, `message`
 - Reglas publicas necesarias:
-	- Create rule: `true`
-	- List rule: `true` (para el badge)
+	- Create rule: `@request.auth.id != "" || @request.auth.id = ""`
+	- List rule: `@request.auth.id != "" || @request.auth.id = ""` (para el badge)
 
 > El CRUD de usuarios se gestiona desde el Admin UI de PocketBase.
 
@@ -207,7 +206,7 @@ sudo systemctl restart pocketbase
 # En el servidor
 cd /var/www/html-static
 git pull origin main
-bash deploy.sh
+sudo bash start.sh
 ```
 
 ---
