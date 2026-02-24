@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # ==============================================================================
-# SCRIPT DE DESPLIEGUE AUTOMÁTICO - CARLOSPERALES.DEV
+# SCRIPT DE DESPLIEGUE AUTOMATICO - CARLOSPERALES.DEV
 # ==============================================================================
-# Orden de ejecución:
-# 1. Git Pull (Actualizar código)
-# 2. Deploy (Servicios opcionales)
+# Orden de ejecucion:
+# 1. Git Pull (Actualizar codigo)
+# 2. PocketBase (Descargar binario si no existe + reiniciar servicio)
 # 3. Permisos (Ajustar ownership y permisos)
-# 4. Configuración del Sistema (Nginx)
+# 4. Configuracion del Sistema (Nginx)
 # ==============================================================================
 
 # Cargar variables de entorno del sistema
@@ -22,26 +22,26 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-CHECK="✅"
-CROSS="❌"
-WRENCH="🔧"
+NC='\033[0m'
+CHECK="[OK]"
+CROSS="[ERROR]"
 
 # Variables de Directorios
-MAIN_DIR="${DEPLOY_ROOT:-/var/www/html-static}"
+MAIN_DIR="/var/www/portafolio"
+PB_VERSION="0.36.5"
 
-# Función auxiliar para ejecutar comandos con log visual
+# Funcion auxiliar para ejecutar comandos con log visual
 run_step() {
     local cmd="$1"
     local msg="$2"
-    
+
     echo -e "\n${BLUE}==============================================${NC}"
-    echo -e "${BLUE}▶ ${msg}${NC}"
+    echo -e "${BLUE}> ${msg}${NC}"
     echo -e "${BLUE}----------------------------------------------${NC}"
-    
+
     eval "$cmd"
     local exit_code=$?
-    
+
     if [ $exit_code -eq 0 ]; then
         echo -e "${GREEN}${CHECK} Paso completado.${NC}"
         return 0
@@ -51,7 +51,7 @@ run_step() {
     fi
 }
 
-echo -e "\n🚀 INICIANDO DESPLIEGUE v6.0\n"
+echo -e "\n INICIANDO DESPLIEGUE v7.0\n"
 
 # ==============================================================================
 # 1. GIT PULL
@@ -59,35 +59,39 @@ echo -e "\n🚀 INICIANDO DESPLIEGUE v6.0\n"
 run_step "cd $MAIN_DIR && git pull" "1. Actualizando Repositorio (Git Pull)"
 
 # ==============================================================================
-# 2. DEPLOY (Servicios)
+# 2. POCKETBASE
 # ==============================================================================
-echo -e "\n⏳ Desplegando servicios..."
+echo -e "\n Desplegando PocketBase..."
 
-# PocketBase (systemd)
+# 2.1 Descargar binario si no existe
+if [ ! -x "$MAIN_DIR/pocketbase" ]; then
+    echo -e "${YELLOW} PocketBase no encontrado, descargando v${PB_VERSION}...${NC}"
+    run_step "cd $MAIN_DIR && curl -sL https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip -o pb.zip && unzip -o pb.zip pocketbase && rm pb.zip && chmod +x pocketbase" "2. Descargando PocketBase v${PB_VERSION}"
+fi
+
+# 2.2 Instalar servicio y reiniciar
 if command -v systemctl >/dev/null 2>&1; then
     if [ -f "$MAIN_DIR/pocketbase.service" ]; then
         run_step "cp $MAIN_DIR/pocketbase.service /etc/systemd/system/pocketbase.service" "2. Instalando pocketbase.service"
         run_step "systemctl daemon-reload" "2. Recargando systemd"
-    else
-        echo -e "${YELLOW}⚠️  pocketbase.service no encontrado en el repo.${NC}"
     fi
 
-    if [ -x "/opt/pocketbase/pocketbase" ]; then
+    if [ -x "$MAIN_DIR/pocketbase" ]; then
         run_step "systemctl enable pocketbase >/dev/null 2>&1 || true" "2. Habilitando PocketBase"
         run_step "systemctl restart pocketbase" "2. Reiniciando PocketBase"
     else
-        echo -e "${YELLOW}⚠️  Binario de PocketBase no encontrado en /opt/pocketbase/pocketbase.${NC}"
+        echo -e "${RED}${CROSS} Binario de PocketBase no encontrado en $MAIN_DIR/pocketbase${NC}"
     fi
 else
-    echo -e "${YELLOW}⚠️  Systemd no disponible. Inicia PocketBase manualmente.${NC}"
+    echo -e "${YELLOW} Systemd no disponible. Inicia PocketBase manualmente.${NC}"
 fi
 
 # ==============================================================================
 # 3. PERMISOS
 # ==============================================================================
-echo -e "\n${YELLOW}${WRENCH} 3. Ajustando Permisos del Sistema...${NC}"
+echo -e "\n 3. Ajustando Permisos del Sistema..."
 
-# 3.1 Archivos Estáticos (Nginx - www-data)
+# 3.1 Archivos Estaticos (Nginx - www-data)
 echo -e "   -> Configurando permisos web (www-data)..."
 for dir in css js img fonts sounds other; do
     if [ -d "$MAIN_DIR/$dir" ]; then
@@ -97,12 +101,18 @@ for dir in css js img fonts sounds other; do
     fi
 done
 
+# 3.2 PocketBase (usuario pocketbase)
+echo -e "   -> Configurando permisos PocketBase (pocketbase)..."
+chown pocketbase:pocketbase "$MAIN_DIR/pocketbase" 2>/dev/null || true
+chown -R pocketbase:pocketbase "$MAIN_DIR/pb_data" 2>/dev/null || true
+chown -R pocketbase:pocketbase "$MAIN_DIR/pb_hooks" 2>/dev/null || true
+
 echo -e "${GREEN}${CHECK} Permisos aplicados.${NC}"
 
 # ==============================================================================
-# 4. CONFIGURACIÓN DEL SISTEMA
+# 4. CONFIGURACION DEL SISTEMA
 # ==============================================================================
-echo -e "\n${YELLOW}⚙️  4. Configuración del Sistema...${NC}"
+echo -e "\n 4. Configuracion del Sistema..."
 
 # 4.1 Nginx
 echo -e "   -> Recargando Nginx..."
@@ -118,8 +128,7 @@ else
 fi
 
 # ==============================================================================
-# 5. FINALIZACIÓN
+# 5. FINALIZACION
 # ==============================================================================
-echo -e "\n✨ DESPLIEGUE COMPLETADO EXITOSAMENTE ✨"
-echo -e "   Recuerda visitar: https://carlosperales.dev"
-echo -e "   Para verificar estado: ./check.sh\n"
+echo -e "\n DESPLIEGUE COMPLETADO"
+echo -e "   https://carlosperales.dev\n"

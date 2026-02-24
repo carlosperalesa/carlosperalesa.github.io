@@ -80,3 +80,10 @@ other/BT/public/uploads/*
 *.temp
 *.bak
 *.backup
+
+# === Claude Code temp files ===
+tmpclaude-*
+
+# === PocketBase ===
+pocketbase
+pb_data/

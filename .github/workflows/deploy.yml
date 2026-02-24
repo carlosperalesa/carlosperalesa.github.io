@@ -48,7 +48,7 @@ jobs:
       - name: Deploy to server
         run: |
           echo "🚀 Starting deployment..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'bash /var/www/html-static/start.sh'
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'bash /var/www/portafolio/start.sh'
           echo "✅ Deployment complete"
       
       - name: Health check

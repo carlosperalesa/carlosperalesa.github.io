@@ -6,8 +6,8 @@ After=network.target
 Type=simple
 User=pocketbase
 Group=pocketbase
-WorkingDirectory=/opt/pocketbase
-ExecStart=/opt/pocketbase/pocketbase serve --http=127.0.0.1:8090 --dir=/opt/pocketbase/pb_data
+WorkingDirectory=/var/www/portafolio
+ExecStart=/var/www/portafolio/pocketbase serve --http=127.0.0.1:8090
 Restart=on-failure
 RestartSec=5
 
