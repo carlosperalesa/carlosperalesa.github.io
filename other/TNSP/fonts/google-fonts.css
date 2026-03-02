@@ -1,0 +1,19 @@
+----<
+
+/* Google Fonts - Blocksy theme fonts for TNSP */
+/* Bahnschrift is a Windows system font, using fallback stack */
+@font-face {
+    font-family: 'bahnschrift';
+    src: local('Bahnschrift'), local('Segoe UI');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'bahnschrift';
+    src: local('Bahnschrift SemiBold'), local('Bahnschrift'), local('Segoe UI Semibold');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
