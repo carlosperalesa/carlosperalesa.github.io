@@ -19,9 +19,10 @@ function getEventCoords(e) {
 function initDragging(modalHandle, e) {
     const modalEl = modalHandle.closest('.modal');
     const isSmallModal = modalEl.classList.contains('modal-sm');
+    const isMobile = App.isMobile();
 
     // En móvil solo permitir arrastre de modales pequeños (Login, WA, Tel)
-    if (App.isMobile() && !isSmallModal) return;
+    if (isMobile && !isSmallModal) return;
 
     // Prevenir comportamiento por defecto en touch
     if (e.cancelable) {
@@ -41,7 +42,7 @@ function initDragging(modalHandle, e) {
     modalEl.classList.add('dragging');
 
     // Habilitar posición absoluta para modales pequeños en móvil
-    if (App.isMobile() && isSmallModal) {
+    if (isMobile && isSmallModal) {
         modalEl.style.position = 'absolute';
         modalEl.style.margin = '0';
         modalEl.style.left = `${rect.left}px`;
@@ -67,8 +68,9 @@ function handleDrag(e) {
     // Limitar dentro del viewport
     const modalWidth = dragModal.offsetWidth;
     const modalHeight = dragModal.offsetHeight;
-    const minY = App.isMobile() ? 0 : 44;
-    const maxY = (App.isMobile() ? window.innerHeight - 80 - 44 : window.innerHeight) - modalHeight;
+    const isMobile = App.isMobile();
+    const minY = isMobile ? 0 : 44;
+    const maxY = (isMobile ? window.innerHeight - 80 - 44 : window.innerHeight) - modalHeight;
     const minX = 20 - modalWidth;
     const maxX = window.innerWidth - 20;
 
