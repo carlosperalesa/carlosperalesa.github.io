@@ -63,7 +63,17 @@ run_step "cd $MAIN_DIR && git pull" "1. Actualizando Repositorio (Git Pull)"
 # ==============================================================================
 echo -e "\n Desplegando PocketBase..."
 
-run_step "python3 -m pip install -r $MAIN_DIR/other/AutoMail/requirements.txt" "2. Instalando dependencias de AutoMail"
+if [ ! -d "$MAIN_DIR/other/AutoMail/.venv" ]; then
+    run_step "python3 -m venv $MAIN_DIR/other/AutoMail/.venv" "2. Creando entorno virtual de AutoMail"
+fi
+
+AUTOMAIL_PY="$MAIN_DIR/other/AutoMail/.venv/bin/python"
+if [ -x "$AUTOMAIL_PY" ]; then
+    run_step "$AUTOMAIL_PY -m pip install --upgrade pip" "2. Actualizando pip de AutoMail"
+    run_step "$AUTOMAIL_PY -m pip install -r $MAIN_DIR/other/AutoMail/requirements.txt" "2. Instalando dependencias de AutoMail"
+else
+    echo -e "${RED}${CROSS} No se encontró el Python del entorno virtual de AutoMail en $AUTOMAIL_PY${NC}"
+fi
 
 # 2.1 Descargar binario si no existe
 if [ ! -x "$MAIN_DIR/pocketbase" ]; then

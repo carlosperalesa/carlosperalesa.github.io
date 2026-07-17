@@ -67,6 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
         reportOutput.textContent = text || 'Sin contenido de report.log.';
     }
 
+    async function parseJsonResponse(response) {
+        const contentType = response.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+            return await response.json();
+        }
+
+        const text = await response.text();
+        return {
+            error: text.slice(0, 500) || 'Respuesta inesperada del servidor.',
+        };
+    }
+
     function clearDownload() {
         downloadLink.style.display = 'none';
         downloadLink.href = '#';
@@ -143,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch(`${baseUrl}/jobs/${currentJobId}`);
-            const data = await response.json();
+            const data = await parseJsonResponse(response);
 
             if (!response.ok) {
                 throw new Error(data.error || 'No fue posible consultar el estado del trabajo.');
@@ -162,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (data.download_url) {
-                downloadLink.href = new URL(data.download_url, baseUrl).toString();
+                downloadLink.href = `${baseUrl}${data.download_url}`;
                 downloadLink.style.display = 'inline-flex';
             }
 
@@ -220,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             });
 
-            const data = await response.json();
+            const data = await parseJsonResponse(response);
             if (!response.ok) {
                 throw new Error(data.error || 'No se pudo iniciar el procesamiento.');
             }
