@@ -87,3 +87,6 @@ tmpclaude-*
 # === PocketBase ===
 pocketbase
 pb_data/
+
+# === AutoMail runtime ===
+other/AutoMail/runtime/

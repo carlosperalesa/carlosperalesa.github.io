@@ -63,6 +63,8 @@ run_step "cd $MAIN_DIR && git pull" "1. Actualizando Repositorio (Git Pull)"
 # ==============================================================================
 echo -e "\n Desplegando PocketBase..."
 
+run_step "python3 -m pip install -r $MAIN_DIR/other/AutoMail/requirements.txt" "2. Instalando dependencias de AutoMail"
+
 # 2.1 Descargar binario si no existe
 if [ ! -x "$MAIN_DIR/pocketbase" ]; then
     echo -e "${YELLOW} PocketBase no encontrado, descargando v${PB_VERSION}...${NC}"
@@ -82,6 +84,13 @@ if command -v systemctl >/dev/null 2>&1; then
     else
         echo -e "${RED}${CROSS} Binario de PocketBase no encontrado en $MAIN_DIR/pocketbase${NC}"
     fi
+
+    if [ -f "$MAIN_DIR/automail.service" ]; then
+        run_step "cp $MAIN_DIR/automail.service /etc/systemd/system/automail.service" "2. Instalando automail.service"
+        run_step "systemctl daemon-reload" "2. Recargando systemd para AutoMail"
+        run_step "systemctl enable automail >/dev/null 2>&1 || true" "2. Habilitando AutoMail"
+        run_step "systemctl restart automail" "2. Reiniciando AutoMail"
+    fi
 else
     echo -e "${YELLOW} Systemd no disponible. Inicia PocketBase manualmente.${NC}"
 fi
@@ -100,6 +109,9 @@ for dir in css js img fonts sounds other; do
         find "$MAIN_DIR/$dir" -type f -exec chmod 644 {} \; 2>/dev/null || true
     fi
 done
+
+mkdir -p "$MAIN_DIR/other/AutoMail/runtime"
+chown -R www-data:www-data "$MAIN_DIR/other/AutoMail/runtime" 2>/dev/null || true
 
 # 3.2 PocketBase (usuario pocketbase)
 echo -e "   -> Configurando permisos PocketBase (pocketbase)..."

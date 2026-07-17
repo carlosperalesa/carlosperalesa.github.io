@@ -37,6 +37,9 @@ El sistema se compone de dos entidades principales que interactúan entre sí:
 2.  **PocketBase (Backend)**:
     *   Backend para mensajes y usuarios.
     *   Admin UI disponible en `/_/`.
+3.  **AutoMail (Backend Python)**:
+    *   Servicio dedicado para subir `.xlsx`, ejecutar `generate_emails.py` y servir `report.log` + ZIP.
+    *   Se expone por Nginx en `/automail-api/`.
 
 ---
 
@@ -69,7 +72,8 @@ El repositorio incluye scripts automatizados en la raíz para facilitar la opera
 
 *   **`start.sh`**:
 *   Realiza `git pull`.
-*   Reinicia el servicio `pocketbase` (systemd).
+*   Instala dependencias de AutoMail.
+*   Reinicia los servicios `pocketbase` y `automail` (systemd).
 *   Recarga Nginx.
 *   Ejecuta: `bash start.sh`
 
@@ -123,6 +127,32 @@ El frontend (`js/`) está construido con JavaScript Vanilla modular.
 *   **`skills-graph.js`**: Visualización de grafo de habilidades usando D3.js con simulación de fuerzas.
 *   **`modals.js` & `drag.js`**: Gestor de ventanas y sistema de arrastre (Desktop/Mobile logic).
 *   **`contact.js`**: Formulario de contacto y badge de notificaciones (PocketBase).
+*   **`automail.js`**: UI del modal AutoMail, subida de archivo, polling del job y descarga del ZIP.
+
+### AutoMail Web
+
+AutoMail no abre una página nueva: se renderiza dentro de un modal grande desde la sección **Proyectos**.
+
+Flujo operativo:
+
+1. El usuario abre el modal AutoMail desde Proyectos.
+2. Sube un archivo `.xlsx`.
+3. El frontend hace `POST /automail-api/jobs`.
+4. El backend guarda el archivo en un job temporal y ejecuta `generate_emails.py`.
+5. El frontend consulta `GET /automail-api/jobs/<id>` hasta que finaliza.
+6. Al terminar, se muestran el `report.log` y el enlace de descarga del ZIP.
+
+### Servicio AutoMail
+
+- Unit file: [automail.service](automail.service)
+- Script HTTP: [other/AutoMail/server.py](other/AutoMail/server.py)
+- Pipeline reutilizable: [other/AutoMail/generate_emails.py](other/AutoMail/generate_emails.py)
+
+### Despliegue AutoMail
+
+- Nginx publica `/automail-api/` hacia `127.0.0.1:8092`.
+- `start.sh` instala `automail.service`, aplica permisos al runtime y reinstala dependencias de AutoMail.
+- El runtime por job vive en `other/AutoMail/runtime/` y se usa sólo de forma temporal.
 
 ### Integración Backend
 El frontend detecta si está en `localhost` o producción para apuntar a PocketBase (Puerto 8090 en local, dominio raíz en prod).

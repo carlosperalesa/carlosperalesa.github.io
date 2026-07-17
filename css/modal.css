@@ -196,6 +196,13 @@ body.dark-mode .modal-header {
     max-height: 90vh;
 }
 
+.modal-xl {
+    width: min(1180px, 96vw);
+    height: min(760px, 92vh);
+    max-width: 96vw;
+    max-height: 92vh;
+}
+
 .modal-sm .modal-title {
     padding: 4px 15px;
     font-size: var(--font-xs);

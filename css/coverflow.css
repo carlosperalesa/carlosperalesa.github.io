@@ -1,0 +1,206 @@
+/* ============================================
+   MACOS COVER FLOW FOR PROJECTS MODAL
+   ============================================ */
+#modal-proyectos .modal-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    padding-bottom: var(--spacing-md);
+}
+
+.coverflow-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    padding: var(--spacing-sm) 0;
+}
+
+.coverflow-viewport {
+    width: 100%;
+    height: 80%;
+    perspective: 800px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.coverflow-viewport:active {
+    cursor: grabbing;
+}
+
+.coverflow-stage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Cover Flow Card */
+.coverflow-card {
+    width: 150px;
+    height: 180px;
+    position: absolute;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-box-reflect: below 4px linear-gradient(transparent, transparent 40%, rgba(255, 255, 255, 0.35));
+}
+
+/* Card Content: Thumbnail screenshot & icon footer */
+.card-screenshot {
+    width: 100%;
+    height: 78%;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid var(--glass-border);
+    position: relative;
+}
+
+.card-screenshot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.35));
+}
+
+.card-overlay {
+    width: 100%;
+    height: 22%;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.coverflow-card .project-icon {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    margin: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.coverflow-card .project-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 3px;
+}
+
+.coverflow-card .project-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    max-width: 95px;
+}
+
+/* Bottom Information Panel */
+.coverflow-info-panel {
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    height: 20%;
+    max-height: 20%;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    z-index: 10;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.coverflow-info-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.coverflow-info-panel .cf-title {
+    font-size: var(--font-md);
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-color);
+}
+
+.coverflow-info-panel .cf-desc {
+    font-size: var(--font-xs);
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-bottom: 12px;
+    min-height: 32px;
+    padding: 0 10px;
+}
+
+.coverflow-info-panel .modal-btn {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-xs);
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Drag & Scroll indicator help text */
+.coverflow-help {
+    font-size: 10px;
+    color: var(--text-muted);
+    opacity: 0.7;
+    margin-top: 10px;
+    display: flex;
+    gap: 15px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.coverflow-help i {
+    margin-right: 3px;
+}
+
+@media (max-width: 768px) {
+    .coverflow-viewport {
+        height: 200px;
+    }
+    
+    .coverflow-card {
+        width: 120px;
+        height: 150px;
+    }
+    
+    .coverflow-info-panel .cf-desc {
+        font-size: 11px;
+    }
+}

@@ -27,6 +27,7 @@
 - 🃏 **Flip Cards Interactivas** — Tarjetas con animación 3D al hacer hover
 - ⚡ **Performance Optimizada** — Carga rápida con assets optimizados
 - ♿ **Accesibilidad** — Indicadores de foco y navegación por teclado
+- ✉️ **AutoMail en modal** — Carga de XLSX, ejecución de correos, vista de `report.log` y descarga del ZIP desde Proyectos
 
 ---
 
@@ -58,7 +59,7 @@ carlosperalesa.github.io/
 ├── 📂 other/              # Proyectos adicionales
 │   ├── cv/                # Currículum en diferentes formatos
 │   ├── pokedex/           # Proyecto Pokédex
-│   └── hootiehoo/         # Proyecto HootieHoo
+│   └── AutoMail/          # Generador web de correos desde XLSX
 ├── 📄 start.sh            # Deploy y recarga servicios
 ├── 📄 check.sh            # Health check del sistema
 ├── 📄 robots.txt          # Configuración para crawlers
@@ -126,6 +127,27 @@ Implementacion en [js/contact.js](js/contact.js) y base URL en [js/app.js](js/ap
 
 ---
 
+## ✉️ AutoMail Web
+
+AutoMail está integrado como un modal grande dentro de la sección **Proyectos**.
+
+- Permite subir un archivo `.xlsx`.
+- Ejecuta `other/AutoMail/generate_emails.py` en el servidor.
+- Muestra el contenido de `report.log` dentro del modal.
+- Expone la descarga de `mail_generados.zip` al finalizar.
+
+Endpoints del servicio:
+
+- `GET /automail-api/health`
+- `POST /automail-api/jobs`
+- `GET /automail-api/jobs/<id>`
+- `GET /automail-api/jobs/<id>/report`
+- `GET /automail-api/jobs/<id>/download`
+
+El backend de AutoMail vive en Python/Flask y corre separado de PocketBase.
+
+---
+
 ## 🚀 Deployment
 
 ### Deployment Automático (CI/CD)
@@ -150,7 +172,7 @@ GitHub Push → GitHub Actions → SSH → DigitalOcean → Deploy
 Los scripts están en la raíz del repo y se copian a `/bin/` en el servidor:
 
 ```bash
-# Deploy completo (reinicia PocketBase via systemd)
+# Deploy completo (reinicia PocketBase y AutoMail via systemd)
 start
 
 # Health check del sistema

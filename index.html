@@ -20,6 +20,8 @@
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/coverflow.css">
+    <link rel="stylesheet" href="css/automail.css">
 
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
@@ -336,81 +338,157 @@
             </div>
 
             <div class="modal-body">
-                <div class="projects-grid">
+                <div class="coverflow-container">
+                    <div class="coverflow-viewport" id="coverflow-viewport">
+                        <div class="coverflow-stage" id="coverflow-stage">
 
-                    <!-- Hootie Hoo -->
-                    <a href="https://hootiehoo.cl/" target="_blank" class="project-app"
-                        data-description="Plataforma educativa y marketing digital. Desarrollo web, e-commerce, integraciones y gestión de infraestructura.">
-                        <div class="project-icon">
-                            <img src="./img/cards/hh.webp" alt="Hootie Hoo">
+                            <!-- Hootie Hoo -->
+                            <a href="https://hootiehoo.cl/" target="_blank" class="coverflow-card"
+                                data-title="Hootie Hoo"
+                                data-desc="Plataforma educativa y marketing digital. Desarrollo web, e-commerce, integraciones y gestión de infraestructura."
+                                data-url="https://hootiehoo.cl/">
+                                <div class="card-screenshot" style="background-image: url('img/cards/hh_screenshot.png')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon">
+                                        <img src="./img/cards/hh.webp" alt="Hootie Hoo">
+                                    </div>
+                                    <span class="project-name">Hootie Hoo</span>
+                                </div>
+                            </a>
+
+                            <!-- GHIVS -->
+                            <a href="https://ghivs.com/v2/" target="_blank" class="coverflow-card"
+                                data-title="GHIVS"
+                                data-desc="Sitio corporativo. WordPress (Avada), multilenguaje, formularios y optimización SEO."
+                                data-url="https://ghivs.com/v2/">
+                                <div class="card-screenshot" style="background-image: url('img/cards/gh_screenshot.png')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon">
+                                        <img src="./img/cards/ghivs.svg" alt="Ghivs">
+                                    </div>
+                                    <span class="project-name">GHIVS</span>
+                                </div>
+                            </a>
+
+                            <!-- ProdQuim -->
+                            <a href="https://prodquim.cl/" target="_blank" class="coverflow-card"
+                                data-title="ProdQuim"
+                                data-desc="Catálogo B2B con sistema de cotización. WordPress, WooCommerce, Elementor e integraciones."
+                                data-url="https://prodquim.cl/">
+                                <div class="card-screenshot" style="background-image: url('img/cards/pq_screenshot.png')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon">
+                                        <img src="./img/cards/prodquim.webp" alt="ProdQuim">
+                                    </div>
+                                    <span class="project-name">ProdQuim</span>
+                                </div>
+                            </a>
+
+                            <!-- TNSP -->
+                            <a href="./other/tnsp/index.html" target="_blank" class="coverflow-card"
+                                data-title="TNSP"
+                                data-desc="Sitio institucional. WordPress, Elementor, despliegue en VPS y mantenimiento."
+                                data-url="./other/tnsp/index.html">
+                                <div class="card-screenshot" style="background-image: url('img/cards/tn_screenshot.webp')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon">
+                                        <img src="./img/cards/tn_logo.webp" alt="TNSP">
+                                    </div>
+                                    <span class="project-name">TNSP</span>
+                                </div>
+                            </a>
+
+                            <!-- Pokédex -->
+                            <a href="./other/pokedex/index.html" target="_blank" class="coverflow-card"
+                                data-title="Pokédex"
+                                data-desc="Frontend en JavaScript con consumo de API REST, búsqueda dinámica y renderizado de componentes."
+                                data-url="./other/pokedex/index.html">
+                                <div class="card-screenshot" style="background-image: url('img/cards/pm_screenshot.webp')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon">
+                                        <img src="./img/cards/pm_logo.webp" alt="Pokédex">
+                                    </div>
+                                    <span class="project-name">Pokédex</span>
+                                </div>
+                            </a>
+
+                            <!-- Proton UI -->
+                            <a href="./other/proton-pass.html" target="_blank" class="coverflow-card"
+                                data-title="Proton UI"
+                                data-desc="Clon pixel-perfect de interfaz. Maquetación avanzada en HTML y CSS con lógica en JavaScript."
+                                data-url="./other/proton-pass.html">
+                                <div class="card-screenshot" style="background-image: url('img/cards/proton_screenshot.png')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon emoji">🔒</div>
+                                    <span class="project-name">Proton UI</span>
+                                </div>
+                            </a>
+
+                            <!-- Amigo Secreto -->
+                            <a href="./other/sorteo.html" target="_blank" class="coverflow-card"
+                                data-title="Amigo Secreto"
+                                data-desc="Aplicación web con lógica de sorteo, validaciones y manejo de estados en JavaScript."
+                                data-url="./other/sorteo.html">
+                                <div class="card-screenshot" style="background-image: url('img/cards/sorteo_screenshot.png')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon emoji">🎁</div>
+                                    <span class="project-name">Amigo Secreto</span>
+                                </div>
+                            </a>
+
+                            <!-- CV Online -->
+                            <a href="./other/cv/cv.html" target="_blank" class="coverflow-card"
+                                data-title="CV Online"
+                                data-desc="Portafolio web con interfaz tipo sistema operativo, modales y navegación por JavaScript."
+                                data-url="./other/cv/cv.html">
+                                <div class="card-screenshot" style="background-image: url('img/cards/cv_screenshot.png')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon emoji">📄</div>
+                                    <span class="project-name">CV Online</span>
+                                </div>
+                            </a>
+
+                            <!-- Calculadora -->
+                            <a href="./other/calculadora-honorarios.html" target="_blank" class="coverflow-card"
+                                data-title="Calc. Honorarios"
+                                data-desc="Calculadora interactiva con validaciones, reglas de negocio y resultados dinámicos en JavaScript."
+                                data-url="./other/calculadora-honorarios.html">
+                                <div class="card-screenshot" style="background-image: url('img/cards/calculadora_screenshot.png')"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon emoji">💰</div>
+                                    <span class="project-name">Calc. Honorarios</span>
+                                </div>
+                            </a>
+
+                            <!-- AutoMail -->
+                            <a href="#" target="_blank" class="coverflow-card"
+                                data-title="AutoMail"
+                                data-desc="Sube un XLSX, ejecuta la generación de correos, revisa el reporte de integridad y descarga el ZIP con los mails producidos."
+                                data-url="#"
+                                data-kind="automail">
+                                <div class="card-screenshot card-screenshot-automail"></div>
+                                <div class="card-overlay">
+                                    <div class="project-icon emoji">✉️</div>
+                                    <span class="project-name">AutoMail</span>
+                                </div>
+                            </a>
+
                         </div>
-                        <span class="project-name">Hootie Hoo</span>
-                    </a>
+                    </div>
 
-                    <!-- GHIVS (cliente Hootie Hoo) -->
-                    <a href="https://ghivs.com/v2/" target="_blank" class="project-app"
-                        data-description="Sitio corporativo. WordPress (Avada), multilenguaje, formularios y optimización SEO.">
-                        <div class="project-icon">
-                            <img src="./img/cards/ghivs.svg" alt="Ghivs">
+                    <!-- Panel de información activa -->
+                    <div class="coverflow-info-panel" id="coverflow-info">
+                        <h3 class="cf-title" id="cf-title">Proyecto</h3>
+                        <p class="cf-desc" id="cf-desc">Cargando...</p>
+                        <a class="modal-btn modal-btn-primary" id="cf-link" href="#" target="_blank">Ir al proyecto</a>
+                        
+                        <!-- Ayuda de interacción -->
+                        <div class="coverflow-help">
+                            <span><i class="fas fa-arrows-alt-h"></i> Arrastrar</span>
+                            <span><i class="fas fa-mouse"></i> Rueda</span>
+                            <span><i class="fas fa-keyboard"></i> Flechas ◄/►</span>
                         </div>
-                        <span class="project-name">GHIVS</span>
-                    </a>
-
-                    <!-- ProdQuim (cliente Hootie Hoo) -->
-                    <a href="https://prodquim.cl/" target="_blank" class="project-app"
-                        data-description="Catálogo B2B con sistema de cotización. WordPress, WooCommerce, Elementor e integraciones.">
-                        <div class="project-icon">
-                            <img src="./img/cards/prodquim.webp" alt="ProdQuim">
-                        </div>
-                        <span class="project-name">ProdQuim</span>
-                    </a>
-
-                    <!-- TNSP (cliente Hootie Hoo) -->
-                    <a href="./other/tnsp/index.html" target="_blank" class="project-app"
-                        data-description="Sitio institucional. WordPress, Elementor, despliegue en VPS y mantenimiento.">
-                        <div class="project-icon">
-                            <img src="./img/cards/tn_logo.webp" alt="TNSP">
-                        </div>
-                        <span class="project-name">TNSP</span>
-                    </a>
-
-                    <!-- Pokédex -->
-                    <a href="./other/pokedex/index.html" target="_blank" class="project-app"
-                        data-description="Frontend en JavaScript con consumo de API REST, búsqueda dinámica y renderizado de componentes.">
-                        <div class="project-icon">
-                            <img src="./img/cards/pm_logo.webp" alt="Pokédex">
-                        </div>
-                        <span class="project-name">Pokédex</span>
-                    </a>
-
-                    <!-- Proton UI -->
-                    <a href="./other/proton-pass.html" target="_blank" class="project-app"
-                        data-description="Clon pixel-perfect de interfaz. Maquetación avanzada en HTML y CSS con lógica en JavaScript.">
-                        <div class="project-icon emoji">🔒</div>
-                        <span class="project-name">Proton UI</span>
-                    </a>
-
-                    <!-- Amigo Secreto -->
-                    <a href="./other/sorteo.html" target="_blank" class="project-app"
-                        data-description="Aplicación web con lógica de sorteo, validaciones y manejo de estados en JavaScript.">
-                        <div class="project-icon emoji">🎁</div>
-                        <span class="project-name">Amigo Secreto</span>
-                    </a>
-
-                    <!-- CV Online -->
-                    <a href="./other/cv/cv.html" target="_blank" class="project-app"
-                        data-description="Portafolio web con interfaz tipo sistema operativo, modales y navegación por JavaScript.">
-                        <div class="project-icon emoji">📄</div>
-                        <span class="project-name">CV Online</span>
-                    </a>
-
-                    <!-- Calculadora -->
-                    <a href="./other/calculadora-honorarios.html" target="_blank" class="project-app"
-                        data-description="Calculadora interactiva con validaciones, reglas de negocio y resultados dinámicos en JavaScript.">
-                        <div class="project-icon emoji">💰</div>
-                        <span class="project-name">Calc. Honorarios</span>
-                    </a>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -468,6 +546,103 @@
                     <p id="p-desc" class="project-detail-desc"></p>
                     <a id="p-link" href="#" target="_blank" class="modal-btn modal-btn-primary"
                         style="width: 100%; text-align: center;">Ir al proyecto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: AutoMail -->
+    <div class="modal-overlay" id="modal-automail">
+        <div class="modal modal-xl">
+            <div class="modal-header">
+                <h2 class="modal-title">AutoMail</h2>
+                <div class="window-controls">
+                    <button class="modal-maximize" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button class="modal-close" aria-label="Cerrar"></button>
+                </div>
+            </div>
+            <div class="modal-body automail-modal-body">
+                <div class="automail-shell">
+                    <aside class="automail-intro-panel">
+                        <div class="automail-brand">
+                            <div class="automail-badge">AutoMail</div>
+                            <h3>Generación guiada de correos desde XLSX</h3>
+                            <p>
+                                Sube tu archivo, valida los datos, revisa el reporte de integridad y descarga el ZIP con los correos generados.
+                            </p>
+                        </div>
+
+                        <div class="automail-feature-list">
+                            <div class="automail-feature">
+                                <strong>1. Carga segura</strong>
+                                <span>Solo archivos .xlsx con nombre saneado por el sistema.</span>
+                            </div>
+                            <div class="automail-feature">
+                                <strong>2. Validación y auditoría</strong>
+                                <span>Se calcula y muestra el contenido de report.log en pantalla.</span>
+                            </div>
+                            <div class="automail-feature">
+                                <strong>3. Resultado descargable</strong>
+                                <span>Se entrega un ZIP con los mails generados al finalizar.</span>
+                            </div>
+                        </div>
+
+                        <div class="automail-tip">
+                            Consejo: si el archivo trae errores de conciliación, el sistema los marcará antes de generar los correos.
+                        </div>
+                    </aside>
+
+                    <section class="automail-workspace">
+                        <div class="automail-upload-card">
+                            <div class="automail-dropzone" id="automail-dropzone" role="button" tabindex="0" aria-label="Subir archivo XLSX">
+                                <div class="automail-dropzone-icon">
+                                    <i class="fas fa-cloud-arrow-up"></i>
+                                </div>
+                                <div class="automail-dropzone-copy">
+                                    <h3>Arrastra tu archivo aquí</h3>
+                                    <p>o haz clic para buscar un .xlsx</p>
+                                </div>
+                            </div>
+                            <input type="file" id="automail-file-input" accept=".xlsx" hidden>
+
+                            <div class="automail-file-meta">
+                                <div>
+                                    <span class="automail-meta-label">Archivo seleccionado</span>
+                                    <strong id="automail-file-name">Ninguno</strong>
+                                </div>
+                                <div>
+                                    <span class="automail-meta-label">Tamaño</span>
+                                    <strong id="automail-file-size">-</strong>
+                                </div>
+                            </div>
+
+                            <div class="automail-actions">
+                                <button class="modal-btn modal-btn-secondary" id="automail-reset-btn">Limpiar</button>
+                                <button class="modal-btn modal-btn-secondary" id="automail-sample-btn">Ver ayuda</button>
+                                <button class="modal-btn modal-btn-primary" id="automail-run-btn">Procesar archivo</button>
+                            </div>
+                        </div>
+
+                        <div class="automail-status-row">
+                            <div class="automail-status-badge idle" id="automail-status-badge">Esperando archivo</div>
+                            <div class="automail-status-detail" id="automail-status-detail">Selecciona un XLSX para comenzar.</div>
+                        </div>
+
+                        <div class="automail-progress-track" aria-hidden="true">
+                            <div class="automail-progress-fill" id="automail-progress-fill"></div>
+                        </div>
+
+                        <div class="automail-results-panel">
+                            <div class="automail-results-header">
+                                <h3>report.log</h3>
+                                <div class="automail-results-actions">
+                                    <button class="modal-btn modal-btn-secondary" id="automail-copy-btn">Copiar</button>
+                                    <a class="modal-btn modal-btn-primary" id="automail-download-link" href="#" download style="display:none;">Descargar ZIP</a>
+                                </div>
+                            </div>
+                            <pre class="automail-report-output" id="automail-report-output">Aquí se mostrará el resultado de la ejecución.</pre>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
@@ -538,8 +713,10 @@
     <script src="js/sound.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/modals.js"></script>
+    <script src="js/coverflow.js"></script>
     <script src="js/drag.js"></script>
     <script src="js/contact.js"></script>
+    <script src="js/automail.js"></script>
 </body>
 
 </html>

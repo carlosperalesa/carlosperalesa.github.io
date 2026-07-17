@@ -1,0 +1,385 @@
+/* ============================================
+   AUTOMAIL - MODAL INTERNO
+   ============================================ */
+
+#modal-automail .modal-body {
+    overflow: hidden;
+    padding: 0;
+}
+
+.automail-modal-body {
+    height: 100%;
+}
+
+.automail-shell {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 0;
+    height: 100%;
+    min-height: 0;
+    background: linear-gradient(180deg, rgba(79, 70, 229, 0.06), rgba(16, 185, 129, 0.04));
+}
+
+.automail-intro-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px 22px;
+    border-right: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(24px);
+    min-height: 0;
+}
+
+body.dark-mode .automail-intro-panel {
+    background: rgba(15, 23, 42, 0.55);
+}
+
+.automail-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.automail-brand h3 {
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: var(--text-color);
+}
+
+.automail-brand p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.automail-badge {
+    width: fit-content;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.16), rgba(16, 185, 129, 0.16));
+    color: var(--accent-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.automail-feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.automail-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .automail-feature {
+    background: rgba(15, 23, 42, 0.72);
+    border-color: rgba(148, 163, 184, 0.08);
+}
+
+.automail-feature strong {
+    font-size: 0.88rem;
+    color: var(--text-color);
+}
+
+.automail-feature span,
+.automail-tip {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+}
+
+.automail-tip {
+    margin-top: auto;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(79, 70, 229, 0.08);
+    border: 1px dashed rgba(79, 70, 229, 0.25);
+}
+
+.automail-workspace {
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    gap: 16px;
+    padding: 22px;
+    min-width: 0;
+    min-height: 0;
+}
+
+.automail-upload-card,
+.automail-results-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    box-shadow: var(--glass-shadow);
+}
+
+.automail-upload-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+}
+
+.automail-dropzone {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px dashed rgba(79, 70, 229, 0.35);
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.07), rgba(16, 185, 129, 0.05));
+    cursor: pointer;
+    transition: transform var(--transition-normal), border-color var(--transition-normal), background var(--transition-normal);
+}
+
+.automail-dropzone:hover,
+.automail-dropzone.is-dragover {
+    transform: translateY(-1px);
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(16, 185, 129, 0.08));
+}
+
+.automail-dropzone-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    color: white;
+    background: linear-gradient(135deg, var(--accent-color), #10b981);
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.automail-dropzone-copy h3 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.automail-dropzone-copy p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.automail-file-meta {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 12px;
+}
+
+.automail-file-meta > div {
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .automail-file-meta > div {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(148, 163, 184, 0.08);
+}
+
+.automail-meta-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.automail-file-meta strong {
+    font-size: 0.92rem;
+    color: var(--text-color);
+    word-break: break-word;
+}
+
+.automail-actions,
+.automail-results-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.automail-actions {
+    justify-content: flex-end;
+}
+
+.automail-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.automail-status-badge {
+    width: fit-content;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.automail-status-badge.idle {
+    background: rgba(100, 116, 139, 0.16);
+    color: var(--text-muted);
+}
+
+.automail-status-badge.running {
+    background: rgba(79, 70, 229, 0.16);
+    color: var(--accent-color);
+}
+
+.automail-status-badge.success {
+    background: rgba(16, 185, 129, 0.16);
+    color: #059669;
+}
+
+.automail-status-badge.warning {
+    background: rgba(245, 158, 11, 0.18);
+    color: #b45309;
+}
+
+.automail-status-badge.error {
+    background: rgba(239, 68, 68, 0.16);
+    color: #dc2626;
+}
+
+.automail-status-detail {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.automail-progress-track {
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+body.dark-mode .automail-progress-track {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.automail-progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent-color), #10b981);
+    transition: width 0.3s ease;
+}
+
+.automail-progress-fill.is-working {
+    width: 72%;
+    animation: automailPulse 1.2s ease-in-out infinite;
+}
+
+.automail-progress-fill.is-done {
+    width: 100%;
+}
+
+@keyframes automailPulse {
+    0%, 100% {
+        filter: brightness(1);
+        opacity: 0.8;
+    }
+    50% {
+        filter: brightness(1.08);
+        opacity: 1;
+    }
+}
+
+.automail-results-panel {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 14px;
+    padding: 18px;
+    min-height: 0;
+}
+
+.automail-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.automail-results-header h3 {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.automail-report-output {
+    margin: 0;
+    padding: 16px;
+    min-height: 0;
+    overflow: auto;
+    border-radius: 18px;
+    background: rgba(10, 15, 25, 0.9);
+    color: #d1fae5;
+    font-family: 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.card-screenshot-automail {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(16, 185, 129, 0.9));
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.28), transparent 28%),
+        radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.18), transparent 22%),
+        linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(16, 185, 129, 0.88));
+}
+
+@media (max-width: 1080px) {
+    .automail-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .automail-intro-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+    }
+}
+
+@media (max-width: 768px) {
+    .automail-workspace {
+        padding: 16px;
+    }
+
+    .automail-dropzone {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .automail-file-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .automail-status-row,
+    .automail-results-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .automail-status-detail {
+        text-align: left;
+    }
+}

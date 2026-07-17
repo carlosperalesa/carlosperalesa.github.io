@@ -20,6 +20,15 @@ const App = {
         }
     },
 
+    automail: {
+        getBaseUrl: () => {
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const localDefault = 'http://127.0.0.1:8092';
+            const prodDefault = 'https://carlosperales.dev/automail-api';
+            return window.AUTOMAIL_BASE_URL || (isLocal ? localDefault : prodDefault);
+        }
+    },
+
     // Initialization logic
     init: () => {
         console.log('🚀 Carlos Perales Portfolio - App Initialized');
