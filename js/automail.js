@@ -47,9 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setStatus(type, title, message) {
-        statusBadge.className = `automail-status-badge ${type}`;
-        statusBadge.textContent = title;
-        statusDetail.textContent = message;
+        if (statusBadge) {
+            statusBadge.className = `automail-status-badge ${type}`;
+            statusBadge.textContent = title;
+        }
+        if (statusDetail) {
+            statusDetail.textContent = message;
+        }
     }
 
     function setProgress(state) {

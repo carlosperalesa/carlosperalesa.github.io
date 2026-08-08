@@ -705,6 +705,14 @@ body.dark-mode .social-link:hover {
     fill: #f59e0b;
 }
 
+.dock-icon.certificaciones {
+    color: #10b981;
+}
+
+.dock-icon.certificaciones svg {
+    fill: #10b981;
+}
+
 .dock-icon.whatsapp {
     color: #16a34a;
 }

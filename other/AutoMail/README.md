@@ -1,72 +1,112 @@
-# AutoMail
+# ✉️ AutoMail - Generador de Correos desde XLSX
 
-Genera un HTML por terapeuta a partir de `base.xlsx` y valida integridad de datos antes de generar.
+AutoMail es un sub-proyecto autónomo y backend en Python/Flask que procesa planillas de cálculo `.xlsx`, valida la integridad de los datos de terapeutas/transacciones, genera correos HTML individualizados y emite un informe de auditoría (`report.log`) junto a un paquete descargable (`mail_generados.zip`).
 
-## Requisitos
+---
 
-- Python 3.10+
-- Dependencias en `requirements.txt`
+## 🛠️ Requisitos del Sistema
 
-## Instalación
+- **Python**: 3.10+
+- **Dependencias**: Listadas en `requirements.txt` (`Flask`, `pandas`, `openpyxl`, `jinja2`, etc.)
 
-1. Crear y activar entorno virtual.
+---
+
+## 🚀 Instalación y Configuración Local
+
+1. Crear y activar entorno virtual:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # En Linux/macOS
+   # venv\Scripts\activate   # En Windows
+   ```
 2. Instalar dependencias:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-   `pip install -r requirements.txt`
+---
 
-## Uso
+## 💻 Uso en Línea de Comandos (CLI)
 
-Ejecutar:
+Ejecución estándar utilizando `base.xlsx`:
+```bash
+python generate_emails.py
+```
 
-`python generate_emails.py`
+Resultados producidos:
+- Archivos HTML por terapeuta en `mails_generados/`
+- Reporte de auditoría de conciliación en `report.log`
+- Archivo comprimido final en `mail_generados.zip`
 
-Salida:
-
-- HTML por terapeuta en `mails_generados/`
-- Reporte de auditoría en `report.log`
-- ZIP con los HTML generados en `mail_generados.zip`
-
-### Modo CLI con parámetros
+### Opciones y Parámetros CLI
 
 ```bash
 python generate_emails.py --input base.xlsx --output-dir mails_generados --report-path report.log --zip-path mail_generados.zip
 ```
 
-Parámetros útiles:
+Parámetros adicionales:
+- `--no-strict`: Permite continuar y generar correos aunque existan discrepancias o errores de integridad.
+- `--tolerance`: Define el umbral de tolerancia para pequeñas diferencias monetarias o de redondeo (por defecto `2.0`).
 
-- `--no-strict`: permite continuar aunque existan errores de integridad.
-- `--tolerance`: ajusta la tolerancia de diferencias monetarias.
+---
 
-### Uso web
+## 🔍 Reglas de Validación y Conciliación
 
-El mismo pipeline se expone ahora en [server.py](server.py) para el modal AutoMail del portafolio.
+`generate_emails.py` realiza las siguientes comprobaciones:
+- **Encabezados Dinámicos**: Lectura por nombres de columnas (evitando fallos por índices rígidos).
+- **Conciliación de Montos por Terapeuta**:
+  - Servicios (compara *CUADRO TERAPEUTAS* vs *Detalle Tps*)
+  - Eventos (compara *CUADRO TERAPEUTAS* vs *Detalle para terapeutas*)
+  - Incidencias (compara *CUADRO TERAPEUTAS* vs *Detalle para terapeutas*)
+- **Detección de Huérfanos**: Identifica terapeutas presentes en las hojas de detalle que no existen en el cuadro general.
 
-- `POST /jobs`: sube el XLSX y crea un job temporal.
-- `GET /jobs/<id>`: devuelve estado, mensaje y contenido de `report.log`.
-- `GET /jobs/<id>/report`: lee el log directo.
-- `GET /jobs/<id>/download`: descarga `mail_generados.zip`.
+### Modo Estricto (`STRICT_MODE`)
 
-## Qué valida
+- `STRICT_MODE = True`: Si se detectan inconsistencias graves durante la validación, el proceso se detiene y bloquea la generación de correos para evitar errores comerciales.
+- `TOLERANCIA_MONTOS = 2.0`: Umbral aceptable para diferencias de decimales o redondeo.
 
-- Lectura robusta por encabezados (no por índice fijo de columnas).
-- Conciliación de montos por terapeuta:
-  - Servicios (CUADRO TERAPEUTAS vs Detalle Tps)
-  - Eventos (CUADRO TERAPEUTAS vs Detalle para terapeutas)
-  - Incidencias (CUADRO TERAPEUTAS vs Detalle para terapeutas)
-- Terapeutas con movimientos en detalle que no existen en cuadro.
+---
 
-## Modo estricto
+## 🌐 Servicio Web y API HTTP (Flask)
 
-En `generate_emails.py`:
+El pipeline de generación se expone a la web mediante `server.py` (ejecutado por defecto en el puerto local `:8092`).
 
-- `STRICT_MODE = True`: si hay errores de integridad, se bloquea la generación.
-- `TOLERANCIA_MONTOS = 2.0`: umbral permitido para diferencias de redondeo.
+### Endpoints HTTP (`/automail-api/`)
 
-## report.log
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/automail-api/health` | Health Check del servicio backend AutoMail |
+| `POST` | `/automail-api/jobs` | Recibe archivo `.xlsx`, crea un directorio de job temporal en `runtime/` y dispara `generate_emails.py` |
+| `GET` | `/automail-api/jobs/<job_id>` | Estado actual del job (`queued`, `running`, `done`, `blocked`, `error`), mensaje y avance del `report.log` |
+| `GET` | `/automail-api/jobs/<job_id>/report` | Descarga/consulta directa del archivo `report.log` |
+| `GET` | `/automail-api/jobs/<job_id>/download` | Descarga directa del archivo comprimido `mail_generados.zip` |
 
-Incluye:
+---
 
-- estado de ejecución
-- cantidad de errores y advertencias
-- resumen de filas leídas
-- conciliación por terapeuta con diferencia (delta) en servicios, eventos e incidencias
+## ⚙️ Despliegue e Integración en Servidor
+
+### Servicio Systemd (`automail.service`)
+
+El servicio corre de forma continua gestionado por systemd:
+- **Unit file**: `automail.service` (ubicado en la raíz del repositorio y desplegado en `/etc/systemd/system/automail.service`)
+- **Directorio de ejecuciones temporales**: `other/AutoMail/runtime/`
+
+### Proxy Reverso (Nginx)
+
+Nginx expone el servicio en producción bajo el path `/automail-api/`:
+
+```nginx
+location /automail-api/ {
+    proxy_pass http://127.0.0.1:8092/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    client_max_body_size 25M;
+}
+```
+
+### Automatización con `start.sh`
+
+Al ejecutar `start.sh` en el servidor:
+1. Se reinstalan o actualizan las dependencias de `requirements.txt`.
+2. Se copian y recargan las unidades de systemd (`automail.service`).
+3. Se otorgan permisos al directorio `runtime/`.

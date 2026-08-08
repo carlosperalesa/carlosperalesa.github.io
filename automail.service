@@ -4,10 +4,10 @@ After=network.target
 
 [Service]
 Type=simple
-User=www-data
-Group=www-data
+User=root
+Group=root
 WorkingDirectory=/var/www/portafolio/other/AutoMail
-ExecStart=/var/www/portafolio/other/AutoMail/.venv/bin/python /var/www/portafolio/other/AutoMail/server.py
+ExecStart=/bin/bash /var/www/portafolio/other/AutoMail/launch.sh
 Restart=on-failure
 RestartSec=5
 

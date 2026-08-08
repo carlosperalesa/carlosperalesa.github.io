@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 transform = `translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg)`;
                 
-                // Fade out cards further away
-                opacity = 1 - Math.min(0.85, absOffset * 0.25);
+                // Keep all cards opaque (no transparency)
+                opacity = 1;
             }
             
             card.style.transform = transform;
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isAutomail = activeCard.dataset.kind === 'automail';
                 infoLink.href = isAutomail ? '#' : activeCard.dataset.url;
                 infoLink.dataset.action = isAutomail ? 'open-automail' : 'open-link';
-                infoLink.textContent = isAutomail ? 'Abrir AutoMail' : 'Ir al proyecto';
+                infoLink.textContent = isAutomail ? 'Abrir AutoMail' : 'Ver certificado';
                 infoPanel.classList.add('visible');
             }, 150);
         }
@@ -77,25 +77,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Event Listeners for Navigation
 
-    // A. Clicking a background card directly to center it
-    // Note: Since card.style.pointerEvents is 'none' for side cards, we attach the listener to the viewport
-    // and use document.elementFromPoint or target detection, or simply click capturing.
-    // However, pointer-events: none prevents clicking. Let's make an overlay click detector or:
-    // We can enable pointer-events: auto on all cards, but prevent standard link navigations (handled in JS).
-    // Let's keep pointer-events: auto on all cards so they can be clicked to select, but handle it!
+    // A. Clicking a card: center it if inactive, or open link/modal if already active
     cards.forEach((card, index) => {
         card.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
             if (activeIndex !== index) {
-                e.preventDefault();
-                e.stopPropagation();
                 activeIndex = index;
                 updateCoverflow();
-            } else if (card.dataset.kind === 'automail' && typeof window.openAutoMailModal === 'function') {
-                e.preventDefault();
-                e.stopPropagation();
-                window.openAutoMailModal();
+            } else {
+                if (card.dataset.kind === 'automail' && typeof window.openAutoMailModal === 'function') {
+                    window.openAutoMailModal();
+                } else {
+                    const url = card.dataset.url || card.getAttribute('href');
+                    if (url && url !== '#') {
+                        window.open(url, '_blank');
+                    }
+                }
             }
-            // If it is the activeIndex, standard navigation (href link) occurs naturally!
         });
     });
 
@@ -156,9 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // D. Keyboard accessibility (Left/Right arrow keys)
     document.addEventListener('keydown', (e) => {
-        // Only run keyboard navigation if the Projects modal is active/open
-        const projectsModal = document.getElementById('modal-proyectos');
-        if (!projectsModal || !projectsModal.classList.contains('active')) return;
+        // Only run keyboard navigation if the Certificaciones modal is active/open
+        const certModal = document.getElementById('modal-certificaciones');
+        if (!certModal || !certModal.classList.contains('active')) return;
 
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // E. Hook into system modal opening events
     document.addEventListener('modal:opened', (e) => {
-        if (e.detail.id === 'proyectos') {
+        if (e.detail.id === 'certificaciones') {
             // Recalculate/update layouts in case modal bounds changed or initialized hidden
             setTimeout(updateCoverflow, 50);
         }

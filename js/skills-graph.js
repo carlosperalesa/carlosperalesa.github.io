@@ -88,6 +88,12 @@ class SkillsGraph {
             }
         });
 
+        document.addEventListener('modal:closed', (e) => {
+            if (e.detail && e.detail.id === 'skills' && this.simulation) {
+                this.simulation.stop();
+            }
+        });
+
         window.addEventListener('resize', () => {
             if (this.initialized && document.getElementById('modal-skills').classList.contains('active')) {
                 this.resize();

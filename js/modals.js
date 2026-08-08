@@ -76,6 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
         app.addEventListener('click', (e) => {
             e.preventDefault();
 
+            if (app.dataset.kind === 'automail') {
+                openModal('automail');
+                return;
+            }
+
             const title = app.querySelector('.project-name').innerText;
             const iconHtml = app.querySelector('.project-icon').innerHTML;
             const description = app.dataset.description;
@@ -209,6 +214,9 @@ function closeModal(modalId, withSound = true) {
         if (dockItem) {
             dockItem.classList.remove('active');
         }
+
+        // Dispatch event for other scripts
+        document.dispatchEvent(new CustomEvent('modal:closed', { detail: { id: modalId } }));
     }, 300);
 }
 

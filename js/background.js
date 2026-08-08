@@ -74,6 +74,23 @@ class RetroGridBackground {
 
         observer.observe(document.body, { attributes: true });
 
+        this.animationFrameId = null;
+
+        // Watch for page visibility changes to pause rendering when hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (this.animationFrameId) {
+                    cancelAnimationFrame(this.animationFrameId);
+                    this.animationFrameId = null;
+                }
+            } else {
+                if (!this.animationFrameId) {
+                    this.clock.getDelta(); // reset delta timer
+                    this.animate();
+                }
+            }
+        });
+
         // Start Loop
         this.animate();
     }
@@ -189,7 +206,8 @@ class RetroGridBackground {
     }
 
     animate() {
-        requestAnimationFrame(() => this.animate());
+        if (document.hidden) return;
+        this.animationFrameId = requestAnimationFrame(() => this.animate());
 
         const delta = this.clock.getDelta();
 

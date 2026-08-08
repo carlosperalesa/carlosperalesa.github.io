@@ -1,7 +1,7 @@
 /* ============================================
    MACOS COVER FLOW FOR PROJECTS MODAL
    ============================================ */
-#modal-proyectos .modal-body {
+#modal-certificaciones .modal-body {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -55,44 +55,48 @@
     height: 180px;
     position: absolute;
     border-radius: var(--radius-md);
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    box-shadow: var(--glass-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
                 opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
     cursor: pointer;
-    -webkit-box-reflect: below 4px linear-gradient(transparent, transparent 40%, rgba(255, 255, 255, 0.35));
+    -webkit-box-reflect: below 4px linear-gradient(transparent, transparent 60%, rgba(0, 0, 0, 0.15));
+}
+
+body.dark-mode .coverflow-card {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 /* Card Content: Thumbnail screenshot & icon footer */
 .card-screenshot {
     width: 100%;
-    height: 78%;
+    height: 76%;
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     position: relative;
+    background-color: #f8fafc;
 }
 
-.card-screenshot::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.35));
+body.dark-mode .card-screenshot {
+    background-color: #0f172a;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 .card-overlay {
     width: 100%;
-    height: 22%;
+    height: 24%;
     display: flex;
     align-items: center;
     padding: 0 10px;
     gap: 8px;
-    background: rgba(15, 23, 42, 0.2);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: #0f172a;
+    color: #ffffff;
 }
 
 .coverflow-card .project-icon {
