@@ -18,7 +18,7 @@ Si el binario no esta instalado, usa:
 ```bash
 sudo useradd -r -s /usr/sbin/nologin pocketbase || true
 sudo mkdir -p /opt/pocketbase
-PB_VERSION="0.22.12"
+PB_VERSION="0.36.5"
 cd /opt/pocketbase
 sudo curl -L -o pocketbase.zip "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip"
 sudo apt-get install -y unzip
@@ -26,7 +26,7 @@ sudo unzip pocketbase.zip
 sudo rm pocketbase.zip
 sudo chown -R pocketbase:pocketbase /opt/pocketbase
 sudo chmod +x /opt/pocketbase/pocketbase
-sudo cp /var/www/html-static/pocketbase.service /etc/systemd/system/pocketbase.service
+sudo cp /var/www/portafolio/pocketbase.service /etc/systemd/system/pocketbase.service
 sudo systemctl daemon-reload
 sudo systemctl enable pocketbase
 sudo systemctl restart pocketbase

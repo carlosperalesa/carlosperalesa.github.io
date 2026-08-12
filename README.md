@@ -120,12 +120,12 @@ El servidor utiliza variables en `/etc/environment` para evitar almacenar secret
 
 | Variable | Descripción | Ejemplo |
 |----------|-------------|---------|
-| `DEPLOY_ROOT` | Ruta raíz del portafolio en servidor | `/var/www/html-static` |
+| `DEPLOY_ROOT` | Ruta raíz del portafolio en servidor | `/var/www/portafolio` |
 
 Para configurar en Ubuntu:
 ```bash
 sudo nano /etc/environment
-# Agregar: DEPLOY_ROOT="/var/www/html-static"
+# Agregar: DEPLOY_ROOT="/var/www/portafolio"
 ```
 
 ---
@@ -194,7 +194,7 @@ sudo useradd -r -s /usr/sbin/nologin pocketbase || true
 sudo mkdir -p /opt/pocketbase
 
 # Descargar e instalar binario
-PB_VERSION="0.22.12"
+PB_VERSION="0.36.5"
 cd /opt/pocketbase
 sudo curl -L -o pocketbase.zip "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip"
 sudo apt-get install -y unzip
@@ -204,7 +204,7 @@ sudo rm pocketbase.zip
 # Permisos y servicio systemd
 sudo chown -R pocketbase:pocketbase /opt/pocketbase
 sudo chmod +x /opt/pocketbase/pocketbase
-sudo cp /var/www/html-static/pocketbase.service /etc/systemd/system/pocketbase.service
+sudo cp /var/www/portafolio/pocketbase.service /etc/systemd/system/pocketbase.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now pocketbase
 ```
