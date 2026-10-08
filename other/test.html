@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Galeria de efectos hover</title>
+	<style>
+		:root {
+			--ink: #17212b;
+			--muted: #60707e;
+			--paper: #f4f0e8;
+			--panel: #fffdf8;
+			--line: #d9d1c3;
+			--accent: #d65a3a;
+			--accent-dark: #9d3320;
+			--shadow: 0 24px 60px rgba(46, 38, 29, 0.14);
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			min-height: 100vh;
+			margin: 0;
+			padding: 48px 20px;
+			color: var(--ink);
+			background:
+				radial-gradient(circle at 12% 15%, rgba(214, 90, 58, 0.16), transparent 24rem),
+				linear-gradient(135deg, #f9f6ef 0%, var(--paper) 52%, #e9e2d4 100%);
+			font-family: Georgia, "Times New Roman", serif;
+		}
+
+		main {
+			width: min(100%, 980px);
+			margin: 0 auto;
+		}
+
+		header {
+			margin-bottom: 28px;
+		}
+
+		.eyebrow {
+			margin: 0 0 10px;
+			color: var(--accent-dark);
+			font-family: Arial, sans-serif;
+			font-size: 0.75rem;
+			font-weight: 700;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+		}
+
+		h1 {
+			max-width: 680px;
+			margin: 0;
+			font-size: clamp(2.4rem, 7vw, 5.6rem);
+			font-weight: 400;
+			line-height: 0.95;
+			letter-spacing: -0.03em;
+		}
+
+		.intro {
+			max-width: 600px;
+			margin: 18px 0 0;
+			color: var(--muted);
+			font-family: Arial, sans-serif;
+			font-size: 1rem;
+			line-height: 1.6;
+		}
+
+		.playground {
+			padding: clamp(22px, 5vw, 52px);
+			background: var(--panel);
+			border: 1px solid rgba(120, 102, 80, 0.22);
+			box-shadow: var(--shadow);
+		}
+
+		.toolbar {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(180px, 0.7fr);
+			gap: 18px 28px;
+			align-items: end;
+			padding-bottom: 28px;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.toolbar-title {
+			margin: 0;
+			font-size: 1.45rem;
+			font-weight: 400;
+		}
+
+		.toolbar-copy {
+			margin: 7px 0 0;
+			color: var(--muted);
+			font-family: Arial, sans-serif;
+			font-size: 0.9rem;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			color: var(--muted);
+			font-family: Arial, sans-serif;
+			font-size: 0.78rem;
+			font-weight: 700;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+		}
+
+		select {
+			width: 100%;
+			padding: 13px 42px 13px 14px;
+			color: var(--ink);
+			background-color: #f8f4ec;
+			border: 1px solid var(--line);
+			border-radius: 3px;
+			font: inherit;
+			cursor: pointer;
+		}
+
+		select:focus-visible {
+			outline: 3px solid rgba(214, 90, 58, 0.28);
+			outline-offset: 2px;
+		}
+
+		.stage {
+			display: grid;
+			place-items: center;
+			min-height: clamp(300px, 48vw, 520px);
+			margin-top: 30px;
+			overflow: hidden;
+			background: #e5ded1;
+			border: 1px solid var(--line);
+		}
+
+		.image-frame {
+			width: min(88%, 820px);
+			overflow: hidden;
+			background: #fff;
+			box-shadow: 0 16px 34px rgba(39, 30, 20, 0.2);
+		}
+
+		.image-frame img {
+			display: block;
+			width: 100%;
+			height: auto;
+			transform: scale(1) rotate(0deg);
+			filter: none;
+			opacity: 1;
+			transition: transform 700ms ease, filter 700ms ease, opacity 700ms ease;
+		}
+
+		.effect-featured {
+			position: relative;
+			cursor: pointer;
+			box-shadow: 0 16px 34px rgba(39, 30, 20, 0.2);
+			animation: featured-entry 1400ms 350ms both;
+			transition: transform 500ms ease, box-shadow 500ms ease;
+		}
+
+		.effect-featured::after {
+			position: absolute;
+			top: 0;
+			left: -45%;
+			width: 28%;
+			height: 100%;
+			content: "";
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+			transform: skewX(-18deg);
+			pointer-events: none;
+		}
+
+		.effect-featured:is(:hover, .is-active) {
+			box-shadow: 0 24px 46px rgba(39, 30, 20, 0.3);
+			transform: translateY(-6px);
+		}
+
+		.effect-featured:is(:hover, .is-active) img {
+			transform: scale(1.04);
+		}
+
+		.effect-featured:is(:hover, .is-active)::after {
+			animation: featured-shine 900ms ease-out;
+		}
+
+		@keyframes featured-entry {
+			0% { opacity: 0.55; transform: scale(0.96); }
+			65% { opacity: 1; transform: scale(1.035); }
+			100% { opacity: 1; transform: scale(1); }
+		}
+
+		@keyframes featured-shine {
+			0% { left: -45%; }
+			100% { left: 130%; }
+		}
+
+		.effect-zoom-slow img { transition-duration: 1800ms; }
+		.effect-zoom-medium img { transition-duration: 900ms; }
+		.effect-zoom-fast img { transition-duration: 300ms; }
+		.effect-zoom-slow:is(:hover, .is-active) img,
+		.effect-zoom-medium:is(:hover, .is-active) img,
+		.effect-zoom-fast:is(:hover, .is-active) img { transform: scale(1.22); }
+
+		.effect-zoom-out:is(:hover, .is-active) img { transform: scale(0.78); }
+		.effect-rotate-right:is(:hover, .is-active) img { transform: rotate(12deg) scale(1.08); }
+		.effect-rotate-left:is(:hover, .is-active) img { transform: rotate(-12deg) scale(1.08); }
+		.effect-spin-right:is(:hover, .is-active) img { transform: rotate(360deg); }
+		.effect-spin-left:is(:hover, .is-active) img { transform: rotate(-360deg); }
+		.effect-tilt-right:is(:hover, .is-active) img { transform: perspective(700px) rotateY(-16deg) rotateX(4deg) scale(1.04); }
+		.effect-tilt-left:is(:hover, .is-active) img { transform: perspective(700px) rotateY(16deg) rotateX(4deg) scale(1.04); }
+		.effect-grayscale:is(:hover, .is-active) img { filter: grayscale(1); }
+		.effect-sepia:is(:hover, .is-active) img { filter: sepia(0.9); }
+		.effect-blur:is(:hover, .is-active) img { filter: blur(4px); transform: scale(1.06); }
+		.effect-bright:is(:hover, .is-active) img { filter: brightness(1.35); }
+		.effect-saturate:is(:hover, .is-active) img { filter: saturate(2); }
+		.effect-fade:is(:hover, .is-active) img { opacity: 0.35; }
+
+		/* Variantes de latido facilitadas por el usuario */
+		.effect-pulse-fast:is(:hover, .is-active) img {
+			animation: pulse 300ms ease-in-out;
+		}
+
+		.effect-pulse-medium:is(:hover, .is-active) img {
+			animation: pulse 600ms ease-in-out;
+		}
+
+		.effect-pulse-slow:is(:hover, .is-active) img {
+			animation: pulse 1200ms ease-in-out;
+		}
+
+		.effect-float:is(:hover, .is-active) {
+			box-shadow: 0 25px 42px rgba(39, 30, 20, 0.3);
+			transform: translateY(-10px);
+		}
+
+		.effect-float:is(:hover, .is-active) img { transform: scale(1.02); }
+		.effect-bounce:is(:hover, .is-active) img { animation: bounce 700ms ease; }
+		.effect-skew:is(:hover, .is-active) img { transform: skewX(-6deg) scale(1.04); }
+		.effect-contrast:is(:hover, .is-active) img { filter: contrast(1.35); }
+		.effect-invert:is(:hover, .is-active) img { filter: invert(1); }
+		.effect-shadow:is(:hover, .is-active) { box-shadow: 0 0 0 5px rgba(214, 90, 58, 0.3), 0 22px 40px rgba(39, 30, 20, 0.25); }
+		.effect-glow:is(:hover, .is-active) { box-shadow: 0 0 28px rgba(214, 90, 58, 0.75); }
+		.effect-shine { position: relative; }
+		.effect-shine::after {
+			position: absolute;
+			top: 0;
+			left: -50%;
+			width: 30%;
+			height: 100%;
+			content: "";
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+			transform: skewX(-18deg);
+			pointer-events: none;
+		}
+		.effect-shine:is(:hover, .is-active)::after { animation: shine 900ms ease-out; }
+
+		@keyframes pulse {
+			0% { transform: scale(1); }
+			30% { transform: scale(1.04); }
+			50% { transform: scale(0.99); }
+			70% { transform: scale(1.025); }
+			100% { transform: scale(1); }
+		}
+
+		@keyframes bounce {
+			0%, 100% { transform: translateY(0); }
+			35% { transform: translateY(-12px); }
+			65% { transform: translateY(3px); }
+		}
+
+		@keyframes shine {
+			0% { left: -50%; }
+			100% { left: 130%; }
+		}
+
+		.status {
+			display: flex;
+			justify-content: space-between;
+			gap: 18px;
+			margin-top: 14px;
+			color: var(--muted);
+			font-family: Arial, sans-serif;
+			font-size: 0.78rem;
+		}
+
+		#effect-name {
+			color: var(--accent-dark);
+			font-weight: 700;
+		}
+
+		@media (max-width: 620px) {
+			body {
+				padding: 28px 14px;
+			}
+
+			.toolbar {
+				grid-template-columns: 1fr;
+			}
+
+			.stage {
+				min-height: 230px;
+			}
+
+			.status {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 5px;
+			}
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.effect-featured,
+			.effect-float {
+				animation: none;
+				transition: none;
+			}
+
+			.effect-featured:is(:hover, .is-active)::after,
+			.effect-shine:is(:hover, .is-active)::after,
+			.effect-pulse-fast:is(:hover, .is-active) img,
+			.effect-pulse-medium:is(:hover, .is-active) img,
+			.effect-pulse-slow:is(:hover, .is-active) img,
+			.effect-bounce:is(:hover, .is-active) img {
+				animation: none;
+			}
+
+			.image-frame img {
+				transition-duration: 1ms;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<main>
+		<header>
+			<p class="eyebrow">CSS hover lab</p>
+			<p class="intro">Elige un efecto del desplegable y pasa el cursor sobre la imagen para ver la transicion.</p>
+		</header>
+
+		<section class="playground" aria-labelledby="playground-title">
+			<div class="toolbar">
+				<div>
+					<h2 class="toolbar-title" id="playground-title">Explora los efectos</h2>
+					<p class="toolbar-copy">Hay variantes de velocidad, direccion, filtros y transformaciones.</p>
+				</div>
+				<div>
+					<label for="effect-select">Efecto activo</label>
+					<select id="effect-select">
+						<option value="effect-featured">Destacado para banner</option>
+						<option value="effect-pulse-fast">Latido rapido</option>
+						<option value="effect-pulse-medium">Latido medio</option>
+						<option value="effect-pulse-slow">Latido lento</option>
+						<option value="effect-zoom-slow">Zoom in lento</option>
+						<option value="effect-zoom-medium">Zoom in medio</option>
+						<option value="effect-zoom-fast">Zoom in rapido</option>
+						<option value="effect-zoom-out">Zoom out</option>
+						<option value="effect-rotate-right">Rotacion suave a la derecha</option>
+						<option value="effect-rotate-left">Rotacion suave a la izquierda</option>
+						<option value="effect-spin-right">Giro completo a la derecha</option>
+						<option value="effect-spin-left">Giro completo a la izquierda</option>
+						<option value="effect-tilt-right">Inclinacion 3D a la derecha</option>
+						<option value="effect-tilt-left">Inclinacion 3D a la izquierda</option>
+						<option value="effect-grayscale">Escala de grises</option>
+						<option value="effect-sepia">Sepia</option>
+						<option value="effect-blur">Desenfoque</option>
+						<option value="effect-bright">Mas brillo</option>
+						<option value="effect-saturate">Mas saturacion</option>
+						<option value="effect-fade">Desvanecer</option>
+						<option value="effect-float">Elevacion suave</option>
+						<option value="effect-bounce">Rebote</option>
+						<option value="effect-skew">Inclinacion diagonal</option>
+						<option value="effect-contrast">Contraste</option>
+						<option value="effect-invert">Invertir colores</option>
+						<option value="effect-shadow">Marco de color</option>
+						<option value="effect-glow">Resplandor</option>
+						<option value="effect-shine">Barrido de luz</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="stage">
+				<div class="image-frame effect-featured" id="image-frame">
+					<img src="./Prodquim_PW_PQM_BannerLanzamiento_Opcion01_v2.png" alt="Banner de lanzamiento de Prodquim">
+				</div>
+			</div>
+			<div class="status" aria-live="polite">
+				<span>Selecciona un efecto o pasa el cursor sobre la imagen</span>
+				<span id="effect-name">Destacado para banner</span>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const effectSelect = document.querySelector('#effect-select');
+		const imageFrame = document.querySelector('#image-frame');
+		const effectName = document.querySelector('#effect-name');
+
+		effectSelect.addEventListener('change', () => {
+			const selectedOption = effectSelect.options[effectSelect.selectedIndex];
+			imageFrame.className = `image-frame ${effectSelect.value} is-active`;
+			effectName.textContent = selectedOption.textContent;
+		});
+	</script>
+</body>
+
+</html>
